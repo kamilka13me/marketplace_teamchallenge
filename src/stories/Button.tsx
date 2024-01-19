@@ -33,8 +33,10 @@ export const Button = ({
   backgroundColor,
   label,
   ...props
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 }: ButtonProps) => {
   const mode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
+
   return (
     <button
       type="button"
