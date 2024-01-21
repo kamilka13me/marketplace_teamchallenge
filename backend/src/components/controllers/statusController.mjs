@@ -16,4 +16,4 @@ const StatusController = {
 
 };
 
-module.exports = StatusController;
+export default StatusController;
