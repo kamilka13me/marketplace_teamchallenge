@@ -1,7 +1,7 @@
 // statusRoute.js
 
-import express from 'express';  // Оновлено: використовуйте import для express
-import StatusController from '../controllers/statusController.mjs';  // Оновлено: використовуйте import без .default
+import express from 'express';
+import StatusController from '../controllers/statusController.mjs';  
 
 const router = express.Router();
 
@@ -49,4 +49,4 @@ router.get('/ping', StatusController.ping);
  */
 router.post('/info', StatusController.info);
 
-export default router;  // Оновлено: експортуємо router замість statusRoute
+export default router;

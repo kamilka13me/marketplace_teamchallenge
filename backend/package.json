@@ -7,7 +7,7 @@
 
   "scripts": {
     "test": "jest",
-    "start": "node server.js",
+    "start": "node server.mjs",
     "dev": "nodemon server.mjs",
     "ecc": "node cli/create.js"
   },

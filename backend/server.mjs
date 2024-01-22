@@ -6,10 +6,10 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import config from './src/config/config.mjs';
-import swaggerUi from 'swagger-ui-express';
 import statusRoute from './src/components/routes/statusRoute.mjs';
 import path from 'path';
-import specs from './docs/swagger/swager.mjs';
+import swaggerDocs from './docs/swagger/swager.mjs';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -36,14 +36,12 @@ app.use(morgan('combined', { stream: detailedLogStream }));
 // Server status
 app.use('/api/status', statusRoute);
 
-// Swagger
-app.use('/docs',
-  swaggerUi.serve,
-  swaggerUi.setup(specs)
-);
 
-const server = app.listen(config.port, () => {
+
+const server = app.listen(config.port, async () => {
   console.log(`Server is running on http://localhost:${config.port}`);
+  
+  swaggerDocs(app , config.port);
 });
 
 export default server;

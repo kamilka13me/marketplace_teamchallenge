@@ -1,8 +1,10 @@
 // swager.mjs
 
-import swaggerJSDoc from 'swagger-jsdoc';
+
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -23,7 +25,7 @@ const options = {
     servers: [
       {
         url: 'http://localhost:3001/api/',
-        description: 'main server Api'
+        description: 'Main server Api'
       }
     ],
   },
@@ -33,4 +35,21 @@ const options = {
 // console.log(fullPath);
 
 const specs = swaggerJSDoc(options);
-export default specs;
+
+
+function swaggerDocs(app, port) {
+  // Swagger page
+  app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
+
+  // Docs in JSON format
+  app.get("/docs.json", (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    res.send(specs);
+  });
+
+  console.log(`Docs available at http://localhost:${port}/docs`);
+};
+
+
+
+export default swaggerDocs;
