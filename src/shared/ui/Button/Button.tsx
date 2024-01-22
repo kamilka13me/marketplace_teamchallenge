@@ -1,13 +1,17 @@
-import { memo, ReactNode } from 'react';
+import { memo } from 'react';
 
 interface Props {
-  children: ReactNode;
+  children: string;
 }
 
 const Button = memo((props: Props) => {
   const { children } = props;
 
-  return <button type="button">{children}</button>;
+  return (
+    <button type="button" className="">
+      {children}
+    </button>
+  );
 });
 
 export default Button;
