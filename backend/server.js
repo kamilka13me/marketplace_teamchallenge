@@ -14,25 +14,29 @@ import config from './src/config/config.js';
 
 import connectDb from './src/config/connectDb.js';
 
+const app = express();
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(cors());
+
+// mongo connect
+connectDb();
+//
+
+//
+
+// logs
+
 /* eslint-disable no-underscore-dangle */
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const logsDirectory = path.join(__dirname, 'logs');
 /* eslint-enable no-underscore-dangle */
-
-// mongo connect
-connectDb();
-
-const app = express();
-
-app.use(cors());
-
 // Create logs directory if it doesn't exist
 if (!fs.existsSync(logsDirectory)) {
   fs.mkdirSync(logsDirectory);
 }
-
-// logs
 const generalLogStream = fs.createWriteStream(path.join(logsDirectory, 'logs.txt'), {
   flags: 'a',
 });
@@ -40,18 +44,21 @@ const detailedLogStream = fs.createWriteStream(
   path.join(logsDirectory, 'detailedLogs.txt'),
   { flags: 'a' },
 );
-
 // Logging to logs.txt
 app.use(
   morgan(':date status: :status to: :method :url from: :referrer', {
     stream: generalLogStream,
   }),
 );
-
 // Logging to detailedLogs.txt
 app.use(morgan('combined', { stream: detailedLogStream }));
 
+//
+
+//
+
 // Routes
+
 // Server status
 app.use('/api/status', statusRoute);
 
