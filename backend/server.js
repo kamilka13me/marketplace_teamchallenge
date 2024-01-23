@@ -11,6 +11,8 @@ import swaggerDocs from './docs/swagger/swager.js';
 import statusRoute from './src/components/routes/statusRoute.js';
 import config from './src/config/config.js';
 
+import cors from 'cors';
+
 /* eslint-disable no-underscore-dangle */
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -18,6 +20,7 @@ const logsDirectory = path.join(__dirname, 'logs');
 /* eslint-enable no-underscore-dangle */
 
 const app = express();
+app.use(cors());
 
 // Create logs directory if it doesn't exist
 if (!fs.existsSync(logsDirectory)) {
