@@ -1,4 +1,5 @@
 devNotes/
+.vscode/
 # Logs
 logs
 *.log

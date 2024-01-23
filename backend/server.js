@@ -4,6 +4,7 @@ import fs from 'fs';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
+import cors from 'cors';
 import express from 'express';
 import morgan from 'morgan';
 
@@ -11,7 +12,7 @@ import swaggerDocs from './docs/swagger/swager.js';
 import statusRoute from './src/components/routes/statusRoute.js';
 import config from './src/config/config.js';
 
-import cors from 'cors';
+import connectDb from './src/config/connectDb.js';
 
 /* eslint-disable no-underscore-dangle */
 const __filename = fileURLToPath(import.meta.url);
@@ -19,7 +20,11 @@ const __dirname = dirname(__filename);
 const logsDirectory = path.join(__dirname, 'logs');
 /* eslint-enable no-underscore-dangle */
 
+// mongo connect
+connectDb();
+
 const app = express();
+
 app.use(cors());
 
 // Create logs directory if it doesn't exist
