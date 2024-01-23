@@ -148,15 +148,6 @@ module.exports = {
         "@typescript-eslint/no-unused-vars": [
             "error"
         ],
-        "@typescript-eslint/explicit-function-return-type": [
-            "error",
-            {
-                "allowExpressions": true,
-                "allowedNames": [
-                    "ignoredFunctionDeclaration"
-                ]
-            }
-        ]
     },
     settings: {
       'import/resolver': {

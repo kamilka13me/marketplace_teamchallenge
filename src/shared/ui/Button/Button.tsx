@@ -1,13 +1,22 @@
-import { memo, ReactNode } from 'react';
+import { memo } from 'react';
 
 interface Props {
-  children: ReactNode;
+  children: string;
+  onClick?: () => void;
 }
 
 const Button = memo((props: Props) => {
-  const { children } = props;
+  const { children, onClick } = props;
 
-  return <button type="button">{children}</button>;
+  return (
+    <button
+      onClick={onClick}
+      type="button"
+      className="bg-red-500 px-3 py-1 rounded-md font-bold text-white"
+    >
+      {children}
+    </button>
+  );
 });
 
 export default Button;
