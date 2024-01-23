@@ -11,7 +11,7 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "node server.mjs",
+    "start": "nodemon server.js --mongoURL=mongodb+srv://admin:admin@cluster0.clm5vb8.mongodb.net/",
     "dev": "nodemon server.js",
     "ecc": "node cli/create.js",
     "eslint": "npx eslint .",
@@ -25,6 +25,7 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "fs": "0.0.1-security",
+    "mongoose": "^8.1.0",
     "morgan": "^1.10.0",
     "path": "^0.12.7",
     "swagger-jsdoc": "^6.2.8",

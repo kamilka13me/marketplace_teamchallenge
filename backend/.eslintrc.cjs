@@ -21,6 +21,7 @@ module.exports = {
   },
   plugins: ['import', 'prettier', 'jest'],
   rules: {
+    'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     'import/order': [
       'error',
       {
@@ -76,7 +77,6 @@ module.exports = {
       },
     ],
     'default-param-last': 'off',
-    // Правила React і JSX відсутні
   },
   settings: {
     'import/resolver': {
