@@ -1,14 +1,13 @@
-import { FC, Suspense } from 'react';
+import { FC } from 'react';
 
-import { AppRouter } from '@/app/providers/router';
+import { Button } from '@/shared/ui/Button';
 
 const App: FC = () => {
   return (
-    <div>
-      <Suspense fallback="Loading...">
-        <AppRouter />
-      </Suspense>
-    </div>
+    <>
+      <Button>Click</Button>
+      <h1 className="text-3xl font-bold underline text-violet-500">Hello world!</h1>
+    </>
   );
 };
 
