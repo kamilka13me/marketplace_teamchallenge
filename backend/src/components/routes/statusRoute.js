@@ -1,7 +1,8 @@
 // statusRoute.js
 
 import express from 'express';
-import StatusController from '../controllers/statusController.mjs';  
+
+import StatusController from '../controllers/statusController.js';
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ const router = express.Router();
 /**
  * @openapi
  * /status/ping:
- *   
+ *
  *   get:
  *     summary: Ping server
  *     description: return server status

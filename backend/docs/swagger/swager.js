@@ -1,11 +1,10 @@
 // swager.mjs
-
-
-import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
-import swaggerUi from 'swagger-ui-express';
-import swaggerJSDoc from 'swagger-jsdoc';
+import { fileURLToPath } from 'url';
 
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+/* eslint-disable no-underscore-dangle */
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const fullPath = resolve(__dirname, '../../src/components/routes/*.mjs');
@@ -19,14 +18,14 @@ const options = {
       description: 'Simple Marketplace Api',
       contact: {
         name: 'Yaroslav',
-        email: 'kamilka13me@gmal.com'
-      }
+        email: 'kamilka13me@gmal.com',
+      },
     },
     servers: [
       {
         url: 'http://localhost:3001/api/',
-        description: 'Main server Api'
-      }
+        description: 'Main server Api',
+      },
     ],
   },
   apis: [`${fullPath}`],
@@ -36,20 +35,17 @@ const options = {
 
 const specs = swaggerJSDoc(options);
 
-
 function swaggerDocs(app, port) {
   // Swagger page
-  app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs));
 
   // Docs in JSON format
-  app.get("/docs.json", (req, res) => {
-    res.setHeader("Content-Type", "application/json");
+  app.get('/docs.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
     res.send(specs);
   });
-
+  // eslint-disable-next-line no-console
   console.log(`Docs available at http://localhost:${port}/docs`);
-};
-
-
+}
 
 export default swaggerDocs;

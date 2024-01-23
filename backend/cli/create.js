@@ -26,7 +26,7 @@ const componentName = process.argv[2];
 
 // Перевірка, чи передано ім'я компонента
 if (!componentName) {
-  console.error('Помилка: Введіть ім\'я компонента.');
+  console.error("Помилка: Введіть ім'я компонента.");
   process.exit(1);
 }
 
