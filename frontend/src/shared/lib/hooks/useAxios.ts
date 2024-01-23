@@ -8,7 +8,7 @@ interface UseAxiosData<T> {
   loading: boolean;
 }
 
-export const useAxios = <T>(route: string): UseAxiosData<T> => {
+export const useAxios = <T>(path: string): UseAxiosData<T> => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<null | string>(null);
@@ -16,7 +16,7 @@ export const useAxios = <T>(route: string): UseAxiosData<T> => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get<T>(`http://localhost:3001/api/status/ping`)
+      .get<T>(`https://jsonplaceholder.typicode.com/${path}`)
       .then((res: AxiosResponse<T>) => {
         setData(res.data);
       })
