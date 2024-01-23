@@ -19,7 +19,9 @@ const MainPage: FC<Props> = () => {
   return (
     <div>
       {data.map((item) => (
-        <div key={item.id}>{item.id}</div>
+        <div key={item.id}>
+          {item.id} {item.name}
+        </div>
       ))}
       <BugButton />
     </div>
