@@ -16,7 +16,7 @@ export const useAxios = <T>(path: string): UseAxiosData<T> => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get<T>(`https://jsonplaceholder.typicode.com/${path}`)
+      .get<T>(`http://localhost:3001/api/status/ping${path}`)
       .then((res: AxiosResponse<T>) => {
         setData(res.data);
       })
@@ -26,7 +26,7 @@ export const useAxios = <T>(path: string): UseAxiosData<T> => {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [path]);
 
   return { data, error, loading };
 };

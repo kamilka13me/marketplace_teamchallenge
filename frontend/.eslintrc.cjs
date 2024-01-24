@@ -2,7 +2,8 @@ module.exports = {
     "env": {
         "node": true,
         "es6": true,
-        "browser": true
+        "browser": true,
+        "jest": true
     },
     "extends": [
         "airbnb",
@@ -37,7 +38,7 @@ module.exports = {
                 "**/*.test.tsx",
                 "**/*.spec.tsx"
             ]
-        }
+        },
     ],
     "rules": {
         "import/order": [
