@@ -26,7 +26,7 @@ export const useAxios = <T>(path: string): UseAxiosData<T> => {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [path]);
 
   return { data, error, loading };
 };
