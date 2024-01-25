@@ -7,7 +7,7 @@ import swaggerUi from 'swagger-ui-express';
 /* eslint-disable no-underscore-dangle */
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const fullPath = resolve(__dirname, '../../src/components/routes/*.mjs');
+const fullPath = resolve(__dirname, '../../src/components/routes/*.js');
 
 const options = {
   definition: {
@@ -25,6 +25,10 @@ const options = {
       {
         url: 'http://localhost:3001/api/',
         description: 'Main server Api',
+      },
+      {
+        url: 'http://alicesocial.pp.ua:3001/api/',
+        description: 'Yaroslav`s home server',
       },
     ],
   },

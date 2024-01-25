@@ -9,14 +9,20 @@ import express from 'express';
 import morgan from 'morgan';
 
 import swaggerDocs from './docs/swagger/swager.js';
-import statusRoute from './src/components/routes/statusRoute.js';
 import config from './src/config/config.js';
+
+import statusRoute from './src/components/routes/statusRoute.js';
+import userRoute from './src/components/routes/userRoutes.js';
 
 import connectDb from './src/config/connectDb.js';
 
 const app = express();
 
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+
+
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
@@ -61,6 +67,7 @@ app.use(morgan('combined', { stream: detailedLogStream }));
 
 // Server status
 app.use('/api/status', statusRoute);
+app.use('/api/users', userRoute);
 
 const server = app.listen(config.port, async () => {
   // eslint-disable-next-line no-console

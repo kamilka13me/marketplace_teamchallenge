@@ -50,7 +50,7 @@ const generateController = async (name) => {
   const ${name}Controller = {
 
     default: async (req, res) => {
-    res.send('${name} index');
+    res.status(200).json({ message: "default messege" });
   },
   
   
