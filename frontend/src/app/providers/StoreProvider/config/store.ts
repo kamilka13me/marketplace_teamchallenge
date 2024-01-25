@@ -1,9 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-export const store = configureStore({
-  reducer: {},
-});
+import { StateSchema } from '../config/StateSchema';
 
-export type RootState = ReturnType<typeof store.getState>;
+import { counterReducer } from '@/enteties/Counter/model/slice/CounterSlice';
 
-export type AppDispatch = typeof store.dispatch;
+export function createReduxStore(initialState?: StateSchema) {
+  return configureStore<StateSchema>({
+    reducer: {
+      counter: counterReducer,
+    },
+    preloadedState: initialState,
+  });
+}
+
+export type AppDispatch = ReturnType<typeof createReduxStore>['dispatch'];
