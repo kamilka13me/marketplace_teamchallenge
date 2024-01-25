@@ -11,7 +11,7 @@
     "lint:fix": "eslint --fix --ext \".ts,.tsx\" \"**/*.{ts,tsx,*.ts,*tsx}\"",
     "storybook": "storybook dev -p 6006",
     "prepare": "cd .. && husky install frontend/.husky",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
     "test": "jest --config ./config/jest/jest.config.ts"
   },
   "dependencies": {
