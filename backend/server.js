@@ -10,21 +10,20 @@ import morgan from 'morgan';
 import rawBody from 'raw-body';
 
 import swaggerDocs from './docs/swagger/swager.js';
-import config from './src/config/config.js';
-
 import statusRoute from './src/components/routes/statusRoute.js';
 import userRoute from './src/components/routes/userRoutes.js';
-
+import config from './src/config/config.js';
 import connectDb from './src/config/connectDb.js';
-import jsonErrorHandler from './src/middlewares/jsonErrorHandler.js';
 import errorLogger from './src/middlewares/errorLogger.js';
+import jsonErrorHandler from './src/middlewares/jsonErrorHandler.js';
 
 const app = express();
+
 app.use(express.json());
 
 app.use(errorLogger);
 
-// JSON validator 
+// JSON validator
 app.use(jsonErrorHandler);
 
 app.use(express.urlencoded({ extended: true }));
@@ -43,6 +42,7 @@ connectDb();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const logsDirectory = path.join(__dirname, 'logs');
+
 /* eslint-enable no-underscore-dangle */
 // Create logs directory if it doesn't exist
 if (!fs.existsSync(logsDirectory)) {
@@ -55,6 +55,7 @@ const detailedLogStream = fs.createWriteStream(
   path.join(logsDirectory, 'httpDetailedLog.log'),
   { flags: 'a' },
 );
+
 // Logging to logs.txt
 app.use(
   morgan(':date status: :status to: :method :url from: :referrer', {

@@ -21,6 +21,7 @@ module.exports = {
   },
   plugins: ['import', 'prettier', 'jest'],
   rules: {
+     "no-underscore-dangle": ["error", { "allow": ["_id"] }],
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     'import/order': [
       'error',

@@ -1,6 +1,8 @@
 import express from 'express';
-import userController from '../controllers/userController.js';
+
 import { validateUser } from '../../middlewares/userValidation.js';
+import userController from '../controllers/userController.js';
+
 const router = express.Router();
 /**
  * @swagger
@@ -50,7 +52,7 @@ const router = express.Router();
  *         description: User allready exist
  *         content:
  *           application/json:
- *             example: 
+ *             example:
  *                  message: "user with this email allready exist"
  */
 router.post('/', validateUser, userController.createUser);
@@ -76,12 +78,18 @@ router.post('/', validateUser, userController.createUser);
  *           application/json:
  *             example:
  *               user: { _id: "some_id",  surname: "some_username", username: "some_username", email: "user@example.com" }
- *       404:
+ *       400:
  *         description: User not found
  *         content:
  *           application/json:
  *             example:
  *                message: 'Invalid user ID'
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             example:
+ *                message: 'User not found'
  *       500:
  *         description: Server error
  *         content:
@@ -113,7 +121,6 @@ router.get('/:id', userController.getUser);
  *               message: "Server error"
  */
 router.get('/', userController.getAllUsers);
-
 
 /**
  * @openapi
@@ -151,6 +158,5 @@ router.get('/', userController.getAllUsers);
  */
 
 router.delete('/:id', userController.deleteUser);
-
 
 export default router;

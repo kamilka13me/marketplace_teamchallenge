@@ -14,6 +14,7 @@ const validateUser = (req, res, next) => {
           'Username can only contain alphanumeric characters, apostrophes, and spaces.',
         );
       }
+
       return true;
     })
     .customSanitizer((value) => value.trim())(req, res, () => {}); // Прибрати пробіли на початку та кінці
@@ -26,6 +27,7 @@ const validateUser = (req, res, next) => {
           'Surname can only contain alphanumeric characters, apostrophes, and spaces.',
         );
       }
+
       return true;
     })
     .customSanitizer((value) => value.trim())(req, res, () => {}); // Прибрати пробіли на початку та кінці
@@ -48,6 +50,7 @@ const validateUser = (req, res, next) => {
   );
 
   const errors = validationResult(req);
+
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
