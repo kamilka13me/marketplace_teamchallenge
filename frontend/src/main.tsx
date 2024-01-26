@@ -7,6 +7,8 @@ import App from './app/App';
 import ErrorBoundary from '@/app/providers/ErrorBoundary/ui/ErrorBoundary';
 import { StoreProvider } from '@/app/providers/StoreProvider';
 
+import '@/shared/config/i18n/i18n';
+
 const container = document.getElementById('root');
 
 if (!container) {
