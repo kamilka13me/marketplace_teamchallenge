@@ -3,6 +3,9 @@ import mongoose from 'mongoose';
 import User from '../../models/user.js';
 
 const userController = {
+
+  //create user 
+
   createUser: async (req, res) => {
     try {
       const { username, surname, email, password } = req.body;
@@ -16,8 +19,6 @@ const userController = {
       if (surname) userData.surname = surname;
       if (email) userData.email = email;
       if (password) userData.password = password;
-
-      console.log(userData);
 
       const newUser = new User(userData);
       const savedUser = await newUser.save();
@@ -33,21 +34,23 @@ const userController = {
 
       res.status(201).json({ message: 'created', user: userCallback });
     } catch (error) {
-      if (error.code == 11000) {
+      if (error.code === 11000) {
         res.status(409).json({ message: 'user with this email allready exist' });
       } else {
+        // eslint-disable-next-line no-console
+        console.log(error);
         res.status(400).json({ message: error.message });
       }
     }
   },
 
   // get user
+
   getUser: async (req, res) => {
     try {
       const userId = req.params.id;
 
       if (!mongoose.Types.ObjectId.isValid(userId)) {
-        console.log(userId);
         return res.status(400).json({ message: 'Invalid user ID' });
       }
 
@@ -66,36 +69,44 @@ const userController = {
         email: user.email,
       };
 
-      res.status(200).json({ message: 'created', user: userCallback });
+      res.status(200).json({ user: userCallback });
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(error);
       res.status(500).json({ message: 'Server error' });
     }
   },
 
+  // get all user
+
   getAllUsers: async (req, res) => {
     try {
       const users = await User.find({}).select('-password -__v');
-      res.json( {users:users});
+
+      res.json({ users });
     } catch (error) {
       res.status(500).send('Server error');
     }
   },
+
+  // delte user
+
   deleteUser: async (req, res) => {
     try {
-        const { id } = req.params;
-        const user = await User.findByIdAndDelete(id);
+      const { id } = req.params;
+      const user = await User.findByIdAndDelete(id);
 
-        if (!user) {
-            return res.status(404).send({ message: 'User not found' });
-        }
+      if (!user) {
+        return res.status(404).send({ message: 'User not found' });
+      }
 
-        res.status(200).send({ message: 'User deleted successfully' });
+      res.status(200).send({ message: 'User deleted successfully' });
     } catch (error) {
-        res.status(500).send({ message: 'Error deleting user' });
+      // eslint-disable-next-line no-console
+      console.error(error);
+      res.status(500).send({ message: 'Error deleting user' });
     }
-},
-
+  },
 };
 
 export default userController;
