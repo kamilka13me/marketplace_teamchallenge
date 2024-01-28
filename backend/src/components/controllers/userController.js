@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 
 import User from '../../models/user.js';
+import Role from '../../models/Role.js';
 
 const userController = {
-
-  //create user 
+  // create user
 
   createUser: async (req, res) => {
     try {
@@ -13,12 +13,18 @@ const userController = {
       if (!email || !password) {
         return res.status(400).json({ error: 'All fields are required' });
       }
-      const userData = {};
 
+      const role = await Role.findOne({ name: "user" });
+
+      const userData = {};
       if (username) userData.username = username;
       if (surname) userData.surname = surname;
       if (email) userData.email = email;
       if (password) userData.password = password;
+
+      userData.role = role._id;
+
+      
 
       const newUser = new User(userData);
       const savedUser = await newUser.save();

@@ -2,6 +2,7 @@ import express from 'express';
 
 import { validateUser } from '../../middlewares/userValidation.js';
 import userController from '../controllers/userController.js';
+import checkPermission from '../../middlewares/checkPermission.js';
 
 const router = express.Router();
 /**
@@ -78,18 +79,12 @@ router.post('/', validateUser, userController.createUser);
  *           application/json:
  *             example:
  *               user: { _id: "some_id",  surname: "some_username", username: "some_username", email: "user@example.com" }
- *       400:
- *         description: User not found
- *         content:
- *           application/json:
- *             example:
- *                message: 'Invalid user ID'
  *       404:
  *         description: User not found
  *         content:
  *           application/json:
  *             example:
- *                message: 'User not found'
+ *                message: 'Invalid user ID'
  *       500:
  *         description: Server error
  *         content:
@@ -120,7 +115,7 @@ router.get('/:id', userController.getUser);
  *             example:
  *               message: "Server error"
  */
-router.get('/', userController.getAllUsers);
+router.get('/', checkPermission("write"), userController.getAllUsers);
 
 /**
  * @openapi
