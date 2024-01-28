@@ -8,29 +8,31 @@ const authController = {
       const { email, password } = req.body;
       const user = await User.findOne({ email });
 
-      // if (!user || !(await bcrypt.compare(password, user.password))) {
-      //   return res.status(401).json({ message: 'Invalid credentials' });
-      // }
-      if (!user || user.password !== password) {
-        return res.status(401).json({ message: 'Invalid credentials' }).populate('role');
+      if (!user || !(await bcrypt.compare(password, user.password))) {
+        return res.status(401).json({ message: 'Invalid credentials' });
       }
       const userCallback = {
         _id: user._id,
         username: user.username,
         surname: user.username,
         email: user.email,
-        role:user.role.name,
-        
+        role: user.role.name,
       };
 
       const token = generateToken(user._id);
       res.cookie('token', token, { httpOnly: false, secure: true });
       res.setHeader('Authorization', `Bearer ${token}`);
-      return res.status(403).json({ message: 'Auth success.', user:userCallback });
+      return res.status(200).json({ message: 'Auth success.', user: userCallback });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: 'Internal server error' });
     }
+  },
+
+  logout: async (req, res) => {
+    res.cookie('token', '', { expires: new Date(0) });
+
+    res.status(200).send('Logged out successfully.');
   },
 };
 

@@ -29,10 +29,14 @@ const RoleController = {
   updateRole: async (req, res) => {
     try {
       const { roleId } = req.params;
-      const { name, permissions } = req.body;
+      const { permissionsToAdd } = req.body;
+
+      // Використання $addToSet для додавання кількох унікальних дозволів
       const updatedRole = await Role.findByIdAndUpdate(
         roleId,
-        { name, permissions },
+        {
+          $addToSet: { permissions: { $each: permissionsToAdd } },
+        },
         { new: true },
       );
 
@@ -44,7 +48,8 @@ const RoleController = {
       res.status(500).json({ message: error.message });
     }
   },
-   assignRole : async (req, res) => {
+
+  assignRole: async (req, res) => {
     try {
       const { userId, roleId } = req.body;
       // Checking if the role exists
@@ -63,9 +68,9 @@ const RoleController = {
       }
       res.send(user);
     } catch (error) {
-        res.status(500).send(error.message);
+      res.status(500).send(error.message);
     }
-}
+  },
 };
 
 

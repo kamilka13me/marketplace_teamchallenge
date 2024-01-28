@@ -1,7 +1,15 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
 import config from '../config/config.js';
+import Role from '../models/Role.js';
 
+/**
+ * Middleware to check if the user has permission to perform a specific action.
+ * It checks the user's role and the associated permissions.
+ *
+ * @param {string} action - The action to which the permission is required.
+ * @example router.get('/', checkPermission("action"), action);
+ */
 const checkPermission = (action) => {
   return async (req, res, next) => {
     try {
@@ -12,58 +20,41 @@ const checkPermission = (action) => {
         token = tokenHeaders;
       } else if (tokenCoockies) {
         token = tokenCoockies;
+      }
+
+      let hasPermission;
+
+      if (tokenHeaders || tokenCoockies) {
+        const decoded = jwt.verify(token, config.secretKey);
+
+        const user = await User.findById(decoded.id).populate('role');
+
+        if (!user) {
+          return res.status(401).json({ message: 'Access denied. User not found.' });
+        }
+        req.user = user; // Optionally set user data to request object
+        hasPermission = user.role.permissions.includes(action);
       } else {
-        return res.status(401).json({ message: 'Access denied. No token provided.' });
+        const role = await Role.findOne({ name: 'notLoginUser' });
+        hasPermission = role.permissions.includes(action);
       }
 
-      const decoded = jwt.verify(token, config.secretKey);
-
-      const user = await User.findById(decoded.id).populate('role');
-      console.log(user.role.name);
-
-      if (!user) {
-        return res.status(401).json({ message: 'Access denied. User not found.' });
-      }
-
-      const hasPermission = user.role.permissions.includes(action);
       if (!hasPermission) {
         return res.status(403).json({
           message: 'Access denied. You do not have permission to perform this action.',
         });
       }
 
-      req.user = user; // Optionally set user data to request object
       next();
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: error.message });
+      if (error instanceof jwt.TokenExpiredError) {
+        res.status(401).send('Token expired');
+      } else {
+        console.error(error);
+        return res.status(500).send('Internal Server Error');
+      }
     }
   };
 };
 
 export default checkPermission;
-
-// const checkPermission = (action) => {
-//   return async (req, res, next) => {
-//     try {
-//       // Переконуємося, що об'єкт user існує в req
-//       if (!req.user) {
-//         return res.status(401).json({ message: 'Unauthorized' });
-//       }
-
-//       const userId = req.user._id;
-
-//       // Знайти користувача та його роль в базі даних
-//       const user = await User.findById(userId).populate('role');
-
-//       // Перевірити чи роль містить дану дію
-//       if (user && user.role && user.role.permissions.includes(action)) {
-//         next();
-//       } else {
-//         res.status(403).json({ message: 'Forbidden: Insufficient permissions' });
-//       }
-//     } catch (error) {
-//       res.status(500).json({ message: 'Internal Server Error' });
-//     }
-//   };
-// };

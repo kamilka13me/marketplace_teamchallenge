@@ -5,14 +5,6 @@ import express from 'express';
 import StatusController from '../controllers/statusController.js';
 
 const router = express.Router();
-
-/**
- * @swagger
- * tags:
- *   - name: Status
- *     description: Operations related to server status
- */
-
 /**
  * @openapi
  * /status/ping:

@@ -1,16 +1,15 @@
+import express from 'express';
+import authController from '../controllers/authController.js';
+import checkPermission from '../../middlewares/checkPermission.js';
 
-  import express from 'express';
-  import authController from '../controllers/authController.js';
+const router = express.Router();
 
-  const router = express.Router();
-
-
-  /**
+/**
  * @openapi
  * /auth/:
  *   post:
  *     summary: Login user
- *     description: Authenticate a user and return a JWT token.
+ *     description: "Authenticate a user and return a JWT token.\n\n premission: \"login\""
  *     tags:
  *       - Authentication
  *     requestBody:
@@ -64,6 +63,26 @@
  *                   example: Internal server error
  */
 
-  router.post('/', authController.login);
+router.post('/', checkPermission('login'), authController.login);
 
-  export default router;
+/**
+ * @openapi
+ * /auth/:
+ *   delete:
+ *     summary: Logout user
+ *     description: "Clears the authentication token cookie and logs the user out.\n\n premission: \"logout\""
+ *     tags: [Authentication]
+ *     responses:
+ *       200:
+ *         description: Successfully logged out.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: Logged out successfully.
+ *       500:
+ *         description: Internal server error.
+ */
+router.delete('/', checkPermission('logout'), authController.logout);
+
+export default router;

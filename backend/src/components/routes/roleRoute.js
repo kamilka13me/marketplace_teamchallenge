@@ -2,6 +2,8 @@ import express from 'express';
 
 import RoleController from '../controllers/roleController.js';
 
+import checkPermission from '../../middlewares/checkPermission.js';
+
 const router = express.Router();
 
 /**
@@ -9,6 +11,7 @@ const router = express.Router();
  * /roles:
  *   post:
  *     summary: Create a new role
+ *     description: "Create a new role with optional parameters\n\n premission: \"createRole\""
  *     tags: [Roles]
  *     requestBody:
  *       required: true
@@ -24,7 +27,11 @@ const router = express.Router();
  *                 type: array
  *                 items:
  *                   type: string
- *                 example: ["read", "write", "delete"]
+ *                 example: [
+ *                              "createUser",
+ *                              "getUser",
+ *                              "getAllUsers",
+ *                          ]
  *             required:
  *               - name
  *               - permissions
@@ -37,13 +44,14 @@ const router = express.Router();
  *         description: Server error
  */
 
-router.post('/', RoleController.createRole);
+router.post('/', checkPermission('createRole'), RoleController.createRole);
 
 /**
  * @openapi
  * /roles:
  *   get:
  *     summary: Get all roles
+ *     description: "get all avalible roles\n\n premission: \"getRoles\""
  *     tags: [Roles]
  *     responses:
  *       200:
@@ -66,22 +74,31 @@ router.post('/', RoleController.createRole);
  *       500:
  *         description: Server error
  */
-router.get('/', RoleController.getRoles);
+router.get('/', checkPermission('getRoles'), RoleController.getRoles);
 
 /**
- * @openapi
+ * @swagger
  * /roles/{roleId}:
  *   put:
  *     summary: Update a role
- *     description: Updates an existing role with new information
  *     tags: [Roles]
+ *     description: add permissions to avalibale roles<br><br>
+ *           premission:"updateRole"<br><br>
+ *           Available permissions:[
+ *          <br>Users:["createUser","getUser","getAllUsers","deleteUser",]
+ *          <br>Roles:["updateRole","assignRole","createRole","getRoles",]
+ *          <br>Authentication:["login","logout"]
+ *          <br>]                    
+ *                              
+ *                              
+ *                                          
  *     parameters:
  *       - in: path
  *         name: roleId
  *         required: true
- *         description: Unique identifier of the role
  *         schema:
  *           type: string
+ *         description: The role ID
  *     requestBody:
  *       required: true
  *       content:
@@ -89,36 +106,32 @@ router.get('/', RoleController.getRoles);
  *           schema:
  *             type: object
  *             properties:
- *               name:
- *                 type: string
- *                 description: Name of the role
- *               permissions:
+ *               permissionsToAdd:
  *                 type: array
  *                 items:
  *                   type: string
- *                 description: List of permissions for the role
+ *                   enum: ["read", "write", "delete"]
+ *                 description: Array of permissions to add to the role
  *     responses:
- *       '200':
- *         description: Role successfully updated
+ *       200:
+ *         description: The role was successfully updated
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Role'
- *       '404':
+ *       404:
  *         description: Role not found
- *       '500':
+ *       500:
  *         description: Internal server error
  */
-
-router.put('/:roleId', RoleController.updateRole);
-
+router.put('/:roleId', checkPermission('updateRole'), RoleController.updateRole);
 
 /**
  * @openapi
-* /roles/assign:
+ * /roles/assign:
  *   post:
  *     summary: Assign a role to a user
- *     description: Assign a specific role to a user by their IDs.
+ *     description: "Assign a specific role to a user by their IDs.\n\n premission: \"assignRole\""
  *     tags: [Roles]
  *     requestBody:
  *       required: true
@@ -153,6 +166,6 @@ router.put('/:roleId', RoleController.updateRole);
  *       '500':
  *         description: Internal server error.
  */
-router.post('/:roleId', RoleController.assignRole);
+router.post('/:roleId', checkPermission('assignRole'), RoleController.assignRole);
 
 export default router;
