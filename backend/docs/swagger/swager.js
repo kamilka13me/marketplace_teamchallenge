@@ -31,6 +31,25 @@ const options = {
         description: 'Yaroslav`s home server',
       },
     ],
+    tags: [
+      {
+        name: 'Status',
+        description: 'Operations related to server status.',
+      },
+
+      {
+        name: 'User',
+        description: 'Operations related to User.',
+      },
+      {
+        name: 'Authentication',
+        description: 'Operations related to Authentication.',
+      },
+      {
+        name: 'Roles',
+        description: 'Operations related to user roles in the system.',
+      },
+    ],
   },
   apis: [`${fullPath}`],
 };

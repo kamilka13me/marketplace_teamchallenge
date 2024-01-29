@@ -1,5 +1,3 @@
-// server.mjs
-
 import fs from 'fs';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -7,15 +5,19 @@ import { fileURLToPath } from 'url';
 import cors from 'cors';
 import express from 'express';
 import morgan from 'morgan';
-import rawBody from 'raw-body';
+import cookieParser from 'cookie-parser';
+
 
 import swaggerDocs from './docs/swagger/swager.js';
-import statusRoute from './src/components/routes/statusRoute.js';
-import userRoute from './src/components/routes/userRoutes.js';
-import config from './src/config/config.js';
 import connectDb from './src/config/connectDb.js';
 import errorLogger from './src/middlewares/errorLogger.js';
 import jsonErrorHandler from './src/middlewares/jsonErrorHandler.js';
+import config from './src/config/config.js';
+
+import roleRoute from './src/components/routes/roleRoute.js';
+import statusRoute from './src/components/routes/statusRoute.js';
+import userRoute from './src/components/routes/userRoutes.js';
+import authRoute from './src/components/routes/authRoute.js';
 
 const app = express();
 
@@ -29,6 +31,7 @@ app.use(jsonErrorHandler);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 
 // mongo connect
 connectDb();
@@ -74,6 +77,8 @@ app.use(morgan('combined', { stream: detailedLogStream }));
 // Server status
 app.use('/api/status', statusRoute);
 app.use('/api/users', userRoute);
+app.use('/api/roles', roleRoute);
+app.use('/api/auth', authRoute);
 
 const server = app.listen(config.port, async () => {
   // eslint-disable-next-line no-console

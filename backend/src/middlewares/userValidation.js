@@ -1,4 +1,3 @@
-// validationMiddleware.js
 import { body, validationResult } from 'express-validator';
 import validator from 'validator';
 
@@ -17,7 +16,7 @@ const validateUser = (req, res, next) => {
 
       return true;
     })
-    .customSanitizer((value) => value.trim())(req, res, () => {}); // Прибрати пробіли на початку та кінці
+    .customSanitizer((value) => value.trim())(req, res, () => {}); // Remove spaces at the beginning and end
 
   body('surname')
     .optional()
@@ -30,7 +29,7 @@ const validateUser = (req, res, next) => {
 
       return true;
     })
-    .customSanitizer((value) => value.trim())(req, res, () => {}); // Прибрати пробіли на початку та кінці
+    .customSanitizer((value) => value.trim())(req, res, () => {}); // Remove spaces at the beginning and end
 
   body('email').optional().isEmail().withMessage('Invalid email address')(
     req,
@@ -55,7 +54,7 @@ const validateUser = (req, res, next) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  // Якщо валідація успішна, переходимо до наступної обробки
+  // If the validation is successful, we move on to the next processing
   next();
 };
 

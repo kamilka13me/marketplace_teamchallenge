@@ -15,7 +15,7 @@ const generateRoute = async (name) => {
 
   // check is exist
   if (await fileExists(routeFilePath)) {
-    console.error(`Помилка: Файл ${name}Routes.js вже існує.`);
+    console.error(`Помилка: Файл ${name}Route.js вже існує.`);
     return;
   }
 

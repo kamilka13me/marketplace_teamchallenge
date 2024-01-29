@@ -1,10 +1,12 @@
 import mongoose from 'mongoose';
 
 import User from '../../models/user.js';
+import Role from '../../models/Role.js';
+import hashPassword from '../../utils/hashPasswordUtils.js';
+import generateToken from '../../utils/tokenUtils.js';
 
 const userController = {
-
-  //create user 
+  // create user
 
   createUser: async (req, res) => {
     try {
@@ -13,12 +15,19 @@ const userController = {
       if (!email || !password) {
         return res.status(400).json({ error: 'All fields are required' });
       }
-      const userData = {};
 
+      const role = await Role.findOne({ name: 'user' });
+
+      const userData = {};
       if (username) userData.username = username;
       if (surname) userData.surname = surname;
       if (email) userData.email = email;
-      if (password) userData.password = password;
+      if (password) {
+        const hashedPassword = await hashPassword(password);
+        userData.password = hashedPassword;
+      }
+
+      userData.role = role._id;
 
       const newUser = new User(userData);
       const savedUser = await newUser.save();
@@ -32,14 +41,18 @@ const userController = {
         email: user.email,
       };
 
-      res.status(201).json({ message: 'created', user: userCallback });
+      const token = generateToken(user._id);
+      res.cookie('token', token, { httpOnly: false, secure: true });
+      res.setHeader('Authorization', `Bearer ${token}`);
+
+      res.status(201).json({ message: 'User created successfully', user: userCallback });
     } catch (error) {
       if (error.code === 11000) {
         res.status(409).json({ message: 'user with this email allready exist' });
       } else {
         // eslint-disable-next-line no-console
         console.log(error);
-        res.status(400).json({ message: error.message });
+        res.status(500).json({ message: error.message });
       }
     }
   },

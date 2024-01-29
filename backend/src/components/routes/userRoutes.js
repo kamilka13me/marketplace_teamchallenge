@@ -2,21 +2,15 @@ import express from 'express';
 
 import { validateUser } from '../../middlewares/userValidation.js';
 import userController from '../controllers/userController.js';
+import checkPermission from '../../middlewares/checkPermission.js';
 
 const router = express.Router();
-/**
- * @swagger
- * tags:
- *   - name: User
- *     description: Users
- */
-
 /**
  * @openapi
  * /users/:
  *   post:
  *     summary: Create new user
- *     description: Create a new user with optional parameters
+ *     description: "Create a new user with optional parameters\n\n premission: \"none\""
  *     tags: [User]
  *     requestBody:
  *       required: true
@@ -55,20 +49,21 @@ const router = express.Router();
  *             example:
  *                  message: "user with this email allready exist"
  */
-router.post('/', validateUser, userController.createUser);
+// checkPermission('createUser'),
+router.post('/',  validateUser, userController.createUser);
 
 /**
  * @openapi
  * /users/{id}:
  *   get:
- *     summary: Get user by ID
- *     description: Retrieve details of a user by their ID
+ *     summary: Get user by Id
+ *     description: "Retrieve details of a user by their Id. \n\n premission: \"getUser\""
  *     tags: [User]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: Unique ID of the user to retrieve
+ *         description: Unique Id of the user to retrieve
  *         schema:
  *           type: string
  *     responses:
@@ -78,18 +73,12 @@ router.post('/', validateUser, userController.createUser);
  *           application/json:
  *             example:
  *               user: { _id: "some_id",  surname: "some_username", username: "some_username", email: "user@example.com" }
- *       400:
- *         description: User not found
- *         content:
- *           application/json:
- *             example:
- *                message: 'Invalid user ID'
  *       404:
  *         description: User not found
  *         content:
  *           application/json:
  *             example:
- *                message: 'User not found'
+ *                message: 'Invalid user Id'
  *       500:
  *         description: Server error
  *         content:
@@ -97,14 +86,14 @@ router.post('/', validateUser, userController.createUser);
  *             example:
  *               message: "Server error"
  */
-router.get('/:id', userController.getUser);
+router.get('/:id', checkPermission('getUser'), userController.getUser);
 
 /**
  * @openapi
  * /users/:
  *   get:
  *     summary: Get all users
- *     description: Retrieve details of a user by their ID
+ *     description: "Retrieve details of a user by their Id.\n\n premission: \"getAllUsers\""
  *     tags: [User]
  *     responses:
  *       200:
@@ -120,20 +109,20 @@ router.get('/:id', userController.getUser);
  *             example:
  *               message: "Server error"
  */
-router.get('/', userController.getAllUsers);
+router.get('/', checkPermission("getAllUsers"), userController.getAllUsers);
 
 /**
  * @openapi
  * /users/{id}:
  *   delete:
  *     summary: Delete a user
- *     description: Deletes a user by ID.
+ *     description: "Deletes a user by Id.\n\n premission: \"deleteUser\""
  *     tags: [User]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: Unique ID of the user to delete.
+ *         description: Unique Id of the user to delete.
  *         schema:
  *           type: string
  *     responses:
@@ -157,6 +146,6 @@ router.get('/', userController.getAllUsers);
  *               message: "Error deleting user."
  */
 
-router.delete('/:id', userController.deleteUser);
+router.delete('/:id', checkPermission('deleteUser'), userController.deleteUser);
 
 export default router;
