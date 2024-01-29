@@ -9,7 +9,7 @@ const router = express.Router();
  * /auth/:
  *   post:
  *     summary: Login user
- *     description: "Authenticate a user and return a JWT token.\n\n premission: \"login\""
+ *     description: "Authenticate a user and return a JWT token.\n\n premission: \"none\""
  *     tags:
  *       - Authentication
  *     requestBody:
@@ -62,15 +62,15 @@ const router = express.Router();
  *                   type: string
  *                   example: Internal server error
  */
-
-router.post('/', checkPermission('login'), authController.login);
+// checkPermission('login'),
+router.post('/',  authController.login);
 
 /**
  * @openapi
  * /auth/:
  *   delete:
  *     summary: Logout user
- *     description: "Clears the authentication token cookie and logs the user out.\n\n premission: \"logout\""
+ *     description: "Clears the authentication token cookie and logs the user out.\n\n premission: \"none\""
  *     tags: [Authentication]
  *     responses:
  *       200:
@@ -83,6 +83,7 @@ router.post('/', checkPermission('login'), authController.login);
  *       500:
  *         description: Internal server error.
  */
-router.delete('/', checkPermission('logout'), authController.logout);
+// checkPermission('logout'),
+router.delete('/',  authController.logout);
 
 export default router;

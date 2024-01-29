@@ -45,7 +45,7 @@ const userController = {
       res.cookie('token', token, { httpOnly: false, secure: true });
       res.setHeader('Authorization', `Bearer ${token}`);
 
-      res.status(201).json({ message: 'created', user: userCallback });
+      res.status(201).json({ message: 'User created successfully', user: userCallback });
     } catch (error) {
       if (error.code === 11000) {
         res.status(409).json({ message: 'user with this email allready exist' });

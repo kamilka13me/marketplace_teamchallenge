@@ -16,6 +16,59 @@ const RoleController = {
       res.status(500).json({ message: error.message });
     }
   },
+
+  initRoles: async (req, res) => {
+    try {
+      const rolesToCreate = [
+        { name: 'notLoginUser', permissions: ['login', 'logout', 'createUser'] },
+        { name: 'user', permissions: ['login', 'logout', 'createUser'] },
+        {
+          name: 'admin',
+          permissions: [
+            'login',
+            'logout',
+            'createUser',
+            'getUser',
+            'getAllUsers',
+            'deleteUser',
+          ],
+        },
+        {
+          name: 'superadmin',
+          permissions: [
+            'login',
+            'logout',
+            'createUser',
+            'getUser',
+            'getAllUsers',
+            'deleteUser',
+            'createRole',
+            'getRoles',
+            'updateRole',
+            'assignRole',
+          ],
+        },
+      ];
+      const newRoles = await Role.insertMany(rolesToCreate);
+
+      const role = await Role.findOne({ name: 'superadmin' });
+
+      const userData = {
+        username: 'superadmin',
+        surname: 'supre',
+        email: 'superadmin@gmail.com',
+        password: '$2b$10$5WjjIsjruMWgZ9CfQhFMxuRKt2jMqDxXNglT18yqr1KpK4IWHLbDW',//superadmin
+        role: role._id,
+      };
+
+      const newUser = new User(userData);
+      const savedUser = await newUser.save();
+      res.status(201).json({roles:newRoles, savedUser});
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+
   getRoles: async (req, res) => {
     try {
       const roles = await Role.find();
@@ -31,7 +84,7 @@ const RoleController = {
       const { roleId } = req.params;
       const { permissionsToAdd } = req.body;
 
-      // Використання $addToSet для додавання кількох унікальних дозволів
+      // Using $addToSet to add multiple unique permissions
       const updatedRole = await Role.findByIdAndUpdate(
         roleId,
         {
@@ -72,6 +125,5 @@ const RoleController = {
     }
   },
 };
-
 
 export default RoleController;

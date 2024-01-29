@@ -125,6 +125,28 @@ router.get('/', checkPermission('getRoles'), RoleController.getRoles);
  *         description: Internal server error
  */
 router.put('/:roleId', checkPermission('updateRole'), RoleController.updateRole);
+/**
+ * @openapi
+ * /roles/init:
+ *   post:
+ *     summary: Init roles 
+ *     description: "Init default users roles and \n\ncreate superadmin : email: superadmin@gmail.com password: superadmin .\n\n premission: \"none\" "
+ *     tags: [Roles]
+ *     responses:
+ *       '201':
+ *         description: Role and superadmin successfully crated .
+ *         content:
+ *           application/json:
+ *             schema:
+ *                 type: object
+ *                 properties:
+ *                   user:
+ *                     type: string
+ *                     example: user
+ *       '500':
+ *         description: Internal server error.
+ */
+router.post('/init', RoleController.initRoles);
 
 /**
  * @openapi
@@ -167,5 +189,7 @@ router.put('/:roleId', checkPermission('updateRole'), RoleController.updateRole)
  *         description: Internal server error.
  */
 router.post('/:roleId', checkPermission('assignRole'), RoleController.assignRole);
+
+
 
 export default router;

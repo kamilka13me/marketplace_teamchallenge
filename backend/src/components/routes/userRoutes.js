@@ -10,7 +10,7 @@ const router = express.Router();
  * /users/:
  *   post:
  *     summary: Create new user
- *     description: "Create a new user with optional parameters\n\n premission: \"createUser\""
+ *     description: "Create a new user with optional parameters\n\n premission: \"none\""
  *     tags: [User]
  *     requestBody:
  *       required: true
@@ -49,7 +49,8 @@ const router = express.Router();
  *             example:
  *                  message: "user with this email allready exist"
  */
-router.post('/', checkPermission('createUser'), validateUser, userController.createUser);
+// checkPermission('createUser'),
+router.post('/',  validateUser, userController.createUser);
 
 /**
  * @openapi
