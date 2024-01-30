@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/user.js';
+
 import config from '../config/config.js';
 import Role from '../models/Role.js';
+import User from '../models/user.js';
 
 /**
  * Middleware to check if the user has permission to perform a specific action.
@@ -16,6 +17,7 @@ const checkPermission = (action) => {
       const tokenHeaders = req.headers.authorization?.split(' ')[1];
       const tokenCoockies = req.cookies.token;
       let token;
+
       if (tokenHeaders) {
         token = tokenHeaders;
       } else if (tokenCoockies) {
@@ -32,10 +34,11 @@ const checkPermission = (action) => {
         if (!user) {
           return res.status(401).json({ message: 'Access denied. User not found.' });
         }
-        req.user = user; // Optionally set user data to request object
+        // req.user = user; // Optionally set user data to request object
         hasPermission = user.role.permissions.includes(action);
       } else {
         const role = await Role.findOne({ name: 'notLoginUser' });
+
         hasPermission = role.permissions.includes(action);
       }
 
@@ -50,7 +53,9 @@ const checkPermission = (action) => {
       if (error instanceof jwt.TokenExpiredError) {
         res.status(401).send('Token expired');
       } else {
+        // eslint-disable-next-line no-console
         console.error(error);
+
         return res.status(500).send('Internal Server Error');
       }
     }

@@ -1,10 +1,11 @@
 import express from 'express';
 
+import checkPermission from '../../middlewares/checkPermission.js';
 import { validateUser } from '../../middlewares/userValidation.js';
 import userController from '../controllers/userController.js';
-import checkPermission from '../../middlewares/checkPermission.js';
 
 const router = express.Router();
+
 /**
  * @openapi
  * /users/:
@@ -35,7 +36,7 @@ const router = express.Router();
  *           application/json:
  *             example:
  *               message: "User created successfully"
- *               user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" }
+ *               user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user" }
  *       400:
  *         description: Bad Request
  *         content:
@@ -50,7 +51,7 @@ const router = express.Router();
  *                  message: "user with this email allready exist"
  */
 // checkPermission('createUser'),
-router.post('/',  validateUser, userController.createUser);
+router.post('/', validateUser, userController.createUser);
 
 /**
  * @openapi
@@ -109,7 +110,7 @@ router.get('/:id', checkPermission('getUser'), userController.getUser);
  *             example:
  *               message: "Server error"
  */
-router.get('/', checkPermission("getAllUsers"), userController.getAllUsers);
+router.get('/', checkPermission('getAllUsers'), userController.getAllUsers);
 
 /**
  * @openapi

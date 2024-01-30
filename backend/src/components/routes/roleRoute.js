@@ -1,8 +1,7 @@
 import express from 'express';
 
-import RoleController from '../controllers/roleController.js';
-
 import checkPermission from '../../middlewares/checkPermission.js';
+import RoleController from '../controllers/roleController.js';
 
 const router = express.Router();
 
@@ -88,10 +87,10 @@ router.get('/', checkPermission('getRoles'), RoleController.getRoles);
  *          <br>Users:["createUser","getUser","getAllUsers","deleteUser",]
  *          <br>Roles:["updateRole","assignRole","createRole","getRoles",]
  *          <br>Authentication:["login","logout"]
- *          <br>]                    
- *                              
- *                              
- *                                          
+ *          <br>]
+ *
+ *
+ *
  *     parameters:
  *       - in: path
  *         name: roleId
@@ -129,7 +128,7 @@ router.put('/:roleId', checkPermission('updateRole'), RoleController.updateRole)
  * @openapi
  * /roles/init:
  *   post:
- *     summary: Init roles 
+ *     summary: Init roles
  *     description: "Init default users roles and \n\ncreate superadmin : email: superadmin@gmail.com password: superadmin .\n\n premission: \"none\" "
  *     tags: [Roles]
  *     responses:
@@ -189,7 +188,5 @@ router.post('/init', RoleController.initRoles);
  *         description: Internal server error.
  */
 router.post('/:roleId', checkPermission('assignRole'), RoleController.assignRole);
-
-
 
 export default router;

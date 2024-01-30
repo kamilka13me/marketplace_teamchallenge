@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
-import User from '../../models/user.js';
 import Role from '../../models/Role.js';
+import User from '../../models/user.js';
 import hashPassword from '../../utils/hashPasswordUtils.js';
 import generateToken from '../../utils/tokenUtils.js';
 
@@ -19,11 +19,13 @@ const userController = {
       const role = await Role.findOne({ name: 'user' });
 
       const userData = {};
+
       if (username) userData.username = username;
       if (surname) userData.surname = surname;
       if (email) userData.email = email;
       if (password) {
         const hashedPassword = await hashPassword(password);
+
         userData.password = hashedPassword;
       }
 
@@ -39,9 +41,11 @@ const userController = {
         username: user.username,
         surname: user.username,
         email: user.email,
+        role: 'user',
       };
 
       const token = generateToken(user._id);
+
       res.cookie('token', token, { httpOnly: false, secure: true });
       res.setHeader('Authorization', `Bearer ${token}`);
 
