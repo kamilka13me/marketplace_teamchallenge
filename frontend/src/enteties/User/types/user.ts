@@ -4,3 +4,9 @@ export interface User {
   surname: string;
   email: string;
 }
+
+export interface UserSchema {
+  authData?: User;
+
+  isLogged: boolean;
+}

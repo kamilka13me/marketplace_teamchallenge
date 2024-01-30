@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import Cookies from 'js-cookie';
 
-import { User } from '@/enteties/User';
+import { User, userActions } from '@/enteties/User';
 import { $api } from '@/shared/api/api';
 
 interface ApiResponse {
@@ -16,7 +17,7 @@ interface LoginByUsernameProps {
 export const getUserByCredentials = createAsyncThunk<ApiResponse, LoginByUsernameProps>(
   'login/getUserByCredentials',
   async (authData, thunkApi) => {
-    const { rejectWithValue } = thunkApi;
+    const { dispatch, rejectWithValue } = thunkApi;
 
     try {
       const response = await $api.post<ApiResponse>('/auth', authData);
@@ -24,6 +25,9 @@ export const getUserByCredentials = createAsyncThunk<ApiResponse, LoginByUsernam
       if (!response.data) {
         throw new Error();
       }
+
+      Cookies.set('user', JSON.stringify(response.data.user));
+      dispatch(userActions.setAuthData(response.data.user));
 
       return response.data;
     } catch (e) {

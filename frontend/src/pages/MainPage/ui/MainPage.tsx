@@ -2,8 +2,10 @@ import { FC } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { getUserByCredentials } from '@/features/userAuth';
+import { getUserAuthData, userActions } from '@/enteties/User';
+import { getUserByCredentials } from '@/features/userAuth/model/services/getUserByCredentials';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
+import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 
 interface Language {
@@ -23,8 +25,9 @@ interface Props {}
 
 const MainPage: FC<Props> = () => {
   const { t, i18n } = useTranslation();
-
   const dispatch = useAppDispatch();
+
+  const user = useAppSelector(getUserAuthData);
 
   const loginHandler = async () => {
     await dispatch(
@@ -50,8 +53,9 @@ const MainPage: FC<Props> = () => {
         ))}
       </div>
       <div>{t('Edit')}</div>
-
+      {user?.username}
       <Button onClick={loginHandler}>GET</Button>
+      <Button onClick={() => dispatch(userActions.logout())}>Log out</Button>
     </div>
   );
 };
