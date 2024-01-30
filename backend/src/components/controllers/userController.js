@@ -46,7 +46,8 @@ const userController = {
 
       const token = generateToken(user._id);
 
-      res.cookie('token', token, { httpOnly: false, secure: true });
+      res.cookie('token', token, { httpOnly: false, secure: false });
+      res.cookie('user', JSON.stringify(userCallback), {httpOnly: false,secure: false,});
       res.setHeader('Authorization', `Bearer ${token}`);
 
       res.status(201).json({ message: 'User created successfully', user: userCallback });
