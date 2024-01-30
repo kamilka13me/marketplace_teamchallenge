@@ -2,12 +2,12 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import { StateSchema } from '../config/StateSchema';
 
-import { counterReducer } from '@/enteties/Counter/model/slice/CounterSlice';
+import { loginReducer } from '@/features/userAuth';
 
 export function createReduxStore(initialState?: StateSchema) {
   return configureStore<StateSchema>({
     reducer: {
-      counter: counterReducer,
+      login: loginReducer,
     },
     preloadedState: initialState,
   });

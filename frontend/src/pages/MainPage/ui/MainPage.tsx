@@ -2,8 +2,8 @@ import { FC } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import BugButton from '@/app/providers/ErrorBoundary/ui/BugButton';
-import { Counter } from '@/enteties/Counter';
+import { getUserByCredentials } from '@/features/userAuth';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { Button } from '@/shared/ui/Button';
 
 interface Language {
@@ -24,6 +24,17 @@ interface Props {}
 const MainPage: FC<Props> = () => {
   const { t, i18n } = useTranslation();
 
+  const dispatch = useAppDispatch();
+
+  const loginHandler = async () => {
+    await dispatch(
+      getUserByCredentials({
+        email: 'user123@example.com',
+        password: '12345678',
+      }),
+    );
+  };
+
   return (
     <div>
       <div>
@@ -39,8 +50,8 @@ const MainPage: FC<Props> = () => {
         ))}
       </div>
       <div>{t('Edit')}</div>
-      <Counter />
-      <BugButton />
+
+      <Button onClick={loginHandler}>GET</Button>
     </div>
   );
 };
