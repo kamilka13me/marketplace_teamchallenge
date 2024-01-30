@@ -1,6 +1,7 @@
 import express from 'express';
-import authController from '../controllers/authController.js';
+
 import checkPermission from '../../middlewares/checkPermission.js';
+import authController from '../controllers/authController.js';
 
 const router = express.Router();
 
@@ -32,15 +33,32 @@ const router = express.Router();
  *                 description: User's password
  *     responses:
  *       '200':
- *         description: Successful login
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 token:
- *                   type: string
- *                   description: JWT token for authentication
+ *        description: Successful login
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: Auth success.
+ *                user:
+ *                  type: object
+ *                  properties:
+ *                    _id:
+ *                      type: string
+ *                    username:
+ *                      type: string
+ *                    surname:
+ *                      type: string
+ *                    email:
+ *                      type: string
+ *                    role:
+ *                      type: string
+ *              example:
+ *               message: "Auth success."
+ *               user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user" }
+ *
  *       '401':
  *         description: Invalid credentials
  *         content:
@@ -63,7 +81,7 @@ const router = express.Router();
  *                   example: Internal server error
  */
 // checkPermission('login'),
-router.post('/',  authController.login);
+router.post('/', authController.login);
 
 /**
  * @openapi
@@ -84,6 +102,6 @@ router.post('/',  authController.login);
  *         description: Internal server error.
  */
 // checkPermission('logout'),
-router.delete('/',  authController.logout);
+router.delete('/', authController.logout);
 
 export default router;

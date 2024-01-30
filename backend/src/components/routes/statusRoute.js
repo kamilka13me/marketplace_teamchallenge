@@ -5,6 +5,7 @@ import express from 'express';
 import StatusController from '../controllers/statusController.js';
 
 const router = express.Router();
+
 /**
  * @openapi
  * /status/ping:

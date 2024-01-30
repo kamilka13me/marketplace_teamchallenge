@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
 
-import User from '../../models/user.js';
-
 import Role from '../../models/Role.js';
+import User from '../../models/user.js';
 
 const RoleController = {
   createRole: async (req, res) => {
@@ -57,13 +56,14 @@ const RoleController = {
         username: 'superadmin',
         surname: 'supre',
         email: 'superadmin@gmail.com',
-        password: '$2b$10$5WjjIsjruMWgZ9CfQhFMxuRKt2jMqDxXNglT18yqr1KpK4IWHLbDW',//superadmin
+        password: '$2b$10$4/.OiJITfi7hHGvMyOPx5uyqy3.FAbSUBeWDf/MVasghtZQRnylnu', // superadmin
         role: role._id,
       };
 
       const newUser = new User(userData);
       const savedUser = await newUser.save();
-      res.status(201).json({roles:newRoles, savedUser});
+
+      res.status(201).json({ roles: newRoles, savedUser });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -107,6 +107,7 @@ const RoleController = {
       const { userId, roleId } = req.body;
       // Checking if the role exists
       const roleExists = await Role.findById(roleId);
+
       if (!roleExists) {
         return res.status(404).send('Role not found');
       }
@@ -116,6 +117,7 @@ const RoleController = {
         { role: roleId },
         { new: true },
       ).populate('role');
+
       if (!user) {
         return res.status(404).send('User not found');
       }
