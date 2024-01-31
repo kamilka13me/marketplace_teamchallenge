@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { getUserByCredentials } from '../services/getUserByCredentials';
 import { LoginSchema } from '../types/loginSchema';
-
-import { getUserByCredentials } from '@/features/userAuth/model/services/getUserByCredentials';
 
 const initialState: LoginSchema = {
   email: '',
