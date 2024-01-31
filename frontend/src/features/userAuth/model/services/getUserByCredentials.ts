@@ -5,6 +5,7 @@ import { User, userActions } from '@/enteties/User';
 import { $api } from '@/shared/api/api';
 
 interface ApiResponse {
+  token: string;
   message: string;
   user: User;
 }
@@ -21,11 +22,16 @@ export const getUserByCredentials = createAsyncThunk<ApiResponse, LoginByUsernam
 
     try {
       const response = await $api.post<ApiResponse>('/auth', authData);
+      const { token } = response.data;
 
       if (!response.data) {
         throw new Error();
       }
-
+      Cookies.set('authToken', token, {
+        expires: 7, // Expires in 7 days
+        secure: true, // Only send over HTTPS
+        httpOnly: true, // Prevent access from JavaScript
+      });
       Cookies.set('user', JSON.stringify(response.data.user));
       dispatch(userActions.setAuthData(response.data.user));
 

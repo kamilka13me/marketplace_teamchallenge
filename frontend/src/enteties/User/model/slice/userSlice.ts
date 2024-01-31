@@ -24,6 +24,7 @@ export const userSlice = createSlice({
     logout: (state) => {
       state.authData = undefined;
       Cookies.remove('user');
+      Cookies.remove('token');
     },
   },
 });

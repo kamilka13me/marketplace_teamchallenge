@@ -54,8 +54,11 @@ const MainPage: FC<Props> = () => {
       </div>
       <div>{t('Edit')}</div>
       {user?.username}
-      <Button onClick={loginHandler}>GET</Button>
-      <Button onClick={() => dispatch(userActions.logout())}>Log out</Button>
+      {!user ? (
+        <Button onClick={loginHandler}>GET</Button>
+      ) : (
+        <Button onClick={() => dispatch(userActions.logout())}>Log out</Button>
+      )}
     </div>
   );
 };
