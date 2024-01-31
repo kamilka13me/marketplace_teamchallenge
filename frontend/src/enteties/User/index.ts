@@ -1,6 +1,6 @@
-import { getUserAuthData } from '@/enteties/User/model/selectors/getUserAuthData';
-import { userActions, userReducer } from '@/enteties/User/model/slice/userSlice';
-import { User, UserSchema } from '@/enteties/User/types/user';
+import { getUserAuthData } from './model/selectors/getUserAuthData';
+import { userActions, userReducer } from './model/slice/userSlice';
+import { User, UserSchema } from './model/types/user';
 
 export type { User, UserSchema };
 
