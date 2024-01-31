@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 
@@ -19,9 +19,14 @@ const LoginForm: FC<Props> = () => {
     handleSubmit,
     formState: { errors, isValid },
     reset,
+    setFocus,
   } = useForm<InputsValues>({
     mode: 'onBlur',
   });
+
+  useEffect(() => {
+    setFocus('inputLogin');
+  }, [setFocus]);
 
   const onSubmit: SubmitHandler<InputsValues> = (data) => {
     console.log(data);
