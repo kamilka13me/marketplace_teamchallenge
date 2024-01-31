@@ -3,6 +3,7 @@ export interface User {
   username: string;
   surname: string;
   email: string;
+  role: string;
 }
 
 export interface UserSchema {

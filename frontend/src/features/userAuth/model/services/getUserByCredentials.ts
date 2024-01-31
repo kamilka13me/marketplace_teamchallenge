@@ -25,12 +25,11 @@ export const getUserByCredentials = createAsyncThunk<ApiResponse, LoginByUsernam
       const { token } = response.data;
 
       if (!response.data) {
-        throw new Error();
+        return rejectWithValue(':: error');
       }
-      Cookies.set('authToken', token, {
+      Cookies.set('token', token, {
         expires: 7, // Expires in 7 days
         secure: true, // Only send over HTTPS
-        httpOnly: true, // Prevent access from JavaScript
       });
       Cookies.set('user', JSON.stringify(response.data.user));
       dispatch(userActions.setAuthData(response.data.user));
