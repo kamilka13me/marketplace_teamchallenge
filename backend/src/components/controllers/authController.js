@@ -1,12 +1,14 @@
 import bcrypt from 'bcrypt';
 
+import BrowserInfo from '../../models/BrowserInfo.js';
 import User from '../../models/user.js';
 import generateToken from '../../utils/tokenUtils.js';
 
 const authController = {
   login: async (req, res) => {
     try {
-      const { email, password } = req.body;
+      const { email, password, info } = req.body;
+      const userIp = req.ip;
       const user = await User.findOne({ email }).populate('role');
 
       if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -21,6 +23,14 @@ const authController = {
       };
 
       const token = generateToken(user._id);
+
+      const newBrowserInfo = new BrowserInfo({
+        ...info,
+        userIp,
+        userId: user._id,
+      });
+
+      newBrowserInfo.save();
 
       // res.cookie('token', token, { httpOnly: false, secure: false });
       // res.cookie('user', JSON.stringify(userCallback), { httpOnly: false, secure: false });
