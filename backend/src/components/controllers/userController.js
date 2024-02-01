@@ -48,7 +48,6 @@ const userController = {
 
       // res.cookie('token', token, { httpOnly: false, secure: false });
       // res.cookie('user', JSON.stringify(userCallback), {httpOnly: false,secure: false,});
-      console.log("test for user controller");
       res.setHeader('Authorization', `Bearer ${token}`);
 
       res
