@@ -8,23 +8,23 @@ import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 
-interface Language {
-  nativeName: string;
-}
-
-interface Languages {
-  [key: string]: Language;
-}
-
-const lngs: Languages = {
-  en: { nativeName: 'English' },
-  de: { nativeName: 'Deutsch' },
-};
+// interface Language {
+//   nativeName: string;
+// }
+//
+// interface Languages {
+//   [key: string]: Language;
+// }
+//
+// const lngs: Languages = {
+//   en: { nativeName: 'English' },
+//   de: { nativeName: 'Deutsch' },
+// };
 
 interface Props {}
 
 const MainPage: FC<Props> = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
   const user = useAppSelector(getUserAuthData);
@@ -40,18 +40,6 @@ const MainPage: FC<Props> = () => {
 
   return (
     <div>
-      <div>
-        {Object.keys(lngs).map((lng) => (
-          <Button
-            key={lng}
-            style={{ fontWeight: i18n.resolvedLanguage === lng ? 'bold' : 'normal' }}
-            type="submit"
-            onClick={() => i18n.changeLanguage(lng)}
-          >
-            {lngs[lng].nativeName}
-          </Button>
-        ))}
-      </div>
       <div>{t('Edit')}</div>
       {user?.username}
       {!user ? (
@@ -64,3 +52,17 @@ const MainPage: FC<Props> = () => {
 };
 
 export default MainPage;
+
+// Lng Switcher
+// <div>
+//     {Object.keys(lngs).map((lng) => (
+//         <Button
+//             key={lng}
+//             style={{ fontWeight: i18n.resolvedLanguage === lng ? 'bold' : 'normal' }}
+//             type="submit"
+//             onClick={() => i18n.changeLanguage(lng)}
+//         >
+//             {lngs[lng].nativeName}
+//         </Button>
+//     ))}
+// </div>
