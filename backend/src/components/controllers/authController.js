@@ -22,11 +22,13 @@ const authController = {
 
       const token = generateToken(user._id);
 
-      res.cookie('token', token, { httpOnly: false, secure: false });
-      res.cookie('user', JSON.stringify(userCallback), { httpOnly: false, secure: false });
+      // res.cookie('token', token, { httpOnly: false, secure: false });
+      // res.cookie('user', JSON.stringify(userCallback), { httpOnly: false, secure: false });
       res.setHeader('Authorization', `Bearer ${token}`);
 
-      return res.status(200).json({ message: 'Auth success.', user: userCallback });
+      return res
+        .status(200)
+        .json({ message: 'Auth success.', user: userCallback, token });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
