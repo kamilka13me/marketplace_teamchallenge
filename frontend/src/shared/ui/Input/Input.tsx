@@ -34,10 +34,10 @@ type InputTypes =
 interface Props extends HTMLInputProps {
   name: string;
   onBlur?: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  placeholder: string;
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
   type: InputTypes;
-  value: string;
+  value?: string;
   readonly?: boolean;
   label?: string;
   error?: string;
