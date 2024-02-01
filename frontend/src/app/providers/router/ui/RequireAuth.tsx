@@ -1,10 +1,11 @@
-import { FC, ReactNode, useEffect } from 'react';
+import { FC, ReactNode } from 'react';
 
-import Cookies from 'js-cookie';
 import { Navigate, useLocation } from 'react-router-dom';
 
+import { getUserAuthData } from '@/enteties/User';
 import { UserRoles } from '@/enteties/User/model/types/userRoles';
 import { getRouteMain } from '@/shared/const/routes';
+import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 
 interface Props {
   children: ReactNode;
@@ -14,15 +15,8 @@ interface Props {
 const RequireAuth: FC<Props> = (props) => {
   const { roles, children } = props;
 
-  const auth = Cookies.get('user');
+  const auth = useAppSelector(getUserAuthData);
   const location = useLocation();
-
-  // @ts-ignore
-  const { role } = JSON.parse(auth);
-
-  useEffect(() => {
-    console.log(auth);
-  }, [auth]);
 
   const userHaveRole = (role: UserRoles) => {
     if (!roles) {
@@ -36,7 +30,7 @@ const RequireAuth: FC<Props> = (props) => {
     return <Navigate to={getRouteMain()} state={{ from: location }} replace />;
   }
 
-  if (!userHaveRole(role as UserRoles)) {
+  if (!userHaveRole(auth.role as UserRoles)) {
     return <Navigate to={getRouteMain()} state={{ from: location }} replace />;
   }
 

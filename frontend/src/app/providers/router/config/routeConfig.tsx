@@ -2,6 +2,7 @@ import { RouteProps } from 'react-router-dom';
 
 import { UserRoles } from '@/enteties/User/model/types/userRoles';
 import { MainPage } from '@/pages/MainPage';
+import { NotFoundPage } from '@/pages/NotFoundPage';
 import {
   AppRoutes,
   getRouteMain,
@@ -10,6 +11,7 @@ import {
 } from '@/shared/const/routes';
 
 export type AppRoutesProps = RouteProps & {
+  path: string;
   authOnly?: boolean;
   roles?: UserRoles[];
 };
@@ -22,6 +24,7 @@ export const RouteConfig: Record<AppRoutes, AppRoutesProps> = {
     path: getRouteProfile(),
     authOnly: true,
     element: <div>Profile</div>,
+    roles: [UserRoles.USER],
   },
   [AppRoutes.TEST_ROLES]: {
     path: getRouteProtected(),
@@ -31,6 +34,6 @@ export const RouteConfig: Record<AppRoutes, AppRoutesProps> = {
   },
   [AppRoutes.NOT_FOUND]: {
     path: '*',
-    element: <div>Not Found</div>,
+    element: <NotFoundPage />,
   },
 };
