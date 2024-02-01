@@ -1,86 +1,34 @@
-import fs from 'fs/promises';
-import path from 'path';
+// cli/create.js
 
-const generateFile = async (filePath, content) => {
-  await fs.writeFile(filePath, content, 'utf-8');
-  console.log(`file created: ${filePath}`);
-};
+const fs = require('fs');
+const path = require('path');
 
-const generateRoute = async (name) => {
-  const routeFilePath = path.join(
-    new URL(import.meta.url).pathname.slice(1),
-    '../../src/components/routes',
-    `${name}Routes.js`,
-  );
+function createComponent(componentName) {
+  // Логіка для створення нового компонента
+  const componentPath = path.join(__dirname, '..', 'src', 'components', componentName);
+  console.log(componentPath);
 
-  // check is exist
-  if (await fileExists(routeFilePath)) {
-    console.error(`Помилка: Файл ${name}Route.js вже існує.`);
+  // Перевірка, чи компонент не існує
+  if (fs.existsSync(componentPath)) {
+    console.error(`Помилка: Компонент "${componentName}" вже існує.`);
     return;
   }
 
-  const routeContent = `
-  import express from 'express';
-  import ${name}Controller from '../controllers/${name}Controller.js';
+  // Створення папки для компонента
+  fs.mkdirSync(componentPath);
 
-  const router = express.Router();
-
-  router.get('/', ${name}Controller.default);
-
-  export default router;
-`;
-
-  await generateFile(routeFilePath, routeContent);
-};
-
-const generateController = async (name) => {
-  const controllerFilePath = path.join(
-    new URL(import.meta.url).pathname.slice(1),
-    '../../src/components/controllers',
-    `${name}Controller.js`,
-  );
-
-  // check is exist
-  if (await fileExists(controllerFilePath)) {
-    console.error(`Помилка: Файл ${name}Controller.js вже існує.`);
-    return;
-  }
-
-  const controllerContent = `
-  const ${name}Controller = {
-
-    default: async (req, res) => {
-    res.status(200).json({ message: "default messege" });
-  },
-  
-  
-  };
-
-  export default ${name}Controller;
-`;
-
-  await generateFile(controllerFilePath, controllerContent);
-};
-
-// check is exist file
-const fileExists = async (filePath) => {
-  try {
-    await fs.access(filePath);
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
-
-// get args
-const args = process.argv.slice(2);
-
-// check args.name
-if (args.length !== 1) {
-  console.error('error need arg "name".');
-} else {
-  const name = args[0];
-
-  generateRoute(name);
-  generateController(name);
+  // Сюди можна додати створення файлів або будь-які інші дії, які вам потрібні
+  console.log(`Компонент "${componentName}" успішно створено.`);
 }
+
+// Отримання ім'я компонента з командного рядка
+const componentName = process.argv[2];
+
+// Перевірка, чи передано ім'я компонента
+if (!componentName) {
+  console.error('Помилка: Введіть ім\'я компонента.');
+  process.exit(1);
+}
+
+// Виклик функції для створення компонента
+createComponent(componentName);
