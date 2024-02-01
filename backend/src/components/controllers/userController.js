@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+import BrowserInfo from '../../models/BrowserInfo.js';
 import Role from '../../models/Role.js';
 import User from '../../models/user.js';
 import hashPassword from '../../utils/hashPasswordUtils.js';
@@ -10,7 +11,7 @@ const userController = {
 
   createUser: async (req, res) => {
     try {
-      const { username, surname, email, password } = req.body;
+      const { username, surname, email, password, info } = req.body;
 
       if (!email || !password) {
         return res.status(400).json({ error: 'All fields are required' });
@@ -46,6 +47,12 @@ const userController = {
 
       const token = generateToken(user._id);
 
+      const newBrowserInfo = new BrowserInfo({
+        ...info,
+        userId: user._id,
+      });
+
+      newBrowserInfo.save();
       // res.cookie('token', token, { httpOnly: false, secure: false });
       // res.cookie('user', JSON.stringify(userCallback), {httpOnly: false,secure: false,});
       res.setHeader('Authorization', `Bearer ${token}`);
