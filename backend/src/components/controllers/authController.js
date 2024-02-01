@@ -26,7 +26,9 @@ const authController = {
       // res.cookie('user', JSON.stringify(userCallback), { httpOnly: false, secure: false });
       res.setHeader('Authorization', `Bearer ${token}`);
 
-      return res.status(200).json({ message: 'Auth success.', user: userCallback , token });
+      return res
+        .status(200)
+        .json({ message: 'Auth success.', user: userCallback, token });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
