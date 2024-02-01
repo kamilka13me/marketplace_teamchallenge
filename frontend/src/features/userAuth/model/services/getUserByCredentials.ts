@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import Bowser from 'bowser';
 import Cookies from 'js-cookie';
 
 import { User, userActions } from '@/enteties/User';
@@ -33,7 +34,12 @@ export const getUserByCredentials = createAsyncThunk<ApiResponse, LoginByUsernam
     const { dispatch, rejectWithValue } = thunkApi;
 
     try {
-      const response = await $api.post<ApiResponse>('/auth', authData);
+      const browser = Bowser.getParser(navigator.userAgent);
+      const info = browser.getResult();
+
+      const response = await $api.post<ApiResponse>('/auth', { ...authData, info });
+
+      console.log({ ...authData, browser });
 
       const { token } = response.data;
 
