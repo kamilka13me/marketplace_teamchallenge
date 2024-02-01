@@ -4,13 +4,16 @@ import { Link } from 'react-router-dom';
 
 import { AppRouter } from '@/app/providers/router';
 import { RouteConfig } from '@/app/providers/router/config/routeConfig';
-import { getIsInitedAuthData, userActions } from '@/enteties/User';
+import { getIsInitedAuthData, getUserAuthData, userActions } from '@/enteties/User';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
+import { VStack } from '@/shared/ui/Stack';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
   const inited = useAppSelector(getIsInitedAuthData);
+
+  const user = useAppSelector(getUserAuthData);
 
   useEffect(() => {
     dispatch(userActions.initAuthData());
@@ -19,15 +22,10 @@ const App: FC = () => {
   return (
     <div>
       <Suspense fallback="Loading...">
-        <div>
-          {Object.values(RouteConfig).map((item) => {
-            return (
-              <Link key={item.path} to={item.path}>
-                {item.path}
-              </Link>
-            );
-          })}
-        </div>
+        <VStack gap="6">
+          <Link to={RouteConfig.main.path}>Main</Link>
+          {user && <Link to={RouteConfig.profile.path}>Profile</Link>}
+        </VStack>
         {inited && <AppRouter />}
       </Suspense>
     </div>
