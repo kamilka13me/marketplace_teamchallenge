@@ -2,13 +2,20 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 
 import { User, UserSchema } from '@/enteties/User';
+import {
+  COOKIE_KEY_EXPIRATION_DATE_OF_USER,
+  COOKIE_KEY_TOKEN,
+  COOKIE_KEY_USER,
+} from '@/shared/const/cookies';
 
-const initialState: UserSchema = {};
+const initialState: UserSchema = {
+  inited: false,
+};
 
 const removeCookies = () => {
-  Cookies.remove(`${import.meta.env.VITE_USER}`);
-  Cookies.remove(`${import.meta.env.VITE_TOKEN}`);
-  Cookies.remove(`${import.meta.env.VITE_EXPIRATION_DATE_OF_USER}`);
+  Cookies.remove(COOKIE_KEY_USER);
+  Cookies.remove(COOKIE_KEY_TOKEN);
+  Cookies.remove(COOKIE_KEY_EXPIRATION_DATE_OF_USER);
 };
 
 export const userSlice = createSlice({
@@ -19,27 +26,25 @@ export const userSlice = createSlice({
       state.authData = action.payload;
     },
     initAuthData: (state) => {
-      const user = Cookies.get(`${import.meta.env.VITE_USER}`);
-      const token = Cookies.get(`${import.meta.env.VITE_TOKEN}`);
-      const inspDate = Cookies.get(`${import.meta.env.VITE_EXPIRATION_DATE_OF_USER}`);
+      const user = Cookies.get(COOKIE_KEY_USER);
+      // const token = Cookies.get(COOKIE_KEY_TOKEN);
+      const inspDate = Cookies.get(COOKIE_KEY_EXPIRATION_DATE_OF_USER);
 
-      if (inspDate) {
-        const storedExpirationDate = new Date(inspDate);
-        const timeDifference = storedExpirationDate.getTime() - new Date().getTime();
-        const hoursDifference = timeDifference / (1000 * 60 * 60);
+      if (user) {
+        state.authData = JSON.parse(user);
+        if (inspDate) {
+          const storedExpirationDate = new Date(inspDate);
+          const timeDifference = storedExpirationDate.getTime() - new Date().getTime();
+          const hoursDifference = timeDifference / (1000 * 60 * 60);
 
-        if (!user || !token || hoursDifference < 5) {
-          state.authData = undefined;
-          removeCookies();
+          if (hoursDifference < 5) {
+            state.authData = undefined;
+            removeCookies();
+          }
         }
-
-        if (user) {
-          state.authData = JSON.parse(user);
-        }
-      } else {
-        state.authData = undefined;
-        removeCookies();
       }
+
+      state.inited = true;
     },
     logout: (state) => {
       state.authData = undefined;

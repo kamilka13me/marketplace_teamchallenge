@@ -3,6 +3,11 @@ import Cookies from 'js-cookie';
 
 import { User, userActions } from '@/enteties/User';
 import { $api } from '@/shared/api/api';
+import {
+  COOKIE_KEY_EXPIRATION_DATE_OF_USER,
+  COOKIE_KEY_TOKEN,
+  COOKIE_KEY_USER,
+} from '@/shared/const/cookies';
 
 const EXPIRES_TIME = 7;
 
@@ -42,14 +47,10 @@ export const getUserByCredentials = createAsyncThunk<ApiResponse, LoginByUsernam
       }
 
       // Set cookies for user, token, expiration date when user removes from cookies
-      Cookies.set(`${import.meta.env.VITE_TOKEN}`, token, cookiesAttr);
+      Cookies.set(COOKIE_KEY_TOKEN, token, cookiesAttr);
+      Cookies.set(COOKIE_KEY_USER, JSON.stringify(response.data.user), cookiesAttr);
       Cookies.set(
-        `${import.meta.env.VITE_USER}`,
-        JSON.stringify(response.data.user),
-        cookiesAttr,
-      );
-      Cookies.set(
-        `${import.meta.env.VITE_EXPIRATION_DATE_OF_USER}`,
+        COOKIE_KEY_EXPIRATION_DATE_OF_USER,
         futureDate.toISOString(),
         cookiesAttr,
       );

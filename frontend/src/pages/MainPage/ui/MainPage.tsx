@@ -24,7 +24,7 @@ const lngs: Languages = {
 interface Props {}
 
 const MainPage: FC<Props> = () => {
-  const { t, i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const dispatch = useAppDispatch();
 
   const user = useAppSelector(getUserAuthData);
@@ -39,7 +39,7 @@ const MainPage: FC<Props> = () => {
   };
 
   return (
-    <div>
+    <div data-testid="MainPage">
       <div>
         {Object.keys(lngs).map((lng) => (
           <Button
