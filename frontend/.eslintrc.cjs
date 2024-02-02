@@ -1,4 +1,5 @@
 module.exports = {
+    "root": true,
     "env": {
         "node": true,
         "es6": true,
@@ -11,6 +12,7 @@ module.exports = {
         "plugin:react/recommended",
         "plugin:import/recommended",
         "plugin:prettier/recommended",
+        "plugin:@typescript-eslint/recommended",
         "plugin:react-hooks/recommended",
     ],
     "parser": "@typescript-eslint/parser",
@@ -149,6 +151,8 @@ module.exports = {
         "@typescript-eslint/no-unused-vars": [
             "error"
         ],
+        "@typescript-eslint/no-explicit-any": "error",
+
     },
     settings: {
       'import/resolver': {

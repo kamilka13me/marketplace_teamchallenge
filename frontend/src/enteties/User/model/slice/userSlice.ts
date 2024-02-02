@@ -31,7 +31,7 @@ export const userSlice = createSlice({
       const inspDate = Cookies.get(COOKIE_KEY_EXPIRATION_DATE_OF_USER);
 
       if (user && token) {
-        state.autData = JSON.parse(user);
+        state.authData = JSON.parse(user);
         if (inspDate) {
           const storedExpirationDate = new Date(inspDate);
           const timeDifference = storedExpirationDate.getTime() - new Date().getTime();

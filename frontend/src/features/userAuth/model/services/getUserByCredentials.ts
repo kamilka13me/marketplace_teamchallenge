@@ -39,8 +39,6 @@ export const getUserByCredentials = createAsyncThunk<ApiResponse, LoginByUsernam
 
       const response = await $api.post<ApiResponse>('/auth', { ...authData, info });
 
-      console.log({ ...authData, browser });
-
       const { token } = response.data;
 
       const currentDate = new Date();
@@ -64,8 +62,12 @@ export const getUserByCredentials = createAsyncThunk<ApiResponse, LoginByUsernam
       dispatch(userActions.setAuthData(response.data.user));
 
       return response.data;
-    } catch (e: any) {
-      return rejectWithValue(`:: ${e.message as string}`);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        return rejectWithValue(`:: ${e.message}`);
+      }
+
+      return rejectWithValue('Unknown error occurred');
     }
   },
 );

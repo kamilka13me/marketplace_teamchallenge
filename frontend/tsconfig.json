@@ -17,6 +17,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
+    "noImplicitAny": true,
+    "noUncheckedIndexedAccess": true,
     "paths": {
       "@/*": ["./src/*"]
     }
