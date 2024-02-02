@@ -27,11 +27,11 @@ export const userSlice = createSlice({
     },
     initAuthData: (state) => {
       const user = Cookies.get(COOKIE_KEY_USER);
-      // const token = Cookies.get(COOKIE_KEY_TOKEN);
+      const token = Cookies.get(COOKIE_KEY_TOKEN);
       const inspDate = Cookies.get(COOKIE_KEY_EXPIRATION_DATE_OF_USER);
 
-      if (user) {
-        state.authData = JSON.parse(user);
+      if (user && token) {
+        state.autData = JSON.parse(user);
         if (inspDate) {
           const storedExpirationDate = new Date(inspDate);
           const timeDifference = storedExpirationDate.getTime() - new Date().getTime();
@@ -42,6 +42,9 @@ export const userSlice = createSlice({
             removeCookies();
           }
         }
+      } else {
+        state.authData = undefined;
+        removeCookies();
       }
 
       state.inited = true;
