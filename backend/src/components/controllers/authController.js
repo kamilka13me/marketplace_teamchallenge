@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 
 import BrowserInfo from '../../models/BrowserInfo.js';
-import User from '../../models/user.js';
+import User from '../../models/User.js';
 import generateToken from '../../utils/tokenUtils.js';
 
 const authController = {

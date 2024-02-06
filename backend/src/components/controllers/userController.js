@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 import BrowserInfo from '../../models/BrowserInfo.js';
 import Role from '../../models/Role.js';
-import User from '../../models/user.js';
+import User from '../../models/User.js';
 import hashPassword from '../../utils/hashPasswordUtils.js';
 import generateToken from '../../utils/tokenUtils.js';
 
