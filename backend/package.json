@@ -34,6 +34,7 @@
     "morgan": "^1.10.0",
     "path": "^0.12.7",
     "raw-body": "^2.5.2",
+    "socket.io": "^4.7.4",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "validator": "^13.11.0"

@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 
 import config from '../config/config.js';
 import Role from '../models/Role.js';
-import User from '../models/user.js';
+import User from '../models/User.js';
 
 /**
  * Middleware to check if the user has permission to perform a specific action.
