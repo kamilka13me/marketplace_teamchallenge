@@ -7,8 +7,8 @@ import { Input } from '@/shared/ui/Input';
 interface Props {}
 
 interface InputsValues {
-  inputLogin: string;
-  inputPass: string;
+  inputEmail: string;
+  inputPassword: string;
 }
 
 const LoginForm: FC<Props> = () => {
@@ -25,11 +25,10 @@ const LoginForm: FC<Props> = () => {
   });
 
   useEffect(() => {
-    setFocus('inputLogin');
+    setFocus('inputEmail');
   }, [setFocus]);
 
-  const onSubmit: SubmitHandler<InputsValues> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<InputsValues> = () => {
     reset();
   };
 
@@ -44,7 +43,7 @@ const LoginForm: FC<Props> = () => {
         <Input
           placeholder="Email"
           type="text"
-          {...register('inputLogin', {
+          {...register('inputEmail', {
             required: 'This field is required',
             minLength: { value: 5, message: 'Your login must be min 6 symbols' },
             pattern: {
@@ -53,16 +52,16 @@ const LoginForm: FC<Props> = () => {
               message: 'Your login must be xxxx@xxx.xx templates',
             },
           })}
-          error={errors?.inputLogin && errors?.inputLogin.message}
+          error={errors?.inputEmail && errors?.inputEmail.message}
         />
         <Input
           placeholder="Password"
           type={passShown ? 'text' : 'password'}
-          {...register('inputPass', {
+          {...register('inputPassword', {
             required: 'This field is required',
             minLength: { value: 5, message: 'Your login must be min 6 symbols' },
           })}
-          error={errors?.inputPass && errors?.inputPass.message}
+          error={errors?.inputPassword && errors?.inputPassword.message}
         />
         <Input
           name="showPass"
@@ -71,6 +70,7 @@ const LoginForm: FC<Props> = () => {
           label="Show password"
         />
         <Input
+          value="Log In"
           name="btnInput"
           type="submit"
           disabled={!isValid}
