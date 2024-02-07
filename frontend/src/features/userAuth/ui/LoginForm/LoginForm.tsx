@@ -2,6 +2,8 @@ import { FC, useEffect, useState } from 'react';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { actionReducer } from '@/features/userAuth';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { Input } from '@/shared/ui/Input';
 
 interface Props {}
@@ -13,6 +15,7 @@ interface InputsValues {
 
 const LoginForm: FC<Props> = () => {
   const [passShown, setPassShown] = useState(false);
+  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -28,7 +31,9 @@ const LoginForm: FC<Props> = () => {
     setFocus('inputEmail');
   }, [setFocus]);
 
-  const onSubmit: SubmitHandler<InputsValues> = () => {
+  const onSubmit: SubmitHandler<InputsValues> = (data) => {
+    dispatch(actionReducer.setEmail(data.inputEmail));
+    dispatch(actionReducer.setPassword(data.inputPassword));
     reset();
   };
 
