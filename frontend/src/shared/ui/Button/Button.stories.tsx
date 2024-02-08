@@ -17,6 +17,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    children: 'asd',
+    children: 'ad',
   },
 };

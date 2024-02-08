@@ -31,8 +31,7 @@ const RegistrationForm: FC<Props> = () => {
     setFocus('inputName');
   }, [setFocus]);
 
-  const onSubmit: SubmitHandler<InputsValues> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<InputsValues> = () => {
     reset();
   };
 

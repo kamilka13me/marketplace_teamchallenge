@@ -7,12 +7,14 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint --ext \".ts,.tsx\" \"**/*.{ts,tsx,*.ts,*tsx}\"",
+    "lint": "eslint --ext \".ts,.tsx\" \"**/*.{ts,tsx,*.ts,*tsx}\" --max-warnings=0 && npm run check-types",
     "lint:fix": "eslint --fix --ext \".ts,.tsx\" \"**/*.{ts,tsx,*.ts,*tsx}\"",
+    "check-types": "tsc --noemit",
     "storybook": "storybook dev -p 6006",
     "prepare": "cd .. && husky install frontend/.husky",
     "build-storybook": "storybook build",
-    "test": "jest --config ./config/jest/jest.config.ts"
+    "test": "jest --config ./config/jest/jest.config.ts",
+    "chromatic": "npx chromatic --project-token=import.env."
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",
@@ -54,6 +56,8 @@
     "@typescript-eslint/parser": "^6.19.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.17",
+    "chromatic": "^10.9.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.56.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.1.0",

@@ -48,7 +48,7 @@ const MainPage: FC<Props> = () => {
             type="submit"
             onClick={() => i18n.changeLanguage(lng)}
           >
-            {lngs[lng].nativeName}
+            {lngs[lng]?.nativeName ?? 'Fallback Name'}
           </Button>
         ))}
       </div>

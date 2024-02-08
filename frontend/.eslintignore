@@ -1,0 +1,6 @@
+**/*.config.js
+**/*.conf.js
+**/*.config.json
+**/*.conf.json
+**/*.config.ts
+**/*.conf.ts

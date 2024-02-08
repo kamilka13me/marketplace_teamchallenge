@@ -11,6 +11,7 @@ module.exports = {
         "plugin:react/recommended",
         "plugin:import/recommended",
         "plugin:prettier/recommended",
+        "plugin:@typescript-eslint/recommended",
         "plugin:react-hooks/recommended",
     ],
     "parser": "@typescript-eslint/parser",
@@ -123,6 +124,7 @@ module.exports = {
         "react/react-in-jsx-scope": "off",
         "react/require-default-props": "off",
         "react-hooks/rules-of-hooks": "error",
+        "@typescript-eslint/no-explicit-any": "error",
         "react-hooks/exhaustive-deps": "warn",
         "react/jsx-filename-extension": [
             1,

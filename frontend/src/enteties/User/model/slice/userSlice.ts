@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 
 import { User, UserSchema } from '@/enteties/User';
+import { $api } from '@/shared/api/api';
 import {
   COOKIE_KEY_EXPIRATION_DATE_OF_USER,
   COOKIE_KEY_TOKEN,
@@ -27,10 +28,10 @@ export const userSlice = createSlice({
     },
     initAuthData: (state) => {
       const user = Cookies.get(COOKIE_KEY_USER);
-      // const token = Cookies.get(COOKIE_KEY_TOKEN);
+      const token = Cookies.get(COOKIE_KEY_TOKEN);
       const inspDate = Cookies.get(COOKIE_KEY_EXPIRATION_DATE_OF_USER);
 
-      if (user) {
+      if (user && token) {
         state.authData = JSON.parse(user);
         if (inspDate) {
           const storedExpirationDate = new Date(inspDate);
@@ -42,11 +43,15 @@ export const userSlice = createSlice({
             removeCookies();
           }
         }
+      } else {
+        state.authData = undefined;
+        removeCookies();
       }
 
       state.inited = true;
     },
     logout: (state) => {
+      $api.delete('/auth');
       state.authData = undefined;
       removeCookies();
     },
