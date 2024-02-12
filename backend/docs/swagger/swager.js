@@ -24,7 +24,15 @@ const options = {
     servers: [
       {
         url: 'http://localhost:3001/api/',
-        description: 'Main server Api',
+        description: 'Main local server Api',
+      },
+      {
+        url: 'http://31.222.235.61:3001/api/',
+        description: 'Main dev server Api',
+      },
+      {
+        url: 'http://31.222.235.61:3002/api/',
+        description: 'Main  server Api',
       },
       {
         url: 'http://alicesocial.pp.ua:3001/api/',

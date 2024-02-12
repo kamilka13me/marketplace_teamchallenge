@@ -11,7 +11,8 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "nodemon server.js --mongoURL=mongodb+srv://admin:admin@cluster0.clm5vb8.mongodb.net/",
+    "start": "nodemon server.js --mongoURL=mongodb+srv://admin:admin@cluster0.clm5vb8.mongodb.net/ ",
+    "prod": "nodemon server.js --mongoURL=mongodb+srv://admin:admin@cluster0.clm5vb8.mongodb.net/ --port=3002 --mongoDB=marketplace_teamchallenge_prod",
     "dev": "nodemon server.js",
     "ecc": "node cli/create.js",
     "lint": "npx eslint .",
