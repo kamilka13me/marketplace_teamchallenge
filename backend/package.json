@@ -11,8 +11,8 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "nodemon server.js --mongoURL=mongodb+srv://admin:admin@cluster0.clm5vb8.mongodb.net/ ",
-    "prod": "nodemon server.js --mongoURL=mongodb+srv://admin:admin@cluster0.clm5vb8.mongodb.net/ --port=3002 --mongoDB=marketplace_teamchallenge_prod",
+    "start": "node server.js --mongoURL=mongodb+srv://admin:admin@cluster0.clm5vb8.mongodb.net/ ",
+    "prod": "node server.js --mongoURL=mongodb+srv://admin:admin@cluster0.clm5vb8.mongodb.net/ --port=3002 --mongoDB=marketplace_teamchallenge_prod",
     "dev": "nodemon server.js",
     "ecc": "node cli/create.js",
     "lint": "npx eslint .",
@@ -24,6 +24,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@root/greenlock-express": "^4.0.4",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

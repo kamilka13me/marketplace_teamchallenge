@@ -23,19 +23,23 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:3001/api/',
+        url: 'https://localhost:3001/api/',
         description: 'Main local server Api',
       },
       {
-        url: 'http://31.222.235.61:3001/api/',
+        url: 'https://localhost:3002/api/',
+        description: 'Main local prod server Api',
+      },
+      {
+        url: 'https://31.222.235.61:3001/api/',
         description: 'Main dev server Api',
       },
       {
-        url: 'http://31.222.235.61:3002/api/',
+        url: 'https://31.222.235.61:3002/api/',
         description: 'Main  server Api',
       },
       {
-        url: 'http://alicesocial.pp.ua:3001/api/',
+        url: 'https://alicesocial.pp.ua:3001/api/',
         description: 'Yaroslav`s home server',
       },
     ],
@@ -76,7 +80,7 @@ function swaggerDocs(app, port) {
     res.send(specs);
   });
   // eslint-disable-next-line no-console
-  console.log(`Docs available at http://localhost:${port}/docs`);
+  console.log(`Docs available at https://localhost:${port}/docs`);
 }
 
 export default swaggerDocs;
