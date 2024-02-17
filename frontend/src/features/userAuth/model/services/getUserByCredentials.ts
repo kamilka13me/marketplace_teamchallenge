@@ -32,16 +32,26 @@ export const getUserByCredentials = createAsyncThunk<ApiResponse, LoginByUsernam
   'login/getUserByCredentials',
   async (authData, thunkApi) => {
     const { dispatch, rejectWithValue } = thunkApi;
+    const currentDate = new Date();
 
     try {
       const browser = Bowser.getParser(navigator.userAgent);
       const info = browser.getResult();
 
-      const response = await $api.post<ApiResponse>('/auth', { ...authData, info });
+      const response = await $api.post<ApiResponse>('/auth', {
+        ...authData,
+        info,
+        font: document.fonts,
+        date: currentDate.getTimezoneOffset(),
+        screen: {
+          width: window.screen.availWidth,
+          height: window.screen.availHeight,
+          pixel: window.screen.pixelDepth,
+        },
+      });
 
       const { token } = response.data;
 
-      const currentDate = new Date();
       const futureDate = new Date(currentDate);
 
       futureDate.setDate(currentDate.getDate() + EXPIRES_TIME);
