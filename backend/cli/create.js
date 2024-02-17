@@ -10,7 +10,7 @@ const generateRoute = async (name) => {
   const routeFilePath = path.join(
     new URL(import.meta.url).pathname.slice(1),
     '../../src/components/routes',
-    `${name}Routes.js`,
+    `${name}Route.js`,
   );
 
   // check is exist
@@ -23,11 +23,11 @@ const generateRoute = async (name) => {
   import express from 'express';
   import ${name}Controller from '../controllers/${name}Controller.js';
 
-  const router = express.Router();
+  const {name}Route = express.Router();
 
-  router.get('/', ${name}Controller.default);
+  {name}Route.get('/', ${name}Controller.default);
 
-  export default router;
+  export default {name}Route;
 `;
 
   await generateFile(routeFilePath, routeContent);

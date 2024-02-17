@@ -11,7 +11,8 @@ import { Server } from 'socket.io';
 
 import swaggerDocs from './docs/swagger/swager.js';
 import authRoute from './src/components/routes/authRoute.js';
-import onlineStatusRoute from './src/components/routes/onlineStatusRoutes.js';
+import onlineStatusRoute from './src/components/routes/onlineStatusRoute.js';
+import productRoute from './src/components/routes/productRoute.js';
 import roleRoute from './src/components/routes/roleRoute.js';
 import statusRoute from './src/components/routes/statusRoute.js';
 import userRoute from './src/components/routes/userRoutes.js';
@@ -100,6 +101,7 @@ app.use('/api/users', userRoute);
 app.use('/api/roles', roleRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/online-status', onlineStatusRoute);
+app.use('/api/product', productRoute);
 
 server.listen(config.port, async () => {
   // eslint-disable-next-line no-console
