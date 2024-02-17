@@ -31,16 +31,12 @@ const options = {
         description: 'Main local prod server Api',
       },
       {
-        url: 'https://31.222.235.61:3001/api/',
+        url: 'https://alicesocial.pp.ua:3001/api/',
         description: 'Main dev server Api',
       },
       {
-        url: 'https://31.222.235.61:3002/api/',
+        url: 'https://alicesocial.pp.ua:3002/api/',
         description: 'Main  server Api',
-      },
-      {
-        url: 'https://alicesocial.pp.ua:3001/api/',
-        description: 'Yaroslav`s home server',
       },
     ],
     tags: [

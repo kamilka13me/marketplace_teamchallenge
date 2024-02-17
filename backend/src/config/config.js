@@ -1,3 +1,5 @@
+/* eslint-disable import/no-mutable-exports */
+
 const environment = process.env.NODE_ENV;
 
 let config;
@@ -28,7 +30,7 @@ if (environment === 'development') {
   };
 
   // else (full handle)
-} else  {
+} else {
   config = {
     port: process.env.PORT || '3001',
     secretKey: process.env.SECRET_KEY || 'Ex0YCKL2bcfnwWtCpqLXYqNqqzgbBxw4',
@@ -41,3 +43,5 @@ if (environment === 'development') {
 }
 
 export default config;
+
+/* eslint-enable import/no-mutable-exports */

@@ -32,12 +32,12 @@ app.use(
 );
 
 const options = {
-  key: fs.readFileSync('cerbot/privkey.pem'), //Change Private Key Path here
-  cert: fs.readFileSync('cerbot/cert.pem'), //Change Main Certificate Path here
-  ca: fs.readFileSync('cerbot/fullchain.pem'), //Change Intermediate Certificate Path here
+  key: fs.readFileSync('cerbot/privkey.pem'), // Change Private Key Path here
+  cert: fs.readFileSync('cerbot/cert.pem'), // Change Main Certificate Path here
+  ca: fs.readFileSync('cerbot/fullchain.pem'), // Change Intermediate Certificate Path here
 };
 
-const server = createServer( options,app);
+const server = createServer(options, app);
 
 setupSocket(server);
 
@@ -103,7 +103,7 @@ app.use('/api/online-status', onlineStatusRoute);
 
 server.listen(config.port, async () => {
   // eslint-disable-next-line no-console
-  console.log(`Server is running on https://localhost:${config.port}`); 
+  console.log(`Server is running on https://localhost:${config.port}`);
 
   swaggerDocs(app, config.port);
 });
