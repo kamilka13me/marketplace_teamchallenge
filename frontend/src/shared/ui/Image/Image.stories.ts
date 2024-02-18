@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Image from './Image';
+import img from '../../../../.storybook/assets/img/scratching_post.png';
 
-import img from '@/shared/assets/img/scratching_post.png';
+import Image from './Image';
 
 const meta = {
   title: 'UI/Image',
