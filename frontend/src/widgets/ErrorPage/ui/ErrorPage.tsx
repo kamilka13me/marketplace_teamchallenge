@@ -13,7 +13,9 @@ const ErrorPage: FC<Props> = () => {
   return (
     <>
       <p>Some Error</p>
-      <Button onClick={reloadPage}>Reload</Button>
+      <Button onClick={reloadPage} variant="fill">
+        Reload
+      </Button>
     </>
   );
 };
