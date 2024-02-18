@@ -17,17 +17,11 @@ const meta = {
       type: 'function',
       description: 'Function for hovering actions',
     },
-    empty: {
-      type: 'boolean',
-      description: 'Button with a blank background and no border',
-    },
-    fill: {
-      type: 'boolean',
-      description: 'Button with filled background and border',
-    },
-    outlined: {
-      type: 'boolean',
-      description: 'Outlined button with border and no background',
+    variant: {
+      type: 'string',
+      description: 'Button styling options',
+      options: ['empty', 'fill', 'outlined'],
+      control: { type: 'select' },
     },
     className: {
       type: 'string',
@@ -44,9 +38,7 @@ export const Empty: Story = {
   args: {
     children: 'Button',
     onClick: () => {},
-    empty: true,
-    fill: false,
-    outlined: false,
+    variant: 'empty',
     className: '',
   },
 };
@@ -54,9 +46,7 @@ export const Fill: Story = {
   args: {
     children: 'Button',
     onClick: () => {},
-    empty: false,
-    fill: true,
-    outlined: false,
+    variant: 'fill',
     className: '',
   },
 };
@@ -65,9 +55,7 @@ export const Outlined: Story = {
   args: {
     children: 'Button',
     onClick: () => {},
-    empty: false,
-    fill: false,
-    outlined: true,
+    variant: 'outlined',
     className: '',
   },
 };
