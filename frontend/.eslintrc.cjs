@@ -106,6 +106,7 @@ module.exports = {
         "no-debugger": "error",
         "no-unused-vars": "off",
         "import/no-extraneous-dependencies": "off",
+        "react/destructuring-assignment": "off",
         "import/no-unresolved": "off",
         "no-magic-numbers": "off",
         "no-use-before-define": "off",

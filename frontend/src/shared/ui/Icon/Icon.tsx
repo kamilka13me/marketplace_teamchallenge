@@ -1,12 +1,45 @@
-import { FC } from 'react';
+import { FC, SVGProps, VFC } from 'react';
 
-interface Props {}
+type SvgProps = Omit<SVGProps<SVGSVGElement>, 'onClick'>;
 
-const Icon: FC<Props> = (props) => {
+interface Props extends SvgProps {
+  Svg: VFC<SVGProps<SVGSVGElement>>;
+  className?: string;
+}
+
+interface NonClickableIconProps extends Props {
+  clickable?: false;
+}
+
+interface ClickableBaseProps extends Props {
+  clickable: true;
+  onClick: () => void;
+}
+
+type IconProps = NonClickableIconProps | ClickableBaseProps;
+
+const Icon: FC<IconProps> = (props) => {
   // eslint-disable-next-line no-empty-pattern
-  const {} = props;
+  const { Svg, width = 32, height = 32, clickable, className, ...otherProps } = props;
 
-  return <>Icon</>;
+  const icon = (
+    <Svg width={width} height={height} className={`${className}`} {...otherProps} />
+  );
+
+  if (clickable) {
+    return (
+      <button
+        type="button"
+        className=""
+        onClick={props.onClick}
+        style={{ height, width }}
+      >
+        {icon}
+      </button>
+    );
+  }
+
+  return icon;
 };
 
 export default Icon;
