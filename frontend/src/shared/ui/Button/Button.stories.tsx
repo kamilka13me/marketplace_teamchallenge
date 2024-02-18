@@ -9,6 +9,14 @@ const meta = {
     layout: 'centered',
   },
   argTypes: {
+    children: {
+      type: 'string',
+      description: 'Element or text in button',
+    },
+    onClick: {
+      type: 'function',
+      description: 'Function for hovering actions',
+    },
     empty: {
       type: 'boolean',
       description: 'Button with a blank background and no border',
@@ -20,6 +28,10 @@ const meta = {
     outlined: {
       type: 'boolean',
       description: 'Outlined button with border and no background',
+    },
+    className: {
+      type: 'string',
+      description: 'Description of additional button classes',
     },
   },
   tags: ['autodocs'],
