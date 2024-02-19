@@ -13,7 +13,15 @@ const meta = {
       control: { type: 'select' },
     },
     Tag: {
-      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'p'],
+      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'span'],
+      control: { type: 'select' },
+    },
+    color: {
+      options: ['primary', 'gray', 'orange', 'red', 'green'],
+      control: { type: 'select' },
+    },
+    font: {
+      options: ['ibm-plex-sans', 'outfit'],
       control: { type: 'select' },
     },
   },
@@ -25,8 +33,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    align: 'right',
+    align: 'center',
+    color: 'primary',
     Tag: 'h1',
+    font: 'outfit',
     bold: false,
     text: 'Text',
     className: '',
