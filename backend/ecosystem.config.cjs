@@ -4,7 +4,7 @@ module.exports = {
       name: 'MT_start',
       script: 'server.js',
       watch: true,
-      ignore_watch: ['node_modules', 'logs'],
+      ignore_watch: ['node_modules', 'logs', 'uploads'],
       min_uptime: '60s',
       max_restarts: 5,
       env_development: {
@@ -29,7 +29,7 @@ module.exports = {
       name: 'MT_dev',
       script: 'server.js',
       watch: true,
-      ignore_watch: ['node_modules', 'logs'],
+      ignore_watch: ['node_modules', 'logs', 'uploads'],
       min_uptime: '60s',
       max_restarts: 1,
       env: {

@@ -1,3 +1,38 @@
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *       properties:
+ *         username:
+ *           type: string
+ *           description: The user's name
+ *         surname:
+ *           type: string
+ *           description: The user's surname
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: The user's unique email address
+ *         password:
+ *           type: string
+ *           format: password
+ *           description: The user's password
+ *         role:
+ *           type: string
+ *           description: The ObjectId of the user's role
+ *       example:
+ *         username: JohnDoe
+ *         surname: Doe
+ *         email: johndoe@example.com
+ *         password: "123456"
+ *         role: "5e9f8f8f8f8f8f8f8f8f8f8"
+ */
+
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
