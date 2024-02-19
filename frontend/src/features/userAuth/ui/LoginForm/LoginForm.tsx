@@ -5,6 +5,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { actionReducer } from '@/features/userAuth';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { Input } from '@/shared/ui/Input';
+import { Link } from '@/shared/ui/Link';
+import { Text } from '@/shared/ui/Text';
 
 interface Props {}
 
@@ -43,7 +45,7 @@ const LoginForm: FC<Props> = () => {
 
   return (
     <div>
-      <h3>Login</h3>
+      <Text Tag="h3" text="Login" />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           placeholder="Email"
@@ -81,8 +83,16 @@ const LoginForm: FC<Props> = () => {
           disabled={!isValid}
           className="bg-red-500 px-3 py-1 border-none rounded-md font-bold text-white hover:bg-sky-700 disabled:opacity-30"
         />
-        <p>Forgot Password?</p>
-        <p>Don`t have an account? Sign up</p>
+        <p>
+          Forgot
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+          <Link href="#"> Password?</Link>
+        </p>
+        <p>
+          Don`t have an account?
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+          <Link href="#"> Sign up</Link>
+        </p>
       </form>
     </div>
   );

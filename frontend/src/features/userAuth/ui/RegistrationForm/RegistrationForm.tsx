@@ -3,6 +3,8 @@ import { FC, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { Input } from '@/shared/ui/Input';
+import { Link } from '@/shared/ui/Link';
+import { Text } from '@/shared/ui/Text';
 
 interface Props {}
 
@@ -41,7 +43,7 @@ const RegistrationForm: FC<Props> = () => {
 
   return (
     <div>
-      <h3>Sign up</h3>
+      <Text Tag="h3" text="Sign up" />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           placeholder="Name"
@@ -110,7 +112,11 @@ const RegistrationForm: FC<Props> = () => {
           disabled={!isValid}
           className="bg-red-500 px-3 py-1 border-none rounded-md font-bold text-white hover:bg-sky-700 disabled:opacity-30"
         />
-        <p>Already have an account? Log in</p>
+        <p>
+          Already have an
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+          <Link href="#"> account?</Link>
+        </p>
       </form>
     </div>
   );
