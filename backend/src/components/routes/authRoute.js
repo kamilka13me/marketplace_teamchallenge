@@ -3,7 +3,7 @@ import express from 'express';
 import checkPermission from '../../middlewares/checkPermission.js';
 import authController from '../controllers/authController.js';
 
-const router = express.Router();
+const authRoute = express.Router();
 
 /**
  * @openapi
@@ -81,7 +81,7 @@ const router = express.Router();
  *                   example: Internal server error
  */
 // checkPermission('login'),
-router.post('/', authController.login);
+authRoute.post('/', authController.login);
 
 /**
  * @openapi
@@ -102,6 +102,6 @@ router.post('/', authController.login);
  *         description: Internal server error.
  */
 // checkPermission('logout'),
-router.delete('/', authController.logout);
+authRoute.delete('/', authController.logout);
 
-export default router;
+export default authRoute;

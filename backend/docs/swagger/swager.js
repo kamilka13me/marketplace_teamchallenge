@@ -8,6 +8,7 @@ import swaggerUi from 'swagger-ui-express';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const fullPath = resolve(__dirname, '../../src/components/routes/*.js');
+const modelsPath = resolve(__dirname, '../../src/models/*.js');
 
 const options = {
   definition: {
@@ -54,12 +55,16 @@ const options = {
         description: 'Operations related to Authentication.',
       },
       {
+        name: 'Products',
+        description: 'Operations related to Products.',
+      },
+      {
         name: 'Roles',
         description: 'Operations related to user roles in the system.',
       },
     ],
   },
-  apis: [`${fullPath}`],
+  apis: [`${fullPath}`, `${modelsPath}`],
 };
 
 // console.log(fullPath);

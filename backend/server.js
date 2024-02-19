@@ -11,7 +11,8 @@ import { Server } from 'socket.io';
 
 import swaggerDocs from './docs/swagger/swager.js';
 import authRoute from './src/components/routes/authRoute.js';
-import onlineStatusRoute from './src/components/routes/onlineStatusRoutes.js';
+import onlineStatusRoute from './src/components/routes/onlineStatusRoute.js';
+import productRoute from './src/components/routes/productRoute.js';
 import roleRoute from './src/components/routes/roleRoute.js';
 import statusRoute from './src/components/routes/statusRoute.js';
 import userRoute from './src/components/routes/userRoutes.js';
@@ -62,8 +63,7 @@ connectDb();
 // logs
 
 /* eslint-disable no-underscore-dangle */
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const logsDirectory = path.join(__dirname, 'logs');
 
 /* eslint-enable no-underscore-dangle */
@@ -100,6 +100,9 @@ app.use('/api/users', userRoute);
 app.use('/api/roles', roleRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/online-status', onlineStatusRoute);
+app.use('/api/products', productRoute);
+
+app.use('/static', express.static(path.join(__dirname, 'uploads')));
 
 server.listen(config.port, async () => {
   // eslint-disable-next-line no-console
