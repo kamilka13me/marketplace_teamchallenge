@@ -4,7 +4,7 @@ type FlexDirection = 'row' | 'col';
 type AlignItems = 'start' | 'center' | 'end' | 'stretch';
 type JustifyContent = 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
 type FlexWrap = 'wrap' | 'no-wrap';
-type FlexGap = '0' | '2' | '4' | '6' | '8' | '10' | '14' | '20';
+type FlexGap = '0' | '1' | '2' | '4' | '6' | '8' | '10' | '14' | '20';
 
 const directionClasses: Record<FlexDirection, string> = {
   row: 'flex-row',
@@ -33,7 +33,8 @@ const wrapClasses: Record<FlexWrap, string> = {
 };
 
 const gapClasses: Record<FlexGap, string> = {
-  '0': '',
+  '0': 'gap-0',
+  '1': 'gap-1',
   '2': 'gap-2',
   '4': 'gap-4',
   '6': 'gap-6',
@@ -63,7 +64,7 @@ const Flex: FC<FlexProps> = (props) => {
     align = 'start',
     justify = 'start',
     wrap = 'wrap',
-    gap = 2,
+    gap = '0',
     ...otherProps
   } = props;
 
