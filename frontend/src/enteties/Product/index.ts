@@ -9,6 +9,13 @@ import {
   productsActions,
   productsReducer,
 } from '@/enteties/Product/model/slices/productsSlice';
+import ProductSectionLayout from '@/enteties/Product/ui/ProductSectionLayout/ProductSectionLayout';
 
 export type { Product, ProductSchema };
-export { productsActions, productsReducer, productsIsLoading, productsData };
+export {
+  productsActions,
+  productsReducer,
+  productsIsLoading,
+  productsData,
+  ProductSectionLayout,
+};

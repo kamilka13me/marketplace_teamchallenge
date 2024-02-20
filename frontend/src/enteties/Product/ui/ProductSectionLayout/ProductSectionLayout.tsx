@@ -3,7 +3,6 @@ import { FC } from 'react';
 import { Product } from '@/enteties/Product';
 import ProductCard from '@/enteties/Product/ui/ProductCard/ProductCard';
 import arrowRight from '@/shared/assets/icons/arrow-right.svg?react';
-import { Container } from '@/shared/ui/Container';
 import { Icon } from '@/shared/ui/Icon';
 import { VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
@@ -17,7 +16,7 @@ const ProductSectionLayout: FC<Props> = (props) => {
   const { title, products } = props;
 
   return (
-    <Container>
+    <div>
       <Text Tag="h2" text={title} bold className="!text-[24px] !leading-[24px] mb-6" />
       <VStack gap="5">
         {products.map((prod) => (
@@ -37,7 +36,7 @@ const ProductSectionLayout: FC<Props> = (props) => {
         </a>
         <Icon Svg={arrowRight} className="relative left-[1px] top-[2px]" />
       </VStack>
-    </Container>
+    </div>
   );
 };
 
