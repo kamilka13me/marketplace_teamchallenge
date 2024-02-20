@@ -16,5 +16,10 @@ export const Skeleton = memo((props: SkeletonProps) => {
     borderRadius: border,
   };
 
-  return <div className={`${className} animate-pulse bg-[#C6C6C6]`} style={styles} />;
+  return (
+    <div
+      className={`${className} animate-pulse bg-[#C6C6C6] rounded-[4px]`}
+      style={styles}
+    />
+  );
 });

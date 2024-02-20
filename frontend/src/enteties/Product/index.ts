@@ -9,6 +9,7 @@ import {
   productsActions,
   productsReducer,
 } from '@/enteties/Product/model/slices/productsSlice';
+import ProductCardSkeleton from '@/enteties/Product/ui/ProductCard/ProductCardSkeleton';
 import ProductSectionLayout from '@/enteties/Product/ui/ProductSectionLayout/ProductSectionLayout';
 
 export type { Product, ProductSchema };
@@ -18,4 +19,5 @@ export {
   productsIsLoading,
   productsData,
   ProductSectionLayout,
+  ProductCardSkeleton,
 };

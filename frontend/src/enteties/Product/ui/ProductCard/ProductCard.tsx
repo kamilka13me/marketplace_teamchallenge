@@ -2,13 +2,14 @@ import { FC, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
+import ProductCardSkeleton from './ProductCardSkeleton';
+
 import { Product } from '@/enteties/Product';
 import { getUserAuthData } from '@/enteties/User';
 import heart from '@/shared/assets/icons/heart.svg?react';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Icon } from '@/shared/ui/Icon';
 import { Image } from '@/shared/ui/Image';
-import { Skeleton } from '@/shared/ui/Skeleton/Skeleton';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text, TextColors } from '@/shared/ui/Text';
 
@@ -65,19 +66,7 @@ const ProductCard: FC<Props> = (props) => {
   };
 
   if (!product) {
-    return (
-      <div className="w-[313px] h-[445px] rounded-2xl bg-[#E5E5E5] p-4">
-        <Skeleton height="252px" width="281px" border="16px" className="mb-2" />
-        <HStack gap="2" className="mb-[49px]">
-          <Skeleton height="16px" width="281px" border="4px" />
-          <Skeleton height="16px" width="150px" border="4px" />
-        </HStack>
-        <HStack gap="2" className="mb-[49px]">
-          <Skeleton height="40px" width="147px" border="4px" />
-          <Skeleton height="18px" width="197px" border="4px" />
-        </HStack>
-      </div>
-    );
+    return <ProductCardSkeleton />;
   }
 
   return (
