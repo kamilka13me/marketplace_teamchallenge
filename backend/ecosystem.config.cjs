@@ -7,11 +7,10 @@ module.exports = {
       ignore_watch: ['node_modules', 'logs', 'uploads'],
       min_uptime: '60s',
       max_restarts: 5,
-      env_development: {
+      output: './logs/output.log', // Правильне місце
+      error: './logs/error.log', // Правильне місце
+      env: {
         NODE_ENV: 'development',
-        watch: true,
-        output: './logs/output.log',
-        error: './logs/error.log',
       },
     },
     {
@@ -19,7 +18,7 @@ module.exports = {
       script: 'server.js',
       min_uptime: '60s',
       max_restarts: 5,
-      env_production: {
+      env: {
         NODE_ENV: 'production',
         output: './logs/output.log',
         error: './logs/error.log',

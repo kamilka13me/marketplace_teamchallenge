@@ -14,6 +14,10 @@ const productController = {
     }
   },
 
+  getOneProduct: async (req, res) => {
+    res.status(200).json({ message: 'get one product' });
+  },
+
   getAllProducts: async (req, res) => {
     try {
       const { limit = 10, offset = 0, name, category } = req.query;
