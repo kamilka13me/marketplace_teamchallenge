@@ -91,6 +91,50 @@ productRoute.post(
 
 /**
  * @swagger
+ * /products/{id}:
+ *   get:
+ *     summary: Get a product by ID
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The product ID
+ *     responses:
+ *       200:
+ *         description: The product description by ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   description: The product ID
+ *                 name:
+ *                   type: string
+ *                   description: The name of the product
+ *                 description:
+ *                   type: string
+ *                   description: The description of the product
+ *                 price:
+ *                   type: number
+ *                   description: The price of the product
+ *                 category:
+ *                   type: string
+ *                   description: The category of the product
+ *       404:
+ *         description: Product not found
+ *       500:
+ *         description: Server error
+ */
+
+productRoute.get('/:id', productController.getOneProduct);
+
+/**
+ * @swagger
  * /products:
  *   get:
  *     summary: Retrieves a list of products
