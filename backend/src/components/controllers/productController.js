@@ -3,9 +3,22 @@ import Product from '../../models/Product.js';
 const productController = {
   createProduct: async (req, res) => {
     try {
-      const { name, description, price, category, quantity, images } = req.body;
+      const { name, description, price, category, quantity, discount } = req.body;
+      let { images } = req.body;
 
-      const newProduct = new Product(req.body);
+      images = images.map((name) => `/static/products/${name}`);
+
+      const product = {
+        name,
+        description,
+        price,
+        category,
+        quantity,
+        discount,
+        images,
+      };
+
+      const newProduct = new Product(product);
       const saveProduct = await newProduct.save();
 
       res.status(200).json({ message: 'default messege' });
@@ -15,7 +28,19 @@ const productController = {
   },
 
   getOneProduct: async (req, res) => {
-    res.status(200).json({ message: 'get one product' });
+    try {
+      const { id } = req.params;
+
+      console.log(id);
+      const product = await Product.findById(id);
+
+      console.log(product);
+
+      res.status(200).json({ product });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error });
+    }
   },
 
   getAllProducts: async (req, res) => {

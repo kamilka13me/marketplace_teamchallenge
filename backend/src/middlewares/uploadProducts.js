@@ -5,7 +5,7 @@ import multer from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 
 // Checking the existence of a directory and creating it
-const uploadDir = 'uploads';
+const uploadDir = 'public/uploads';
 
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
@@ -14,7 +14,7 @@ if (!fs.existsSync(uploadDir)) {
 // Setting the save directory
 const storage = multer.diskStorage({
   destination(req, file, callback) {
-    callback(null, 'uploads/');
+    callback(null, `${uploadDir}/`);
   },
   filename(req, file, callback) {
     // Generate a unique file name

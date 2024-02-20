@@ -4,11 +4,11 @@ module.exports = {
       name: 'MT_start',
       script: 'server.js',
       watch: true,
-      ignore_watch: ['node_modules', 'logs', 'uploads'],
+      ignore_watch: ['node_modules', 'logs', 'public'],
       min_uptime: '60s',
       max_restarts: 5,
-      output: './logs/output.log', // Правильне місце
-      error: './logs/error.log', // Правильне місце
+      output: './logs/output.log', 
+      error: './logs/error.log',
       env: {
         NODE_ENV: 'development',
       },
@@ -28,7 +28,7 @@ module.exports = {
       name: 'MT_dev',
       script: 'server.js',
       watch: true,
-      ignore_watch: ['node_modules', 'logs', 'uploads'],
+      ignore_watch: ['node_modules', 'logs', 'public'],
       min_uptime: '60s',
       max_restarts: 1,
       env: {
