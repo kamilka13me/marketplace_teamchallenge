@@ -102,7 +102,7 @@ app.use('/api/auth', authRoute);
 app.use('/api/online-status', onlineStatusRoute);
 app.use('/api/products', productRoute);
 
-app.use('/static', express.static(path.join(__dirname, 'uploads')));
+app.use('/static/products', express.static(path.join(__dirname, 'public/uploads')));
 
 server.listen(config.port, async () => {
   // eslint-disable-next-line no-console

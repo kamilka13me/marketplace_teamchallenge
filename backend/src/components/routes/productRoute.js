@@ -108,27 +108,22 @@ productRoute.post(
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 _id:
- *                   type: string
- *                   description: The product ID
- *                 name:
- *                   type: string
- *                   description: The name of the product
- *                 description:
- *                   type: string
- *                   description: The description of the product
- *                 price:
- *                   type: number
- *                   description: The price of the product
- *                 category:
- *                   type: string
- *                   description: The category of the product
+ *               $ref: '#/components/schemas/Product'
  *       404:
  *         description: Product not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *                example:
+ *                  message: Product not found
  *       500:
  *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *                example:
+ *                  message: Server error
+ *                  error: error
  */
 
 productRoute.get('/:id', productController.getOneProduct);
