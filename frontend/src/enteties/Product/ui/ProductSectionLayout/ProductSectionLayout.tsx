@@ -17,7 +17,7 @@ const ProductSectionLayout: FC<Props> = (props) => {
 
   return (
     <div>
-      <Text Tag="h2" text={title} bold className="!text-[24px] !leading-[24px] mb-6" />
+      <Text Tag="h2" text={title} bold className="mb-6" />
       <VStack gap="5">
         {products.map((prod) => (
           <ProductCard key={prod._id} product={prod} />

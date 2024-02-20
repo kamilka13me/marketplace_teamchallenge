@@ -28,11 +28,11 @@ const TextFont: Record<TextFonts, string> = {
 };
 
 const fontSize: Record<HeaderTagType, string> = {
-  h1: 'text-5xl',
-  h2: 'text-3xl',
-  h3: 'text-lg',
-  h4: 'text-xm',
-  h5: 'text-xs',
+  h1: 'text-[32px] leading-[40px]',
+  h2: 'text-[32px] leading-[24px]',
+  h3: 'text-[24px] leading-[18px]',
+  h4: 'text-[20px]',
+  h5: 'text-[18px] leading-[40px]',
   p: 'text-md leading-[40px]',
   span: 'text-md leading-[40px]',
 };
