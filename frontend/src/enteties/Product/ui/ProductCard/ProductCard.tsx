@@ -144,7 +144,7 @@ const ProductCard: FC<Props> = (props) => {
           clickable
           onClick={user ? () => handleWishHeartClick() : () => {}}
           Svg={heart}
-          className={`${filledHeart ? '!fill-secondary' : '!stroke-2 !stroke-darkest'}`}
+          className={`${filledHeart ? '!fill-secondary' : '!stroke-2 !stroke-gray-900'}`}
         />
       </HStack>
     </div>

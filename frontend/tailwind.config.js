@@ -28,3 +28,13 @@ export default {
   },
   plugins: [],
 };
+
+//     'slider--left':
+// 'linear-gradient(112.83deg,  0%,  110.84%)',
+//     'slider-hover-default':
+// 'linear-gradient(112.83deg,  0%, ' +
+// ' 110.84%)',
+
+// normal  left from  to
+// hover   left from  to
+// default left from  to rgba(255, 255, 255, 0)

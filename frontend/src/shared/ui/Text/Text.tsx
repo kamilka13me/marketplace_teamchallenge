@@ -9,7 +9,7 @@ export type TextColors = 'primary' | 'gray' | 'orange' | 'red' | 'green';
 export type TextFonts = 'ibm-plex-sans' | 'outfit';
 
 const TextColor: Record<TextColors, string> = {
-  primary: 'text-text',
+  primary: 'text-black',
   gray: 'text-gray',
   orange: 'text-orange',
   red: 'text-red',
