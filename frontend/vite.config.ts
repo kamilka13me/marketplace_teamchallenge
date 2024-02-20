@@ -9,6 +9,7 @@ export default defineConfig(({ command, mode }) => {
   return {
     define: {
       'process.env.API_URL': JSON.stringify(env.API_URL),
+      'process.env.BASE_URL': JSON.stringify(env.BASE_URL),
     },
     plugins: [react(), svgr({ include: '**/*.svg?react' }), basicSsl()],
     resolve: {
