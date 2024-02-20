@@ -7,7 +7,7 @@ interface Props {
 const Container: FC<Props> = (props) => {
   const { children } = props;
 
-  return <div className="max-w-[1440px] px-16">{children}</div>;
+  return <div className="max-w-[1440px] px-16 mx-auto">{children}</div>;
 };
 
 export default Container;
