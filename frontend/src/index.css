@@ -2,8 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
     html {
         font-family: "Outfit", system-ui, sans-serif;
     }
 }
+
+.slick-dots {
+
+    bottom: 30px !important;
+}
+
+
+.slick-dots li button:before {
+    display: none;
+}
+.slick-dots li {
+    width: 8px !important;
+    height: 0 !important;
+
+}
+
+.slick-dots li button {
+    position: relative;
+    left: -3px !important;
+    width: 6px !important;
+    height: 6px !important;
+    border-radius: 100%;
+    background-color: rgba(202, 202, 202, 1) !important;
+}
+
+.slick-dots li.slick-active button {
+    position: relative;
+    left: -8px !important;
+    width: 20px !important;
+    height: 6px !important;
+    border-radius: 24px;
+    background-color: rgba(255, 222, 0, 1) !important;
+    transition: all .2s ease-in;
+}
+

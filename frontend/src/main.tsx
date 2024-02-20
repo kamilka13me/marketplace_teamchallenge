@@ -9,6 +9,9 @@ import { StoreProvider } from '@/app/providers/StoreProvider';
 
 import '@/shared/config/i18n/i18n';
 
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 const container = document.getElementById('root');
 
 if (!container) {
