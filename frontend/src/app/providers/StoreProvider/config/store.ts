@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import { StateSchema } from '../config/StateSchema';
 
+import { productsReducer } from '@/enteties/Product';
 import { userReducer } from '@/enteties/User';
 import { loginReducer } from '@/features/userAuth';
 
@@ -10,6 +11,7 @@ export function createReduxStore(initialState?: StateSchema) {
     reducer: {
       login: loginReducer,
       user: userReducer,
+      products: productsReducer,
     },
     preloadedState: initialState,
   });
