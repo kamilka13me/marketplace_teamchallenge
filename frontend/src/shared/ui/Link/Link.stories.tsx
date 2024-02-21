@@ -9,6 +9,10 @@ const meta = {
     layout: 'centered',
   },
   argTypes: {
+    to: {
+      type: 'string',
+      description: 'The path to the resource or page',
+    },
     children: {
       type: 'string',
       description: 'Element or text in link',
@@ -16,32 +20,6 @@ const meta = {
     className: {
       type: 'string',
       description: 'Description of additional button classes',
-    },
-    href: {
-      type: 'string',
-      description: 'URL of the page',
-    },
-    target: {
-      type: 'string',
-      description: 'The name of the window where the browser will load the document',
-      options: ['_self', '_blank', '_parent', '_top'],
-      control: { type: 'select' },
-    },
-    referrerPolicy: {
-      type: 'string',
-      description:
-        'This attribute tells what information to pass to the resource via the link',
-      options: [
-        'no-referrer',
-        'no-referrer-when-downgrade',
-        'origin',
-        'origin-when-cross-origin',
-        'same-origin',
-        'strict-origin',
-        'strict-origin-when-cross-origin',
-        'unsafe-url',
-      ],
-      control: { type: 'select' },
     },
   },
   tags: ['autodocs'],
@@ -54,6 +32,6 @@ export const Primary: Story = {
   args: {
     children: 'Link',
     className: '',
-    href: 'https://www.google.com',
+    to: 'https://www.google.com',
   },
 };
