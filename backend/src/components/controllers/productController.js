@@ -59,7 +59,7 @@ const productController = {
   // get all products
   getAllProducts: async (req, res) => {
     try {
-      const { limit = 10, offset = 0, name, category, discount } = req.query;
+      const { limit = 10, offset = 0, name, category, discount=0 } = req.query;
       let { sortBy, sortDirection } = req.query;
 
       // Building a filter object based on name and category
