@@ -14,7 +14,7 @@
     "prepare": "cd .. && husky install frontend/.husky",
     "build-storybook": "storybook build",
     "test": "jest --config ./config/jest/jest.config.ts",
-    "chromatic": "npx chromatic --project-token=import.env."
+    "chromatic": "npx chromatic --project-token="
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",

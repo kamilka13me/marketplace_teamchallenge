@@ -115,7 +115,7 @@ const RegistrationForm: FC<Props> = () => {
         <p>
           Already have an
           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-          <Link href="#"> account?</Link>
+          <Link to="/"> account?</Link>
         </p>
       </form>
     </div>

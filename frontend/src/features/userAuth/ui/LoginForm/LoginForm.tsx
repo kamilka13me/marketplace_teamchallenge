@@ -86,12 +86,12 @@ const LoginForm: FC<Props> = () => {
         <p>
           Forgot
           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-          <Link href="#"> Password?</Link>
+          <Link to="/"> Password?</Link>
         </p>
         <p>
           Don`t have an account?
           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-          <Link href="#"> Sign up</Link>
+          <Link to="/"> Sign up</Link>
         </p>
       </form>
     </div>
