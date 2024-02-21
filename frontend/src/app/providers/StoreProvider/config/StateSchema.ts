@@ -1,9 +1,10 @@
-import { ProductSchema } from '@/enteties/Product';
 import { UserSchema } from '@/enteties/User';
 import { LoginSchema } from '@/features/userAuth';
+import { rtkApi } from '@/shared/api/rtkApi';
 
 export interface StateSchema {
   login: LoginSchema;
   user: UserSchema;
-  products: ProductSchema;
+
+  [rtkApi.reducerPath]: ReturnType<typeof rtkApi.reducer>;
 }

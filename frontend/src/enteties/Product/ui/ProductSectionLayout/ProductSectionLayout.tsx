@@ -10,10 +10,15 @@ import { Text } from '@/shared/ui/Text';
 interface Props {
   title: string;
   products: Product[];
+  isLoading: boolean;
 }
 
 const ProductSectionLayout: FC<Props> = (props) => {
-  const { title, products } = props;
+  const { title, products, isLoading } = props;
+
+  if (isLoading) {
+    return <>Loading</>;
+  }
 
   return (
     <div>

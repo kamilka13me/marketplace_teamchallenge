@@ -1,33 +1,21 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { rtkApi } from '@/shared/api/rtkApi';
 
-import { Product } from '@/enteties/Product';
-import { $api } from '@/shared/api/api';
+export const productsApi = rtkApi.injectEndpoints({
+  endpoints: (builder) => ({
+    getNewProducts: builder.query({
+      query: () => `/products?limit=4&offset=0&sortDirection=1`,
+    }),
+    getPopularProducts: builder.query({
+      query: () => `/products?limit=4&offset=0&sortBy=views&sortDirection=-1`,
+    }),
+    getPromotionsProducts: builder.query({
+      query: () => `/products?limit=4&offset=0&sortBy=views&sortDirection=-1&discount=1`,
+    }),
+  }),
+});
 
-interface ApiResponse {
-  products: Product[];
-}
-
-export const getProducts = createAsyncThunk<ApiResponse>(
-  'products/getProducts',
-  async (authData, thunkApi) => {
-    const { rejectWithValue } = thunkApi;
-
-    try {
-      const response = await $api.get(
-        '/products?limit=4&offset=0&sortBy=_id&sortDirection=1',
-      );
-
-      if (response.status !== 200) {
-        return rejectWithValue(`:: ${response.statusText} `);
-      }
-
-      return response.data;
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        return rejectWithValue(`:: ${e.message}`);
-      }
-
-      return rejectWithValue('Unknown error occurred');
-    }
-  },
-);
+export const {
+  useGetNewProductsQuery,
+  useGetPopularProductsQuery,
+  useGetPromotionsProductsQuery,
+} = productsApi;
