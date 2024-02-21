@@ -2,9 +2,10 @@ import { FC } from 'react';
 
 import Slider from 'react-slick';
 
+import NextArrow from './NextArrow';
+import PrevArrow from './PrevArrow';
+
 import { Image } from '@/shared/ui/Image';
-import NextArrow from '@/widgets/Slider/ui/NextArrow';
-import PrevArrow from '@/widgets/Slider/ui/PrevArrow';
 
 interface Props {
   images: string[];
@@ -14,21 +15,24 @@ const SliderWidget: FC<Props> = (props) => {
   const { images } = props;
 
   const settings = {
+    lazyRender: true,
     dots: true,
     infinite: false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     draggable: false,
+    adaptiveHeight: true,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
   };
 
   return (
-    <div className="max-w-[320px] md:max-w-[640px] xl:max-w-[979px]">
+    <div className="w-[979px]">
       <Slider {...settings} className="">
-        {images.map((item) => (
-          <div key={`${item + Math.random() * (20 - 1) + 1} `}>
+        {images.map((item, i) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <div key={i}>
             <Image
               src={item}
               alt="fsdas"

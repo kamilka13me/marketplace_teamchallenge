@@ -10,10 +10,8 @@
 }
 
 .slick-dots {
-
     bottom: 30px !important;
 }
-
 
 .slick-dots li button:before {
     display: none;
