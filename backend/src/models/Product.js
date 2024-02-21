@@ -51,7 +51,7 @@
  *         category: "Example Category"
  *         quantity: 100
  *         views: 150
- *         images: ["http://example.com/image1.jpg", "http://example.com/image2.jpg"]
+ *         images: ["/image1.jpg", "/image2.jpg"]
  *         created_at: "2023-01-01T00:00:00Z"
  */
 
@@ -91,6 +91,7 @@ const productSchema = new mongoose.Schema({
   views: {
     type: Number,
     required: false,
+    default: 0,
   },
   images: [
     {

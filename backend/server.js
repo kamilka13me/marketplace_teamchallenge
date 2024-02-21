@@ -11,6 +11,7 @@ import { Server } from 'socket.io';
 
 import swaggerDocs from './docs/swagger/swager.js';
 import authRoute from './src/components/routes/authRoute.js';
+import categoryRoute from './src/components/routes/categoryRoute.js';
 import onlineStatusRoute from './src/components/routes/onlineStatusRoute.js';
 import productRoute from './src/components/routes/productRoute.js';
 import roleRoute from './src/components/routes/roleRoute.js';
@@ -101,6 +102,7 @@ app.use('/api/roles', roleRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/online-status', onlineStatusRoute);
 app.use('/api/products', productRoute);
+app.use('/api/category', categoryRoute);
 
 app.use('/static/products', express.static(path.join(__dirname, 'public/uploads')));
 
