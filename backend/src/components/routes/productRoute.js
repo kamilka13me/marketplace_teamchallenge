@@ -1,6 +1,7 @@
 import express from 'express';
 
 import { appendFileNamesToBody, upload } from '../../middlewares/uploadProducts.js';
+import viewsCounter from '../../middlewares/viewsCounter.js';
 import productController from '../controllers/productController.js';
 
 const productRoute = express.Router();
@@ -135,7 +136,7 @@ productRoute.post(
  *                  error: error
  */
 
-productRoute.get('/:id', productController.getOneProduct);
+productRoute.get('/:id', viewsCounter(), productController.getOneProduct);
 
 /**
  * @swagger

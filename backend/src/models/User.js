@@ -25,6 +25,12 @@
  *         role:
  *           type: string
  *           description: The ObjectId of the user's role
+ *         views:
+ *           type: array
+ *           items:
+ *              type: string
+ *              format: uuid
+ *           description: Array of product IDs that the user has viewed
  *       example:
  *         username: JohnDoe
  *         surname: Doe
@@ -59,6 +65,12 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Role',
   },
+  views: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product',
+    },
+  ],
 });
 
 const User = mongoose.model('User', userSchema);
