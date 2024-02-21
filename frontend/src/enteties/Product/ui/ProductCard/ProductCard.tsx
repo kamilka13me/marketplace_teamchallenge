@@ -7,9 +7,11 @@ import ProductCardSkeleton from './ProductCardSkeleton';
 import { Product } from '@/enteties/Product';
 import { getUserAuthData } from '@/enteties/User';
 import heart from '@/shared/assets/icons/heart.svg?react';
+import { getRouteProduct } from '@/shared/const/routes';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Icon } from '@/shared/ui/Icon';
 import { Image } from '@/shared/ui/Image';
+import Link from '@/shared/ui/Link/Link';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text, TextColors } from '@/shared/ui/Text';
 
@@ -55,7 +57,7 @@ const ProductCard: FC<Props> = (props) => {
 
   const { product } = props;
 
-  const { name, discount, images, price, quantity } = product;
+  const { _id, name, discount, images, price, quantity } = product;
 
   const [filledHeart, setFilledHeart] = useState(false);
 
@@ -84,11 +86,12 @@ const ProductCard: FC<Props> = (props) => {
       <div className="mt-2">
         {/* Name */}
         <div className="h-[44px] ">
-          <Text
-            Tag="p"
-            text={name}
+          <Link
+            to={getRouteProduct(`${_id}`)}
             className="line-clamp-2 text-[16px] !leading-[22.4px]"
-          />
+          >
+            {name}
+          </Link>
         </div>
 
         {/*  Check discount */}

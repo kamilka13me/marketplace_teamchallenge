@@ -20,6 +20,21 @@ const mockProduct: Product = {
   created_at: '2024-02-20T08:57:05.787Z',
 };
 
+const mockProductLessFive: Product = {
+  ...mockProduct,
+  quantity: 3,
+};
+
+const mockZeroQuantity: Product = {
+  ...mockProduct,
+  quantity: 0,
+};
+
+const mockHasDiscount: Product = {
+  ...mockProduct,
+  discount: 30,
+};
+
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
   title: 'Cards/ProductCard',
@@ -36,5 +51,23 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     product: mockProduct,
+  },
+};
+
+export const LessThanFiveQuantity: Story = {
+  args: {
+    product: mockProductLessFive,
+  },
+};
+
+export const ZeroQuantity: Story = {
+  args: {
+    product: mockZeroQuantity,
+  },
+};
+
+export const HasDiscount: Story = {
+  args: {
+    product: mockHasDiscount,
   },
 };
