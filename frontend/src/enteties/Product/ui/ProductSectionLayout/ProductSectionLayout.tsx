@@ -17,7 +17,7 @@ const ProductSectionLayout: FC<Props> = (props) => {
   const { title, products, isLoading } = props;
 
   return (
-    <div>
+    <div className="w-full">
       <Text Tag="h2" text={title} bold className="mb-6" />
       <VStack gap="5">
         {isLoading
