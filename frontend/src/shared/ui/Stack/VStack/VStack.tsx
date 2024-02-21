@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import Flex, { FlexProps } from '@/shared/ui/Stack/Flex/Flex';
+import Flex, { FlexProps } from '../Flex/Flex';
 
 type Props = Omit<FlexProps, 'direction'>;
 

@@ -103,6 +103,7 @@ module.exports = {
             }
         ],
         "no-shadow": "off",
+        "no-underscore-dangle": "off",
         "no-debugger": "error",
         "no-unused-vars": "off",
         "import/no-extraneous-dependencies": "off",
