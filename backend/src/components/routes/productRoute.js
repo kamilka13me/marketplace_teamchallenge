@@ -59,7 +59,9 @@ const productRoute = express.Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Product'
+ *                properties:
+ *                    product:
+ *                      $ref: '#/components/schemas/Product'
  *       '400':
  *         description: Bad Request
  *         content:
@@ -109,6 +111,13 @@ productRoute.post(
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Product'
+ *       400:
+ *         description: Invalid ObjectId format
+ *         content:
+ *           application/json:
+ *             schema:
+ *                example:
+ *                   "message": "Invalid ObjectId format"
  *       404:
  *         description: Product not found
  *         content:
@@ -132,8 +141,8 @@ productRoute.get('/:id', productController.getOneProduct);
  * @swagger
  * /products:
  *   get:
- *     summary: Retrieves a list of products
- *     description: Optional extended description in Markdown.
+ *     summary: Get a list of All products
+ *     description: Get a list of all products according to filters and sorting.
  *     tags:
  *       - Products
  *     parameters:
@@ -172,6 +181,12 @@ productRoute.get('/:id', productController.getOneProduct);
  *           enum: [1, -1]
  *           default: 1
  *         description: Sort direction, where 1 is ascending and -1 is descending.
+ *       - in: query
+ *         name: discount
+ *         schema:
+ *           type: integer
+ *           default: 0
+ *         description: discount filter. if 0 off.
  *     responses:
  *       200:
  *         description: A list of products.
