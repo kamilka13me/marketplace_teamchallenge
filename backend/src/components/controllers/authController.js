@@ -51,6 +51,18 @@ const authController = {
 
     res.status(200).send('Logged out successfully.');
   },
+
+  setToken: async (req, res) => {
+    const { token } = req.body;
+
+    if (!token) {
+      return res.status(400).send('Token is required');
+    }
+
+    res.cookie('token', token, { httpOnly: true });
+
+    return res.send('Token has been set in cookies');
+  },
 };
 
 export default authController;

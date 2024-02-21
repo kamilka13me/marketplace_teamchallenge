@@ -104,4 +104,33 @@ authRoute.post('/', authController.login);
 // checkPermission('logout'),
 authRoute.delete('/', authController.logout);
 
+/**
+ * @swagger
+ * /auth/set-token:
+ *   post:
+ *     summary: Sets a token in cookies
+ *     description: This endpoint accepts a token and sets it in HTTP cookies for further authentication processes.
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - token
+ *             properties:
+ *               token:
+ *                 type: string
+ *                 description: The JWT token to be stored in cookies for authentication.
+ *                 example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+ *     responses:
+ *       200:
+ *         description: Token has been successfully set in cookies.
+ *       400:
+ *         description: Token is required in the request body.
+ */
+
+authRoute.post('/set-token', authController.setToken);
+
 export default authRoute;
