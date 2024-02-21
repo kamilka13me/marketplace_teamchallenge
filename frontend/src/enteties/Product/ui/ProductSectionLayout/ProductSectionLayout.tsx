@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { Product } from '@/enteties/Product';
+import { Product, ProductCardSkeleton } from '@/enteties/Product';
 import ProductCard from '@/enteties/Product/ui/ProductCard/ProductCard';
 import arrowRight from '@/shared/assets/icons/arrow-right.svg?react';
 import { Icon } from '@/shared/ui/Icon';
@@ -16,17 +16,16 @@ interface Props {
 const ProductSectionLayout: FC<Props> = (props) => {
   const { title, products, isLoading } = props;
 
-  if (isLoading) {
-    return <>Loading</>;
-  }
-
   return (
     <div>
       <Text Tag="h2" text={title} bold className="mb-6" />
       <VStack gap="5">
-        {products.map((prod) => (
-          <ProductCard key={prod._id} product={prod} />
-        ))}
+        {isLoading
+          ? Array(4)
+              .fill(null)
+              // eslint-disable-next-line react/no-array-index-key
+              .map((_, i) => <ProductCardSkeleton key={i} />)
+          : products.map((prod) => <ProductCard key={prod._id} product={prod} />)}
       </VStack>
       <VStack justify="end" align="center" className="w-full mt-8 relative right-4">
         <a

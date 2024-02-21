@@ -16,7 +16,7 @@ i18n
   // init i18next
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
-    debug: false,
+    debug: import.meta.env.DEV,
     lng: 'ua',
     fallbackLng: 'ua',
 
