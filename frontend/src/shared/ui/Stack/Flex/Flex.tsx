@@ -71,7 +71,7 @@ const Flex: FC<FlexProps> = (props) => {
 
   return (
     <div
-      className={`flex
+      className={`flex flex-nowrap
         ${className} 
         ${directionClasses[direction]}
         ${alignClasses[align]}
