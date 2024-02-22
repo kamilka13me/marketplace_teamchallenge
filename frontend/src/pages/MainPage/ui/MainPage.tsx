@@ -2,14 +2,14 @@ import { FC } from 'react';
 
 import SliderWidget from '../../../widgets/Slider/ui/SliderWidget';
 
+import { ProductSectionLayout } from '@/enteties/Product';
+import { getUserAuthData, userActions } from '@/enteties/User';
+import { getUserByCredentials } from '@/features/userAuth/model/services/getUserByCredentials';
 import {
-  ProductSectionLayout,
   useGetNewProductsQuery,
   useGetPopularProductsQuery,
   useGetPromotionsProductsQuery,
-} from '@/enteties/Product';
-import { getUserAuthData, userActions } from '@/enteties/User';
-import { getUserByCredentials } from '@/features/userAuth/model/services/getUserByCredentials';
+} from '@/pages/ProductsPage';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';

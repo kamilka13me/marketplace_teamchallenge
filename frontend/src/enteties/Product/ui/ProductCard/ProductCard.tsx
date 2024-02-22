@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
@@ -10,7 +10,6 @@ import { $api } from '@/shared/api/api';
 import heart from '@/shared/assets/icons/heart.svg?react';
 import { getRouteProduct } from '@/shared/const/routes';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
-import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Image } from '@/shared/ui/Image';
 import Link from '@/shared/ui/Link/Link';
@@ -61,32 +60,15 @@ const ProductCard: FC<Props> = (props) => {
 
   const { _id, name, discount, images, price, quantity } = product;
 
-  const [inWishlist, setInWishlist] = useState(
-    localStorage.getItem('wishlist')?.split(',').includes(`${_id}`),
-  );
-
-  const [heartIsDisabled, setHeartIsDisabled] = useState(false);
-
   const user = useAppSelector(getUserAuthData);
 
-  const handleWishHeartClick = async () => {
-    try {
-      if (user) {
-        setHeartIsDisabled(true);
+  const handleWishHeartClick = async (id: string) => {
+    if (user) {
+      await $api.put(`/wishlist/${id}`);
 
-        // API calls within try-catch
-        await $api.put(`/wishlist/${_id}`);
-        const res = await $api.get(`/users/${user?._id}`);
+      const res = await $api.get(`/users/${user?._id}`);
 
-        localStorage.setItem('wishlist', res.data.user.wishlist);
-
-        setInWishlist(localStorage.getItem('wishlist')?.split(',').includes(`${_id}`));
-      }
-    } catch (error) {
-      // eslint-disable-next-line
-      console.error('Error in hWishHeartClick:', error);
-    } finally {
-      setHeartIsDisabled(false);
+      localStorage.setItem('wishlist', res.data.user.wishlist);
     }
   };
 
@@ -165,16 +147,12 @@ const ProductCard: FC<Props> = (props) => {
 
       {/*  Heart Icon */}
       <HStack className="absolute top-[24px] right-[24px]">
-        <Button
-          variant="clear"
-          disabled={heartIsDisabled}
-          onClick={() => handleWishHeartClick()}
-        >
-          <Icon
-            Svg={heart}
-            className={`${inWishlist ? 'fill-secondary' : '!stroke-2 !stroke-gray-900'}  ${heartIsDisabled && 'opacity-40'}`}
-          />
-        </Button>
+        <Icon
+          clickable
+          onClick={() => handleWishHeartClick(_id)}
+          Svg={heart}
+          className="!stroke-2 !stroke-gray-900"
+        />
       </HStack>
     </div>
   );
