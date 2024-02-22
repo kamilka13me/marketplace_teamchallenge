@@ -59,7 +59,14 @@ const productController = {
   // get all products
   getAllProducts: async (req, res) => {
     try {
-      const { limit = 10, offset = 0, name, category, discount = 0 } = req.query;
+      const {
+        limit = 10,
+        offset = 0,
+        name,
+        category,
+        discount = 0,
+        quantity = 1,
+      } = req.query;
       let { sortBy, sortDirection } = req.query;
 
       // Building a filter object based on name and category
@@ -74,6 +81,10 @@ const productController = {
       // eslint-disable-next-line eqeqeq
       if (discount != 0) {
         query.discount = { $gt: discount - 1 };
+      }
+      // eslint-disable-next-line eqeqeq
+      if (quantity != 0) {
+        query.quantity = { $gt: quantity - 1 };
       }
 
       // Create a sorting object
