@@ -10,6 +10,9 @@
 }
 
 .slick-dots {
+    display: flex !important;
+    gap: 8px !important;
+    justify-content: center !important;
     bottom: 30px !important;
 }
 
@@ -17,14 +20,13 @@
     display: none;
 }
 .slick-dots li {
-    width: 8px !important;
-    height: 0 !important;
-
+    width: unset !important;
+    height: 0!important;
+    margin: 0 !important;
 }
 
 .slick-dots li button {
     position: relative;
-    left: -3px !important;
     width: 6px !important;
     height: 6px !important;
     border-radius: 100%;
@@ -32,8 +34,6 @@
 }
 
 .slick-dots li.slick-active button {
-    position: relative;
-    left: -8px !important;
     width: 20px !important;
     height: 6px !important;
     border-radius: 24px;

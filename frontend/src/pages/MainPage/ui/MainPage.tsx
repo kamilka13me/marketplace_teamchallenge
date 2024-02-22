@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import SliderWidget from '../../../widgets/Slider/ui/SliderWidget';
+
 import {
   ProductSectionLayout,
   useGetNewProductsQuery,
@@ -14,17 +16,8 @@ import { Button } from '@/shared/ui/Button';
 import { Container } from '@/shared/ui/Container';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Sidebar } from '@/widgets/Sidebar';
-import SliderWidget from '@/widgets/Slider/ui/SliderWidget';
 
 interface Props {}
-
-const images: string[] = [
-  'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg',
-  'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg',
-  'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg',
-  'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg',
-  'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg',
-];
 
 const MainPage: FC<Props> = () => {
   const user = useAppSelector(getUserAuthData);
@@ -58,9 +51,9 @@ const MainPage: FC<Props> = () => {
       </div>
 
       <Container>
-        <VStack justify="between" className="">
+        <VStack justify="between" align="center">
           <Sidebar />
-          <SliderWidget images={images} />
+          <SliderWidget />
         </VStack>
         <HStack gap="6" className="mt-10">
           <ProductSectionLayout
