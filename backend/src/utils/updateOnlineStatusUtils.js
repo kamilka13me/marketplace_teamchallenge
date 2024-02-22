@@ -12,6 +12,7 @@ const updateOnlineStatus = async (userId, newSocketId, isOnlineNow) => {
       { upsert: true, new: true, returnDocument: 'after' },
     );
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.error('error update online status', err);
   }
 };

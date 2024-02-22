@@ -8,6 +8,7 @@ const controlPanelController = {
 
       res.status(200).json(banners);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(error);
       res.status(500).send('Server Error');
     }
@@ -35,6 +36,7 @@ const controlPanelController = {
         res.status(400).send('No images provided');
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(error);
       res.status(500).json({ message: error.message });
     }
@@ -51,6 +53,7 @@ const controlPanelController = {
       }
       res.status(200).json({ message: 'Banner deleted successfully' });
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(error);
       res.status(500).json({ message: error.message });
     }
@@ -62,6 +65,7 @@ const controlPanelController = {
       await Banner.deleteMany({});
       res.status(200).json({ message: 'All banners deleted successfully' });
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(error);
       res.status(500).json({ message: error.message });
     }

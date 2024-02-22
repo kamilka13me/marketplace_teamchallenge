@@ -31,12 +31,21 @@
  *              type: string
  *              format: uuid
  *           description: Array of product IDs that the user has viewed
+ *         wishlist:
+ *           type: array
+ *           items:
+ *              type: string
+ *              format: uuid
+ *           description: Array of product IDs that the user has viewed
  *       example:
  *         username: JohnDoe
  *         surname: Doe
  *         email: johndoe@example.com
  *         password: "123456"
  *         role: "5e9f8f8f8f8f8f8f8f8f8f8"
+ *         views: ["5e9f8f8f8f8f8f8f8f8f8f8","5e9f8f8f8f8f8f8f8f8f8f8"]
+ *         wishlist: ["5e9f8f8f8f8f8f8f8f8f8f8","5e9f8f8f8f8f8f8f8f8f8f8"]
+ *
  */
 
 import mongoose from 'mongoose';
@@ -66,6 +75,12 @@ const userSchema = new mongoose.Schema({
     ref: 'Role',
   },
   views: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product',
+    },
+  ],
+  wishlist: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product',
