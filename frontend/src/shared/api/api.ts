@@ -4,6 +4,6 @@ import Cookies from 'js-cookie';
 export const $api = axios.create({
   baseURL: process.env.API_URL,
   headers: {
-    Authorization: Cookies.get('token'),
+    Authorization: `Bearer ${Cookies.get('token')}`,
   },
 });
