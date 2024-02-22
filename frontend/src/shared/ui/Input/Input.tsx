@@ -31,6 +31,14 @@ type InputTypes =
   | 'url'
   | 'week';
 
+type VariantTypes = 'basic' | 'search';
+
+const variantClasses: Record<VariantTypes, string> = {
+  basic: 'mt-1 rounded-md border-gray-200 shadow-sm sm:text-sm',
+  search:
+    'outfit min-h-[38px] min-w-[443px] pl-5 bg-gray-700 text-gray-300 text-[14px] text-gray-900 font-normal focus:text-gray-300 outline-none rounded-l-lg',
+};
+
 interface Props extends HTMLInputProps {
   name: string;
   onBlur?: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -41,6 +49,7 @@ interface Props extends HTMLInputProps {
   readonly?: boolean;
   label?: string;
   error?: string;
+  variant: VariantTypes;
   className?: string;
 }
 
@@ -53,6 +62,7 @@ const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
     placeholder,
     onChange,
     onBlur,
+    variant,
     className,
     ...otherProps
   } = props;
@@ -67,7 +77,7 @@ const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
         onBlur={onBlur}
         ref={ref}
         placeholder={placeholder}
-        className={`border-2 border-gray-500 ${className}`}
+        className={`${variantClasses[variant]} ${className}`}
         {...otherProps}
       />
       {error && <p>{error}</p>}
