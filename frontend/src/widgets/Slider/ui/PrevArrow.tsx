@@ -13,7 +13,7 @@ const PrevArrow: FC<Props> = (props) => {
     <button
       type="button"
       className={`absolute left-4 top-1/2 -translate-y-1/2 h-[48px] w-[48px]
-      rounded-full z-50 flex justify-center items-center
+      rounded-full z-[5] flex justify-center items-center
       bg-gradient-to-r from-gray-100 to-gray-600
       hover:from-secondary hover:to-gray-600
       ${className?.includes('slick-disabled') && 'cursor-default !hover:from-gray-200 !from-gray-200'}
