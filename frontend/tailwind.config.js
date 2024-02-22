@@ -25,6 +25,7 @@ export default {
         'salmon-200': '#F35735',
         red: '#C13940',
         white: '#FFFFFF',
+        'white-200': '#FBFAFA',
         'gray-100': '#FFFFFF77',
         'gray-200': '#FFFFFF1D',
         'gray-300': '#A8A8A8',
