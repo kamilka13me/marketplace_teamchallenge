@@ -188,6 +188,12 @@ productRoute.get('/:id', viewsCounter(), productController.getOneProduct);
  *           type: integer
  *           default: 0
  *         description: discount filter. if 0 off.
+ *       - in: query
+ *         name: quantity
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: quantity filter. if 0 off.
  *     responses:
  *       200:
  *         description: A list of products.
