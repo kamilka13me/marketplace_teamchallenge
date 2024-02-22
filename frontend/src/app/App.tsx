@@ -6,6 +6,7 @@ import { MainLayout } from '@/shared/layouts/MainLayout';
 import MainLoaderLayout from '@/shared/layouts/MainLoaderLayout/MainLoaderLayout';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
+import { Header } from '@/widgets/Header';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -24,7 +25,7 @@ const App: FC = () => {
   return (
     <div>
       <Suspense fallback="">
-        <MainLayout header={<>Header</>} content={<AppRouter />} footer={<>Footer</>} />
+        <MainLayout header={<Header />} content={<AppRouter />} footer={<>Footer</>} />
       </Suspense>
     </div>
   );
