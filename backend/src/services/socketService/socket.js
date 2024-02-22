@@ -21,12 +21,14 @@ export default (server) => {
 
       setTimeout(() => {
         io.emit('message', `user id${userId}online`);
+        // eslint-disable-next-line no-console
         console.log('send');
       }, 2000);
     });
     socket.on('disconnect', () => {
       updateOnlineStatus(userId, socket.id, false);
       io.emit('message', `user id${userId}offline`);
+      // eslint-disable-next-line no-console
       console.log(`Користувач відключився: ${socket.id}`);
     });
   });

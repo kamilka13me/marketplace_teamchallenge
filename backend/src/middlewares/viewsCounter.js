@@ -55,6 +55,7 @@ const viewsCounter = () => {
       if (error instanceof jwt.JsonWebTokenError) {
         return res.status(401).send('Invalid token');
       }
+      // eslint-disable-next-line no-console
       console.error(error);
 
       return res.status(500).send('Internal Server Error');
