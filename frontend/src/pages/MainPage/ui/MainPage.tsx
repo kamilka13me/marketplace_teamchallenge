@@ -43,7 +43,7 @@ const MainPage: FC<Props> = () => {
   };
 
   return (
-    <div data-testid="MainPage">
+    <div data-testid="MainPage" className="mt-[100px]">
       <div>
         {user?.username}
         {!user ? (
