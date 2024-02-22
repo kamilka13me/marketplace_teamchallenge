@@ -46,6 +46,7 @@ const RegistrationForm: FC<Props> = () => {
       <Text Tag="h3" text="Sign up" />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
+          variant="basic"
           placeholder="Name"
           type="text"
           {...register('inputName', {
@@ -56,6 +57,7 @@ const RegistrationForm: FC<Props> = () => {
           error={errors?.inputName && errors?.inputName.message}
         />
         <Input
+          variant="basic"
           placeholder="Surname"
           type="text"
           {...register('inputSurname', {
@@ -66,6 +68,7 @@ const RegistrationForm: FC<Props> = () => {
           error={errors?.inputSurname && errors?.inputSurname.message}
         />
         <Input
+          variant="basic"
           placeholder="Email"
           type="text"
           {...register('inputEmail', {
@@ -80,6 +83,7 @@ const RegistrationForm: FC<Props> = () => {
           error={errors?.inputEmail && errors?.inputEmail.message}
         />
         <Input
+          variant="basic"
           placeholder="Phone"
           type="text"
           {...register('inputPhone', {
@@ -91,6 +95,7 @@ const RegistrationForm: FC<Props> = () => {
           error={errors?.inputPhone?.message}
         />
         <Input
+          variant="basic"
           placeholder="Password"
           type={passShown ? 'text' : 'password'}
           {...register('inputPass', {
@@ -100,12 +105,14 @@ const RegistrationForm: FC<Props> = () => {
           error={errors?.inputPass && errors?.inputPass.message}
         />
         <Input
+          variant="basic"
           name="showPass"
           onChange={onTogglePassVisibility}
           type="checkbox"
           label="Show password"
         />
         <Input
+          variant="basic"
           name="btnInput"
           type="submit"
           value="Sign up"
@@ -114,14 +121,11 @@ const RegistrationForm: FC<Props> = () => {
         />
         <p>
           Already have an
-          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <Link to="/"> account?</Link>
         </p>
       </form>
     </div>
   );
 };
-
-// Log in will be anchor
 
 export default RegistrationForm;
