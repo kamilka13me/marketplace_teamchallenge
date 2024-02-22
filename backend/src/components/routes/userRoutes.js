@@ -77,7 +77,8 @@ router.post('/', validateUser, userController.createUser);
  *             example:
  *               message: "Server error"
  */
-router.get('/:id', checkPermission('getUser'), userController.getUser);
+// checkPermission('getUser'),
+router.get('/:id', userController.getUser);
 
 /**
  * @openapi
@@ -100,7 +101,8 @@ router.get('/:id', checkPermission('getUser'), userController.getUser);
  *             example:
  *               message: "Server error"
  */
-router.get('/', checkPermission('getAllUsers'), userController.getAllUsers);
+//  checkPermission('getAllUsers'),
+router.get('/', userController.getAllUsers);
 
 /**
  * @openapi
@@ -136,7 +138,7 @@ router.get('/', checkPermission('getAllUsers'), userController.getAllUsers);
  *             example:
  *               message: "Error deleting user."
  */
-
-router.delete('/:id', checkPermission('deleteUser'), userController.deleteUser);
+// checkPermission('deleteUser'),
+router.delete('/:id', userController.deleteUser);
 
 export default router;

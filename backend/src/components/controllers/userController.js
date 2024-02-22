@@ -43,6 +43,7 @@ const userController = {
         surname: user.username,
         email: user.email,
         role: 'user',
+        wishlist: user.wishlist,
       };
 
       const token = generateToken(user._id);
@@ -94,6 +95,8 @@ const userController = {
         username: user.username,
         surname: user.username,
         email: user.email,
+        role: 'user',
+        wishlist: user.wishlist,
       };
 
       res.status(200).json({ user: userCallback });
