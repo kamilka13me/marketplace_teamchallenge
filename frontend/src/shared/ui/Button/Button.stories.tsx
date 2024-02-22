@@ -15,12 +15,12 @@ const meta = {
     },
     onClick: {
       type: 'function',
-      description: 'Function for hovering actions',
+      description: 'Function for click actions',
     },
     variant: {
       type: 'string',
       description: 'Button styling options',
-      options: ['empty', 'fill', 'outlined'],
+      options: ['search', 'fill', 'notFound'],
       control: { type: 'select' },
     },
     className: {
@@ -34,14 +34,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Empty: Story = {
-  args: {
-    children: 'Button',
-    onClick: () => {},
-    variant: 'empty',
-    className: '',
-  },
-};
 export const Fill: Story = {
   args: {
     children: 'Button',
@@ -49,13 +41,25 @@ export const Fill: Story = {
     variant: 'fill',
     className: '',
   },
+  name: 'Fill',
 };
 
-export const Outlined: Story = {
+export const NotFound: Story = {
   args: {
-    children: 'Button',
+    children: 'Main',
     onClick: () => {},
-    variant: 'outlined',
+    variant: 'notFound',
     className: '',
   },
+  name: 'NotFound',
+};
+
+export const Search: Story = {
+  args: {
+    children: 'X',
+    onClick: () => {},
+    variant: 'search',
+    className: '',
+  },
+  name: 'Search',
 };

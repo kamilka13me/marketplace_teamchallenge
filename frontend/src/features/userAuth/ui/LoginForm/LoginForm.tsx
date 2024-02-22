@@ -48,6 +48,7 @@ const LoginForm: FC<Props> = () => {
       <Text Tag="h3" text="Login" />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
+          variant="basic"
           placeholder="Email"
           type="text"
           {...register('inputEmail', {
@@ -62,6 +63,7 @@ const LoginForm: FC<Props> = () => {
           error={errors?.inputEmail && errors?.inputEmail.message}
         />
         <Input
+          variant="basic"
           placeholder="Password"
           type={passShown ? 'text' : 'password'}
           {...register('inputPassword', {
@@ -71,12 +73,14 @@ const LoginForm: FC<Props> = () => {
           error={errors?.inputPassword && errors?.inputPassword.message}
         />
         <Input
+          variant="basic"
           name="showPass"
           onChange={onTogglePassVisibility}
           type="checkbox"
           label="Show password"
         />
         <Input
+          variant="basic"
           value="Log In"
           name="btnInput"
           type="submit"
@@ -85,20 +89,15 @@ const LoginForm: FC<Props> = () => {
         />
         <p>
           Forgot
-          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <Link to="/"> Password?</Link>
         </p>
         <p>
           Don`t have an account?
-          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <Link to="/"> Sign up</Link>
         </p>
       </form>
     </div>
   );
 };
-
-// Password will be anchor
-// Sign up will be anchor
 
 export default LoginForm;
