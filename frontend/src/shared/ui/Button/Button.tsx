@@ -1,8 +1,9 @@
 import { ButtonHTMLAttributes, memo, ReactNode } from 'react';
 
-type VariantTypes = 'search' | 'fill' | 'notFound';
+type VariantTypes = 'search' | 'fill' | 'notFound' | 'clear';
 
 const variantClasses: Record<VariantTypes, string> = {
+  clear: '',
   search:
     'outfit bg-primary px-[14px] py-[9px] rounded-r-lg font-normal text-[14px] text-gray-900 duration-300 hover:bg-secondary  active:bg-primary disabled:opacity-40',
   fill: 'outfit bg-primary px-4 py-[7px] rounded-lg font-normal text-[14px] text-gray-900 duration-300 hover:bg-secondary active:bg-primary disabled:opacity-40',

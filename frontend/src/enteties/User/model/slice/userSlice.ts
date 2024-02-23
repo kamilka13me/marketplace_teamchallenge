@@ -54,6 +54,7 @@ export const userSlice = createSlice({
       $api.delete('/auth');
       state.authData = undefined;
       removeCookies();
+      localStorage.clear();
     },
   },
 });

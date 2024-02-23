@@ -1,7 +1,8 @@
 import { FC, Suspense, useEffect } from 'react';
 
 import { AppRouter } from '@/app/providers/router';
-import { getIsInitedAuthData, userActions } from '@/enteties/User';
+import { getIsInitedAuthData, getUserAuthData, userActions } from '@/enteties/User';
+import { $api } from '@/shared/api/api';
 import { MainLayout } from '@/shared/layouts/MainLayout';
 import MainLoaderLayout from '@/shared/layouts/MainLoaderLayout/MainLoaderLayout';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
@@ -12,11 +13,24 @@ const App: FC = () => {
   const dispatch = useAppDispatch();
   const inited = useAppSelector(getIsInitedAuthData);
 
+  const user = useAppSelector(getUserAuthData);
+
   useEffect(() => {
     if (!inited) {
       dispatch(userActions.initAuthData());
     }
-  }, [dispatch, inited]);
+    if (inited && user) {
+      $api
+        .get(`/users/${user?._id}`)
+        .then((res) => {
+          localStorage.setItem('wishlist', res.data.user.wishlist);
+        })
+        .catch((err) => {
+          // eslint-disable-next-line
+          console.error('Error in initWishlist:', err);
+        });
+    }
+  }, [dispatch, inited, user]);
 
   if (!inited) {
     return <MainLoaderLayout />;

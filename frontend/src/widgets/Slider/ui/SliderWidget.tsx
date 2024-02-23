@@ -1,48 +1,38 @@
 import { FC } from 'react';
 
-import Slider from 'react-slick';
+import useAxios from '@/shared/lib/hooks/useAxios';
+import { Skeleton } from '@/shared/ui/Skeleton';
+import { Slider } from '@/shared/ui/Slider';
 
-import NextArrow from './NextArrow';
-import PrevArrow from './PrevArrow';
-
-import { Image } from '@/shared/ui/Image';
-
-interface Props {
-  images: string[];
+interface ImageData {
+  _id: string;
+  image: string;
 }
 
-const SliderWidget: FC<Props> = (props) => {
-  const { images } = props;
+const SliderWidget: FC = () => {
+  const { data, error, isLoading } = useAxios<ImageData[]>('/control-panel/banner');
 
-  const settings = {
-    lazyRender: true,
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    draggable: false,
-    adaptiveHeight: true,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
+  const renderContent = () => {
+    if (isLoading) {
+      return <Skeleton width="979px" height="504px" className="!rounded-2xl" />;
+    }
+
+    if (error) {
+      return <p>Error: {error.message}</p>;
+    }
+
+    if (!data || data.length === 0) {
+      return <p>No data to display.</p>;
+    }
+
+    return (
+      <div className="max-w-[979px] h-[504px] w-full">
+        <Slider images={data} />
+      </div>
+    );
   };
 
-  return (
-    <div className="w-[979px]">
-      <Slider {...settings} className="">
-        {images.map((item, i) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <div key={i}>
-            <Image
-              src={item}
-              alt="fsdas"
-              className="max-w-[1440px] max-h-[504px] w-full h-full rounded-2xl object-cover"
-            />
-          </div>
-        ))}
-      </Slider>
-    </div>
-  );
+  return <>{renderContent()}</>;
 };
 
 export default SliderWidget;

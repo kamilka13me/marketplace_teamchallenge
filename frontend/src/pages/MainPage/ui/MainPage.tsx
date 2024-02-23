@@ -1,32 +1,29 @@
 import { FC } from 'react';
 
+import { useNavigate } from 'react-router-dom';
+
+import SliderWidget from '../../../widgets/Slider/ui/SliderWidget';
+
+import { ProductSectionLayout } from '@/enteties/Product';
+import { getUserAuthData, userActions } from '@/enteties/User';
+import { getUserByCredentials } from '@/features/userAuth/model/services/getUserByCredentials';
 import {
-  ProductSectionLayout,
   useGetNewProductsQuery,
   useGetPopularProductsQuery,
   useGetPromotionsProductsQuery,
-} from '@/enteties/Product';
-import { getUserAuthData, userActions } from '@/enteties/User';
-import { getUserByCredentials } from '@/features/userAuth/model/services/getUserByCredentials';
+} from '@/pages/ProductsPage';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Container } from '@/shared/ui/Container';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Sidebar } from '@/widgets/Sidebar';
-import SliderWidget from '@/widgets/Slider/ui/SliderWidget';
 
 interface Props {}
 
-const images: string[] = [
-  'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg',
-  'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg',
-  'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg',
-  'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg',
-  'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg',
-];
-
 const MainPage: FC<Props> = () => {
+  const navigate = useNavigate();
+
   const user = useAppSelector(getUserAuthData);
   const newProduct = useGetNewProductsQuery({});
   const popularProduct = useGetPopularProductsQuery({});
@@ -40,10 +37,11 @@ const MainPage: FC<Props> = () => {
         password: '12345678',
       }),
     );
+    navigate(0);
   };
 
   return (
-    <div data-testid="MainPage" className="mt-[100px]">
+    <div data-testid="MainPage" className="mt-[136px]">
       <div>
         {user?.username}
         {!user ? (
@@ -51,16 +49,21 @@ const MainPage: FC<Props> = () => {
             GET
           </Button>
         ) : (
-          <Button variant="fill" onClick={() => dispatch(userActions.logout())}>
+          <Button
+            variant="fill"
+            onClick={() => {
+              dispatch(userActions.logout());
+              navigate(0);
+            }}
+          >
             Log out
           </Button>
         )}
       </div>
-
       <Container>
-        <VStack justify="between" className="">
+        <VStack justify="between" align="center">
           <Sidebar />
-          <SliderWidget images={images} />
+          <SliderWidget />
         </VStack>
         <HStack gap="6" className="mt-10">
           <ProductSectionLayout
