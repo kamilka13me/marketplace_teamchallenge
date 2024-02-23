@@ -110,6 +110,7 @@ app.use('/api/wishlist', wishlistRoute);
 
 app.use('/static/products', express.static(path.join(__dirname, 'public/uploads')));
 app.use('/static/banners', express.static(path.join(__dirname, 'public/banners')));
+app.use('/static/category', express.static(path.join(__dirname, 'public/category')));
 
 server.listen(config.port, async () => {
   // eslint-disable-next-line no-console
