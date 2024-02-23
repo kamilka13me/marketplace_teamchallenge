@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import {
-  getProductsPageHasMore,
   getProductsPageIsLoading,
-  getProductsPageNum,
-} from '@/pages/ProductsPage/model/productsPageSelectors';
+  getProductsPageLimit,
+  getProductsPageOffset,
+} from '@/pages/ProductsPage/model/selectors/productsPageSelectors';
 import {
   fetchProductsList,
   ThunkConfig,
@@ -15,12 +15,15 @@ export const fetchNextProductsPage = createAsyncThunk<void, void, ThunkConfig<st
   'articlesPage/fetchNextArticlesPage',
   async (_, thunkApi) => {
     const { getState, dispatch } = thunkApi;
-    const hasMore = getProductsPageHasMore(getState());
-    const page = getProductsPageNum(getState());
+    const offset = getProductsPageOffset(getState());
+    const limit = getProductsPageLimit(getState());
     const isLoading = getProductsPageIsLoading(getState());
 
-    if (hasMore && !isLoading) {
-      dispatch(productsPageActions.setPage(page + 1));
+    if (!isLoading) {
+      const currentPage = Math.ceil(offset / limit) + 1;
+      const newOffset = currentPage * limit;
+
+      dispatch(productsPageActions.setOffset(newOffset));
       dispatch(fetchProductsList({}));
     }
   },

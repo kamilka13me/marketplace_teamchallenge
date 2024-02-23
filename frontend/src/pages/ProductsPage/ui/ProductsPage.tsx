@@ -1,4 +1,13 @@
 import { FC } from 'react';
+//
+// import { useSearchParams } from 'react-router-dom';
+//
+// import { getProductsPageIsLoading } from '@/pages/ProductsPage/model/selectors/productsPageSelectors';
+// import { fetchNextProductsPage } from '@/pages/ProductsPage/model/services/fetchNextProductsPage';
+// import { initArticlesPage } from '@/pages/ProductsPage/model/services/initProductsPage';
+// import { getProducts } from '@/pages/ProductsPage/model/slices/productsPageSlice';
+// import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
+// import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 
 interface Props {}
 
@@ -9,20 +18,18 @@ const ProductsPage: FC<Props> = () => {
   // const isLoading = useAppSelector(getProductsPageIsLoading);
   //
   // const [searchParams] = useSearchParams();
-
+  //
   // useEffect(() => {
-  //   // @ts-ignore
+  //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //   // @ts-expect-error
   //   dispatch(initArticlesPage(searchParams));
   // }, []);
   //
-  // const onLoadNextPart = useCallback(() => {
-  //   // @ts-ignore
+  // const onLoadNextPart = () => {
+  //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //   // @ts-expect-error
   //   dispatch(fetchNextProductsPage());
-  // }, [dispatch]);
-  //
-  // useEffect(() => {
-  //   console.log(products);
-  // }, [isLoading]);
+  // };
 
   return <div className="">ProductsPage</div>;
 };

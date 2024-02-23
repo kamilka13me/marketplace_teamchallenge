@@ -13,10 +13,11 @@ interface Props {
   title: string;
   products: Product[];
   isLoading: boolean;
+  setSearchParams: () => void;
 }
 
 const ProductSectionLayout: FC<Props> = (props) => {
-  const { title, products, isLoading } = props;
+  const { title, products, isLoading, setSearchParams } = props;
 
   return (
     <div className="w-full">
@@ -33,6 +34,7 @@ const ProductSectionLayout: FC<Props> = (props) => {
         <Link
           to={getRouteProducts()}
           className="group relative text-[24px] tracking-[0.16px] leading-[18px]"
+          onClick={setSearchParams}
         >
           Дивитись більше
           <div className="absolute -z-[1] w-[56px] h-[56px] -top-[15px] -right-[40px] group-hover:-top-[4px] group-hover:-right-[28px] bg-secondary rounded-full cursor-pointer origin-center group-hover:w-8 group-hover:h-8 duration-300" />

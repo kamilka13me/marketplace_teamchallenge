@@ -8,12 +8,11 @@ import {
   getProductsPageDiscount,
   getProductsPageLimit,
   getProductsPageName,
-  getProductsPageNum,
   getProductsPageOffset,
   getProductsPageQuantity,
   getProductsPageSortBy,
   getProductsPageSortDirection,
-} from '@/pages/ProductsPage/model/productsPageSelectors';
+} from '@/pages/ProductsPage/model/selectors/productsPageSelectors';
 import { $api } from '@/shared/api/api';
 import { addQueryParams } from '@/shared/lib/url/addQueryParams';
 
@@ -40,7 +39,6 @@ export const fetchProductsList = createAsyncThunk<
   const limit = getProductsPageLimit(getState());
   const name = getProductsPageName(getState());
   const sortBy = getProductsPageSortBy(getState());
-  const page = getProductsPageNum(getState());
   const discount = getProductsPageDiscount(getState());
   const category = getProductsPageCategory(getState());
   const offset = getProductsPageOffset(getState());
@@ -49,21 +47,21 @@ export const fetchProductsList = createAsyncThunk<
 
   try {
     addQueryParams({
+      limit: limit.toString(),
+      offset: offset.toString(),
       name,
-      discount,
       category,
-      offset,
-      quantity,
-      sortDirection,
       sortBy,
+      sortDirection,
+      discount,
+      quantity,
     });
     const response = await $api.get<Product[]>('/products', {
       params: {
-        _page: page,
-        _limit: limit,
+        offset,
+        limit,
         name,
         category,
-        offset,
         quantity,
         sortDirection,
         sortBy,

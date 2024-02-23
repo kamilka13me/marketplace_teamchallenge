@@ -21,17 +21,18 @@ export const productsPageSlice = createSlice({
     isLoading: false,
     error: undefined,
 
+    // pagination
+    limit: 3,
+    offset: 0,
+
     name: '',
     sortBy: '',
-    page: 1,
-    hasMore: true,
-    _inited: false,
-    limit: 3,
     discount: '0',
     category: '',
-    offset: '0',
     quantity: '1',
     sortDirection: '1',
+
+    _inited: false,
   }),
   reducers: {
     setName: (state, action: PayloadAction<string>) => {
@@ -40,16 +41,13 @@ export const productsPageSlice = createSlice({
     setSortBy: (state, action: PayloadAction<string>) => {
       state.sortBy = action.payload;
     },
-    setPage: (state, action: PayloadAction<number>) => {
-      state.page = action.payload;
-    },
     setDiscount: (state, action: PayloadAction<string>) => {
       state.discount = action.payload;
     },
     setCategory: (state, action: PayloadAction<string>) => {
       state.category = action.payload;
     },
-    setOffset: (state, action: PayloadAction<string>) => {
+    setOffset: (state, action: PayloadAction<number>) => {
       state.offset = action.payload;
     },
     setQuantity: (state, action: PayloadAction<string>) => {
@@ -57,6 +55,14 @@ export const productsPageSlice = createSlice({
     },
     setSortDirection: (state, action: PayloadAction<'1' | '-1'>) => {
       state.sortDirection = action.payload;
+    },
+    clearSortParams: (state) => {
+      state.name = '';
+      state.sortBy = '';
+      state.discount = '0';
+      state.category = '';
+      state.quantity = '1';
+      state.sortDirection = '1';
     },
     initState: (state) => {
       state._inited = true;
@@ -74,7 +80,6 @@ export const productsPageSlice = createSlice({
       })
       .addCase(fetchProductsList.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.hasMore = action.payload.length >= state.limit;
 
         if (action.meta.arg.replace) {
           productsAdapter.setAll(state, action.payload);

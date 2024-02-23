@@ -7,11 +7,9 @@ export interface ProductsPageSchema extends EntityState<Product, string> {
   error?: string;
 
   // pagination
-  page: number;
+  offset: number;
   limit: number;
-  hasMore: boolean;
   // filters
-  offset: string;
   name: string;
   category: string;
   sortBy: string;
