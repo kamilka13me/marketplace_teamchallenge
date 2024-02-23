@@ -3,13 +3,22 @@ import Category from '../../models/Category.js';
 const categoryController = {
   createCategory: async (req, res) => {
     try {
-      const { name, image, description, parentId } = req.body;
-      const category = new Category({ name, image, description, parentId });
+      const { images, description, name, parentId = null } = req.body;
+      const category = {
+        name,
+        description,
+        parentId,
+        image: `/static/category/${images}`,
+      };
 
-      await category.save();
-      res.status(201).json(category);
+      const newCategory = new Category(category);
+      const saveCategory = await newCategory.save();
+
+      res.status(201).json({ message: 'New category created', category: saveCategory });
     } catch (error) {
-      res.status(400).json({ message: error.message });
+      // eslint-disable-next-line no-console
+      console.error(error);
+      res.status(500).json({ message: error.message });
     }
   },
 
@@ -44,6 +53,8 @@ const categoryController = {
 
       res.json(rootCategoriesWithNested);
     } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
       res.status(500).send(error);
     }
   },

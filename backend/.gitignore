@@ -9,7 +9,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-uploads/
+
 public/
 
 node_modules
