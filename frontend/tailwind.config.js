@@ -27,6 +27,8 @@ export default {
         red: '#C13940',
         white: '#FFFFFF',
         'white-200': '#FBFAFA',
+        'white-300': '#F4F4F4',
+        'white-400': '#C6C6C6',
         'gray-100': '#FFFFFF77',
         'gray-200': '#FFFFFF1D',
         'gray-300': '#A8A8A8',
