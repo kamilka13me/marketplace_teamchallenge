@@ -10,6 +10,7 @@ import logo from '@/shared/assets/icons/logo.svg?react';
 import person from '@/shared/assets/icons/person.svg?react';
 import search from '@/shared/assets/icons/search.svg?react';
 import ua from '@/shared/assets/icons/ua.svg?react';
+import { getRouteMain } from '@/shared/const/routes';
 import { Button } from '@/shared/ui/Button';
 import { Container } from '@/shared/ui/Container';
 import { Icon } from '@/shared/ui/Icon';
@@ -45,13 +46,17 @@ const Header: FC<Props> = () => {
     <header className="fixed top-0 left-0 right-0 z-10 bg-gray-900">
       <Container>
         <VStack align="center" justify="between" className="py-4">
-          <Link to="/">
+          <Link to={getRouteMain()}>
             <Icon Svg={logo} width={202} height={68} />
           </Link>
 
-          <Button variant="fill" className="ml-[131px]" onClick={onAllProductsClick}>
+          <Button
+            variant="fill"
+            className="ml-[131px] all-products-button"
+            onClick={onAllProductsClick}
+          >
             <VStack align="center" gap="1">
-              <Icon Svg={showModal ? allProducts : cancel} width={24} height={24} />
+              <Icon Svg={showModal ? cancel : allProducts} width={24} height={24} />
               {t('Всі товари')}
             </VStack>
           </Button>
@@ -123,7 +128,7 @@ const Header: FC<Props> = () => {
           </VStack>
         </VStack>
 
-        <ModalCategory showModalCategory={showModal} />
+        <ModalCategory activeModal={showModal} />
       </Container>
     </header>
   );
