@@ -23,8 +23,10 @@ interface Props {}
 
 const Header: FC<Props> = () => {
   const { t, i18n } = useTranslation();
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [inputData, setInputData] = useState<string>('');
+
+  const counterWishlist: string = '2';
 
   const onAllProductsClick = (): void => {
     setShowModal(!showModal);
@@ -95,13 +97,33 @@ const Header: FC<Props> = () => {
             </Link>
 
             <Link to="/" className="group duration-300 text-amber-50 w-[86px]">
-              <HStack align="center" className="gap-1.5 group-hover:text-primary">
+              <HStack
+                align="center"
+                className="relative gap-1.5 group-hover:text-primary"
+              >
                 <Icon
                   Svg={like}
                   width={28}
                   height={28}
                   className="stroke-white group-hover:stroke-primary"
                 />
+                <div
+                  className={
+                    counterWishlist < '1'
+                      ? 'hidden'
+                      : 'absolute right-[29px] flex justify-center content-center bg-primary border-[1.5px] border-gray-900 rounded-full'
+                  }
+                >
+                  <span
+                    className={
+                      counterWishlist < '1'
+                        ? 'hidden'
+                        : 'outfit font-normal min-w-[10px] m-[2px] text-center text-black text-[10px] leading-[10px]'
+                    }
+                  >
+                    {counterWishlist}
+                  </span>
+                </div>
                 {t('Список')}
               </HStack>
             </Link>
