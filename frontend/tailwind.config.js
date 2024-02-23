@@ -18,6 +18,7 @@ export default {
         secondary: '#FFDE00',
         'secondary-200': '#F8DA2C',
         black: '#000000',
+        'black-transparent-50': 'rgba(0, 0, 0, 0.5)',
         green: '#32C42F',
         gray: '#8D8D8D',
         orange: '#D75810',

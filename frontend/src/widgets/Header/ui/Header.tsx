@@ -10,6 +10,7 @@ import logo from '@/shared/assets/icons/logo.svg?react';
 import person from '@/shared/assets/icons/person.svg?react';
 import search from '@/shared/assets/icons/search.svg?react';
 import ua from '@/shared/assets/icons/ua.svg?react';
+import { getRouteMain } from '@/shared/const/routes';
 import { Button } from '@/shared/ui/Button';
 import { Container } from '@/shared/ui/Container';
 import { Icon } from '@/shared/ui/Icon';
@@ -22,8 +23,10 @@ interface Props {}
 
 const Header: FC<Props> = () => {
   const { t, i18n } = useTranslation();
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [inputData, setInputData] = useState<string>('');
+
+  const counterWishlist: string = '2';
 
   const onAllProductsClick = (): void => {
     setShowModal(!showModal);
@@ -45,13 +48,17 @@ const Header: FC<Props> = () => {
     <header className="fixed top-0 left-0 right-0 z-10 bg-gray-900">
       <Container>
         <VStack align="center" justify="between" className="py-4">
-          <Link to="/">
+          <Link to={getRouteMain()}>
             <Icon Svg={logo} width={202} height={68} />
           </Link>
 
-          <Button variant="fill" className="ml-[131px]" onClick={onAllProductsClick}>
+          <Button
+            variant="fill"
+            className="ml-[131px] all-products-button"
+            onClick={onAllProductsClick}
+          >
             <VStack align="center" gap="1">
-              <Icon Svg={showModal ? allProducts : cancel} width={24} height={24} />
+              <Icon Svg={showModal ? cancel : allProducts} width={24} height={24} />
               {t('Всі товари')}
             </VStack>
           </Button>
@@ -90,13 +97,33 @@ const Header: FC<Props> = () => {
             </Link>
 
             <Link to="/" className="group duration-300 text-amber-50 w-[86px]">
-              <HStack align="center" className="gap-1.5 group-hover:text-primary">
+              <HStack
+                align="center"
+                className="relative gap-1.5 group-hover:text-primary"
+              >
                 <Icon
                   Svg={like}
                   width={28}
                   height={28}
                   className="stroke-white group-hover:stroke-primary"
                 />
+                <div
+                  className={
+                    counterWishlist < '1'
+                      ? 'hidden'
+                      : 'absolute right-[29px] flex justify-items-center items-center bg-primary border-[1.5px] border-gray-900 rounded-full'
+                  }
+                >
+                  <span
+                    className={
+                      counterWishlist < '1'
+                        ? 'hidden'
+                        : 'outfit font-normal min-w-[10px] m-[2px] text-center text-black text-[10px] leading-[10px]'
+                    }
+                  >
+                    {counterWishlist}
+                  </span>
+                </div>
                 {t('Список')}
               </HStack>
             </Link>
@@ -123,7 +150,7 @@ const Header: FC<Props> = () => {
           </VStack>
         </VStack>
 
-        <ModalCategory showModalCategory={showModal} />
+        <ModalCategory activeModal={showModal} />
       </Container>
     </header>
   );
