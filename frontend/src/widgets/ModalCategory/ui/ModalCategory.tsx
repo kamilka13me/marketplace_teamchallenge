@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
-import { HStack, VStack } from '@/shared/ui/Stack';
-import { Text } from '@/shared/ui/Text';
+import { VStack } from '@/shared/ui/Stack';
+import { CategorySection } from '@/widgets/ModalCategory';
 import { Sidebar } from '@/widgets/Sidebar';
 
 interface Props {
@@ -29,97 +29,10 @@ const ModalCategory: FC<Props> = (props: Props) => {
         <VStack>
           <Sidebar />
 
-          <HStack gap="2" className="ml-5 mr-[73px]">
-            <Text
-              Tag="p"
-              text="Популярні товари"
-              className="font-semibold size text-[18px]"
-            />
-            {Array(10)
-              .fill(null)
-              .map((item, i) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <VStack key={i} justify="between" align="center" className="w-full">
-                  <VStack gap="2" align="center">
-                    <a
-                      className=" text-[18px] leading-[40px]"
-                      href="/marketplace_teamchallenge/frontend/public"
-                    >
-                      Lorem ipsum dolor
-                    </a>
-                  </VStack>
-                </VStack>
-              ))}
-          </HStack>
-
-          <HStack gap="2" className="mr-[73px]">
-            <Text
-              Tag="p"
-              text="Популярні товари"
-              className="font-semibold size text-[18px]"
-            />
-            {Array(10)
-              .fill(null)
-              .map((item, i) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <VStack key={i} justify="between" align="center" className="w-full">
-                  <VStack gap="2" align="center">
-                    <a
-                      className=" text-[18px] leading-[40px]"
-                      href="/marketplace_teamchallenge/frontend/public"
-                    >
-                      Lorem ipsum dolor
-                    </a>
-                  </VStack>
-                </VStack>
-              ))}
-          </HStack>
-
-          <HStack gap="2" className="mr-[73px]">
-            <Text
-              Tag="p"
-              text="Популярні товари"
-              className="font-semibold size text-[18px]"
-            />
-            {Array(10)
-              .fill(null)
-              .map((item, i) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <VStack key={i} justify="between" align="center" className="w-full">
-                  <VStack gap="2" align="center">
-                    <a
-                      className=" text-[18px] leading-[40px]"
-                      href="/marketplace_teamchallenge/frontend/public"
-                    >
-                      Lorem ipsum dolor
-                    </a>
-                  </VStack>
-                </VStack>
-              ))}
-          </HStack>
-
-          <HStack gap="2" className="">
-            <Text
-              Tag="p"
-              text="Популярні товари"
-              className="font-semibold size text-[18px]"
-            />
-            {Array(10)
-              .fill(null)
-              .map((item, i) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <VStack key={i} justify="between" align="center" className="w-full">
-                  <VStack gap="2" align="center">
-                    <a
-                      className=" text-[18px] leading-[40px]"
-                      href="/marketplace_teamchallenge/frontend/public"
-                    >
-                      Lorem ipsum dolor
-                    </a>
-                  </VStack>
-                </VStack>
-              ))}
-          </HStack>
+          <CategorySection title="Популярні товари" className="ml-5 mr-[73px]" />
+          <CategorySection title="Ноутбуки" className="mr-[73px]" />
+          <CategorySection title="Телефони" className="mr-[73px]" />
+          <CategorySection title="Аксесуари" />
         </VStack>
       </div>
     </div>
