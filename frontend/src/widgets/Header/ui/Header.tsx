@@ -111,7 +111,7 @@ const Header: FC<Props> = () => {
                   className={
                     counterWishlist < '1'
                       ? 'hidden'
-                      : 'absolute right-[29px] flex justify-center content-center bg-primary border-[1.5px] border-gray-900 rounded-full'
+                      : 'absolute right-[29px] flex justify-items-center items-center bg-primary border-[1.5px] border-gray-900 rounded-full'
                   }
                 >
                   <span
