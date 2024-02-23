@@ -20,12 +20,16 @@ const meta = {
     variant: {
       type: 'string',
       description: 'Button styling options',
-      options: ['search', 'fill', 'notFound'],
+      options: ['search', 'fill', 'notFound', 'login'],
       control: { type: 'select' },
     },
     className: {
       type: 'string',
       description: 'Description of additional button classes',
+    },
+    disabled: {
+      type: 'boolean',
+      description: 'The attribute disables or enables the button',
     },
   },
   tags: ['autodocs'],
@@ -62,4 +66,15 @@ export const Search: Story = {
     className: '',
   },
   name: 'Search',
+};
+
+export const Login: Story = {
+  args: {
+    children: 'Sign Up',
+    onClick: () => {},
+    variant: 'login',
+    className: '',
+    disabled: false,
+  },
+  name: 'Login',
 };
