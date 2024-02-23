@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, FormEventHandler, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
@@ -32,6 +32,14 @@ const Header: FC<Props> = () => {
     setShowModal(!showModal);
   };
 
+  const onSubmitSearch: FormEventHandler<HTMLFormElement> = (
+    e: ChangeEvent<HTMLFormElement>,
+  ) => {
+    e.preventDefault();
+
+    setInputData('');
+  };
+
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>): void => {
     setInputData(e.target.value);
   };
@@ -63,7 +71,11 @@ const Header: FC<Props> = () => {
             </VStack>
           </Button>
 
-          <VStack className="ml-6 mr-5 hover:drop-shadow-custom-primary duration-300">
+          <form
+            onSubmit={onSubmitSearch}
+            className="flex flex-nowrap items-center ml-6 mr-5 hover:drop-shadow-custom-primary duration-300"
+            autoComplete="off"
+          >
             <Input
               name="searchInput"
               type="text"
@@ -81,7 +93,7 @@ const Header: FC<Props> = () => {
             >
               <Icon Svg={search} width={20} height={20} />
             </Button>
-          </VStack>
+          </form>
 
           <VStack gap="1" className="mr-[75px]">
             <Link to="/" className="group duration-300 text-amber-50 w-[86px]">
