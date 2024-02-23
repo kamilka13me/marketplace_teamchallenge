@@ -3,18 +3,28 @@ import Category from '../../models/Category.js';
 const categoryController = {
   createCategory: async (req, res) => {
     try {
-      const { images, description, name, parentId = null } = req.body;
-      const category = {
-        name,
-        description,
-        parentId,
-        image: `/static/category/${images}`,
-      };
+      const { images, description, name } = req.body;
+      let { parentId } = req.body;
 
-      const newCategory = new Category(category);
-      const saveCategory = await newCategory.save();
+      if (!parentId) {
+        parentId = null;
+      }
 
-      res.status(201).json({ message: 'New category created', category: saveCategory });
+      if (images && description && name) {
+        const category = {
+          name,
+          description,
+          parentId,
+          image: `/static/category/${images}`,
+        };
+
+        const newCategory = new Category(category);
+        const saveCategory = await newCategory.save();
+
+        res.status(201).json({ message: 'New category created', category: saveCategory });
+      } else {
+        res.status(400).json({ message: 'Bad Request: Missing required fields' });
+      }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);

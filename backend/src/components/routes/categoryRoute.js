@@ -51,6 +51,14 @@ const categoryRoute = express.Router();
  *                   $ref: '#/components/schemas/Category'
  *       400:
  *         description: Invalid request data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Bad Request: Missing required fields"
  *       500:
  *         description: Internal server error
  */
