@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import { useNavigate } from 'react-router-dom';
+
 import SliderWidget from '../../../widgets/Slider/ui/SliderWidget';
 
 import { ProductSectionLayout } from '@/enteties/Product';
@@ -20,6 +22,8 @@ import { Sidebar } from '@/widgets/Sidebar';
 interface Props {}
 
 const MainPage: FC<Props> = () => {
+  const navigate = useNavigate();
+
   const user = useAppSelector(getUserAuthData);
   const newProduct = useGetNewProductsQuery({});
   const popularProduct = useGetPopularProductsQuery({});
@@ -33,10 +37,11 @@ const MainPage: FC<Props> = () => {
         password: '12345678',
       }),
     );
+    navigate(0);
   };
 
   return (
-    <div data-testid="MainPage" className="mt-[100px]">
+    <div data-testid="MainPage" className="mt-[136px]">
       <div>
         {user?.username}
         {!user ? (
@@ -44,12 +49,17 @@ const MainPage: FC<Props> = () => {
             GET
           </Button>
         ) : (
-          <Button variant="fill" onClick={() => dispatch(userActions.logout())}>
+          <Button
+            variant="fill"
+            onClick={() => {
+              dispatch(userActions.logout());
+              navigate(0);
+            }}
+          >
             Log out
           </Button>
         )}
       </div>
-
       <Container>
         <VStack justify="between" align="center">
           <Sidebar />
