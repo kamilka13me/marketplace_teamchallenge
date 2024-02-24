@@ -7,6 +7,7 @@ import { MainLayout } from '@/shared/layouts/MainLayout';
 import MainLoaderLayout from '@/shared/layouts/MainLoaderLayout/MainLoaderLayout';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
+import { Footer } from '@/widgets/Footer';
 import { Header } from '@/widgets/Header';
 
 const App: FC = () => {
@@ -39,7 +40,7 @@ const App: FC = () => {
   return (
     <div>
       <Suspense fallback="">
-        <MainLayout header={<Header />} content={<AppRouter />} footer={<>Footer</>} />
+        <MainLayout header={<Header />} content={<AppRouter />} footer={<Footer />} />
       </Suspense>
     </div>
   );

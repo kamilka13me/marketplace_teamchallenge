@@ -2,9 +2,9 @@ import { FC } from 'react';
 
 export type TextAlign = 'right' | 'left' | 'center';
 
-export type HeaderTagType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'p' | 'span';
+export type HeaderTagType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span';
 
-export type TextColors = 'primary' | 'gray' | 'orange' | 'red' | 'green';
+export type TextColors = 'primary' | 'gray' | 'orange' | 'red' | 'green' | 'white';
 
 export type TextFonts = 'ibm-plex-sans' | 'outfit';
 
@@ -14,6 +14,7 @@ const TextColor: Record<TextColors, string> = {
   orange: 'text-orange',
   red: 'text-red',
   green: 'text-green',
+  white: 'text-white',
 };
 
 const TextAlignClass: Record<TextAlign, string> = {
@@ -33,6 +34,7 @@ const fontSize: Record<HeaderTagType, string> = {
   h3: 'text-[24px] leading-[18px]',
   h4: 'text-[20px]',
   h5: 'text-[18px] leading-[40px]',
+  h6: 'text-[16px]',
   p: 'text-md leading-[40px]',
   span: 'text-md leading-[40px]',
 };
