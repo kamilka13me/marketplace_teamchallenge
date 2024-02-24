@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://alicesocial.pp.ua:3001/"
+      "destination": "https://alicesocial.pp.ua:3001/api/:path*"
     }
   ]
 }
