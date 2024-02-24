@@ -3,7 +3,7 @@ import { FC, SVGProps, VFC } from 'react';
 type SvgProps = Omit<SVGProps<SVGSVGElement>, 'onClick'>;
 
 interface Props extends SvgProps {
-  Svg: VFC<SVGProps<SVGSVGElement>>;
+  Svg: VFC<SVGProps<SVGSVGElement>> | string;
   className?: string;
 }
 
