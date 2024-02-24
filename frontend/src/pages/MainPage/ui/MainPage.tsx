@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import { useNavigate } from 'react-router-dom';
+
 import SliderWidget from '../../../widgets/Slider/ui/SliderWidget';
 
 import { ProductSectionLayout } from '@/enteties/Product';
@@ -25,6 +27,8 @@ const MainPage: FC<Props> = () => {
   const newProduct = useGetNewProductsQuery({});
   const popularProduct = useGetPopularProductsQuery({});
   const promotionsProduct = useGetPromotionsProductsQuery({});
+
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
 
@@ -53,6 +57,7 @@ const MainPage: FC<Props> = () => {
         password: '12345678',
       }),
     );
+    navigate(0);
   };
 
   return (
@@ -68,6 +73,7 @@ const MainPage: FC<Props> = () => {
             variant="fill"
             onClick={() => {
               dispatch(userActions.logout());
+              navigate(0);
             }}
           >
             Log out
