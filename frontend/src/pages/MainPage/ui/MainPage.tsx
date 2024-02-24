@@ -12,6 +12,7 @@ import {
   useGetPopularProductsQuery,
   useGetPromotionsProductsQuery,
 } from '@/pages/ProductsPage';
+import { productsPageActions } from '@/pages/ProductsPage/model/slices/productsPageSlice';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
@@ -22,14 +23,33 @@ import { Sidebar } from '@/widgets/Sidebar';
 interface Props {}
 
 const MainPage: FC<Props> = () => {
-  const navigate = useNavigate();
-
   const user = useAppSelector(getUserAuthData);
   const newProduct = useGetNewProductsQuery({});
   const popularProduct = useGetPopularProductsQuery({});
   const promotionsProduct = useGetPromotionsProductsQuery({});
 
+  const navigate = useNavigate();
+
   const dispatch = useAppDispatch();
+
+  const newProductsSearchParamsHandler = () => {
+    dispatch(productsPageActions.clearSortParams());
+    dispatch(productsPageActions.setSortDirection('1'));
+  };
+
+  const popularProductsSearchParamsHandler = () => {
+    dispatch(productsPageActions.clearSortParams());
+    dispatch(productsPageActions.setSortDirection('-1'));
+    dispatch(productsPageActions.setSortBy('views'));
+  };
+
+  const promotionsProductsSearchParamsHandler = () => {
+    dispatch(productsPageActions.clearSortParams());
+    dispatch(productsPageActions.setSortBy('views'));
+    dispatch(productsPageActions.setSortDirection('-1'));
+    dispatch(productsPageActions.setDiscount('1'));
+  };
+
   const loginHandler = async () => {
     await dispatch(
       getUserByCredentials({
@@ -41,7 +61,7 @@ const MainPage: FC<Props> = () => {
   };
 
   return (
-    <div data-testid="MainPage" className="mt-[100px]">
+    <div data-testid="MainPage" className="">
       <div>
         {user?.username}
         {!user ? (
@@ -70,16 +90,19 @@ const MainPage: FC<Props> = () => {
             isLoading={newProduct.isLoading}
             title="Новинки"
             products={newProduct.data}
+            setSearchParams={newProductsSearchParamsHandler}
           />
           <ProductSectionLayout
             isLoading={promotionsProduct.isLoading}
             title="Акційні пропозиції"
             products={promotionsProduct.data}
+            setSearchParams={popularProductsSearchParamsHandler}
           />
           <ProductSectionLayout
             isLoading={popularProduct.isLoading}
             title="Популярні товари"
             products={popularProduct.data}
+            setSearchParams={promotionsProductsSearchParamsHandler}
           />
         </HStack>
       </Container>

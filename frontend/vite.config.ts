@@ -18,6 +18,14 @@ export default defineConfig(({ command, mode }) => {
     server: {
       port: 3000,
       host: '0.0.0.0',
+      proxy: {
+        '/api': {
+          target: 'https://alicesocial.pp.ua:3001/api',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ''),
+          secure: false,
+        },
+      },
     },
   };
 });

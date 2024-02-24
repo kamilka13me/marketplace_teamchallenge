@@ -6,7 +6,7 @@ import {
   useGetPopularProductsQuery,
   useGetPromotionsProductsQuery,
 } from '@/pages/ProductsPage/model/services/getProducts';
-import { productsReducer } from '@/pages/ProductsPage/model/slices/productsPageSlice';
+import { productsPageReducer } from '@/pages/ProductsPage/model/slices/productsPageSlice';
 import { ProductsPageSchema } from '@/pages/ProductsPage/model/types/productsSchema';
 
 export {
@@ -15,6 +15,6 @@ export {
   useGetPopularProductsQuery,
   useGetPromotionsProductsQuery,
   productsApi,
-  productsReducer,
+  productsPageReducer,
 };
 export type { ProductsPageSchema };

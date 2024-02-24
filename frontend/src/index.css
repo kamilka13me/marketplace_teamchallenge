@@ -9,6 +9,10 @@
     }
 }
 
+.sidebarSvg svg path {
+    @apply group-hover:fill-secondary duration-300
+}
+
 .slick-dots {
     display: flex !important;
     gap: 8px !important;

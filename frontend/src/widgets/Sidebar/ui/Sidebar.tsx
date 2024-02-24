@@ -1,34 +1,50 @@
 import { FC } from 'react';
 
-import apple from '@/shared/assets/icons/apple.svg';
-import arrowRight from '@/shared/assets/icons/arrow-right.svg?react';
-import { Icon } from '@/shared/ui/Icon';
-import { Image } from '@/shared/ui/Image';
+import { Category } from '@/enteties/Category/model/types/category';
+import useAxios from '@/shared/lib/hooks/useAxios';
+import { Skeleton } from '@/shared/ui/Skeleton';
 import { HStack, VStack } from '@/shared/ui/Stack';
+import SidebarCategoryLink from '@/widgets/Sidebar/ui/SidebarCategoryLink';
 
 interface Props {}
 
 const Sidebar: FC<Props> = () => {
-  return (
-    <aside className="max-w-[314px] w-full">
+  const { data, error, isLoading } = useAxios<Category[]>('/category');
+
+  if (isLoading) {
+    return (
       <HStack gap="2" className="">
         {Array(11)
           .fill(null)
-          .map((item, i) => (
+          .map((_, i) => (
             // eslint-disable-next-line react/no-array-index-key
-            <VStack key={i} justify="between" align="center" className="w-full">
-              <VStack gap="2" align="center">
-                <Image src={apple} width="24px" height="24px" alt="" className="mr-2" />
-                <a className=" text-[18px] leading-[40px]" href="/">
-                  Товари apple
-                </a>
-              </VStack>
-              <div>
-                <Icon Svg={arrowRight} />
+            <VStack key={i} gap="4" className="p-2">
+              <Skeleton width={24} height={24} />
+              <div className="">
+                <Skeleton width={Math.random() * (200 - 100) + 100} height={24} />
               </div>
+              <Skeleton width={24} height={24} />
             </VStack>
           ))}
       </HStack>
+    );
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
+
+  if (!data || data.length === 0) {
+    return <p>No Categories to display.</p>;
+  }
+
+  return (
+    <aside className="max-w-[314px] w-full">
+      <ul className="flex flex-col gap-2">
+        {data.map((item) => (
+          <SidebarCategoryLink key={item._id} category={item} />
+        ))}
+      </ul>
     </aside>
   );
 };
