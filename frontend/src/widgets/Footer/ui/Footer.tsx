@@ -21,8 +21,8 @@ const Footer: FC<Props> = () => {
   return (
     <footer className="bg-gray-900 mt-20 overflow-hidden relative">
       <Container>
-        <div className="z-10 w-[550px] h-[550px] origin-top-left rotate-[120deg] bg-neutral-900 rounded-[217px] absolute left-[500px]  top-[-50px]" />
-        <div className="w-[550px] h-[550px] origin-top-left rotate-[120deg] bg-neutral-900 rounded-[217px] absolute right-[-950px] bottom-[-500px]" />
+        <div className="z-10 w-[550px] h-[550px] origin-top-left rotate-[120deg] bg-neutral-900 rounded-[217px] absolute left-[33%]  top-[-20%]" />
+        <div className="w-[550px] h-[550px] origin-top-left rotate-[120deg] bg-neutral-900 rounded-[217px] absolute right-[-40%] top-[100%]" />
         <div className="z-20 relative">
           <VStack align="start" justify="around" className="pt-12 pb-9">
             <HStack align="start" justify="between" className="w-1/2">
