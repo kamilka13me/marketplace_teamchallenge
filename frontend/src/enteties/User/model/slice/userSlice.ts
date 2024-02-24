@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 
 import { User, UserSchema } from '@/enteties/User';
+import { getUserWishlist } from '@/enteties/User/model/services/getUserWishlist';
+import { getUserByCredentials } from '@/features/userAuth/model/services/getUserByCredentials';
 import { $api } from '@/shared/api/api';
 import {
   COOKIE_KEY_EXPIRATION_DATE_OF_USER,
@@ -10,6 +12,10 @@ import {
 } from '@/shared/const/cookies';
 
 const initialState: UserSchema = {
+  userWishlist: {
+    wishlist: [],
+    isLoading: true,
+  },
   inited: false,
 };
 
@@ -25,6 +31,9 @@ export const userSlice = createSlice({
   reducers: {
     setAuthData: (state, action: PayloadAction<User>) => {
       state.authData = action.payload;
+    },
+    setUserWishList: (state, action: PayloadAction<string[]>) => {
+      state.userWishlist.wishlist = action.payload;
     },
     initAuthData: (state) => {
       const user = Cookies.get(COOKIE_KEY_USER);
@@ -56,6 +65,20 @@ export const userSlice = createSlice({
       removeCookies();
       localStorage.clear();
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getUserWishlist.pending, (state) => {
+        state.userWishlist.error = undefined;
+        state.userWishlist.isLoading = true;
+      })
+      .addCase(getUserByCredentials.fulfilled, (state) => {
+        state.userWishlist.isLoading = false;
+      })
+      .addCase(getUserByCredentials.rejected, (state, action) => {
+        state.userWishlist.isLoading = false;
+        state.userWishlist.error = action.payload as string;
+      });
   },
 });
 

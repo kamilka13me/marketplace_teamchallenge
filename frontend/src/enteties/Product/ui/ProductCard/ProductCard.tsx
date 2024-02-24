@@ -6,9 +6,12 @@ import ProductCardSkeleton from './ProductCardSkeleton';
 
 import { Product } from '@/enteties/Product';
 import { getUserAuthData } from '@/enteties/User';
+import { getWishlist } from '@/enteties/User/model/selectors/getUserAuthData';
+import { getUserWishlist } from '@/enteties/User/model/services/getUserWishlist';
 import { $api } from '@/shared/api/api';
 import heart from '@/shared/assets/icons/heart.svg?react';
 import { getRouteProduct } from '@/shared/const/routes';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
@@ -61,26 +64,22 @@ const ProductCard: FC<Props> = (props) => {
 
   const { _id, name, discount, images, price, quantity } = product;
 
-  const [inWishlist, setInWishlist] = useState(
-    localStorage.getItem('wishlist')?.split(',').includes(`${_id}`),
-  );
-
   const [heartIsDisabled, setHeartIsDisabled] = useState(false);
 
   const user = useAppSelector(getUserAuthData);
+
+  const { wishlist } = useAppSelector(getWishlist);
+
+  const dispatch = useAppDispatch();
 
   const handleWishHeartClick = async () => {
     try {
       if (user) {
         setHeartIsDisabled(true);
 
-        // API calls within try-catch
         await $api.put(`/wishlist/${_id}`);
-        const res = await $api.get(`/users/${user?._id}`);
 
-        localStorage.setItem('wishlist', res.data.user.wishlist);
-
-        setInWishlist(localStorage.getItem('wishlist')?.split(',').includes(`${_id}`));
+        dispatch(getUserWishlist({ _id: user._id }));
       }
     } catch (error) {
       // eslint-disable-next-line
@@ -172,7 +171,7 @@ const ProductCard: FC<Props> = (props) => {
         >
           <Icon
             Svg={heart}
-            className={`${inWishlist ? 'fill-secondary' : '!stroke-2 !stroke-gray-900'}  ${heartIsDisabled && 'opacity-40'}`}
+            className={`${wishlist.includes(_id) ? 'fill-secondary' : '!stroke-2 !stroke-gray-900'}  ${heartIsDisabled && 'opacity-40'}`}
           />
         </Button>
       </HStack>

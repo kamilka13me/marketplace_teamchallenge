@@ -2,6 +2,7 @@ import { ChangeEvent, FC, FormEventHandler, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
+import { getWishlist } from '@/enteties/User/model/selectors/getUserAuthData';
 import allProducts from '@/shared/assets/icons/allProducts.svg?react';
 import cancel from '@/shared/assets/icons/cancel.svg?react';
 import en from '@/shared/assets/icons/en.svg?react';
@@ -11,6 +12,7 @@ import person from '@/shared/assets/icons/person.svg?react';
 import search from '@/shared/assets/icons/search.svg?react';
 import ua from '@/shared/assets/icons/ua.svg?react';
 import { getRouteMain } from '@/shared/const/routes';
+import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Container } from '@/shared/ui/Container';
 import { Icon } from '@/shared/ui/Icon';
@@ -27,6 +29,8 @@ const Header: FC<Props> = () => {
   const [inputData, setInputData] = useState<string>('');
 
   const counterWishlist: string = '2';
+
+  const { wishlist } = useAppSelector(getWishlist);
 
   const onAllProductsClick = (): void => {
     setShowModal(!showModal);
@@ -121,7 +125,7 @@ const Header: FC<Props> = () => {
                 />
                 <div
                   className={
-                    counterWishlist < '1'
+                    wishlist.length < 1
                       ? 'hidden'
                       : 'absolute right-[29px] flex justify-items-center items-center bg-primary border-[1.5px] border-gray-900 rounded-full'
                   }
@@ -133,7 +137,7 @@ const Header: FC<Props> = () => {
                         : 'outfit font-normal min-w-[10px] m-[2px] text-center text-black text-[10px] leading-[10px]'
                     }
                   >
-                    {counterWishlist}
+                    {wishlist.length}
                   </span>
                 </div>
                 {t('Список')}
