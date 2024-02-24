@@ -28,7 +28,7 @@ const ProductSectionLayout: FC<Props> = (props) => {
               .fill(null)
               // eslint-disable-next-line react/no-array-index-key
               .map((_, i) => <ProductCardSkeleton key={i} />)
-          : products.map((prod) => <ProductCard key={prod._id} product={prod} />)}
+          : products?.map((prod) => <ProductCard key={prod._id} product={prod} />)}
       </VStack>
       <VStack justify="end" align="center" className="w-full mt-8 relative right-4">
         <Link
