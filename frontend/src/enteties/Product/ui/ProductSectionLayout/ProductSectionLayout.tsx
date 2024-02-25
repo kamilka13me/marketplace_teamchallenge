@@ -1,7 +1,9 @@
 import { FC } from 'react';
 
-import { Product, ProductCardSkeleton } from '@/enteties/Product';
-import ProductCard from '@/enteties/Product/ui/ProductCard/ProductCard';
+import { Product } from '../../model/types/product';
+import ProductCard from '../ProductCard/ProductCard';
+import ProductCardSkeleton from '../ProductCard/ProductCardSkeleton';
+
 import arrowRight from '@/shared/assets/icons/arrow-right.svg?react';
 import { getRouteProducts } from '@/shared/const/routes';
 import { Icon } from '@/shared/ui/Icon';
@@ -19,15 +21,21 @@ interface Props {
 const ProductSectionLayout: FC<Props> = (props) => {
   const { title, products, isLoading, setSearchParams } = props;
 
+  function renderLoadingSkeletons() {
+    return (
+      Array(4)
+        .fill(null)
+        // eslint-disable-next-line react/no-array-index-key
+        .map((_, i) => <ProductCardSkeleton key={i} />)
+    );
+  }
+
   return (
     <div className="w-full">
       <Text Tag="h2" text={title} bold className="mb-6" />
       <VStack gap="5">
         {isLoading
-          ? Array(4)
-              .fill(null)
-              // eslint-disable-next-line react/no-array-index-key
-              .map((_, i) => <ProductCardSkeleton key={i} />)
+          ? renderLoadingSkeletons()
           : products?.map((prod) => <ProductCard key={prod._id} product={prod} />)}
       </VStack>
       <VStack justify="end" align="center" className="w-full mt-8 relative ">

@@ -2,21 +2,23 @@ import { FC, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
+import { Product } from '../../model/types/product';
+
 import ProductCardSkeleton from './ProductCardSkeleton';
 
-import { Product } from '@/enteties/Product';
 import { getUserAuthData } from '@/enteties/User';
 import { getWishlist } from '@/enteties/User/model/selectors/getUserAuthData';
 import { getUserWishlist } from '@/enteties/User/model/services/getUserWishlist';
 import { $api } from '@/shared/api/api';
 import heart from '@/shared/assets/icons/heart.svg?react';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { getRouteProduct } from '@/shared/const/routes';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Image } from '@/shared/ui/Image';
-import Link from '@/shared/ui/Link/Link';
+import { Link } from '@/shared/ui/Link';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text, TextColors } from '@/shared/ui/Text';
 
@@ -66,24 +68,23 @@ const ProductCard: FC<Props> = (props) => {
 
   const [heartIsDisabled, setHeartIsDisabled] = useState(false);
 
+  const dispatch = useAppDispatch();
   const user = useAppSelector(getUserAuthData);
 
   const { wishlist } = useAppSelector(getWishlist);
-
-  const dispatch = useAppDispatch();
 
   const handleWishHeartClick = async () => {
     try {
       if (user) {
         setHeartIsDisabled(true);
 
-        await $api.put(`/wishlist/${_id}`);
+        await $api.put(`${ApiRoutes.WISHLIST}/${_id}`);
 
         dispatch(getUserWishlist({ _id: user._id }));
       }
     } catch (error) {
       // eslint-disable-next-line
-      console.error('Error in hWishHeartClick:', error);
+      console.error('Error in WishHeartClick:', error);
     } finally {
       setHeartIsDisabled(false);
     }

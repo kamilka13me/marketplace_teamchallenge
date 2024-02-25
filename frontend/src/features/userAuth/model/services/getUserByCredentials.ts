@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 
 import { User, userActions } from '@/enteties/User';
 import { $api } from '@/shared/api/api';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import {
   COOKIE_KEY_EXPIRATION_DATE_OF_USER,
   COOKIE_KEY_TOKEN,
@@ -38,7 +39,7 @@ export const getUserByCredentials = createAsyncThunk<ApiResponse, LoginByUsernam
       const browser = Bowser.getParser(navigator.userAgent);
       const info = browser.getResult();
 
-      const response = await $api.post<ApiResponse>('/auth', {
+      const response = await $api.post<ApiResponse>(ApiRoutes.AUTHENTICATION, {
         ...authData,
         info,
         font: document.fonts,

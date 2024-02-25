@@ -1,5 +1,6 @@
 import { FC } from 'react';
 
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import useAxios from '@/shared/lib/hooks/useAxios';
 import { Skeleton } from '@/shared/ui/Skeleton';
 import { Slider } from '@/shared/ui/Slider';
@@ -10,7 +11,9 @@ interface ImageData {
 }
 
 const SliderWidget: FC = () => {
-  const { data, error, isLoading } = useAxios<ImageData[]>('/control-panel/banner');
+  const { data, error, isLoading } = useAxios<ImageData[]>(
+    `${ApiRoutes.CONTROL_PANEL}/banner`,
+  );
 
   const renderContent = () => {
     if (isLoading) {

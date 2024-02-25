@@ -1,12 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { userActions } from '@/enteties/User';
+import { userActions, UserWithWishlist } from '@/enteties/User';
 import { $api } from '@/shared/api/api';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
 
 interface ApiResponse {
-  user: {
-    wishlist: string[];
-  };
+  user: UserWithWishlist;
 }
 
 interface Props {
@@ -19,7 +18,7 @@ export const getUserWishlist = createAsyncThunk<ApiResponse, Props>(
     const { dispatch, rejectWithValue } = thunkApi;
 
     try {
-      const response = await $api.get<ApiResponse>(`/users/${_id}`);
+      const response = await $api.get<ApiResponse>(`${ApiRoutes.USER}/${_id}`);
 
       if (response.status !== 200) {
         return rejectWithValue(`:: ${response.statusText} `);
