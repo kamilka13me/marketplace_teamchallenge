@@ -2,18 +2,21 @@ import { FC, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
+import { Product } from '../../model/types/product';
+
 import ProductCardSkeleton from './ProductCardSkeleton';
 
-import { Product } from '@/enteties/Product';
-import { getUserAuthData } from '@/enteties/User';
+import { getUserAuthData, getUserWishlist, getWishlist } from '@/enteties/User';
 import { $api } from '@/shared/api/api';
 import heart from '@/shared/assets/icons/heart.svg?react';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { getRouteProduct } from '@/shared/const/routes';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Image } from '@/shared/ui/Image';
-import Link from '@/shared/ui/Link/Link';
+import { Link } from '@/shared/ui/Link';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text, TextColors } from '@/shared/ui/Text';
 
@@ -61,30 +64,25 @@ const ProductCard: FC<Props> = (props) => {
 
   const { _id, name, discount, images, price, quantity } = product;
 
-  const [inWishlist, setInWishlist] = useState(
-    localStorage.getItem('wishlist')?.split(',').includes(`${_id}`),
-  );
-
   const [heartIsDisabled, setHeartIsDisabled] = useState(false);
 
+  const dispatch = useAppDispatch();
   const user = useAppSelector(getUserAuthData);
+
+  const { wishlist } = useAppSelector(getWishlist);
 
   const handleWishHeartClick = async () => {
     try {
       if (user) {
         setHeartIsDisabled(true);
 
-        // API calls within try-catch
-        await $api.put(`/wishlist/${_id}`);
-        const res = await $api.get(`/users/${user?._id}`);
+        await $api.put(`${ApiRoutes.WISHLIST}/${_id}`);
 
-        localStorage.setItem('wishlist', res.data.user.wishlist);
-
-        setInWishlist(localStorage.getItem('wishlist')?.split(',').includes(`${_id}`));
+        dispatch(getUserWishlist({ _id: user._id }));
       }
     } catch (error) {
       // eslint-disable-next-line
-      console.error('Error in hWishHeartClick:', error);
+      console.error('Error in WishHeartClick:', error);
     } finally {
       setHeartIsDisabled(false);
     }
@@ -172,7 +170,7 @@ const ProductCard: FC<Props> = (props) => {
         >
           <Icon
             Svg={heart}
-            className={`${inWishlist ? 'fill-secondary' : '!stroke-2 !stroke-gray-900'}  ${heartIsDisabled && 'opacity-40'}`}
+            className={`${wishlist.includes(_id) ? 'fill-secondary' : '!stroke-2 !stroke-gray-900'}  ${heartIsDisabled && 'opacity-40'}`}
           />
         </Button>
       </HStack>

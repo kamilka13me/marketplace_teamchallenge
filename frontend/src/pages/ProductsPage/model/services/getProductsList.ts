@@ -14,6 +14,7 @@ import {
   getProductsPageSortDirection,
 } from '@/pages/ProductsPage/model/selectors/productsPageSelectors';
 import { $api } from '@/shared/api/api';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { addQueryParams } from '@/shared/lib/url/addQueryParams';
 
 interface FetchProductsListProps {
@@ -56,7 +57,7 @@ export const fetchProductsList = createAsyncThunk<
       discount,
       quantity,
     });
-    const response = await $api.get<Product[]>('/products', {
+    const response = await $api.get<Product[]>(ApiRoutes.PRODUCTS, {
       params: {
         offset,
         limit,

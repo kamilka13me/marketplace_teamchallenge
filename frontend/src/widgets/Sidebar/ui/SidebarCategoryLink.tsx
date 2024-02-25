@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 
-import { Category } from '@/enteties/Category/model/types/category';
+import { Category } from '@/enteties/Category';
 import arrowRight from '@/shared/assets/icons/arrow-right.svg?react';
 import { Icon } from '@/shared/ui/Icon';
 import { VStack } from '@/shared/ui/Stack';

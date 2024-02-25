@@ -1,7 +1,20 @@
-import { getIsInitedAuthData, getUserAuthData } from './model/selectors/getUserAuthData';
+import {
+  getIsInitedAuthData,
+  getUserAuthData,
+  getWishlist,
+} from './model/selectors/getUserAuthData';
 import { userActions, userReducer } from './model/slice/userSlice';
-import { User, UserSchema } from './model/types/user';
+import { User, UserSchema, UserWithWishlist } from './model/types/user';
 
-export type { User, UserSchema };
+import { getUserWishlist } from '@/enteties/User/model/services/getUserWishlist';
 
-export { userActions, userReducer, getUserAuthData, getIsInitedAuthData };
+export type { User, UserWithWishlist, UserSchema };
+
+export {
+  userActions,
+  userReducer,
+  getUserWishlist,
+  getWishlist,
+  getUserAuthData,
+  getIsInitedAuthData,
+};

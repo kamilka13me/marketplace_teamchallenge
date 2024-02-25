@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
-import { Category } from '@/enteties/Category/model/types/category';
+import { Category } from '@/enteties/Category';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import useAxios from '@/shared/lib/hooks/useAxios';
 import { Skeleton } from '@/shared/ui/Skeleton';
 import { HStack, VStack } from '@/shared/ui/Stack';
@@ -9,7 +10,7 @@ import SidebarCategoryLink from '@/widgets/Sidebar/ui/SidebarCategoryLink';
 interface Props {}
 
 const Sidebar: FC<Props> = () => {
-  const { data, error, isLoading } = useAxios<Category[]>('/category');
+  const { data, error, isLoading } = useAxios<Category[]>(ApiRoutes.CATEGORY);
 
   if (isLoading) {
     return (
