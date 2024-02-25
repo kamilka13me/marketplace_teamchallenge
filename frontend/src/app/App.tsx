@@ -1,8 +1,12 @@
 import { FC, Suspense, useEffect } from 'react';
 
 import { AppRouter } from '@/app/providers/router';
-import { getIsInitedAuthData, getUserAuthData, userActions } from '@/enteties/User';
-import { getUserWishlist } from '@/enteties/User/model/services/getUserWishlist';
+import {
+  getIsInitedAuthData,
+  getUserAuthData,
+  getUserWishlist,
+  userActions,
+} from '@/enteties/User';
 import { MainLayout } from '@/shared/layouts/MainLayout';
 import MainLoaderLayout from '@/shared/layouts/MainLoaderLayout/MainLoaderLayout';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';

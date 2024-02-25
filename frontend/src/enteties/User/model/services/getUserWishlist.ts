@@ -36,13 +36,3 @@ export const getUserWishlist = createAsyncThunk<ApiResponse, Props>(
     }
   },
 );
-
-// $api
-//     .get(`/users/${user?._id}`)
-//     .then((res) => {
-//         localStorage.setItem('wishlist', res.data.user.wishlist);
-//     })
-//     .catch((err) => {
-//         // eslint-disable-next-line
-//         console.error('Error in initWishlist:', err);
-//     });

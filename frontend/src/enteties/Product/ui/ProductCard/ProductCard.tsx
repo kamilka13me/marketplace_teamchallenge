@@ -6,9 +6,7 @@ import { Product } from '../../model/types/product';
 
 import ProductCardSkeleton from './ProductCardSkeleton';
 
-import { getUserAuthData } from '@/enteties/User';
-import { getWishlist } from '@/enteties/User/model/selectors/getUserAuthData';
-import { getUserWishlist } from '@/enteties/User/model/services/getUserWishlist';
+import { getUserAuthData, getUserWishlist, getWishlist } from '@/enteties/User';
 import { $api } from '@/shared/api/api';
 import heart from '@/shared/assets/icons/heart.svg?react';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';

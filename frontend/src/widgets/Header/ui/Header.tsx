@@ -2,7 +2,7 @@ import { ChangeEvent, FC, FormEventHandler, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { getWishlist } from '@/enteties/User/model/selectors/getUserAuthData';
+import { getWishlist } from '@/enteties/User';
 import allProducts from '@/shared/assets/icons/allProducts.svg?react';
 import cancel from '@/shared/assets/icons/cancel.svg?react';
 import en from '@/shared/assets/icons/en.svg?react';
