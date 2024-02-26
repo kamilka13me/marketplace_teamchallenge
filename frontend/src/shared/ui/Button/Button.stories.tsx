@@ -20,7 +20,7 @@ const meta = {
     variant: {
       type: 'string',
       description: 'Button styling options',
-      options: ['search', 'fill', 'notFound', 'login'],
+      options: ['search', 'fill', 'notFound', 'login', 'outlined'],
       control: { type: 'select' },
     },
     className: {
@@ -77,4 +77,15 @@ export const Login: Story = {
     disabled: false,
   },
   name: 'Login',
+};
+
+export const Outlined: Story = {
+  args: {
+    children: 'Save',
+    onClick: () => {},
+    variant: 'outlined',
+    className: '',
+    disabled: false,
+  },
+  name: 'Outlined',
 };
