@@ -34,7 +34,8 @@ type InputTypes =
 type VariantTypes = 'basic' | 'search';
 
 const variantClasses: Record<VariantTypes, string> = {
-  basic: 'mt-1 rounded-md border-gray-200 shadow-sm sm:text-sm',
+  basic:
+    'outfit min-h-[48px] min-w-[360px] pl-4 bg-transparent text-white-400 text-[16px] text-gray-900 font-normal border-b-[1px] border-gray-900 focus:text-gray-900 outline-none',
   search:
     'outfit min-h-[38px] min-w-[443px] pl-5 bg-gray-700 text-gray-300 text-[14px] text-gray-900 font-normal focus:text-gray-300 outline-none rounded-l-lg',
 };
@@ -68,7 +69,7 @@ const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
   } = props;
 
   return (
-    <HStack gap="2">
+    <HStack gap="1">
       {label && <label htmlFor={name}>{label}</label>}
       <input
         name={name}
@@ -77,10 +78,10 @@ const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
         onBlur={onBlur}
         ref={ref}
         placeholder={placeholder}
-        className={`${variantClasses[variant]} ${className}`}
+        className={`${variantClasses[variant]} ${error && 'border-red-200'} ${className}`}
         {...otherProps}
       />
-      {error && <p>{error}</p>}
+      {error && <p className="outfit font-normal text-[12px] text-red-200">{error}</p>}
     </HStack>
   );
 });
