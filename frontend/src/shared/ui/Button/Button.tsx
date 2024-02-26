@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, memo, ReactNode } from 'react';
 
-type VariantTypes = 'search' | 'fill' | 'notFound' | 'clear' | 'login';
+type VariantTypes = 'search' | 'fill' | 'outlined' | 'notFound' | 'clear' | 'login';
 
 const variantClasses: Record<VariantTypes, string> = {
   clear: '',
@@ -11,6 +11,8 @@ const variantClasses: Record<VariantTypes, string> = {
     'outfit bg-gradient-to-r from-secondary-200 to-salmon-100 px-[106px] py-[13px] rounded-lg font-semibold text-[16px] leading-[22px] text-white duration-300 hover:from-secondary hover:to-salmon-200 disabled:opacity-50',
   login:
     'outfit bg-primary px-[151px] py-[4px] rounded-lg font-normal text-[18px] leading-[40px] text-black duration-300 hover:bg-secondary active:bg-primary disabled:text-white-300 disabled:bg-white-400',
+  outlined:
+    'outfit border-primary border-[1px] px-4 py-[7px] rounded-lg font-normal text-[16px] text-primary duration-300 hover:border-white hover:text-white active:border-secondary active:text-secondary disabled:opacity-40',
 };
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
