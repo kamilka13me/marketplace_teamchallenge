@@ -32,7 +32,8 @@ const authController = {
 
       newBrowserInfo.save();
 
-      // res.cookie('token', token, { httpOnly: false, secure: false });
+      res.cookie('refreshToken', token, { httpOnly: true, secure: true });
+      res.cookie('accessToken', token, { httpOnly: false, secure: true });
       // res.cookie('user', JSON.stringify(userCallback), { httpOnly: false, secure: false });
       res.setHeader('Authorization', `Bearer ${token}`);
 
