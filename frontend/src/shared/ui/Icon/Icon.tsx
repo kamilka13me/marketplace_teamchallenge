@@ -23,14 +23,19 @@ const Icon: FC<IconProps> = (props) => {
   const { Svg, width = 24, height = 24, clickable, className, ...otherProps } = props;
 
   const icon = (
-    <Svg width={width} height={height} className={`${className}`} {...otherProps} />
+    <Svg
+      width={width}
+      height={height}
+      className={clickable ? '' : `${className}`}
+      {...otherProps}
+    />
   );
 
   if (clickable) {
     return (
       <button
         type="button"
-        className=""
+        className={clickable && className}
         onClick={props.onClick}
         style={{ height, width }}
       >
