@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 
+import ReCAPTCHA from 'react-google-recaptcha';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import privateEye from '@/shared/assets/icons/private-eye.svg?react';
@@ -95,7 +96,15 @@ const RegistrationForm: FC<Props> = () => {
           className="absolute top-[12px] right-[12px]"
         />
       </div>
-      <div>RECAPCHA</div>
+      <div className="min-w-full text-center mb-4">
+        <ReCAPTCHA
+          hl="uk"
+          sitekey="6LdYgYIpAAAAAFDJp2xk2nhsce03BxuaOdiW5yQm"
+          onChange={(value) => {
+            return value;
+          }}
+        />
+      </div>
       <Checkbox
         type="checkbox"
         variant="basic"
