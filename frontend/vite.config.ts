@@ -8,7 +8,6 @@ export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
     define: {
-      'process.env.API_URL': JSON.stringify(env.API_URL),
       'process.env.BASE_URL': JSON.stringify(env.BASE_URL),
     },
     plugins: [react(), svgr({ include: '**/*.svg?react' }), basicSsl()],
@@ -20,7 +19,7 @@ export default defineConfig(({ command, mode }) => {
       host: '0.0.0.0',
       proxy: {
         '/api': {
-          target: 'https://alicesocial.pp.ua:3001/api',
+          target: `${env.BASE_URL}/api`,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
           secure: false,
