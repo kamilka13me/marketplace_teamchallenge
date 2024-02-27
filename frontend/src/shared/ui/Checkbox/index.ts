@@ -1,3 +1,3 @@
-import Checkbox from '@/shared/ui/Input/Input';
+import Checkbox from '@/shared/ui/Checkbox/Checkbox';
 
 export { Checkbox };
