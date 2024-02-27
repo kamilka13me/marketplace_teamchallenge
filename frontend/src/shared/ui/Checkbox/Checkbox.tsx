@@ -1,4 +1,4 @@
-import { ChangeEvent, forwardRef, InputHTMLAttributes } from 'react';
+import React, { ChangeEvent, forwardRef, InputHTMLAttributes } from 'react';
 
 import checked from '@/shared/assets/icons/checked.svg?react';
 import { Icon } from '@/shared/ui/Icon';
@@ -48,10 +48,10 @@ const Checkbox = forwardRef<HTMLInputElement, Props>((props, ref) => {
         Svg={checked}
         width={14}
         height={14}
-        className="absolute ml-[2px] hidden peer-checked:block"
+        className="absolute ml-[2px] hidden peer-checked:block cursor-pointer"
       />
       {label && (
-        <label htmlFor={name} className="peer-checked:text-gray-300">
+        <label htmlFor={name} className="peer-checked:text-gray-300 cursor-pointer">
           {label}
         </label>
       )}

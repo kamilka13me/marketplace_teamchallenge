@@ -25,6 +25,8 @@ const Portal: FC<PortalProps> = (props) => {
       'bg-black-transparent-50',
       'z-[99999]',
     );
+
+    portalRoot.classList.add('overflow-hidden');
   }
 
   useEffect(() => {
@@ -43,6 +45,7 @@ const Portal: FC<PortalProps> = (props) => {
     return () => {
       el.removeEventListener('click', handleClickOutside);
       portalRoot.removeChild(el);
+      portalRoot.classList.remove('overflow-hidden');
     };
   }, [onClose]);
 
