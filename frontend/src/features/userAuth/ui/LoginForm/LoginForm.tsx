@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { actionReducer } from '@/features/userAuth';
 import privateEye from '@/shared/assets/icons/private-eye.svg?react';
@@ -24,6 +25,8 @@ interface InputsValues {
 
 const LoginForm: FC<LoginFormProps> = (props) => {
   const { onToggleForm, onCloseModal } = props;
+
+  const { t } = useTranslation();
 
   const [passShown, setPassShown] = useState(false);
   const dispatch = useAppDispatch();
@@ -65,15 +68,15 @@ const LoginForm: FC<LoginFormProps> = (props) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Input
         variant="basic"
-        placeholder="Email"
+        placeholder={t('Пошта')}
         type="text"
         {...register('inputEmail', {
-          required: 'This field is required',
-          minLength: { value: 5, message: 'Your login must be min 6 symbols' },
+          required: t("Це поле є обов'язковим"),
+          minLength: { value: 5, message: t('Ваш логін має бути не менше 6 символів') },
           pattern: {
             value:
               /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/,
-            message: 'Your login must be xxxx@xxx.xx templates',
+            message: t('Ваш логін має бути по шаблону xxxx@xxx.xx'),
           },
         })}
         error={errors?.inputEmail && errors?.inputEmail.message}
@@ -82,11 +85,14 @@ const LoginForm: FC<LoginFormProps> = (props) => {
       <div className="relative mt-10">
         <Input
           variant="basic"
-          placeholder="Password"
+          placeholder={t('Ваш пароль')}
           type={passShown ? 'text' : 'password'}
           {...register('inputPassword', {
-            required: 'This field is required',
-            minLength: { value: 5, message: 'Your login must be min 6 symbols' },
+            required: t("Це поле є обов'язковим"),
+            minLength: {
+              value: 5,
+              message: t('Ваш пароль має бути не менше 6 символів'),
+            },
           })}
           error={errors?.inputPassword && errors?.inputPassword.message}
         />
@@ -101,12 +107,12 @@ const LoginForm: FC<LoginFormProps> = (props) => {
       </div>
       <Link to="/">
         <p className="outfit text-right text-gray-900 text-[14px] font-normal leading-[18px] mt-5 mb-6">
-          Forgot Password?
+          {t('Забули пароль?')}
         </p>
       </Link>
       <Input
         variant="clear"
-        value="Log In"
+        value={t('Увійти')}
         name="btnInput"
         type="submit"
         disabled={!isValid}
@@ -114,14 +120,14 @@ const LoginForm: FC<LoginFormProps> = (props) => {
       />
       <VStack align="center" className="mt-6" justify="between">
         <span className="outfit text-right text-gray-900 text-[14px] font-normal leading-[18px]">
-          Don`t have an account?
+          {t('Немає облікового запису?')}
         </span>
         <Button
           variant="clear"
           onClick={onClickChangeForm}
           className="outfit text-right text-black text-[14px] font-semibold decoration-solid decoration-black underline decoration-1"
         >
-          Sign up
+          {t('Зареєструватись')}
         </Button>
       </VStack>
     </form>

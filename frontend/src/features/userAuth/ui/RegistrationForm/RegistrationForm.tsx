@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 
 import ReCAPTCHA from 'react-google-recaptcha';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import privateEye from '@/shared/assets/icons/private-eye.svg?react';
 import unPrivateEye from '@/shared/assets/icons/unprivate-eye.svg?react';
@@ -26,6 +27,8 @@ interface InputsValues {
 
 const RegistrationForm: FC<RegistrationFormProps> = (props) => {
   const { onToggleForm, onCloseModal } = props;
+
+  const { t, i18n } = useTranslation();
 
   const [passShown, setPassShown] = useState(false);
   const [reCaphaValue, setReCaphaValue] = useState<string | null>(null);
@@ -65,27 +68,30 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Input
         variant="basic"
-        placeholder="Name"
+        placeholder={t("Ім'я")}
         type="text"
         {...register('inputName', {
-          required: 'This field is required',
-          minLength: { value: 3, message: 'Your name must be min 3 symbols' },
-          maxLength: { value: 15, message: 'Your name must be max 15 symbols' },
+          required: t("Це поле є обов'язковим"),
+          minLength: { value: 3, message: t("Ваше ім'я має бути не менше 3 символів") },
+          maxLength: {
+            value: 15,
+            message: t("Ваше ім'я має бути не більше 15 символів"),
+          },
         })}
         error={errors?.inputName && errors?.inputName.message}
         className="mt-6"
       />
       <Input
         variant="basic"
-        placeholder="Email"
+        placeholder={t('Пошта')}
         type="text"
         {...register('inputEmail', {
-          required: 'This field is required',
-          minLength: { value: 5, message: 'Your login must be min 6 symbols' },
+          required: t("Це поле є обов'язковим"),
+          minLength: { value: 5, message: t('Ваш логін має бути не менше 6 символів') },
           pattern: {
             value:
               /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/,
-            message: 'Your login must be xxxx@xxx.xx templates',
+            message: t('Ваш логін має бути по шаблону xxxx@xxx.xx'),
           },
         })}
         error={errors?.inputEmail && errors?.inputEmail.message}
@@ -94,11 +100,14 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
       <div className="relative mt-10 mb-10">
         <Input
           variant="basic"
-          placeholder="Password"
+          placeholder={t('Ваш пароль')}
           type={passShown ? 'text' : 'password'}
           {...register('inputPassword', {
-            required: 'This field is required',
-            minLength: { value: 5, message: 'Your login must be min 6 symbols' },
+            required: t("Це поле є обов'язковим"),
+            minLength: {
+              value: 5,
+              message: t('Ваш пароль має бути не менше 6 символів'),
+            },
           })}
           error={errors?.inputPassword && errors?.inputPassword.message}
         />
@@ -113,8 +122,8 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
       </div>
       <div className="min-w-full text-center mb-4">
         <ReCAPTCHA
-          hl="uk"
-          sitekey="6LdYgYIpAAAAAFDJp2xk2nhsce03BxuaOdiW5yQm"
+          hl={i18n.language === 'ua' ? 'uk' : 'en'}
+          sitekey="6LdYgYIpAAAAAFDJp2xk2nhsce03BxuaOdiW5yQm" // DON`T FORGOT CHANGE TO .ENV FILE
           onChange={(value) => {
             setReCaphaValue(value);
           }}
@@ -123,14 +132,14 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
       <Checkbox
         type="checkbox"
         variant="basic"
-        label="Personal data termins"
+        label={t('Надання згоди про обробку персональних даних')}
         {...register('personalTerms', {
           required: true,
         })}
       />
       <Input
         variant="clear"
-        value="Sign up"
+        value={t('Зареєструватись')}
         name="btnInput"
         type="submit"
         disabled={!isValid || !reCaphaValue}
@@ -138,14 +147,14 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
       />
       <VStack align="center" className="mt-6" justify="between">
         <span className="outfit text-right text-gray-900 text-[14px] font-normal leading-[18px]">
-          Already have an account?
+          {t('Є обліковий запис?')}
         </span>
         <Button
           variant="clear"
           onClick={onClickChangeForm}
           className="outfit text-right text-black text-[14px] font-semibold decoration-solid decoration-black underline decoration-1"
         >
-          Sign up
+          {t('Увійти')}
         </Button>
       </VStack>
     </form>
