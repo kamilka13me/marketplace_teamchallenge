@@ -3,6 +3,7 @@ import { ReactNode, FC, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 const portalRoot = document.body as HTMLElement;
+const mainRoot = document.querySelector('#root') as HTMLElement;
 
 interface PortalProps {
   children: string | ReactNode;
@@ -27,6 +28,7 @@ const Portal: FC<PortalProps> = (props) => {
     );
 
     portalRoot.classList.add('overflow-hidden');
+    mainRoot.setAttribute('inert', '');
   }
 
   useEffect(() => {
@@ -46,6 +48,7 @@ const Portal: FC<PortalProps> = (props) => {
       el.removeEventListener('click', handleClickOutside);
       portalRoot.removeChild(el);
       portalRoot.classList.remove('overflow-hidden');
+      mainRoot.removeAttribute('inert');
     };
   }, [onClose]);
 
