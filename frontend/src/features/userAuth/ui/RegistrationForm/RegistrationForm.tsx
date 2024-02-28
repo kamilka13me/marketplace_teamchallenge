@@ -5,13 +5,16 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import privateEye from '@/shared/assets/icons/private-eye.svg?react';
 import unPrivateEye from '@/shared/assets/icons/unprivate-eye.svg?react';
+import { Button } from '@/shared/ui/Button';
 import { Checkbox } from '@/shared/ui/Checkbox';
 import { Icon } from '@/shared/ui/Icon';
 import { Input } from '@/shared/ui/Input';
-import { Link } from '@/shared/ui/Link';
 import { VStack } from '@/shared/ui/Stack';
 
-interface Props {}
+interface RegistrationFormProps {
+  onToggleForm?: () => void;
+  onCloseModal?: () => void;
+}
 
 interface InputsValues {
   inputName: string;
@@ -21,8 +24,11 @@ interface InputsValues {
   personalTerms: string;
 }
 
-const RegistrationForm: FC<Props> = () => {
+const RegistrationForm: FC<RegistrationFormProps> = (props) => {
+  const { onToggleForm, onCloseModal } = props;
+
   const [passShown, setPassShown] = useState(false);
+  const [reCaphaValue, setReCaphaValue] = useState<string | null>(null);
 
   const {
     register,
@@ -40,10 +46,19 @@ const RegistrationForm: FC<Props> = () => {
 
   const onSubmit: SubmitHandler<InputsValues> = () => {
     reset();
+    if (onCloseModal) {
+      onCloseModal();
+    }
   };
 
   const onTogglePassVisibility = () => {
     setPassShown(!passShown);
+  };
+
+  const onClickChangeForm = () => {
+    if (onToggleForm) {
+      onToggleForm();
+    }
   };
 
   return (
@@ -101,7 +116,7 @@ const RegistrationForm: FC<Props> = () => {
           hl="uk"
           sitekey="6LdYgYIpAAAAAFDJp2xk2nhsce03BxuaOdiW5yQm"
           onChange={(value) => {
-            return value;
+            setReCaphaValue(value);
           }}
         />
       </div>
@@ -118,18 +133,20 @@ const RegistrationForm: FC<Props> = () => {
         value="Sign up"
         name="btnInput"
         type="submit"
-        disabled={!isValid}
+        disabled={!isValid || !reCaphaValue}
         className="outfit bg-primary min-w-full py-[4px] mt-6 rounded-lg font-normal text-[18px] leading-[40px] text-black duration-300 hover:bg-secondary active:bg-primary disabled:text-white-300 disabled:bg-white-400"
       />
       <VStack align="center" className="mt-6" justify="between">
         <span className="outfit text-right text-gray-900 text-[14px] font-normal leading-[18px]">
           Already have an account?
         </span>
-        <Link to="/">
-          <span className="outfit text-right text-black text-[14px] font-semibold decoration-solid decoration-black underline decoration-1">
-            Sign up
-          </span>
-        </Link>
+        <Button
+          variant="clear"
+          onClick={onClickChangeForm}
+          className="outfit text-right text-black text-[14px] font-semibold decoration-solid decoration-black underline decoration-1"
+        >
+          Sign up
+        </Button>
       </VStack>
     </form>
   );

@@ -6,19 +6,25 @@ import { actionReducer } from '@/features/userAuth';
 import privateEye from '@/shared/assets/icons/private-eye.svg?react';
 import unPrivateEye from '@/shared/assets/icons/unprivate-eye.svg?react';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
+import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Input } from '@/shared/ui/Input';
 import { Link } from '@/shared/ui/Link';
 import { VStack } from '@/shared/ui/Stack';
 
-interface Props {}
+interface LoginFormProps {
+  onToggleForm?: () => void;
+  onCloseModal?: () => void;
+}
 
 interface InputsValues {
   inputEmail: string;
   inputPassword: string;
 }
 
-const LoginForm: FC<Props> = () => {
+const LoginForm: FC<LoginFormProps> = (props) => {
+  const { onToggleForm, onCloseModal } = props;
+
   const [passShown, setPassShown] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -40,10 +46,19 @@ const LoginForm: FC<Props> = () => {
     dispatch(actionReducer.setEmail(data.inputEmail));
     dispatch(actionReducer.setPassword(data.inputPassword));
     reset();
+    if (onCloseModal) {
+      onCloseModal();
+    }
   };
 
   const onTogglePassVisibility = () => {
     setPassShown(!passShown);
+  };
+
+  const onClickChangeForm = () => {
+    if (onToggleForm) {
+      onToggleForm();
+    }
   };
 
   return (
@@ -101,11 +116,13 @@ const LoginForm: FC<Props> = () => {
         <span className="outfit text-right text-gray-900 text-[14px] font-normal leading-[18px]">
           Don`t have an account?
         </span>
-        <Link to="/">
-          <span className="outfit text-right text-black text-[14px] font-semibold decoration-solid decoration-black underline decoration-1">
-            Sign up
-          </span>
-        </Link>
+        <Button
+          variant="clear"
+          onClick={onClickChangeForm}
+          className="outfit text-right text-black text-[14px] font-semibold decoration-solid decoration-black underline decoration-1"
+        >
+          Sign up
+        </Button>
       </VStack>
     </form>
   );
