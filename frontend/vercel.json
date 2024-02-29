@@ -3,6 +3,7 @@
     {
       "source": "/api/:path*",
       "destination": "https://alicesocial.pp.ua:3001/api/:path*"
-    }
+    },
+    { "source": "/(.*)", "destination": "/" }
   ]
 }
