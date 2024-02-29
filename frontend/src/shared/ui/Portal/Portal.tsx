@@ -15,6 +15,12 @@ const Portal: FC<PortalProps> = (props) => {
 
   const elRef = useRef<HTMLDivElement | null>(null);
 
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      onClose();
+    }
+  };
+
   if (!elRef.current) {
     elRef.current = document.createElement('div');
     elRef.current.classList.add(
@@ -29,6 +35,8 @@ const Portal: FC<PortalProps> = (props) => {
 
     portalRoot.classList.add('overflow-hidden');
     mainRoot.setAttribute('inert', '');
+
+    portalRoot.addEventListener('keydown', handleKeyDown);
   }
 
   useEffect(() => {
@@ -46,11 +54,13 @@ const Portal: FC<PortalProps> = (props) => {
 
     return () => {
       el.removeEventListener('click', handleClickOutside);
+      portalRoot.removeEventListener('keydown', handleKeyDown);
       portalRoot.removeChild(el);
       portalRoot.classList.remove('overflow-hidden');
       mainRoot.removeAttribute('inert');
     };
-  }, [onClose]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return createPortal(children, elRef.current);
 };
