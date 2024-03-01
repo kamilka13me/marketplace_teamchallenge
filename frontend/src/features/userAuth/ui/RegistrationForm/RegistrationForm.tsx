@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import ReCAPTCHA from 'react-google-recaptcha';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -38,14 +38,9 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
     handleSubmit,
     formState: { errors, isValid },
     reset,
-    setFocus,
   } = useForm<InputsValues>({
     mode: 'onBlur',
   });
-
-  useEffect(() => {
-    setFocus('inputName');
-  }, [setFocus]);
 
   const onSubmit: SubmitHandler<InputsValues> = () => {
     reset();
@@ -120,10 +115,10 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
           className="absolute top-[12px] right-[12px]"
         />
       </div>
-      <div className="min-w-full text-center mb-4">
+      <div className="mb-4">
         <ReCAPTCHA
           hl={i18n.language === 'ua' ? 'uk' : 'en'}
-          sitekey="6LdYgYIpAAAAAFDJp2xk2nhsce03BxuaOdiW5yQm" // DON`T FORGOT CHANGE TO .ENV FILE
+          sitekey={process.env.RECAPTCHA_API_SITE_KEY || ''}
           onChange={(value) => {
             setReCaphaValue(value);
           }}
