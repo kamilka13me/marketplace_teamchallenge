@@ -20,7 +20,7 @@ import { Container } from '@/shared/ui/Container';
 import { Icon } from '@/shared/ui/Icon';
 import { Input } from '@/shared/ui/Input';
 import { Link } from '@/shared/ui/Link';
-import { ModalWindow } from '@/shared/ui/Modal';
+import { ModalWindow } from '@/shared/ui/ModalWindow';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { ModalCategory } from '@/widgets/ModalCategory';
 
@@ -71,7 +71,7 @@ const Header: FC<Props> = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-10 bg-gray-900">
+    <header className="fixed top-0 left-0 right-0 z-30 bg-gray-900">
       <Container>
         <VStack align="center" justify="between" className="py-4">
           <Link to={getRouteMain()}>
