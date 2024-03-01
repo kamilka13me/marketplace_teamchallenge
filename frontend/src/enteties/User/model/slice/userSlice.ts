@@ -46,7 +46,7 @@ export const userSlice = createSlice({
         if (inspDate) {
           const storedExpirationDate = new Date(inspDate);
           const timeDifference = storedExpirationDate.getTime() - new Date().getTime();
-          const hoursDifference = timeDifference / (1000 * 60 * 60);
+          const hoursDifference = timeDifference / (1000 * 60 * 60); // max 7 days access token live
 
           if (hoursDifference < 5) {
             state.authData = undefined;

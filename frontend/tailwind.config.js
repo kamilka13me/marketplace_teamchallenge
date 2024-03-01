@@ -9,6 +9,7 @@ export default {
       },
       boxShadow: {
         'custom-base': ' 0px 2px 11.300000190734863px 0px rgba(118, 110, 110, 0.25)',
+        'custom-hover': '4px 4px 36px 0px #766E6E40',
       },
       dropShadow: {
         'custom-primary': '0px 2px 16px rgba(255, 255, 255, 0.25)',

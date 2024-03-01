@@ -15,6 +15,7 @@ import {
 import { productsPageActions } from '@/pages/ProductsPage/model/slices/productsPageSlice';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
+import { ReactHelmet } from '@/shared/SEO';
 import { Button } from '@/shared/ui/Button';
 import { Container } from '@/shared/ui/Container';
 import { HStack, VStack } from '@/shared/ui/Stack';
@@ -62,6 +63,7 @@ const MainPage: FC<Props> = () => {
 
   return (
     <div data-testid="MainPage" className="">
+      <ReactHelmet link="/" />
       <div>
         {user?.username}
         {!user ? (

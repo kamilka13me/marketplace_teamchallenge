@@ -10,7 +10,7 @@ const authRoute = express.Router();
  * /auth/:
  *   post:
  *     summary: Login user
- *     description: "Authenticate a user and return a JWT token.\n\n premission: \"none\""
+ *     description: "Authenticate a user and return a JWT accessToken.\n\n premission: \"none\""
  *     tags:
  *       - Authentication
  *     requestBody:
@@ -88,7 +88,7 @@ authRoute.post('/', authController.login);
  * /auth/:
  *   delete:
  *     summary: Logout user
- *     description: "Clears the authentication token cookie and logs the user out.\n\n premission: \"none\""
+ *     description: "Clears the authentication accessToken cookie and logs the user out.\n\n premission: \"none\""
  *     tags: [Authentication]
  *     responses:
  *       200:
@@ -106,10 +106,10 @@ authRoute.delete('/', authController.logout);
 
 /**
  * @swagger
- * /auth/set-token:
+ * /auth/set-accessToken:
  *   post:
- *     summary: Sets a token in cookies
- *     description: This endpoint accepts a token and sets it in HTTP cookies for further authentication processes.
+ *     summary: Sets a accessToken in cookies
+ *     description: This endpoint accepts a accessToken and sets it in HTTP cookies for further authentication processes.
  *     tags: [Authentication]
  *     requestBody:
  *       required: true
@@ -118,11 +118,11 @@ authRoute.delete('/', authController.logout);
  *           schema:
  *             type: object
  *             required:
- *               - token
+ *               - refreshToken
  *             properties:
- *               token:
+ *               refreshToken:
  *                 type: string
- *                 description: The JWT token to be stored in cookies for authentication.
+ *                 description: The JWT refreshToken to be stored in cookies for authentication.
  *                 example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
  *     responses:
  *       200:
@@ -131,6 +131,59 @@ authRoute.delete('/', authController.logout);
  *         description: Token is required in the request body.
  */
 
-authRoute.post('/set-token', authController.setToken);
+authRoute.post('/set-accessToken', authController.setToken);
+
+/**
+ * @swagger
+ * /auth/refresh-token:
+ *   post:
+ *     summary: Refresh access and refresh tokens
+ *     description: Use this endpoint to refresh access and refresh tokens using a refresh token stored in cookies.
+ *     tags: [Authentication]
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: cookie
+ *         name: reffreshToken
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: Refresh token stored in cookies.
+ *     responses:
+ *       200:
+ *         description: Token has been set in cookies.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Token has been set in cookies.
+ *       400:
+ *         description: Token is required but was not provided.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Token is required
+ *       500:
+ *         description: An unexpected error occurred.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: unexpected error
+ */
+
+authRoute.post('/refresh-token', authController.refreshTokens);
 
 export default authRoute;

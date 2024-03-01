@@ -4,7 +4,7 @@ import BrowserInfo from '../../models/BrowserInfo.js';
 import Role from '../../models/Role.js';
 import User from '../../models/User.js';
 import hashPassword from '../../utils/hashPasswordUtils.js';
-import generateToken from '../../utils/tokenUtils.js';
+import { generateAccessToken } from '../../utils/tokenUtils.js';
 
 const userController = {
   // create user
@@ -46,7 +46,7 @@ const userController = {
         wishlist: user.wishlist,
       };
 
-      const token = generateToken(user._id);
+      const accessToken = generateAccessToken(user._id);
 
       const newBrowserInfo = new BrowserInfo({
         ...info,
@@ -54,13 +54,13 @@ const userController = {
       });
 
       newBrowserInfo.save();
-      // res.cookie('token', token, { httpOnly: false, secure: false });
+      // res.cookie('accessToken', accessToken, { httpOnly: false, secure: false });
       // res.cookie('user', JSON.stringify(userCallback), {httpOnly: false,secure: false,});
-      res.setHeader('Authorization', `Bearer ${token}`);
+      res.setHeader('Authorization', `Bearer ${accessToken}`);
 
       res
         .status(201)
-        .json({ message: 'User created successfully', user: userCallback, token });
+        .json({ message: 'User created successfully', user: userCallback, accessToken });
     } catch (error) {
       if (error.code === 11000) {
         res.status(409).json({ message: 'user with this email allready exist' });
