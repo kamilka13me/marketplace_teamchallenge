@@ -12,7 +12,7 @@ if (environment === 'development') {
       process.env.REFRESH_SECRET_KEY ||
       'e5e4e8c11f75a835ee6435d29c0b99639c2bcda5ac2ccedb49dadee2ca3f8b9a',
     refreshTokenTime: process.env.JWT_TOKEN_TIME || '10h',
-    accessTokenTime: process.env.JWT_TOKEN_TIME || '10h',
+    accessTokenTime: process.env.JWT_TOKEN_TIME || '5m',
 
     mongoURL:
       process.env.MONGO_URL || 'mongodb+srv://admin:admin@cluster0.clm5vb8.mongodb.net/',
@@ -29,7 +29,7 @@ if (environment === 'development') {
       process.env.REFRESH_SECRET_KEY ||
       'e5e4e8c11f75a835ee6435d29c0b99639c2bcda5ac2ccedb49dadee2ca3f8b9a',
     refreshTokenTime: process.env.JWT_TOKEN_TIME || '10h',
-    accessTokenTime: process.env.JWT_TOKEN_TIME || '10h',
+    accessTokenTime: process.env.JWT_TOKEN_TIME || '5m',
 
     mongoURL:
       process.env.MONGO_URL || 'mongodb+srv://admin:admin@cluster0.clm5vb8.mongodb.net/',
@@ -46,7 +46,7 @@ if (environment === 'development') {
       process.env.REFRESH_SECRET_KEY ||
       'e5e4e8c11f75a835ee6435d29c0b99639c2bcda5ac2ccedb49dadee2ca3f8b9a',
     refreshTokenTime: process.env.JWT_TOKEN_TIME || '10h',
-    accessTokenTime: process.env.JWT_TOKEN_TIME || '10h',
+    accessTokenTime: process.env.JWT_TOKEN_TIME || '5m',
 
     mongoURL: process.env.MONGO_URL || 'mongodb://localhost:27017/',
 
