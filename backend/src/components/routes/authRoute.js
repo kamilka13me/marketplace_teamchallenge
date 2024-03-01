@@ -129,6 +129,8 @@ authRoute.delete('/', authController.logout);
  *         description: Token has been successfully set in cookies.
  *       400:
  *         description: Token is required in the request body.
+ *
+ *
  */
 
 authRoute.post('/set-acessToken', authController.setToken);
@@ -185,5 +187,22 @@ authRoute.post('/set-acessToken', authController.setToken);
  */
 
 authRoute.post('/refresh-token', authController.refreshTokens);
+
+/**
+ * @swagger
+ * responses:
+ *   '200':
+ *     description: "Success"
+ *   '400':
+ *     description: "Bad Request - The request could not be understood or was missing required parameters."
+ *   '401':
+ *     description: "Unauthorized - Authentication failed or user does not have permissions for the requested operation."
+ *   '403':
+ *     description: "Forbidden - Access denied."
+ *   '404':
+ *     description: "Not Found - Resource was not found."
+ *   '500':
+ *     description: "Internal Server Error - An error occurred on the server side."
+ */
 
 export default authRoute;
