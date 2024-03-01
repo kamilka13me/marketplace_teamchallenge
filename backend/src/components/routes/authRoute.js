@@ -136,24 +136,13 @@ authRoute.post('/set-accessToken', authController.setToken);
 /**
  * @swagger
  * /auth/refresh-token:
- *   post:
- *     summary: Refresh access and refresh tokens
- *     description: Use this endpoint to refresh access and refresh tokens using a refresh token stored in cookies.
+ *   get:
+ *     summary: Refresh Access Token
+ *     description: Use this API to refresh the access token using a refresh token.
  *     tags: [Authentication]
- *     consumes:
- *       - application/json
- *     produces:
- *       - application/json
- *     parameters:
- *       - in: cookie
- *         name: reffreshToken
- *         schema:
- *           type: string
- *         required: false
- *         description: Refresh token stored in cookies.
  *     responses:
  *       200:
- *         description: Token has been set in cookies.
+ *         description: Access token has been successfully refreshed.
  *         content:
  *           application/json:
  *             schema:
@@ -161,29 +150,42 @@ authRoute.post('/set-accessToken', authController.setToken);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Token has been set in cookies.
+ *                   example: Token has been updated
+ *                 accessToken:
+ *                   type: string
+ *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMzQ1Njc4OTAiLCJpYXQiOjE1MTYyMzkwMjJ9.QSflKxofmeJ6_y7TIphn2LJInrG7SWMweq5Z7HePpWk
  *       400:
- *         description: Token is required but was not provided.
+ *         description: Bad request, token is required.
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 error:
+ *                 message:
  *                   type: string
  *                   example: Token is required
- *       500:
- *         description: An unexpected error occurred.
+ *       401:
+ *         description: Unauthorized, token expired.
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 error:
+ *                 message:
  *                   type: string
- *                   example: unexpected error
+ *                   example: Token expired
+ *       500:
+ *         description: Unexpected error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Unexpected error
  */
 
-authRoute.post('/refresh-token', authController.refreshTokens);
+authRoute.get('/refresh-token', authController.refreshTokens);
 
 export default authRoute;
