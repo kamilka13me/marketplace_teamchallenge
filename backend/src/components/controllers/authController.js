@@ -71,7 +71,7 @@ const authController = {
       let { refreshToken } = req.cookies;
 
       if (!refreshToken) {
-        return res.status(400).send('Token is required');
+        return res.status(400).json({ message: 'Token is required' });
       }
       const decoded = jwt.verify(refreshToken, config.refreshSecretKey);
 
@@ -83,10 +83,11 @@ const authController = {
       return res.status(200).json({ message: 'Token has been updated', accessToken });
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {
-        res.status(401).send('Token expired');
+        res.status(401).json({ message: 'Token expired' });
       } else {
+        // eslint-disable-next-line no-console
         console.log(error);
-        res.status(500).json('unexpected error');
+        res.status(500).json({ message: 'Unexpected error' });
       }
     }
   },
