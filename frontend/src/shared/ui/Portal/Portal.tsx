@@ -34,7 +34,10 @@ const Portal: FC<PortalProps> = (props) => {
     );
 
     portalRoot.classList.add('overflow-hidden');
-    mainRoot.setAttribute('inert', '');
+
+    if (mainRoot) {
+      mainRoot.setAttribute('inert', '');
+    }
 
     portalRoot.addEventListener('keydown', handleKeyDown);
   }
