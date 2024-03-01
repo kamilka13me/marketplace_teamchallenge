@@ -15,19 +15,19 @@ const checkPermission = (action) => {
   return async (req, res, next) => {
     try {
       const tokenHeaders = req.headers.authorization?.split(' ')[1];
-      const tokenCoockies = req.cookies.token;
-      let token;
+      const tokenCoockies = req.cookies.acessToken;
+      let acessToken;
 
       if (tokenHeaders) {
-        token = tokenHeaders;
+        acessToken = tokenHeaders;
       } else if (tokenCoockies) {
-        token = tokenCoockies;
+        acessToken = tokenCoockies;
       }
 
       let hasPermission;
 
       if (tokenHeaders || tokenCoockies) {
-        const decoded = jwt.verify(token, config.secretKey);
+        const decoded = jwt.verify(acessToken, config.accessSecretKey);
 
         const user = await User.findById(decoded.id).populate('role');
 
