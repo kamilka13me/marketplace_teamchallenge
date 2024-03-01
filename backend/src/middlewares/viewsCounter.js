@@ -8,8 +8,8 @@ import User from '../models/User.js';
  * Middleware for counting views of a product.
  * This middleware does the following steps:
  * 1. Extracts the product ID from the request parameters.
- * 2. Attempts to retrieve the acessToken from either the Authorization header or cookies.
- * 3. If a acessToken is found, it verifies the acessToken and extracts the user ID.
+ * 2. Attempts to retrieve the accessToken from either the Authorization header or cookies.
+ * 3. If a accessToken is found, it verifies the accessToken and extracts the user ID.
  * 4. Looks up the user by the decoded user ID and populates their role.
  * 5. Checks if the user exists. If not, returns a 401 status with an error message.
  * 6. If the user exists, the middleware checks if the product has already been viewed by the user:
@@ -19,10 +19,10 @@ import User from '../models/User.js';
  *    This prevents inflating view counts by repeated views from the same user.
  * 7. Finally, it saves any changes to the user document (if any) and proceeds to the next middleware or route handler.
  *
- * If an error occurs during acessToken verification or database operations, the middleware handles it by returning
+ * If an error occurs during accessToken verification or database operations, the middleware handles it by returning
  * appropriate error messages and status codes, such as 401 for expired or invalid tokens, and 500 for internal server errors.
  *
- * @param {Object} req - The request object from Express.js. Expected to contain the product ID in params and optionally a acessToken in headers or cookies.
+ * @param {Object} req - The request object from Express.js. Expected to contain the product ID in params and optionally a accessToken in headers or cookies.
  * @param {Object} res - The response object from Express.js. Used to return error messages or to proceed with the response.
  * @param {Function} next - The next middleware or route handler to be executed after this middleware completes its execution.
  */
@@ -31,11 +31,11 @@ const viewsCounter = () => {
   return async (req, res, next) => {
     try {
       const { id } = req.params; // Product ID
-      const acessToken =
-        req.headers.authorization?.split(' ')[1] || req.cookies.acessToken;
+      const accessToken =
+        req.headers.authorization?.split(' ')[1] || req.cookies.accessToken;
 
-      if (acessToken) {
-        const decoded = jwt.verify(acessToken, config.accessSecretKey);
+      if (accessToken) {
+        const decoded = jwt.verify(accessToken, config.accessSecretKey);
         const user = await User.findById(decoded.id).populate('role');
 
         if (!user) {
@@ -54,7 +54,7 @@ const viewsCounter = () => {
         return res.status(401).send('Token expired');
       }
       if (error instanceof jwt.JsonWebTokenError) {
-        return res.status(401).send('Invalid acessToken');
+        return res.status(401).send('Invalid accessToken');
       }
       // eslint-disable-next-line no-console
       console.error(error);

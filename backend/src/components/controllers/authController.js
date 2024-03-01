@@ -24,7 +24,7 @@ const authController = {
         role: user.role.name,
       };
 
-      const acessToken = generateAccessToken(user._id);
+      const accessToken = generateAccessToken(user._id);
       const refreshToken = generateRefreshToken(user._id);
 
       const newBrowserInfo = new BrowserInfo({
@@ -39,7 +39,7 @@ const authController = {
 
       return res
         .status(200)
-        .json({ message: 'Auth success.', user: userCallback, acessToken });
+        .json({ message: 'Auth success.', user: userCallback, accessToken });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
@@ -75,12 +75,12 @@ const authController = {
       }
       const decoded = jwt.verify(refreshToken, config.refreshSecretKey);
 
-      const acessToken = generateAccessToken(decoded.id);
+      const accessToken = generateAccessToken(decoded.id);
 
       refreshToken = generateRefreshToken(decoded.id);
       res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true });
 
-      return res.status(200).json({ message: 'Token has been updated', acessToken });
+      return res.status(200).json({ message: 'Token has been updated', accessToken });
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {
         res.status(401).send('Token expired');

@@ -46,7 +46,7 @@ const userController = {
         wishlist: user.wishlist,
       };
 
-      const acessToken = generateAccessToken(user._id);
+      const accessToken = generateAccessToken(user._id);
 
       const newBrowserInfo = new BrowserInfo({
         ...info,
@@ -54,13 +54,13 @@ const userController = {
       });
 
       newBrowserInfo.save();
-      // res.cookie('acessToken', acessToken, { httpOnly: false, secure: false });
+      // res.cookie('accessToken', accessToken, { httpOnly: false, secure: false });
       // res.cookie('user', JSON.stringify(userCallback), {httpOnly: false,secure: false,});
-      res.setHeader('Authorization', `Bearer ${acessToken}`);
+      res.setHeader('Authorization', `Bearer ${accessToken}`);
 
       res
         .status(201)
-        .json({ message: 'User created successfully', user: userCallback, acessToken });
+        .json({ message: 'User created successfully', user: userCallback, accessToken });
     } catch (error) {
       if (error.code === 11000) {
         res.status(409).json({ message: 'user with this email allready exist' });

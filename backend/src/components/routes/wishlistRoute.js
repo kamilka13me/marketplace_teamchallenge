@@ -35,7 +35,7 @@ const wishlistRoute = express.Router();
  *                 user:
  *                   $ref: '#/components/schemas/User'
  *       401:
- *         description: Access denied due to missing or invalid acessToken.
+ *         description: Access denied due to missing or invalid accessToken.
  *       404:
  *         description: User not found or product not found.
  *       500:

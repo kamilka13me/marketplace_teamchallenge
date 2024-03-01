@@ -10,7 +10,7 @@ const authRoute = express.Router();
  * /auth/:
  *   post:
  *     summary: Login user
- *     description: "Authenticate a user and return a JWT acessToken.\n\n premission: \"none\""
+ *     description: "Authenticate a user and return a JWT accessToken.\n\n premission: \"none\""
  *     tags:
  *       - Authentication
  *     requestBody:
@@ -88,7 +88,7 @@ authRoute.post('/', authController.login);
  * /auth/:
  *   delete:
  *     summary: Logout user
- *     description: "Clears the authentication acessToken cookie and logs the user out.\n\n premission: \"none\""
+ *     description: "Clears the authentication accessToken cookie and logs the user out.\n\n premission: \"none\""
  *     tags: [Authentication]
  *     responses:
  *       200:
@@ -106,10 +106,10 @@ authRoute.delete('/', authController.logout);
 
 /**
  * @swagger
- * /auth/set-acessToken:
+ * /auth/set-accessToken:
  *   post:
- *     summary: Sets a acessToken in cookies
- *     description: This endpoint accepts a acessToken and sets it in HTTP cookies for further authentication processes.
+ *     summary: Sets a accessToken in cookies
+ *     description: This endpoint accepts a accessToken and sets it in HTTP cookies for further authentication processes.
  *     tags: [Authentication]
  *     requestBody:
  *       required: true
@@ -131,7 +131,7 @@ authRoute.delete('/', authController.logout);
  *         description: Token is required in the request body.
  */
 
-authRoute.post('/set-acessToken', authController.setToken);
+authRoute.post('/set-accessToken', authController.setToken);
 
 /**
  * @swagger
@@ -146,10 +146,10 @@ authRoute.post('/set-acessToken', authController.setToken);
  *       - application/json
  *     parameters:
  *       - in: cookie
- *         name: refreshToken
+ *         name: reffreshToken
  *         schema:
  *           type: string
- *         required: true
+ *         required: false
  *         description: Refresh token stored in cookies.
  *     responses:
  *       200:

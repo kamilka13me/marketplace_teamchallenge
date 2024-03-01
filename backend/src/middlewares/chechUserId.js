@@ -14,16 +14,16 @@ import User from '../models/User.js';
 const idToReq = () => {
   return async (req, res, next) => {
     try {
-      const acessToken =
-        req.headers.authorization?.split(' ')[1] || req.cookies.acessToken;
+      const accessToken =
+        req.headers.authorization?.split(' ')[1] || req.cookies.accessToken;
 
-      if (!acessToken) {
+      if (!accessToken) {
         return res
           .status(401)
-          .json({ message: 'Access denied. No acessToken provided.' });
+          .json({ message: 'Access denied. No accessToken provided.' });
       }
 
-      const decoded = jwt.verify(acessToken, config.accessSecretKey);
+      const decoded = jwt.verify(accessToken, config.accessSecretKey);
       const user = await User.findById(decoded.id).populate('role');
 
       if (!user) {
@@ -37,7 +37,7 @@ const idToReq = () => {
         return res.status(401).send('Token expired');
       }
       if (error instanceof jwt.JsonWebTokenError) {
-        return res.status(401).send('Invalid acessToken');
+        return res.status(401).send('Invalid accessToken');
       }
       // eslint-disable-next-line no-console
       console.error(error);
