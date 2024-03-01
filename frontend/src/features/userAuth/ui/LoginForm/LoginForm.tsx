@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -36,14 +36,9 @@ const LoginForm: FC<LoginFormProps> = (props) => {
     handleSubmit,
     formState: { errors, isValid },
     reset,
-    setFocus,
   } = useForm<InputsValues>({
     mode: 'onBlur',
   });
-
-  useEffect(() => {
-    setFocus('inputEmail');
-  }, [setFocus]);
 
   const onSubmit: SubmitHandler<InputsValues> = (data) => {
     dispatch(actionReducer.setEmail(data.inputEmail));
