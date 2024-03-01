@@ -6,7 +6,7 @@ const meta = {
   title: 'UI/Input',
   component: Input,
   parameters: {
-    layout: 'center',
+    layout: 'centered',
     nextAuthMock: {
       session: 'unknown',
     },
@@ -75,7 +75,7 @@ const meta = {
     },
     variant: {
       type: 'string',
-      description: 'Button styling options',
+      description: 'Styling options',
       options: ['basic', 'search'],
       control: { type: 'select' },
     },
