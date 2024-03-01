@@ -3,20 +3,38 @@ import jwt from 'jsonwebtoken';
 import config from '../config/config.js';
 
 /**
- * generate jwt token
+ * generate jwt acessToken
  * @param {string} userId
  *
  * @example
- * import generateToken from "path/tokenUtils.js"
- * const token = generateToken(userId);
+ * import generateAccessToken from "path/tokenUtils.js"
+ * const acessToken = generateAccessToken(userId);
  */
-const generateToken = (userId) => {
-  const { secretKey } = config;
-  const token = jwt.sign({ id: userId }, secretKey, {
-    expiresIn: `${config.jwtTokenTime}`,
+const generateAccessToken = (userId) => {
+  const { accessSecretKey } = config;
+  const acessToken = jwt.sign({ id: userId }, accessSecretKey, {
+    expiresIn: `${config.accessTokenTime}`,
   });
 
-  return token;
+  return acessToken;
 };
 
-export default generateToken;
+/**
+ * generate jwt refreshToken
+ * @param {string} userId
+ *
+ * @example
+ * import generateRefreshToken from "path/tokenUtils.js"
+ * const acessToken = generateRefreshToken(userId);
+ */
+const generateRefreshToken = (userId) => {
+  const { refreshSecretKey } = config;
+  const refreshToken = jwt.sign({ id: userId }, refreshSecretKey, {
+    expiresIn: `${config.refreshTokenTime}`,
+    // expiresIn: `-1h`,
+  });
+
+  return refreshToken;
+};
+
+export { generateAccessToken, generateRefreshToken };
