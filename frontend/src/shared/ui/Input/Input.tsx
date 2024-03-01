@@ -31,13 +31,14 @@ type InputTypes =
   | 'url'
   | 'week';
 
-type VariantTypes = 'basic' | 'search';
+type VariantTypes = 'basic' | 'search' | 'clear';
 
 const variantClasses: Record<VariantTypes, string> = {
+  clear: '',
   basic:
-    'outfit min-h-[48px] min-w-[360px] pl-4 bg-transparent text-white-400 text-[16px] text-gray-900 font-normal border-b-[1px] border-gray-900 focus:text-gray-900 outline-none',
+    'outfit min-h-[48px] min-w-[360px] pl-4 bg-transparent placeholder:white-400 text-[16px] text-gray-900 font-normal border-b-[1px] border-gray-900 focus:text-gray-900 outline-none',
   search:
-    'outfit min-h-[38px] min-w-[443px] pl-5 bg-gray-700 text-gray-300 text-[14px] text-gray-900 font-normal focus:text-gray-300 outline-none rounded-l-lg',
+    'outfit min-h-[38px] min-w-[443px] pl-5 bg-gray-700 text-gray-300 placeholder:white-400 text-[14px] font-normal focus:text-gray-300 outline-none rounded-l-lg',
 };
 
 interface Props extends HTMLInputProps {

@@ -1,8 +1,10 @@
-import { ChangeEvent, FC, FormEventHandler, useState } from 'react';
+import React, { ChangeEvent, FC, FormEventHandler, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
 import { getWishlist } from '@/enteties/User';
+import { LoginForm } from '@/features/userAuth/ui/LoginForm';
+import { RegistrationForm } from '@/features/userAuth/ui/RegistrationForm';
 import allProducts from '@/shared/assets/icons/allProducts.svg?react';
 import cancel from '@/shared/assets/icons/cancel.svg?react';
 import en from '@/shared/assets/icons/en.svg?react';
@@ -18,6 +20,7 @@ import { Container } from '@/shared/ui/Container';
 import { Icon } from '@/shared/ui/Icon';
 import { Input } from '@/shared/ui/Input';
 import { Link } from '@/shared/ui/Link';
+import { ModalWindow } from '@/shared/ui/ModalWindow';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { ModalCategory } from '@/widgets/ModalCategory';
 
@@ -25,15 +28,17 @@ interface Props {}
 
 const Header: FC<Props> = () => {
   const { t, i18n } = useTranslation();
-  const [showModal, setShowModal] = useState(false);
+  const [showModalCategory, setShowModalCategory] = useState(false);
   const [inputData, setInputData] = useState<string>('');
+  const [showModal, setShowModal] = useState(false);
+  const [toggleForm, setToggleForm] = useState(true);
 
   const counterWishlist: string = '2';
 
   const { wishlist } = useAppSelector(getWishlist);
 
   const onAllProductsClick = (): void => {
-    setShowModal(!showModal);
+    setShowModalCategory(!showModalCategory);
   };
 
   const onSubmitSearch: FormEventHandler<HTMLFormElement> = (
@@ -48,6 +53,15 @@ const Header: FC<Props> = () => {
     setInputData(e.target.value);
   };
 
+  const onHandleClickPortal = (): void => {
+    setShowModal(!showModal);
+    setToggleForm(true);
+  };
+
+  const onToggleChangeForm = (): void => {
+    setToggleForm(!toggleForm);
+  };
+
   const onUaChange = (): void => {
     i18n.changeLanguage('ua').then(() => {});
   };
@@ -57,7 +71,7 @@ const Header: FC<Props> = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-10 bg-gray-900">
+    <header className="fixed top-0 left-0 right-0 z-30 bg-gray-900">
       <Container>
         <VStack align="center" justify="between" className="py-4">
           <Link to={getRouteMain()}>
@@ -70,7 +84,11 @@ const Header: FC<Props> = () => {
             onClick={onAllProductsClick}
           >
             <VStack align="center" gap="1">
-              <Icon Svg={showModal ? cancel : allProducts} width={24} height={24} />
+              <Icon
+                Svg={showModalCategory ? cancel : allProducts}
+                width={24}
+                height={24}
+              />
               {t('Всі товари')}
             </VStack>
           </Button>
@@ -100,13 +118,20 @@ const Header: FC<Props> = () => {
           </form>
 
           <VStack gap="1" className="mr-[75px]">
-            <Link to="/" className="group duration-300 text-amber-50 w-[86px]">
-              <HStack align="center" className="gap-1.5 group-hover:text-primary">
+            <Link
+              to="/"
+              className="group duration-300 text-amber-50 w-[86px]"
+              onClick={onHandleClickPortal}
+            >
+              <HStack
+                align="center"
+                className="gap-1.5 group-hover:text-primary duration-300"
+              >
                 <Icon
                   Svg={person}
                   width={28}
                   height={28}
-                  className="stroke-white group-hover:stroke-primary"
+                  className="stroke-white group-hover:stroke-primary duration-300"
                 />
                 {t('Кабінет')}
               </HStack>
@@ -115,13 +140,13 @@ const Header: FC<Props> = () => {
             <Link to="/" className="group duration-300 text-amber-50 w-[86px]">
               <HStack
                 align="center"
-                className="relative gap-1.5 group-hover:text-primary"
+                className="relative gap-1.5 group-hover:text-primary duration-300"
               >
                 <Icon
                   Svg={like}
                   width={28}
                   height={28}
-                  className="stroke-white group-hover:stroke-primary"
+                  className="stroke-white group-hover:stroke-primary duration-300"
                 />
                 <div
                   className={
@@ -152,7 +177,7 @@ const Header: FC<Props> = () => {
               Svg={ua}
               width={24}
               height={18}
-              className={i18n.language === 'ua' ? 'opacity-50' : ''}
+              className={i18n.language === 'ua' ? 'opacity-50 duration-200' : ''}
             />
             <div className="h-6 border-r-[1px] border-solid border-primary" />
             <Icon
@@ -161,13 +186,42 @@ const Header: FC<Props> = () => {
               Svg={en}
               width={22}
               height={18}
-              className={i18n.language === 'en' ? 'opacity-50' : ''}
+              className={i18n.language === 'en' ? 'opacity-50 duration-200' : ''}
             />
           </VStack>
         </VStack>
 
-        <ModalCategory activeModal={showModal} />
+        <ModalCategory activeModal={showModalCategory} />
       </Container>
+
+      {showModal && (
+        <ModalWindow onCloseFunc={onHandleClickPortal} className="px-8 py-10">
+          <VStack align="center" justify="between">
+            <span className="outfit text-right text-gray-900 text-[32px] leading-[28px] font-semibold">
+              {toggleForm ? t('Вхід') : t('Реєстрація')}
+            </span>
+            <Icon
+              clickable
+              onClick={onHandleClickPortal}
+              Svg={cancel}
+              width={24}
+              height={24}
+              className="hover:transition hover:rotate-90 hover:duration-300 duration-300"
+            />
+          </VStack>
+          {toggleForm ? (
+            <LoginForm
+              onToggleForm={onToggleChangeForm}
+              onCloseModal={onHandleClickPortal}
+            />
+          ) : (
+            <RegistrationForm
+              onToggleForm={onToggleChangeForm}
+              onCloseModal={onHandleClickPortal}
+            />
+          )}
+        </ModalWindow>
+      )}
     </header>
   );
 };
