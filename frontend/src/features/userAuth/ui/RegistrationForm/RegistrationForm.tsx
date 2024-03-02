@@ -115,10 +115,12 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
           className="absolute top-[12px] right-[12px]"
         />
       </div>
+      <div className="hidden">{JSON.stringify(process.env)}</div>
+      <div className="hidden">{process.env.RECAPTCHA_API_SITE_KEY}</div>
       <div className="mb-4">
         <ReCAPTCHA
           hl={i18n.language === 'ua' ? 'uk' : 'en'}
-          sitekey={process.env.RECAPTCHA_API_SITE_KEY || ''}
+          sitekey="6LdYgYIpAAAAAFDJp2xk2nhsce03BxuaOdiW5yQm"
           onChange={(value) => {
             setReCaphaValue(value);
           }}
