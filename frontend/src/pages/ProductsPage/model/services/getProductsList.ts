@@ -1,7 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AxiosInstance } from 'axios';
 
-import { StateSchema } from '@/app/providers/StoreProvider';
+import { ThunkConfig } from '@/app/providers/StoreProvider/config/StateSchema';
 import { Product } from '@/enteties/Product';
 import {
   getProductsPageCategory,
@@ -19,15 +18,6 @@ import { addQueryParams } from '@/shared/lib/url/addQueryParams';
 
 interface FetchProductsListProps {
   replace?: boolean;
-}
-export interface ThunkExtraArg {
-  api: AxiosInstance;
-}
-
-export interface ThunkConfig<T> {
-  rejectValue: T;
-  extra: ThunkExtraArg;
-  state: StateSchema;
 }
 
 export const fetchProductsList = createAsyncThunk<

@@ -1,7 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Provider } from 'react-redux';
 
-import { createReduxStore } from '@/app/providers/StoreProvider/config/store';
 import { LoginForm } from '@/features/userAuth/ui/LoginForm/index';
 
 const meta = {
@@ -16,15 +14,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const reduxStore = createReduxStore();
-
 export const LoginFormStory: Story = {
   args: {},
-  decorators: [
-    (Story) => (
-      <Provider store={reduxStore}>
-        <Story />
-      </Provider>
-    ),
-  ],
+  decorators: [(Story) => <Story />],
 };

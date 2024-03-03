@@ -1,14 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { ThunkConfig } from '@/app/providers/StoreProvider/config/StateSchema';
 import {
   getProductsPageIsLoading,
   getProductsPageLimit,
   getProductsPageOffset,
 } from '@/pages/ProductsPage/model/selectors/productsPageSelectors';
-import {
-  fetchProductsList,
-  ThunkConfig,
-} from '@/pages/ProductsPage/model/services/getProductsList';
+import { fetchProductsList } from '@/pages/ProductsPage/model/services/getProductsList';
 import { productsPageActions } from '@/pages/ProductsPage/model/slices/productsPageSlice';
 
 export const fetchNextProductsPage = createAsyncThunk<void, void, ThunkConfig<string>>(
