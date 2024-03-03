@@ -14,7 +14,7 @@ import {
 const EXPIRES_TIME = 7;
 
 interface ApiResponse {
-  token: string;
+  accessToken: string;
   message: string;
   user: User;
 }
@@ -27,6 +27,7 @@ interface LoginByUsernameProps {
 const cookiesAttr: Cookies.CookieAttributes = {
   expires: EXPIRES_TIME,
   secure: true,
+  sameSite: 'Strict',
 };
 
 export const getUserByCredentials = createAsyncThunk<ApiResponse, LoginByUsernameProps>(
@@ -51,26 +52,26 @@ export const getUserByCredentials = createAsyncThunk<ApiResponse, LoginByUsernam
         },
       });
 
-      const { token } = response.data;
+      if (response.status !== 200) {
+        return rejectWithValue(`:: ${response.statusText} `);
+      }
+
+      const { accessToken, user } = response.data;
 
       const futureDate = new Date(currentDate);
 
       futureDate.setDate(currentDate.getDate() + EXPIRES_TIME);
 
-      if (response.status !== 200) {
-        return rejectWithValue(`:: ${response.statusText} `);
-      }
-
-      // Set cookies for user, token, expiration date when user removes from cookies
-      Cookies.set(COOKIE_KEY_TOKEN, token, cookiesAttr);
+      // Set cookies for user, expiration date when user removes from cookies
       Cookies.set(COOKIE_KEY_USER, JSON.stringify(response.data.user), cookiesAttr);
       Cookies.set(
         COOKIE_KEY_EXPIRATION_DATE_OF_USER,
         futureDate.toISOString(),
         cookiesAttr,
       );
+      Cookies.set(COOKIE_KEY_TOKEN, accessToken, cookiesAttr);
 
-      dispatch(userActions.setAuthData(response.data.user));
+      dispatch(userActions.setAuthData(user));
 
       return response.data;
     } catch (e: unknown) {

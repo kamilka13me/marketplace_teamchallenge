@@ -147,9 +147,14 @@ const ProductCard: FC<Props> = (props) => {
             font="ibm-plex-sans"
             Tag="p"
             text={countDiscount(price, discount || 0).toString()}
-            className="text-[32px]"
+            className={`text-[32px] ${discount && 'text-red'}`}
           />
-          <Text font="ibm-plex-sans" Tag="span" text="грн" className="text-[24px]" />
+          <Text
+            font="ibm-plex-sans"
+            Tag="span"
+            text="грн"
+            className={`text-[24px] ${discount && 'text-red'}`}
+          />
         </VStack>
 
         {/*  Quantity */}
