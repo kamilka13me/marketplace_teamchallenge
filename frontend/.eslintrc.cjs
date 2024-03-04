@@ -122,6 +122,7 @@ module.exports = {
             }
         ],
         "default-param-last": "off",
+        "react/no-danger": "off",
         "react/display-name": "off",
         "react/react-in-jsx-scope": "off",
         "react/require-default-props": "off",

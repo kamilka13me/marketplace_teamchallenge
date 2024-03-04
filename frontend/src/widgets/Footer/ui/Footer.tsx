@@ -7,7 +7,8 @@ import instagram from '@/shared/assets/icons/instagram.svg?react';
 import linkedin from '@/shared/assets/icons/linkedin.svg?react';
 import logo from '@/shared/assets/icons/logo.svg?react';
 import { getRouteMain } from '@/shared/const/routes';
-import { Container } from '@/shared/ui/Container';
+import { Container } from '@/shared/layouts/Container';
+import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Link } from '@/shared/ui/Link';
 import { HStack, VStack } from '@/shared/ui/Stack';
@@ -24,7 +25,7 @@ const Footer: FC<Props> = () => {
         <div className="z-10 w-[550px] h-[550px] origin-top-left rotate-[120deg] bg-neutral-900 rounded-[217px] absolute left-[33%]  top-[-20%]" />
         <div className="w-[550px] h-[550px] origin-top-left rotate-[120deg] bg-neutral-900 rounded-[217px] absolute right-[-40%] top-[100%]" />
         <div className="z-20 relative">
-          <VStack align="start" justify="around" className="pt-12 pb-9">
+          <VStack align="start" justify="around" className="pt-12">
             <HStack align="start" justify="between" className="w-1/2">
               <Link to={getRouteMain()}>
                 <Icon Svg={logo} width={202} height={68} />
@@ -40,6 +41,12 @@ const Footer: FC<Props> = () => {
                 <Icon Svg={instagram} width={36} height={36} />
                 <Icon Svg={linkedin} width={36} height={36} />
               </VStack>
+              <Button
+                variant="fill"
+                className="w-[313px] h-[52px] mt-[26px] mb-[77px] text-[16px]"
+              >
+                Стати продавцем
+              </Button>
             </HStack>
             <VStack align="start" justify="between" className=" gap-5 w-1/2">
               <HStack className="gap-3">
@@ -87,7 +94,7 @@ const Footer: FC<Props> = () => {
             </VStack>
           </VStack>
           <VStack
-            className="border-t-2 border-white pt-6 mt-28 mb-5"
+            className="border-t-2 border-white pt-6 mb-5"
             align="center"
             justify="center"
           >
