@@ -1,6 +1,8 @@
-import { isValidObjectId } from 'mongoose';
+import mongoose, { isValidObjectId } from 'mongoose';
 
+import Category from '../../models/Category.js';
 import Product from '../../models/Product.js';
+import findChildCategories from '../../utils/findChildCategories.js';
 
 const productController = {
   // create new product
@@ -76,8 +78,17 @@ const productController = {
         query.name = { $regex: name, $options: 'i' }; // Search by name
       }
       if (category) {
-        query.category = category;
+        if (mongoose.Types.ObjectId.isValid(category)) {
+          const categoryObjectId = new mongoose.Types.ObjectId(category);
+          const categoryIds = [categoryObjectId];
+
+          await findChildCategories(categoryObjectId, categoryIds);
+          query.category = { $in: categoryIds.map((id) => id.toString()) };
+        } else {
+          query.category = category;
+        }
       }
+
       // eslint-disable-next-line eqeqeq
       if (discount != 0) {
         query.discount = { $gt: discount - 1 };

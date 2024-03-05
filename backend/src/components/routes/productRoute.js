@@ -168,7 +168,7 @@ productRoute.get('/:id', viewsCounter(), productController.getOneProduct);
  *         name: category
  *         schema:
  *           type: string
- *         description: Filter by product category.
+ *         description: Filter by product category or product Id.
  *       - in: query
  *         name: sortBy
  *         schema:
