@@ -6,6 +6,8 @@ export type HeaderTagType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'spa
 
 export type TextColors = 'primary' | 'gray' | 'orange' | 'red' | 'green' | 'white';
 
+export type FontSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
+
 export type TextFonts = 'ibm-plex-sans' | 'outfit';
 
 const TextColor: Record<TextColors, string> = {
@@ -28,20 +30,20 @@ const TextFont: Record<TextFonts, string> = {
   'ibm-plex-sans': 'font-ibm-plex-sans',
 };
 
-const fontSize: Record<HeaderTagType, string> = {
-  h1: 'text-[32px] leading-[40px]',
-  h2: 'text-[32px] leading-[24px]',
-  h3: 'text-[24px] leading-[18px]',
-  h4: 'text-[20px]',
-  h5: 'text-[18px] leading-[40px]',
-  h6: 'text-[16px]',
-  p: 'text-md leading-[40px]',
-  span: 'text-md leading-[40px]',
+const fontSize: Record<FontSize, string> = {
+  sm: 'text-sm',
+  md: 'text-md',
+  lg: 'text-lg',
+  xl: 'text-xl font-bold',
+  '2xl': 'text-2xl',
+  '3xl': 'text-3xl font-bold',
+  '4xl': 'text-4xl font-ibm-plex-sans',
 };
 
 interface Props {
   Tag: HeaderTagType;
   text: string;
+  size: FontSize;
   color?: TextColors;
   bold?: boolean;
   font?: TextFonts;
@@ -53,6 +55,7 @@ const Text: FC<Props> = (props) => {
   const {
     Tag,
     text,
+    size,
     align = 'left',
     bold,
     className,
@@ -61,7 +64,7 @@ const Text: FC<Props> = (props) => {
   } = props;
 
   const textAlign = TextAlignClass[align];
-  const textSize = fontSize[Tag];
+  const textSize = fontSize[size];
   const textColor = TextColor[color];
   const textFont = TextFont[font];
 

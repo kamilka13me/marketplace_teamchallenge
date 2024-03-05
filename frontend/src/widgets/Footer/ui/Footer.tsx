@@ -14,6 +14,76 @@ import { Link } from '@/shared/ui/Link';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
+interface FooterLinkProps {
+  title: string;
+  links: {
+    text: string;
+    link: string;
+  }[];
+}
+
+const footerLinks: FooterLinkProps[] = [
+  {
+    title: 'Інформація',
+    links: [
+      {
+        text: 'Про нас',
+        link: '/',
+      },
+      {
+        text: 'Контакти',
+        link: '/',
+      },
+      {
+        text: 'Усі категорії FAQs',
+        link: '/',
+      },
+      {
+        text: 'FAQs',
+        link: '/',
+      },
+    ],
+  },
+  {
+    title: 'Допомога',
+    links: [
+      {
+        text: 'Оплата та доставка',
+        link: '/',
+      },
+      {
+        text: "Зворотний зв'язок",
+        link: '/',
+      },
+      {
+        text: 'Гарантія',
+        link: '/',
+      },
+      {
+        text: 'Повернення товару',
+        link: '/',
+      },
+    ],
+  },
+  {
+    title: 'Сервіси',
+    links: [
+      {
+        text: 'Бонусний рахунок',
+        link: '/',
+      },
+      {
+        text: 'Подарункові сертифікати',
+        link: '/',
+      },
+      {
+        text: 'Корпоративним клієнтам',
+        link: '/',
+      },
+    ],
+  },
+];
+
 interface Props {}
 
 const Footer: FC<Props> = () => {
@@ -31,6 +101,7 @@ const Footer: FC<Props> = () => {
                 <Icon Svg={logo} width={202} height={68} />
               </Link>
               <Text
+                size="md"
                 Tag="p"
                 color="white"
                 text={t('Дізнавайтесь першими про акції та новини')}
@@ -49,48 +120,18 @@ const Footer: FC<Props> = () => {
               </Button>
             </HStack>
             <VStack align="start" justify="between" className=" gap-5 w-1/2">
-              <HStack className="gap-3">
-                <Text Tag="h4" color="white" text={t('Інформація')} />
-                <Link to={getRouteMain()}>
-                  <Text Tag="h6" color="white" text={t('Про нас')} />
-                </Link>
-                <Link to={getRouteMain()}>
-                  <Text Tag="h6" color="white" text={t('Контакти')} />
-                </Link>
-                <Link to={getRouteMain()}>
-                  <Text Tag="h6" color="white" text={t('Усі категорії')} />
-                </Link>
-                <Link to={getRouteMain()}>
-                  <Text Tag="h6" color="white" text={t('FAQs')} />
-                </Link>
-              </HStack>
-              <HStack className="gap-3">
-                <Text Tag="h4" color="white" text={t('Допомога')} />
-                <Link to={getRouteMain()}>
-                  <Text Tag="h6" color="white" text={t('Оплата та доставка')} />
-                </Link>
-                <Link to={getRouteMain()}>
-                  <Text Tag="h6" color="white" text={t("Зворотний зв'язок")} />
-                </Link>
-                <Link to={getRouteMain()}>
-                  <Text Tag="h6" color="white" text={t('Гарантія')} />
-                </Link>
-                <Link to={getRouteMain()}>
-                  <Text Tag="h6" color="white" text={t('Повернення товару')} />
-                </Link>
-              </HStack>
-              <HStack className="gap-3">
-                <Text Tag="h4" color="white" text={t('Сервіси')} />
-                <Link to={getRouteMain()}>
-                  <Text Tag="h6" color="white" text={t('Бонусний рахунок')} />
-                </Link>
-                <Link to={getRouteMain()}>
-                  <Text Tag="h6" color="white" text={t('Подарункові сертифікати')} />
-                </Link>
-                <Link to={getRouteMain()}>
-                  <Text Tag="h6" color="white" text={t('Корпоративним клієнтам')} />
-                </Link>
-              </HStack>
+              {footerLinks.map((titleLink, i) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <HStack key={i} gap="6">
+                  <Text size="xl" Tag="h4" color="white" text={t(titleLink.title)} />
+                  {titleLink.links.map((link, i) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <Link key={i} to={link.link}>
+                      <Text size="md" Tag="h6" color="white" text={t(link.text)} />
+                    </Link>
+                  ))}
+                </HStack>
+              ))}
             </VStack>
           </VStack>
           <VStack
@@ -99,6 +140,7 @@ const Footer: FC<Props> = () => {
             justify="center"
           >
             <Text
+              size="sm"
               Tag="h6"
               color="white"
               text={t('© 2024 PEACH, All rights reserved. ')}
