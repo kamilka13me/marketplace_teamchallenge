@@ -17,6 +17,15 @@ export default {
       dropShadow: {
         'custom-primary': '0px 2px 16px rgba(255, 255, 255, 0.25)',
       },
+      fontSize: {
+        sm: ['14px', '17.6px'],
+        md: ['16px', '22.4px'],
+        lg: ['18px', '40px'],
+        xl: ['20px', '25.2px'],
+        '2xl': ['24px', '18px'],
+        '3xl': ['32px', '24px'],
+        '4xl': ['32px', '40px'],
+      },
       colors: {
         primary: '#D9C01B',
         secondary: '#FFDE00',

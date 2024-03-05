@@ -24,6 +24,10 @@ const meta = {
       options: ['ibm-plex-sans', 'outfit'],
       control: { type: 'select' },
     },
+    size: {
+      options: ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'],
+      control: { type: 'select' },
+    },
   },
   tags: ['autodocs'],
 } satisfies Meta<typeof Text>;
@@ -36,6 +40,7 @@ export const Primary: Story = {
     align: 'center',
     color: 'primary',
     Tag: 'h1',
+    size: 'sm',
     font: 'outfit',
     bold: false,
     text: 'Text',
