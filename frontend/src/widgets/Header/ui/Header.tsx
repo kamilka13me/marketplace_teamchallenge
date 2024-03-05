@@ -14,9 +14,9 @@ import person from '@/shared/assets/icons/person.svg?react';
 import search from '@/shared/assets/icons/search.svg?react';
 import ua from '@/shared/assets/icons/ua.svg?react';
 import { getRouteMain } from '@/shared/const/routes';
+import { Container } from '@/shared/layouts/Container';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
-import { Container } from '@/shared/ui/Container';
 import { Icon } from '@/shared/ui/Icon';
 import { Input } from '@/shared/ui/Input';
 import { Link } from '@/shared/ui/Link';
@@ -78,120 +78,123 @@ const Header: FC<Props> = () => {
             <Icon Svg={logo} width={202} height={68} />
           </Link>
 
-          <Button
-            variant="fill"
-            className="ml-[131px] all-products-button"
-            onClick={onAllProductsClick}
-          >
-            <VStack align="center" gap="1">
-              <Icon
-                Svg={showModalCategory ? cancel : allProducts}
-                width={24}
-                height={24}
-              />
-              {t('Всі товари')}
-            </VStack>
-          </Button>
-
-          <form
-            onSubmit={onSubmitSearch}
-            className="flex flex-nowrap items-center ml-6 mr-5 hover:drop-shadow-custom-primary duration-300"
-            autoComplete="off"
-          >
-            <Input
-              name="searchInput"
-              type="text"
-              variant="search"
-              value={inputData}
-              placeholder={t('Я шукаю')}
-              onChange={onChangeInput}
-            />
-            <Button
-              variant="search"
-              type="submit"
-              onClick={() => {
-                setInputData('');
-              }}
-            >
-              <Icon Svg={search} width={20} height={20} />
-            </Button>
-          </form>
-
-          <VStack gap="1" className="mr-[75px]">
-            <Link
-              to="/"
-              className="group duration-300 text-amber-50 w-[86px]"
-              onClick={onHandleClickPortal}
-            >
-              <HStack
-                align="center"
-                className="gap-1.5 group-hover:text-primary duration-300"
+          <VStack align="center">
+            <VStack gap="5" align="center" className="mr-[75px]">
+              <Button
+                variant="fill"
+                className=" all-products-button"
+                onClick={onAllProductsClick}
               >
-                <Icon
-                  Svg={person}
-                  width={28}
-                  height={28}
-                  className="stroke-white group-hover:stroke-primary duration-300"
-                />
-                {t('Кабінет')}
-              </HStack>
-            </Link>
+                <VStack align="center" gap="1">
+                  <Icon
+                    Svg={showModalCategory ? cancel : allProducts}
+                    width={24}
+                    height={24}
+                  />
+                  {t('Всі товари')}
+                </VStack>
+              </Button>
 
-            <Link to="/" className="group duration-300 text-amber-50 w-[86px]">
-              <HStack
-                align="center"
-                className="relative gap-1.5 group-hover:text-primary duration-300"
+              <form
+                onSubmit={onSubmitSearch}
+                className="flex flex-nowrap items-center hover:drop-shadow-custom-primary duration-300"
+                autoComplete="off"
               >
-                <Icon
-                  Svg={like}
-                  width={28}
-                  height={28}
-                  className="stroke-white group-hover:stroke-primary duration-300"
+                <Input
+                  name="searchInput"
+                  type="text"
+                  variant="search"
+                  value={inputData}
+                  placeholder={t('Я шукаю')}
+                  onChange={onChangeInput}
                 />
-                <div
-                  className={
-                    wishlist.length < 1
-                      ? 'hidden'
-                      : 'absolute right-[29px] flex justify-items-center items-center bg-primary border-[1.5px] border-gray-900 rounded-full'
-                  }
+                <Button
+                  variant="search"
+                  type="submit"
+                  onClick={() => {
+                    setInputData('');
+                  }}
                 >
-                  <span
-                    className={
-                      counterWishlist < '1'
-                        ? 'hidden'
-                        : 'outfit font-normal min-w-[10px] m-[2px] text-center text-black text-[10px] leading-[10px]'
-                    }
-                  >
-                    {wishlist.length}
-                  </span>
-                </div>
-                {t('Список')}
-              </HStack>
-            </Link>
-          </VStack>
+                  <Icon Svg={search} width={20} height={20} />
+                </Button>
+              </form>
 
-          <VStack align="center" className="gap-[7.5px]">
-            <Icon
-              clickable
-              onClick={onUaChange}
-              Svg={ua}
-              width={24}
-              height={18}
-              className={i18n.language === 'ua' ? 'opacity-50 duration-200' : ''}
-            />
-            <div className="h-6 border-r-[1px] border-solid border-primary" />
-            <Icon
-              clickable
-              onClick={onEnChange}
-              Svg={en}
-              width={22}
-              height={18}
-              className={i18n.language === 'en' ? 'opacity-50 duration-200' : ''}
-            />
+              <VStack gap="1" className="">
+                <Link
+                  to="/"
+                  className="group duration-300 text-amber-50 w-[86px]"
+                  onClick={onHandleClickPortal}
+                >
+                  <HStack
+                    align="center"
+                    className="gap-1.5 group-hover:text-primary duration-300"
+                  >
+                    <Icon
+                      Svg={person}
+                      width={28}
+                      height={28}
+                      className="stroke-white group-hover:stroke-primary duration-300"
+                    />
+                    {t('Кабінет')}
+                  </HStack>
+                </Link>
+
+                <Link to="/" className="group duration-300 text-amber-50 w-[86px]">
+                  <HStack
+                    align="center"
+                    className="relative gap-1.5 group-hover:text-primary duration-300"
+                  >
+                    <Icon
+                      Svg={like}
+                      width={28}
+                      height={28}
+                      className="stroke-white group-hover:stroke-primary duration-300"
+                    />
+                    <div
+                      className={
+                        wishlist.length < 1
+                          ? 'hidden'
+                          : 'absolute right-[29px] flex justify-items-center items-center bg-primary border-[1.5px] border-gray-900 rounded-full'
+                      }
+                    >
+                      <span
+                        className={
+                          counterWishlist < '1'
+                            ? 'hidden'
+                            : 'outfit font-normal min-w-[10px] m-[2px] text-center text-black text-[10px] leading-[10px]'
+                        }
+                      >
+                        {wishlist.length}
+                      </span>
+                    </div>
+                    {t('Список')}
+                  </HStack>
+                </Link>
+              </VStack>
+            </VStack>
+
+            <VStack align="center" className="gap-[7.5px]">
+              <Icon
+                clickable
+                onClick={onUaChange}
+                Svg={ua}
+                width={24}
+                height={18}
+                className={i18n.language === 'ua' ? 'opacity-50 duration-200' : ''}
+              />
+              <div className="h-6 border-r-[1px] border-solid border-primary" />
+              <Icon
+                clickable
+                onClick={onEnChange}
+                Svg={en}
+                width={22}
+                height={18}
+                className={i18n.language === 'en' ? 'opacity-50 duration-200' : ''}
+              />
+            </VStack>
           </VStack>
         </VStack>
-
-        <ModalCategory activeModal={showModalCategory} />
+        <ModalCategory setIsOpen={onAllProductsClick} isOpen={showModalCategory} />
       </Container>
 
       {showModal && (

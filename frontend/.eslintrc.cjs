@@ -123,6 +123,7 @@ module.exports = {
         ],
         "default-param-last": "off",
         "react/display-name": "off",
+        "react/no-danger": "off",
         "react/react-in-jsx-scope": "off",
         "react/require-default-props": "off",
         "react-hooks/rules-of-hooks": "error",

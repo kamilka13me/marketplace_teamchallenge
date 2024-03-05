@@ -13,11 +13,11 @@ import {
   useGetPromotionsProductsQuery,
 } from '@/pages/ProductsPage';
 import { productsPageActions } from '@/pages/ProductsPage/model/slices/productsPageSlice';
+import { Container } from '@/shared/layouts/Container';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { ReactHelmet } from '@/shared/SEO';
 import { Button } from '@/shared/ui/Button';
-import { Container } from '@/shared/ui/Container';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Sidebar } from '@/widgets/Sidebar';
 

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { ProductCardSkeleton } from '@/enteties/Product';
-import { Container } from '@/shared/ui/Container';
+import { Container } from '@/shared/layouts/Container';
 import { Skeleton } from '@/shared/ui/Skeleton';
 import { HStack, VStack } from '@/shared/ui/Stack';
 
