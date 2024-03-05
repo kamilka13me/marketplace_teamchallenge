@@ -129,13 +129,14 @@ const ProductCard: FC<Props> = (props) => {
         {discount ? (
           <VStack gap="1" align="center" className="mt-1">
             <Text
+              size="lg"
               font="ibm-plex-sans"
               Tag="p"
               text={price.toString()}
-              className="line-through text-[18px] font-semibold"
+              className="line-through font-semibold"
               color="gray"
             />
-            <Text font="ibm-plex-sans" Tag="span" text="грн" color="gray" />
+            <Text font="ibm-plex-sans" size="sm" Tag="span" text="грн" color="gray" />
           </VStack>
         ) : (
           <div className="h-[40px]" />
@@ -144,25 +145,28 @@ const ProductCard: FC<Props> = (props) => {
         {/*  Main price */}
         <VStack gap="1" align="center" className="gap-1 ">
           <Text
+            size="4xl"
             font="ibm-plex-sans"
             Tag="p"
             text={countDiscount(price, discount || 0).toString()}
-            className={`text-[32px] ${discount && 'text-red'}`}
+            className={`${discount && 'text-red'}`}
           />
           <Text
+            size="2xl"
             font="ibm-plex-sans"
             Tag="span"
             text="грн"
-            className={`text-[24px] ${discount && 'text-red'}`}
+            className={` ${discount && 'text-red'}`}
           />
         </VStack>
 
         {/*  Quantity */}
         <Text
           Tag="span"
+          size="sm"
           text={t(quantityCalc(quantity).text)}
           color={quantityCalc(quantity).color}
-          className="mt-2 !leading-[17.64px]"
+          className="mt-2"
         />
       </div>
 

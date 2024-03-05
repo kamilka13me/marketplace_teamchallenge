@@ -1,41 +1,61 @@
-import { FC } from 'react';
+import React, { FC, useState } from 'react';
 
-import { VStack } from '@/shared/ui/Stack';
-import { CategorySection } from '@/widgets/ModalCategory';
-import { Sidebar } from '@/widgets/Sidebar';
+import SubCategory from './SubCategory';
+
+import { Category } from '@/enteties/Category';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
+import useAxios from '@/shared/lib/hooks/useAxios';
+import { CategoryLink } from '@/shared/ui/CategoryLink';
 
 interface Props {
-  activeModal: boolean;
+  isOpen: boolean;
+  setIsOpen: () => void;
 }
 
 const ModalCategory: FC<Props> = (props: Props) => {
-  const { activeModal } = props;
+  const { isOpen, setIsOpen } = props;
+  const { data, error, isLoading } = useAxios<Category[]>(ApiRoutes.CATEGORY);
+  const [currentCategory, setCurrentCategory] = useState(0);
+
+  if (isLoading) {
+    return <>Loading...</>;
+  }
+
+  if (error) {
+    return <>Some Error</>;
+  }
 
   return (
-    <div
-      className={
-        activeModal
-          ? 'absolute top-[100px] z-[100] left-0 right-0 h-screen bg-black-transparent-50'
-          : 'hidden'
-      }
-    >
-      <div
-        className={
-          activeModal
-            ? 'absolute z-[900] left-0 right-0 max-w-[1328px] pl-2 pt-9 pb-6 mx-auto rounded-b-2xl bg-white-200'
-            : 'hidden'
-        }
-      >
-        <VStack>
-          <Sidebar />
-
-          <CategorySection title="Популярні товари" className="ml-5 mr-[73px]" />
-          <CategorySection title="Ноутбуки" className="mr-[73px]" />
-          <CategorySection title="Телефони" className="mr-[73px]" />
-          <CategorySection title="Аксесуари" />
-        </VStack>
-      </div>
-    </div>
+    isOpen && (
+      <>
+        <div className="absolute flex gap-5 top-[100px] pt-9 pl-2 pb-6 bg-white z-50 whitespace-nowrap max-w-[1328px] w-full rounded-b-2xl">
+          <ul className="w-[313px] flex flex-col gap-2 px-[13px]">
+            {data?.map((item, i) => (
+              <li
+                key={item._id}
+                onMouseEnter={() => setCurrentCategory(i)}
+                className="max-w-[313px] relative"
+              >
+                <CategoryLink category={item} />
+              </li>
+            ))}
+          </ul>
+          <div>
+            {data && (
+              <SubCategory
+                data={data[currentCategory]?.subcategories as Category[]}
+                isFirstSubCategory
+              />
+            )}
+          </div>
+        </div>
+        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
+        <div
+          className="fixed top-0 left-0 right-0 bottom-0 z-10 bg-black/20"
+          onClick={setIsOpen}
+        />
+      </>
+    )
   );
 };
 

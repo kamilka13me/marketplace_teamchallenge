@@ -4,5 +4,5 @@ export interface Category {
   image: string;
   description: string;
   parentId: string | null;
-  subcategories: Category;
+  subcategories: Category[];
 }

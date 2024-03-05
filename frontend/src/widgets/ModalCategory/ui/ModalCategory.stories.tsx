@@ -7,10 +7,7 @@ const meta = {
   component: ModalCategory,
   parameters: {},
   argTypes: {
-    activeModal: {
-      type: 'boolean',
-      description: 'Show or not this modal',
-    },
+    setIsOpen: () => {},
   },
   tags: ['autodocs'],
 } satisfies Meta<typeof ModalCategory>;
@@ -20,6 +17,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    activeModal: true,
+    isOpen: false,
+    setIsOpen: () => {},
   },
 };

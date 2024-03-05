@@ -32,7 +32,7 @@ const ProductSectionLayout: FC<Props> = (props) => {
 
   return (
     <div className="w-full">
-      <Text Tag="h2" text={title} bold className="mb-6" />
+      <Text size="3xl" Tag="h2" text={title} bold className="mb-6" />
       <VStack gap="5">
         {isLoading
           ? renderLoadingSkeletons()

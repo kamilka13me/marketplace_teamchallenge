@@ -3,9 +3,9 @@ import { FC } from 'react';
 import { Category } from '@/enteties/Category';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import useAxios from '@/shared/lib/hooks/useAxios';
+import { CategoryLink } from '@/shared/ui/CategoryLink';
 import { Skeleton } from '@/shared/ui/Skeleton';
 import { HStack, VStack } from '@/shared/ui/Stack';
-import SidebarCategoryLink from '@/widgets/Sidebar/ui/SidebarCategoryLink';
 
 interface Props {}
 
@@ -43,7 +43,7 @@ const Sidebar: FC<Props> = () => {
     <aside className="max-w-[314px] w-full">
       <ul className="flex flex-col gap-2">
         {data.map((item) => (
-          <SidebarCategoryLink key={item._id} category={item} />
+          <CategoryLink key={item._id} category={item} />
         ))}
       </ul>
     </aside>
