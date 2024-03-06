@@ -83,7 +83,7 @@ const authController = {
       return res.status(200).json({ message: 'Token has been updated', accessToken });
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {
-        res.status(401).json({ message: 'Token expired' });
+        res.status(419).json({ message: 'Token expired' });
       } else {
         // eslint-disable-next-line no-console
         console.log(error);
