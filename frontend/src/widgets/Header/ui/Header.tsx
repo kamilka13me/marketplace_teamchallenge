@@ -28,12 +28,11 @@ interface Props {}
 
 const Header: FC<Props> = () => {
   const { t, i18n } = useTranslation();
+
   const [showModalCategory, setShowModalCategory] = useState(false);
   const [inputData, setInputData] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
   const [toggleForm, setToggleForm] = useState(true);
-
-  const counterWishlist: string = '2';
 
   const { wishlist } = useAppSelector(getWishlist);
 
@@ -159,7 +158,7 @@ const Header: FC<Props> = () => {
                     >
                       <span
                         className={
-                          counterWishlist < '1'
+                          wishlist.length < 1
                             ? 'hidden'
                             : 'outfit font-normal min-w-[10px] m-[2px] text-center text-black text-[10px] leading-[10px]'
                         }
@@ -194,7 +193,11 @@ const Header: FC<Props> = () => {
             </VStack>
           </VStack>
         </VStack>
-        <ModalCategory setIsOpen={onAllProductsClick} isOpen={showModalCategory} />
+
+        <ModalCategory
+          setIsOpen={() => setShowModalCategory(false)}
+          isOpen={showModalCategory}
+        />
       </Container>
 
       {showModal && (

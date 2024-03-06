@@ -1,5 +1,6 @@
 import './index.css';
 import { createRoot } from 'react-dom/client';
+import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from './app/App';
@@ -21,11 +22,13 @@ if (!container) {
 const root = createRoot(container);
 
 root.render(
-  <BrowserRouter>
-    <StoreProvider>
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
-    </StoreProvider>
-  </BrowserRouter>,
+  <HelmetProvider>
+    <BrowserRouter>
+      <StoreProvider>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </StoreProvider>
+    </BrowserRouter>
+  </HelmetProvider>,
 );
