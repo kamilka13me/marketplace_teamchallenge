@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, memo, ReactNode } from 'react';
+import { ButtonHTMLAttributes, forwardRef, ReactNode } from 'react';
 
 type VariantTypes = 'search' | 'fill' | 'outlined' | 'notFound' | 'clear' | 'login';
 
@@ -22,11 +22,12 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
 }
 
-const Button = memo((props: Props) => {
+const Button = forwardRef<HTMLButtonElement, Props>((props, ref) => {
   const { children, onClick, variant, className, ...otherProps } = props;
 
   return (
     <button
+      ref={ref}
       onClick={onClick}
       {...otherProps}
       type="button"

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FormEventHandler, useState } from 'react';
+import React, { ChangeEvent, FC, FormEventHandler, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
@@ -28,17 +28,18 @@ interface Props {}
 
 const Header: FC<Props> = () => {
   const { t, i18n } = useTranslation();
+
+  const categoryButtonRef = useRef<HTMLButtonElement>(null);
+
   const [showModalCategory, setShowModalCategory] = useState(false);
   const [inputData, setInputData] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
   const [toggleForm, setToggleForm] = useState(true);
 
-  const counterWishlist: string = '2';
-
   const { wishlist } = useAppSelector(getWishlist);
 
   const onAllProductsClick = (): void => {
-    setShowModalCategory(!showModalCategory);
+    setShowModalCategory((prevState) => !prevState);
   };
 
   const onSubmitSearch: FormEventHandler<HTMLFormElement> = (
@@ -71,7 +72,7 @@ const Header: FC<Props> = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-30 bg-gray-900">
+    <header className="fixed top-0 left-0 right-0 z-[100] bg-gray-900">
       <Container>
         <VStack align="center" justify="between" className="py-4">
           <Link to={getRouteMain()}>
@@ -81,12 +82,18 @@ const Header: FC<Props> = () => {
           <VStack align="center">
             <VStack gap="5" align="center" className="mr-[75px]">
               <Button
+                id="all-category-button"
+                aria-controls="all-category-modal"
+                ref={categoryButtonRef}
                 variant="fill"
+                aria-haspopup
+                aria-expanded={showModalCategory}
                 className=" all-products-button"
                 onClick={onAllProductsClick}
               >
                 <VStack align="center" gap="1">
                   <Icon
+                    aria-hidden="true"
                     Svg={showModalCategory ? cancel : allProducts}
                     width={24}
                     height={24}
@@ -94,7 +101,6 @@ const Header: FC<Props> = () => {
                   {t('Всі товари')}
                 </VStack>
               </Button>
-
               <form
                 onSubmit={onSubmitSearch}
                 className="flex flex-nowrap items-center hover:drop-shadow-custom-primary duration-300"
@@ -159,7 +165,7 @@ const Header: FC<Props> = () => {
                     >
                       <span
                         className={
-                          counterWishlist < '1'
+                          wishlist.length < 1
                             ? 'hidden'
                             : 'outfit font-normal min-w-[10px] m-[2px] text-center text-black text-[10px] leading-[10px]'
                         }
@@ -194,7 +200,11 @@ const Header: FC<Props> = () => {
             </VStack>
           </VStack>
         </VStack>
-        <ModalCategory setIsOpen={onAllProductsClick} isOpen={showModalCategory} />
+        <ModalCategory
+          modalButtonRef={categoryButtonRef}
+          setClose={() => setShowModalCategory(false)}
+          isOpen={showModalCategory}
+        />
       </Container>
 
       {showModal && (

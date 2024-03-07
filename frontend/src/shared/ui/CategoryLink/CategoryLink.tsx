@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 import { Category } from '@/enteties/Category';
 import arrowRight from '@/shared/assets/icons/arrow-right.svg?react';
+import { getRouteProducts } from '@/shared/const/routes';
 import { Icon } from '@/shared/ui/Icon';
 import { VStack } from '@/shared/ui/Stack';
 
@@ -12,7 +13,7 @@ interface Props {
   category: Category;
 }
 
-const SidebarCategoryLink: FC<Props> = (props) => {
+const CategoryLink: FC<Props> = (props) => {
   const { category } = props;
   const [Svg, setSvg] = useState<string | null>(null); // Initialize data with null
   const [svgIsLoading, setSvgIsLoading] = useState(true);
@@ -35,14 +36,17 @@ const SidebarCategoryLink: FC<Props> = (props) => {
   }, [category.image]);
 
   return (
-    <li className="flex justify-between items-center w-full group">
+    <div className="flex justify-between items-center w-full group">
       <VStack gap="2" justify="center" align="center">
         {!svgIsLoading && Svg !== null && (
-          // eslint-disable-next-line react/no-danger
-          <div className="sidebarSvg" dangerouslySetInnerHTML={{ __html: Svg }} />
+          <div
+            aria-hidden="true"
+            dangerouslySetInnerHTML={{ __html: Svg }}
+            className="sidebarSvg w-6 h-6 flex justify-center items-center"
+          />
         )}
         <NavLink
-          to="/"
+          to={`${getRouteProducts()}?category=${category._id}`}
           className="group-hover:font-bold duration-75 text-[18px] leading-[40px]"
         >
           {category.name}
@@ -50,12 +54,13 @@ const SidebarCategoryLink: FC<Props> = (props) => {
       </VStack>
       <div>
         <Icon
+          aria-hidden="true"
           Svg={arrowRight}
           className="group-hover:w-[26px] group-hover:h-[26px] duration-75"
         />
       </div>
-    </li>
+    </div>
   );
 };
 
-export default SidebarCategoryLink;
+export default CategoryLink;
