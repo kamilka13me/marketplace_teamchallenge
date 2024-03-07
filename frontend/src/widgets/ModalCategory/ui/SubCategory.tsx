@@ -18,9 +18,9 @@ const SubCategory = (props: SubCategoryProps) => {
   }
 
   return (
-    <div>
+    <ul>
       {data.map((item) => (
-        <div key={item._id}>
+        <li key={item._id}>
           <NavLink
             to={`${getRouteProducts()}?category=${item._id}`}
             className={`capitalize ${isFirstSubCategory && 'font-bold'}`}
@@ -28,9 +28,9 @@ const SubCategory = (props: SubCategoryProps) => {
             {item.name}
           </NavLink>
           <SubCategory data={item.subcategories} />
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };
 

@@ -8,6 +8,7 @@ import { Category } from '@/enteties/Category';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import useAxios from '@/shared/lib/hooks/useAxios';
 import { CategoryLink } from '@/shared/ui/CategoryLink';
+import { VStack } from '@/shared/ui/Stack';
 
 interface Props {
   modalButtonRef: RefObject<HTMLButtonElement> | null;
@@ -19,12 +20,13 @@ const ModalCategory: FC<Props> = (props) => {
   const { isOpen, setClose, modalButtonRef } = props;
 
   const modalCategoriesRef = useRef<HTMLDivElement>(null);
+  const listItemRef = useRef<HTMLUListElement>(null);
 
   const { data, error, isLoading } = useAxios<Category[]>(ApiRoutes.CATEGORY);
   const [currentCategory, setCurrentCategory] = useState<number | null>(null);
 
   useEffect(() => {
-    const outsideClickHandler = (event: MouseEvent) => {
+    const outsideClickHandler = (event: MouseEvent | TouchEvent) => {
       if (
         modalCategoriesRef.current?.contains(event.target as Node) ||
         modalButtonRef?.current?.contains(event.target as Node)
@@ -34,13 +36,25 @@ const ModalCategory: FC<Props> = (props) => {
       setClose();
     };
 
-    document.addEventListener('mousedown', outsideClickHandler);
+    const escapeKeyHandler = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setClose();
+      }
+    };
 
-    return () => document.removeEventListener('mousedown', outsideClickHandler);
-  }, [setClose, modalCategoriesRef, modalButtonRef]);
+    document.addEventListener('mousedown', outsideClickHandler);
+    document.addEventListener('touchstart', outsideClickHandler);
+    document.addEventListener('keydown', escapeKeyHandler);
+
+    return () => {
+      document.removeEventListener('touchstart', outsideClickHandler);
+      document.removeEventListener('mousedown', outsideClickHandler);
+      document.removeEventListener('keydown', escapeKeyHandler);
+    };
+  }, [setClose, modalCategoriesRef, modalButtonRef, isOpen]);
 
   if (isLoading) {
-    return <>Loading...</>;
+    return <>Loading</>;
   }
 
   if (error) {
@@ -50,29 +64,32 @@ const ModalCategory: FC<Props> = (props) => {
   return (
     <>
       <div
+        id="all-category-modal"
+        aria-labelledby="all-category-button"
         ref={modalCategoriesRef}
-        className="absolute top-[100px] max-w-[1328px] w-full z-[99]"
+        className={`absolute top-[100px] max-w-[1328px] h-[580px] overflow-hidden w-full z-[99] ${!isOpen && 'hidden'}`}
       >
         <Transition
           show={isOpen}
-          enter="transition-all duration-300 ease-out"
-          enterFrom="-translate-y-full opacity-0"
-          enterTo="translate-y-0 opcity-100"
-          leave="transition-all duration-100 ease-in-out"
-          leaveFrom="translate-y-0 opcity-100"
-          leaveTo="-translate-y-20 opacity-0"
+          enter="transition-all duration-300"
+          enterFrom="-translate-y-[125px] opacity-0"
+          enterTo="translate-y-0 opacity-100"
         >
-          <div className="flex gap-5 pt-9 pl-2 pb-6 bg-white  whitespace-nowrap rounded-b-2xl">
-            <ul className="w-[313px] flex flex-col gap-2 px-[13px]">
+          <VStack
+            gap="5"
+            className="pt-9 pl-2 pb-6 bg-white-200 whitespace-nowrap rounded-b-2xl"
+          >
+            <ul
+              ref={listItemRef}
+              className="w-[313px] h-[520px] overflow-auto flex flex-col gap-2 px-[13px]"
+            >
               {data?.map((item, i) => (
                 <li
                   key={item._id}
                   onMouseEnter={() => setCurrentCategory(i)}
-                  className="max-w-[313px] relative"
+                  className={`max-w-[313px] relative ${currentCategory === i && 'font-bold'}`}
                 >
-                  <ul>
-                    <CategoryLink category={item} />
-                  </ul>
+                  <CategoryLink category={item} />
                 </li>
               ))}
             </ul>
@@ -84,13 +101,13 @@ const ModalCategory: FC<Props> = (props) => {
                 />
               )}
             </div>
-          </div>
+          </VStack>
         </Transition>
       </div>
       {isOpen && (
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
         <div
-          className="fixed left-0 right-0 bottom-0 top-0 z-[98] bg-black/20 "
+          className="fixed left-0 right-0 bottom-0 top-[100px] z-[98] bg-black/20 "
           onClick={setClose}
         />
       )}

@@ -36,10 +36,11 @@ const CategoryLink: FC<Props> = (props) => {
   }, [category.image]);
 
   return (
-    <li className="flex justify-between items-center w-full group">
+    <div className="flex justify-between items-center w-full group">
       <VStack gap="2" justify="center" align="center">
         {!svgIsLoading && Svg !== null && (
           <div
+            aria-hidden="true"
             dangerouslySetInnerHTML={{ __html: Svg }}
             className="sidebarSvg w-6 h-6 flex justify-center items-center"
           />
@@ -53,11 +54,12 @@ const CategoryLink: FC<Props> = (props) => {
       </VStack>
       <div>
         <Icon
+          aria-hidden="true"
           Svg={arrowRight}
           className="group-hover:w-[26px] group-hover:h-[26px] duration-75"
         />
       </div>
-    </li>
+    </div>
   );
 };
 
