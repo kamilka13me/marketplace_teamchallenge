@@ -13,8 +13,11 @@ const authController = {
       const userIp = req.ip;
       const user = await User.findOne({ email }).populate('role');
 
-      if (!user || !(await bcrypt.compare(password, user.password))) {
-        return res.status(401).json({ message: 'Invalid credentials' });
+      if (!user) {
+        return res.status(422).json({ message: 'Invalid Password' });
+      }
+      if (!(await bcrypt.compare(password, user.password))) {
+        return res.status(403).json({ message: 'Invalid Password' });
       }
       const userCallback = {
         _id: user._id,

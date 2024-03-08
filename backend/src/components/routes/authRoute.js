@@ -59,8 +59,8 @@ const authRoute = express.Router();
  *               message: "Auth success."
  *               user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user" }
  *
- *       '401':
- *         description: Invalid credentials
+ *       '403':
+ *         description: Invalid password
  *         content:
  *           application/json:
  *             schema:
@@ -68,7 +68,17 @@ const authRoute = express.Router();
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Invalid credentials
+ *                   example: Invalid password
+ *       '422':
+ *         description: Invalid email
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Invalid email
  *       '500':
  *         description: Internal server error
  *         content:
