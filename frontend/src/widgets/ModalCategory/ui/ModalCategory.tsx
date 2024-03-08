@@ -107,7 +107,7 @@ const ModalCategory: FC<Props> = (props) => {
       {isOpen && (
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
         <div
-          className="fixed left-0 right-0 bottom-0 top-[100px] z-[98] bg-black/20 "
+          className="fixed left-0 right-0 bottom-0 top-[100px] z-[98] bg-black-transparent-50"
           onClick={setClose}
         />
       )}
