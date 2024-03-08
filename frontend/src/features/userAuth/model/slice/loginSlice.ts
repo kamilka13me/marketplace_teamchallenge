@@ -19,6 +19,9 @@ const loginSlice = createSlice({
     setPassword: (state, action: PayloadAction<string>) => {
       state.password = action.payload;
     },
+    resetError: (state) => {
+      state.error = undefined;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -28,6 +31,7 @@ const loginSlice = createSlice({
       })
       .addCase(getUserByCredentials.fulfilled, (state) => {
         state.isLoading = false;
+        state.error = undefined;
       })
       .addCase(getUserByCredentials.rejected, (state, action) => {
         state.isLoading = false;
@@ -37,5 +41,5 @@ const loginSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { actions: actionReducer } = loginSlice;
+export const { actions: actionLogin } = loginSlice;
 export const { reducer: loginReducer } = loginSlice;
