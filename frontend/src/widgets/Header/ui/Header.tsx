@@ -3,6 +3,7 @@ import React, { ChangeEvent, FC, FormEventHandler, useRef, useState } from 'reac
 import { useTranslation } from 'react-i18next';
 
 import { getWishlist } from '@/enteties/User';
+import { actionLogin } from '@/features/userAuth';
 import { LoginForm } from '@/features/userAuth/ui/LoginForm';
 import { RegistrationForm } from '@/features/userAuth/ui/RegistrationForm';
 import allProducts from '@/shared/assets/icons/allProducts.svg?react';
@@ -15,6 +16,7 @@ import search from '@/shared/assets/icons/search.svg?react';
 import ua from '@/shared/assets/icons/ua.svg?react';
 import { getRouteMain } from '@/shared/const/routes';
 import { Container } from '@/shared/layouts/Container';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
@@ -37,6 +39,7 @@ const Header: FC<Props> = () => {
   const [toggleForm, setToggleForm] = useState(true);
 
   const { wishlist } = useAppSelector(getWishlist);
+  const dispatch = useAppDispatch();
 
   const onAllProductsClick = (): void => {
     setShowModalCategory((prevState) => !prevState);
@@ -57,6 +60,7 @@ const Header: FC<Props> = () => {
   const onHandleClickPortal = (): void => {
     setShowModal(!showModal);
     setToggleForm(true);
+    dispatch(actionLogin.resetError());
   };
 
   const onToggleChangeForm = (): void => {
@@ -126,10 +130,12 @@ const Header: FC<Props> = () => {
               </form>
 
               <VStack gap="1" className="">
-                <Link
-                  to="/"
+                <Button
+                  variant="clear"
                   className="group duration-300 text-amber-50 w-[86px]"
-                  onClick={onHandleClickPortal}
+                  onClick={() => {
+                    setShowModal(!showModal);
+                  }}
                 >
                   <HStack
                     align="center"
@@ -143,7 +149,7 @@ const Header: FC<Props> = () => {
                     />
                     {t('Кабінет')}
                   </HStack>
-                </Link>
+                </Button>
 
                 <Link to="/" className="group duration-300 text-amber-50 w-[86px]">
                   <HStack
