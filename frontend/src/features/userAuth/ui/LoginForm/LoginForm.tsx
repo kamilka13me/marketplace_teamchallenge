@@ -130,11 +130,15 @@ const LoginForm: FC<LoginFormProps> = (props) => {
           className="absolute top-[12px] right-[12px]"
         />
       </div>
-      <Link to="/new-password" onClick={onCloseModal}>
-        <p className="outfit text-right text-gray-900 text-[14px] font-normal leading-[18px] mt-5 mb-6">
+      <div className="text-right">
+        <Link
+          to="/new-password"
+          onClick={onCloseModal}
+          className="inline-block outfit text-gray-900 text-[14px] font-normal leading-[18px] mt-5 mb-6"
+        >
           {t('Забули пароль?')}
-        </p>
-      </Link>
+        </Link>
+      </div>
       <Input
         variant="clear"
         value={t('Увійти')}
