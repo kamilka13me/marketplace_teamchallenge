@@ -70,11 +70,14 @@ const LoginForm: FC<LoginFormProps> = (props) => {
       // eslint-disable-next-line no-nested-ternary
       message: errorServer?.includes('403')
         ? t('E-mail або пароль введено не вірно')
-        : '' || errorServer?.includes('422')
+        : // eslint-disable-next-line no-nested-ternary
+          errorServer?.includes('422')
           ? t(
               'За даним e-mail не зареєстрований жоден користувач. Введіть вірний e-mail, або зареєструйтесь',
             )
-          : '',
+          : errorServer?.includes('423')
+            ? t('Ваш акаунт заблоковано! Спробуйте будь-ласка пізніше')
+            : '',
     });
     setError('inputPassword', {
       message: errorServer?.includes('403')
