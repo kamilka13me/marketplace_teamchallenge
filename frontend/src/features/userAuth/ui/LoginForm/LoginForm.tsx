@@ -54,7 +54,6 @@ const LoginForm: FC<LoginFormProps> = (props) => {
         password: data.inputPassword,
       }),
     ).then((value) => {
-      // FOR TEST NOT FINAL, MAYBE DELETE LATER
       if (value.meta.requestStatus !== 'rejected') {
         reset();
         if (onCloseModal) {
@@ -69,15 +68,19 @@ const LoginForm: FC<LoginFormProps> = (props) => {
     setError('inputEmail', {
       // eslint-disable-next-line no-nested-ternary
       message: errorServer?.includes('403')
-        ? 'Введний e-mail або пароль не вірні'
+        ? t('E-mail або пароль введено не вірно')
         : '' || errorServer?.includes('422')
-          ? 'За даним e-mail не зареєстрований жоден користувач. Введіть вірний e-mail, або зареєструйтесь'
+          ? t(
+              'За даним e-mail не зареєстрований жоден користувач. Введіть вірний e-mail, або зареєструйтесь',
+            )
           : '',
     });
     setError('inputPassword', {
-      message: errorServer?.includes('403') ? 'Введний e-mail або пароль не вірні' : '',
+      message: errorServer?.includes('403')
+        ? t('E-mail або пароль введено не вірно')
+        : '',
     });
-  }, [setError, handleSubmit, errorServer]);
+  }, [setError, handleSubmit, errorServer, t]);
 
   const onTogglePassVisibility = () => {
     setPassShown(!passShown);
@@ -100,7 +103,7 @@ const LoginForm: FC<LoginFormProps> = (props) => {
           minLength: { value: 5, message: t('Ваш логін має бути не менше 6 символів') },
           pattern: {
             value:
-              /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/,
+              /^([a-zA-Z0-9_-]+\.)*[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*\.[a-zA-Z]{2,6}$/,
             message: t('Ваш логін має бути по шаблону xxxx@xxx.xx'),
           },
         })}
