@@ -1,8 +1,9 @@
 import React, { ChangeEvent, FC, FormEventHandler, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
-import { getWishlist, userActions } from '@/enteties/User';
+import { getUserAuthData, getWishlist, userActions } from '@/enteties/User';
 import { actionLogin } from '@/features/userAuth';
 import { LoginForm } from '@/features/userAuth/ui/LoginForm';
 import { RegistrationForm } from '@/features/userAuth/ui/RegistrationForm';
@@ -14,7 +15,7 @@ import logo from '@/shared/assets/icons/logo.svg?react';
 import person from '@/shared/assets/icons/person.svg?react';
 import search from '@/shared/assets/icons/search.svg?react';
 import ua from '@/shared/assets/icons/ua.svg?react';
-import { getRouteMain } from '@/shared/const/routes';
+import { getRouteMain, getRouteProfile } from '@/shared/const/routes';
 import { Container } from '@/shared/layouts/Container';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
@@ -39,7 +40,9 @@ const Header: FC<Props> = () => {
   const [toggleForm, setToggleForm] = useState(true);
 
   const { wishlist } = useAppSelector(getWishlist);
+  const user = useAppSelector(getUserAuthData);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onAllProductsClick = (): void => {
     setShowModalCategory((prevState) => !prevState);
@@ -66,6 +69,14 @@ const Header: FC<Props> = () => {
 
   const onToggleChangeForm = (): void => {
     setToggleForm(!toggleForm);
+  };
+
+  const onOfficeBtnClick = (): void => {
+    if (user) {
+      navigate(getRouteProfile());
+    } else {
+      setShowModal(!showModal);
+    }
   };
 
   const onUaChange = (): void => {
@@ -134,9 +145,7 @@ const Header: FC<Props> = () => {
                 <Button
                   variant="clear"
                   className="group duration-300 text-amber-50 w-[86px]"
-                  onClick={() => {
-                    setShowModal(!showModal);
-                  }}
+                  onClick={onOfficeBtnClick}
                 >
                   <HStack
                     align="center"

@@ -8,6 +8,7 @@ import { loginHasError } from '@/features/userAuth';
 import { getUserByCredentials } from '@/features/userAuth/model/services/getUserByCredentials';
 import privateEye from '@/shared/assets/icons/private-eye.svg?react';
 import unPrivateEye from '@/shared/assets/icons/unprivate-eye.svg?react';
+import { getRouteProfile } from '@/shared/const/routes';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
@@ -59,7 +60,7 @@ const LoginForm: FC<LoginFormProps> = (props) => {
         if (onCloseModal) {
           onCloseModal();
         }
-        navigate('/user-profile');
+        navigate(getRouteProfile());
       }
     });
   };
@@ -135,7 +136,7 @@ const LoginForm: FC<LoginFormProps> = (props) => {
       </div>
       <div className="text-right">
         <Link
-          to="/new-password"
+          to="/*" // how create page, update this routes
           onClick={onCloseModal}
           className="inline-block outfit text-gray-900 text-[14px] font-normal leading-[18px] mt-5 mb-6"
         >
