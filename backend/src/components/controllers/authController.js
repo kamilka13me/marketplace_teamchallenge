@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import config from '../../config/config.js';
 import BrowserInfo from '../../models/BrowserInfo.js';
 import User from '../../models/User.js';
+import LoginAttempts from '../../models/userLastLogin.js';
 import { generateAccessToken, generateRefreshToken } from '../../utils/tokenUtils.js';
 
 const authController = {
@@ -16,7 +17,34 @@ const authController = {
       if (!user) {
         return res.status(422).json({ message: 'Invalid Password' });
       }
+      const Attempts = await LoginAttempts.findOne({ userId: user._id });
+
+      if (Attempts) {
+        const now = new Date();
+        const timeDiff = now - Attempts.lastTry;
+        const hoursDiff = timeDiff / (1000 * 60 * 60);
+
+        if (Attempts.loginAttempts > 2) {
+          if (hoursDiff < 1) {
+            return res.status(423).json({ message: 'too many failed attempts' });
+          }
+        }
+      }
+
       if (!(await bcrypt.compare(password, user.password))) {
+        if (Attempts) {
+          Attempts.loginAttempts += 1;
+          Attempts.lastTry = Date.now();
+          const incrementAttempts = await Attempts.save();
+        } else {
+          const newAttempts = new LoginAttempts({
+            userId: user._id,
+            loginAttempts: 1,
+          });
+
+          newAttempts.save();
+        }
+
         return res.status(403).json({ message: 'Invalid Password' });
       }
       const userCallback = {
@@ -26,6 +54,9 @@ const authController = {
         email: user.email,
         role: user.role.name,
       };
+
+      Attempts.loginAttempts = 0;
+      const decrement = await Attempts.save();
 
       const accessToken = generateAccessToken(user._id);
       const refreshToken = generateRefreshToken(user._id);

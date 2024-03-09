@@ -86,6 +86,10 @@ const userSchema = new mongoose.Schema({
       ref: 'Product',
     },
   ],
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const User = mongoose.model('User', userSchema);
