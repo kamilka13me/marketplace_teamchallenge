@@ -1,12 +1,15 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
-import { actionReducer } from '@/features/userAuth';
+import { loginHasError } from '@/features/userAuth';
+import { getUserByCredentials } from '@/features/userAuth/model/services/getUserByCredentials';
 import privateEye from '@/shared/assets/icons/private-eye.svg?react';
 import unPrivateEye from '@/shared/assets/icons/unprivate-eye.svg?react';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
+import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Input } from '@/shared/ui/Input';
@@ -24,30 +27,60 @@ interface InputsValues {
 }
 
 const LoginForm: FC<LoginFormProps> = (props) => {
+  const errorServer = useAppSelector(loginHasError);
+
   const { onToggleForm, onCloseModal } = props;
 
   const { t } = useTranslation();
 
   const [passShown, setPassShown] = useState(false);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
     reset,
+    setError,
   } = useForm<InputsValues>({
-    mode: 'onBlur',
+    mode: 'all',
   });
 
-  const onSubmit: SubmitHandler<InputsValues> = (data) => {
-    dispatch(actionReducer.setEmail(data.inputEmail));
-    dispatch(actionReducer.setPassword(data.inputPassword));
-    reset();
-    if (onCloseModal) {
-      onCloseModal();
-    }
+  const onSubmit: SubmitHandler<InputsValues> = async (data) => {
+    await dispatch(
+      getUserByCredentials({
+        email: data.inputEmail,
+        password: data.inputPassword,
+      }),
+    ).then((value) => {
+      if (value.meta.requestStatus !== 'rejected') {
+        reset();
+        if (onCloseModal) {
+          onCloseModal();
+        }
+        navigate('/user-profile');
+      }
+    });
   };
+
+  useEffect(() => {
+    setError('inputEmail', {
+      // eslint-disable-next-line no-nested-ternary
+      message: errorServer?.includes('403')
+        ? t('E-mail або пароль введено не вірно')
+        : '' || errorServer?.includes('422')
+          ? t(
+              'За даним e-mail не зареєстрований жоден користувач. Введіть вірний e-mail, або зареєструйтесь',
+            )
+          : '',
+    });
+    setError('inputPassword', {
+      message: errorServer?.includes('403')
+        ? t('E-mail або пароль введено не вірно')
+        : '',
+    });
+  }, [setError, handleSubmit, errorServer, t]);
 
   const onTogglePassVisibility = () => {
     setPassShown(!passShown);
@@ -60,17 +93,17 @@ const LoginForm: FC<LoginFormProps> = (props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-[360px]">
       <Input
         variant="basic"
-        placeholder={t('Пошта')}
+        placeholder="Email"
         type="text"
         {...register('inputEmail', {
           required: t("Це поле є обов'язковим"),
           minLength: { value: 5, message: t('Ваш логін має бути не менше 6 символів') },
           pattern: {
             value:
-              /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/,
+              /^([a-zA-Z0-9_-]+\.)*[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*\.[a-zA-Z]{2,6}$/,
             message: t('Ваш логін має бути по шаблону xxxx@xxx.xx'),
           },
         })}
@@ -85,8 +118,8 @@ const LoginForm: FC<LoginFormProps> = (props) => {
           {...register('inputPassword', {
             required: t("Це поле є обов'язковим"),
             minLength: {
-              value: 5,
-              message: t('Ваш пароль має бути не менше 6 символів'),
+              value: 8,
+              message: t('Ваш пароль має бути не менше 9 символів'),
             },
           })}
           error={errors?.inputPassword && errors?.inputPassword.message}
@@ -100,18 +133,22 @@ const LoginForm: FC<LoginFormProps> = (props) => {
           className="absolute top-[12px] right-[12px]"
         />
       </div>
-      <Link to="/">
-        <p className="outfit text-right text-gray-900 text-[14px] font-normal leading-[18px] mt-5 mb-6">
+      <div className="text-right">
+        <Link
+          to="/new-password"
+          onClick={onCloseModal}
+          className="inline-block outfit text-gray-900 text-[14px] font-normal leading-[18px] mt-5 mb-6"
+        >
           {t('Забули пароль?')}
-        </p>
-      </Link>
+        </Link>
+      </div>
       <Input
         variant="clear"
         value={t('Увійти')}
         name="btnInput"
         type="submit"
         disabled={!isValid}
-        className="outfit bg-primary min-w-full py-[4px] rounded-lg font-normal text-[18px] leading-[40px] text-black duration-300 hover:bg-secondary active:bg-primary disabled:text-white-300 disabled:bg-white-400"
+        className="cursor-pointer outfit bg-primary min-w-full py-[4px] rounded-lg font-normal text-[18px] leading-[40px] text-black duration-300 hover:bg-secondary active:bg-primary disabled:text-white-300 disabled:bg-white-400"
       />
       <VStack align="center" className="mt-6" justify="between">
         <span className="outfit text-right text-gray-900 text-[14px] font-normal leading-[18px]">

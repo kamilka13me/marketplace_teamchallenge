@@ -53,6 +53,14 @@ export const getUserByCredentials = createAsyncThunk<ApiResponse, LoginByUsernam
       });
 
       if (response.status !== 200) {
+        if (response.status === 403) {
+          return rejectWithValue(`:: ${response.statusText} `);
+        }
+
+        if (response.status === 422) {
+          return rejectWithValue(`:: ${response.statusText} `);
+        }
+
         return rejectWithValue(`:: ${response.statusText} `);
       }
 
