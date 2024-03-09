@@ -57,7 +57,6 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
         password: data.inputPassword,
       }),
     ).then((value) => {
-      // FOR TEST NOT FINAL, MAYBE DELETE LATER
       if (value.meta.requestStatus !== 'rejected') {
         reset();
         if (onCloseModal) {
@@ -70,10 +69,10 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
   useEffect(() => {
     setError('inputEmail', {
       message: errorServer?.includes('409')
-        ? 'За даним e-mail вже зареестрований користувач'
+        ? t('За даним e-mail вже зареестрований користувач. Введіть інший e-mail')
         : '',
     });
-  }, [setError, handleSubmit, errorServer]);
+  }, [setError, handleSubmit, errorServer, t]);
 
   const onTogglePassVisibility = () => {
     setPassShown(!passShown);
@@ -111,7 +110,7 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
           minLength: { value: 5, message: t('Ваш логін має бути не менше 6 символів') },
           pattern: {
             value:
-              /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/,
+              /^([a-zA-Z0-9_-]+\.)*[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*\.[a-zA-Z]{2,6}$/,
             message: t('Ваш логін має бути по шаблону xxxx@xxx.xx'),
           },
         })}
@@ -126,8 +125,14 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
           {...register('inputPassword', {
             required: t("Це поле є обов'язковим"),
             minLength: {
-              value: 5,
-              message: t('Ваш пароль має бути не менше 6 символів'),
+              value: 8,
+              message: t('Ваш пароль має бути не менше 9 символів'),
+            },
+            pattern: {
+              value: /^(?=.*[A-Z])[A-Za-z0-9~`!@#$%^&*()_\-+={[}\]|\\:;"'<,>.?/]*$/,
+              message: t(
+                'Пароль має містити 9 символів, з яких має бути одна велика літера',
+              ),
             },
           })}
           error={errors?.inputPassword && errors?.inputPassword.message}
