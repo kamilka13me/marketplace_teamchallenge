@@ -17,6 +17,13 @@ const userController = {
         return res.status(400).json({ error: 'All fields are required' });
       }
 
+      const regex =
+        /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-zA-Z0-9~`!@#$%^&*()_\-+={[}\]|\\:;"'<,>.?/]).{9,}$/;
+
+      if (!regex.test(password)) {
+        return res.status(400).json({ error: 'invalid password' });
+      }
+
       const role = await Role.findOne({ name: 'user' });
 
       const userData = {};
