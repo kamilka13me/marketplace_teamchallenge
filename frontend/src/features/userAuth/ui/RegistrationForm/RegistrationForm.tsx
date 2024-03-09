@@ -1,11 +1,15 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import ReCAPTCHA from 'react-google-recaptcha';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import { userHasError } from '@/enteties/User/model/selectors/getUserAuthData';
+import { setNewUser } from '@/enteties/User/model/services/setNewUser';
 import privateEye from '@/shared/assets/icons/private-eye.svg?react';
 import unPrivateEye from '@/shared/assets/icons/unprivate-eye.svg?react';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
+import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Checkbox } from '@/shared/ui/Checkbox';
 import { Icon } from '@/shared/ui/Icon';
@@ -20,34 +24,56 @@ interface RegistrationFormProps {
 interface InputsValues {
   inputName: string;
   inputEmail: string;
-  inputPhone: string;
   inputPassword: string;
   personalTerms: string;
 }
 
 const RegistrationForm: FC<RegistrationFormProps> = (props) => {
+  const errorServer = useAppSelector(userHasError);
+
   const { onToggleForm, onCloseModal } = props;
 
   const { t, i18n } = useTranslation();
 
   const [passShown, setPassShown] = useState(false);
   const [reCaphaValue, setReCaphaValue] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
     reset,
+    setError,
   } = useForm<InputsValues>({
-    mode: 'onBlur',
+    mode: 'all',
   });
 
-  const onSubmit: SubmitHandler<InputsValues> = () => {
-    reset();
-    if (onCloseModal) {
-      onCloseModal();
-    }
+  const onSubmit: SubmitHandler<InputsValues> = async (data) => {
+    await dispatch(
+      setNewUser({
+        username: data.inputName,
+        email: data.inputEmail,
+        password: data.inputPassword,
+      }),
+    ).then((value) => {
+      // FOR TEST NOT FINAL, MAYBE DELETE LATER
+      if (value.meta.requestStatus !== 'rejected') {
+        reset();
+        if (onCloseModal) {
+          onCloseModal();
+        }
+      }
+    });
   };
+
+  useEffect(() => {
+    setError('inputEmail', {
+      message: errorServer?.includes('409')
+        ? 'За даним e-mail вже зареестрований користувач'
+        : '',
+    });
+  }, [setError, handleSubmit, errorServer]);
 
   const onTogglePassVisibility = () => {
     setPassShown(!passShown);
@@ -60,7 +86,7 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-[360px]">
       <Input
         variant="basic"
         placeholder={t("Ім'я")}
@@ -78,7 +104,7 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
       />
       <Input
         variant="basic"
-        placeholder={t('Пошта')}
+        placeholder="Email"
         type="text"
         {...register('inputEmail', {
           required: t("Це поле є обов'язковим"),

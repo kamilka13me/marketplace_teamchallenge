@@ -29,7 +29,11 @@ export const setNewUser = createAsyncThunk<ApiResponse, newUserDataProps>(
         ...newUserData,
       });
 
-      if (response.status !== 200) {
+      if (response.status !== 201) {
+        if (response.status === 409) {
+          return rejectWithValue(`:: ${response.statusText} `);
+        }
+
         return rejectWithValue(`:: ${response.statusText} `);
       }
 

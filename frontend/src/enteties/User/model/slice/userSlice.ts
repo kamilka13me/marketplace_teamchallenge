@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 
 import { User, UserSchema } from '@/enteties/User';
 import { getUserWishlist } from '@/enteties/User/model/services/getUserWishlist';
+import { setNewUser } from '@/enteties/User/model/services/setNewUser';
 import { getUserByCredentials } from '@/features/userAuth/model/services/getUserByCredentials';
 import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
@@ -18,6 +19,7 @@ const initialState: UserSchema = {
     isLoading: true,
   },
   inited: false,
+  isLoading: true,
 };
 
 const removeCookies = () => {
@@ -66,6 +68,9 @@ export const userSlice = createSlice({
       removeCookies();
       localStorage.clear();
     },
+    resetError: (state) => {
+      state.error = undefined;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -73,12 +78,24 @@ export const userSlice = createSlice({
         state.userWishlist.error = undefined;
         state.userWishlist.isLoading = true;
       })
+      .addCase(setNewUser.pending, (state) => {
+        state.error = undefined;
+        state.isLoading = true;
+      })
       .addCase(getUserByCredentials.fulfilled, (state) => {
         state.userWishlist.isLoading = false;
+      })
+      .addCase(setNewUser.fulfilled, (state) => {
+        state.isLoading = false;
+        state.error = undefined;
       })
       .addCase(getUserByCredentials.rejected, (state, action) => {
         state.userWishlist.isLoading = false;
         state.userWishlist.error = action.payload as string;
+      })
+      .addCase(setNewUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
       });
   },
 });

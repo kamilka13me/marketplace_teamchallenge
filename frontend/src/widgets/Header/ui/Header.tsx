@@ -2,7 +2,7 @@ import React, { ChangeEvent, FC, FormEventHandler, useRef, useState } from 'reac
 
 import { useTranslation } from 'react-i18next';
 
-import { getWishlist } from '@/enteties/User';
+import { getWishlist, userActions } from '@/enteties/User';
 import { actionLogin } from '@/features/userAuth';
 import { LoginForm } from '@/features/userAuth/ui/LoginForm';
 import { RegistrationForm } from '@/features/userAuth/ui/RegistrationForm';
@@ -61,6 +61,7 @@ const Header: FC<Props> = () => {
     setShowModal(!showModal);
     setToggleForm(true);
     dispatch(actionLogin.resetError());
+    dispatch(userActions.resetError());
   };
 
   const onToggleChangeForm = (): void => {
