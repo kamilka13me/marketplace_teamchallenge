@@ -79,6 +79,16 @@ const authRoute = express.Router();
  *                 message:
  *                   type: string
  *                   example: Invalid email
+ *       '423':
+ *         description: too many failed attempts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: too many failed attempts
  *       '500':
  *         description: Internal server error
  *         content:
