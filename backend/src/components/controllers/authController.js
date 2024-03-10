@@ -35,7 +35,7 @@ const authController = {
         if (Attempts) {
           Attempts.loginAttempts += 1;
           Attempts.lastTry = Date.now();
-          const incrementAttempts = await Attempts.save();
+          await Attempts.save();
         } else {
           const newAttempts = new LoginAttempts({
             userId: user._id,
@@ -55,8 +55,10 @@ const authController = {
         role: user.role.name,
       };
 
-      Attempts.loginAttempts = 0;
-      const decrement = await Attempts.save();
+      if (Attempts) {
+        Attempts.loginAttempts = 0;
+        await Attempts.save();
+      }
 
       const accessToken = generateAccessToken(user._id);
       const refreshToken = generateRefreshToken(user._id);
