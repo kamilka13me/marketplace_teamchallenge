@@ -18,6 +18,8 @@ if (environment === 'development') {
       process.env.MONGO_URL || 'mongodb+srv://admin:admin@cluster0.clm5vb8.mongodb.net/',
 
     mongoDB: process.env.MONGO_DB || 'marketplace_teamchallenge',
+    mailerUser: process.env.MAILER_USER,
+    mailerPass: process.env.MAILER_PASS,
   };
 
   // production
@@ -35,6 +37,8 @@ if (environment === 'development') {
       process.env.MONGO_URL || 'mongodb+srv://admin:admin@cluster0.clm5vb8.mongodb.net/',
 
     mongoDB: process.env.MONGO_DB || 'marketplace_teamchallenge_prod',
+    mailerUser: process.env.MAILER_USER,
+    mailerPass: process.env.MAILER_PASS,
   };
 
   // else (full handle)
@@ -51,6 +55,8 @@ if (environment === 'development') {
     mongoURL: process.env.MONGO_URL || 'mongodb://localhost:27017/',
 
     mongoDB: process.env.MONGO_DB || 'marketplace_teamchallenge',
+    mailerUser: process.env,
+    mailerPass: process.env.MAILER_PASS,
   };
 }
 
