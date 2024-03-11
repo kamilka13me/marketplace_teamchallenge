@@ -12,7 +12,7 @@ const MainLayout: FC<Props> = (props) => {
   return (
     <div className="flex flex-col mx-auto min-h-screen overflow-auto">
       {header}
-      <main className="mt-[136px] flex-1">{content}</main>
+      <main className="mt-[100px] flex-1">{content}</main>
       {footer}
     </div>
   );
