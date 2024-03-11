@@ -6,6 +6,7 @@ import {
   COOKIE_KEY_TOKEN,
   COOKIE_KEY_USER,
 } from '@/shared/const/cookies';
+import { getServerErrorRoute } from '@/shared/const/routes';
 
 export const $api = axios.create({
   baseURL: '/api',
@@ -65,9 +66,7 @@ $api.interceptors.response.use(
     }
 
     if (error.response.status === 500) {
-      window.location.href = '/500';
-
-      return;
+      window.location.href = getServerErrorRoute();
     }
 
     return Promise.reject(error);

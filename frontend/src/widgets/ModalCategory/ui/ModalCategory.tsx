@@ -71,9 +71,9 @@ const ModalCategory: FC<Props> = (props) => {
       >
         <Transition
           show={isOpen}
-          enter="transition-all duration-300"
-          enterFrom="-translate-y-[125px] opacity-0"
-          enterTo="translate-y-0 opacity-100"
+          enter="ease-out duration-500"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
         >
           <VStack
             gap="5"
