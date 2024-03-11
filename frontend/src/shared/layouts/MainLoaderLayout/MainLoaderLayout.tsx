@@ -9,7 +9,7 @@ interface Props {}
 
 const MainLoaderLayout: FC<Props> = () => {
   return (
-    <Container>
+    <Container className="mt-9">
       <VStack justify="between" className="mb-10">
         <HStack gap="2" className="">
           {Array(11)

@@ -6,6 +6,7 @@ import { NotFoundPage } from '@/pages/NotFoundPage';
 // import { ProductPage } from '@/pages/ProductPage';
 // import { ProductsPage } from '@/pages/ProductsPage';
 // import { ProductsPage } from '@/pages/ProductsPage';
+import { ProfilePage } from '@/pages/ProfilePage';
 import {
   AppRoutes,
   getRouteMain,
@@ -36,7 +37,7 @@ export const RouteConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.PROFILE]: {
     path: getRouteProfile(),
     authOnly: true,
-    element: <div data-testid="ProfilePage">Profile</div>,
+    element: <ProfilePage />,
     roles: [UserRoles.USER, UserRoles.SUPER_ADMIN, UserRoles.ADMIN],
   },
   [AppRoutes.NOT_FOUND]: {
