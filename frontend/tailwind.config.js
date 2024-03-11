@@ -11,7 +11,7 @@ export default {
         outfit: ['Outfit', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
-        'custom-base': ' 0px 2px 11.300000190734863px 0px rgba(118, 110, 110, 0.25)',
+        'custom-base': '0px 2px 11.300000190734863px 0px rgba(118, 110, 110, 0.25)',
         'custom-hover': '4px 4px 36px 0px #766E6E40',
       },
       dropShadow: {
