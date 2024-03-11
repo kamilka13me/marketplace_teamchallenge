@@ -17,6 +17,7 @@ const Error404: FC = () => {
           <img className="mb-8" src={Errorr} alt="404" />
           <Text
             Tag="p"
+            size="md"
             text="Ми знайшли для вас все, крім цієї сторінки"
             font="ibm-plex-sans"
             className=" w-[374px] text-3xl text-[32px]"
