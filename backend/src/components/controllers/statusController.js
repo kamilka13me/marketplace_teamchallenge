@@ -1,8 +1,9 @@
 import config from "../../config/config.js";
-
+import sendMail from "../../services/nodemailer/nodemailer.js";
 const StatusController = {
   ping: async (req, res) => {
     console.log(config.mailerUser);
+    sendMail("kamilka13me@gmail.com" , "register")
     res.status(200).json({ message: 'server online' });
   },
 

@@ -1,7 +1,6 @@
 import nodemailer from 'nodemailer';
-
-async function sendEmail(mailTo, theme) {
-  const token="token_id";
+import config from '../../config/config.js';
+const sendMail = async (mailTo, theme ,token)=> {
   const themesOfMail = {
     register: {
       from: 'peach market <13032004linx@gmail.com>',
@@ -19,8 +18,8 @@ async function sendEmail(mailTo, theme) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: '13032004linx@gmail.com',
-      pass: 'cxnq pibd cbgs tvgk',
+      user: config.mailerUser,
+      pass: config.mailerPass,
     },
   });
 
@@ -41,5 +40,5 @@ async function sendEmail(mailTo, theme) {
   }
 }
 
-export default sendEmail();
+export default sendMail;
 
