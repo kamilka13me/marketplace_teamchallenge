@@ -1,13 +1,15 @@
 import nodemailer from 'nodemailer';
+
 import config from '../../config/config.js';
-const sendMail = async (mailTo, theme ,token)=> {
+
+const sendMail = async (mailTo, theme, token) => {
   const themesOfMail = {
     register: {
       from: 'peach market <13032004linx@gmail.com>',
       to: mailTo,
       subject: 'peach email confirm',
       text: 'to confirm the email, follow the link',
-      html: `<a href="https://localhost:3001/confirm/${token}">Confirm Email</a>`,
+      html: `<a href="https://marketplace-teamchallenge.vercel.app/verify/${token}">Confirm Email</a>`,
     },
     recovery: {
       // other themes
@@ -34,11 +36,11 @@ const sendMail = async (mailTo, theme ,token)=> {
   try {
     // Send mail
     const result = await transporter.sendMail(mailOptions);
+
     console.log('Email sent:', result);
   } catch (error) {
     console.error(error);
   }
-}
+};
 
 export default sendMail;
-

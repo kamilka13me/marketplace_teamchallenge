@@ -5,12 +5,10 @@ import { fileURLToPath } from 'url';
 
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import express from 'express';
 import morgan from 'morgan';
 import { Server } from 'socket.io';
-
-import dotenv from 'dotenv';
-dotenv.config();
 
 import swaggerDocs from './docs/swagger/swager.js';
 import authRoute from './src/components/routes/authRoute.js';
@@ -27,6 +25,8 @@ import connectDb from './src/config/connectDb.js';
 import errorLogger from './src/middlewares/errorLogger.js';
 import jsonErrorHandler from './src/middlewares/jsonErrorHandler.js';
 import setupSocket from './src/services/socketService/socket.js';
+
+dotenv.config();
 
 const app = express();
 

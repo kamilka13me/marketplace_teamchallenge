@@ -3,9 +3,10 @@ import mongoose from 'mongoose';
 import BrowserInfo from '../../models/BrowserInfo.js';
 import Role from '../../models/Role.js';
 import User from '../../models/User.js';
+import sendMail from '../../services/nodemailer/nodemailer.js';
 import hashPassword from '../../utils/hashPasswordUtils.js';
 import { generateAccessToken, generateRefreshToken } from '../../utils/tokenUtils.js';
-import sendMail from '../../services/nodemailer/nodemailer.js';
+
 const userController = {
   // create user
 
@@ -63,7 +64,8 @@ const userController = {
       newBrowserInfo.save();
 
       const refreshToken = generateRefreshToken(user._id);
-      sendMail(user.email, 'register' , refreshToken);
+
+      sendMail(user.email, 'register', refreshToken);
       // res.cookie('accessToken', accessToken, { httpOnly: false, secure: false });
       // res.cookie('user', JSON.stringify(userCallback), {httpOnly: false,secure: false,});
       res.setHeader('Authorization', `Bearer ${accessToken}`);

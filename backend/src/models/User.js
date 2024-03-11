@@ -74,6 +74,10 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Role',
   },
+  isAccountConfirm: {
+    type: Boolean,
+    default: false,
+  },
   views: [
     {
       type: mongoose.Schema.Types.ObjectId,
