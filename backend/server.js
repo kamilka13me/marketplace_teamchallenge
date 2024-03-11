@@ -9,6 +9,9 @@ import express from 'express';
 import morgan from 'morgan';
 import { Server } from 'socket.io';
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 import swaggerDocs from './docs/swagger/swager.js';
 import authRoute from './src/components/routes/authRoute.js';
 import categoryRoute from './src/components/routes/categoryRoute.js';

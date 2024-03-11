@@ -1,5 +1,8 @@
+import config from "../../config/config.js";
+
 const StatusController = {
   ping: async (req, res) => {
+    console.log(config.mailerUser);
     res.status(200).json({ message: 'server online' });
   },
 
