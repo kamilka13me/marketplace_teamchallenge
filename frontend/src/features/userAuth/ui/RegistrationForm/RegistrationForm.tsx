@@ -97,6 +97,10 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
             value: 15,
             message: t("Ваше ім'я має бути не більше 15 символів"),
           },
+          pattern: {
+            value: /^[A-Za-zҐґЄєІіЇїА-Яа-я]+$/,
+            message: t("Ваше ім'я може включати тільки українські або англійські літери"),
+          },
         })}
         error={errors?.inputName && errors?.inputName.message}
         className="mt-6"
