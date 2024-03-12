@@ -36,6 +36,48 @@ const wishlistController = {
       res.status(500).json({ message: 'An error occurred while updating the wishlist' });
     }
   },
+
+  getAllWishlist: async (req, res) => {
+    try {
+      const { userId } = req.body;
+      const { limit, offset } = req.params;
+
+      const userWishlist = await User.findById(userId).populate({
+        path: 'wishlist',
+        options: {
+          limit,
+          skip: offset,
+        },
+      });
+
+      const wishlist = { ...userWishlist.wishlist };
+
+      res.status(200).json(wishlist);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: 'internal server error' });
+    }
+  },
+
+  clearWishlist: async (req, res) => {
+    try {
+      const { userId } = req.body;
+
+      const user = await User.findById(userId);
+
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      user.wishlist = [];
+      await user.save();
+
+      res.status(200).json({ message: 'Wishlist cleared successfully', user });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: 'An error occurred while clearing the wishlist' });
+    }
+  },
 };
 
 export default wishlistController;

@@ -44,4 +44,122 @@ const wishlistRoute = express.Router();
 
 wishlistRoute.put('/:id', idToReq(), wishlistController.addToWishlist);
 
+/**
+ * @swagger
+ * paths:
+ *   /wishlist:
+ *     get:
+ *       summary: Retrieves all items in a user's wishlist
+ *       description: This endpoint returns all wishlist items for a specific user, based on the user ID provided. Pagination is supported through limit and offset parameters.
+ *       tags:
+ *         - Wishlist
+ *       security:
+ *         - bearerAuth: []
+ *       parameters:
+ *         - in: query
+ *           name: limit
+ *           schema:
+ *             type: integer
+ *           required: false
+ *           description: Limit the number of items returned
+ *         - in: query
+ *           name: offset
+ *           schema:
+ *             type: integer
+ *           required: false
+ *           description: The number of items to skip before starting to collect the result set
+ *       responses:
+ *         '200':
+ *           description: Successfully retrieved wishlist items
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   wishlist:
+ *                     type: array
+ *                     items:
+ *                       $ref: '#/components/schemas/WishlistItem'
+ *         '401':
+ *           description: Unauthorized. Token not found or invalid.
+ *         '500':
+ *           description: Internal server error
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ *   schemas:
+ *     WishlistItem:
+ *       type: object
+ *       properties:
+ *         productId:
+ *           type: string
+ *           description: Unique identifier of the product
+ *         name:
+ *           type: string
+ *           description: Name of the product
+ *         description:
+ *           type: string
+ *           description: Product description
+ *         price:
+ *           type: number
+ *           format: float
+ *           description: Price of the product
+ */
+
+wishlistRoute.get('/', idToReq(), wishlistController.getAllWishlist);
+
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ * security:
+ *   - bearerAuth: []
+ * /wishlist:
+ *   delete:
+ *     summary: Removes all products from the user's wishlist
+ *     tags: [Wishlist]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: All products have been successfully deleted from the wishlist
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Wishlist cleared successfully
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User not found
+ *       500:
+ *         description: An error occurred while clearing the wishlist
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: An error occurred while clearing the wishlist
+ */
+
+wishlistRoute.delete('/', idToReq(), wishlistController.clearWishlist);
+
 export default wishlistRoute;
