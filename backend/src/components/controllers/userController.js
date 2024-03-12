@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 
 import BrowserInfo from '../../models/BrowserInfo.js';
@@ -148,6 +149,70 @@ const userController = {
       // eslint-disable-next-line no-console
       console.error(error);
       res.status(500).send({ message: 'Error deleting user' });
+    }
+  },
+
+  updateUser: async (req, res) => {
+    const { userId, username, surname, dob, phoneNumber } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ message: 'User ID is required.' });
+    }
+
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { username, surname, dob, phoneNumber },
+        { new: true, runValidators: true },
+      );
+
+      if (!updatedUser) {
+        return res.status(404).json({ message: 'User not found.' });
+      }
+
+      res.status(200).json({
+        message: 'User updated successfully.',
+        user: updatedUser,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error updating user.', error: error.message });
+    }
+  },
+
+  updatePassword: async (req, res) => {
+    const { userId, oldPassword, newPassword } = req.body;
+
+    if (!userId || !oldPassword || !newPassword) {
+      return res.status(400).json({ message: 'Missing fields' });
+    }
+
+    try {
+      const user = await User.findById(userId);
+
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      // Compare old password
+
+      const isMatch = await bcrypt.compare(oldPassword, user.password);
+
+      if (!isMatch) {
+        return res.status(400).json({ message: 'Incorrect old password' });
+      }
+
+      // Hash new password
+      const hashedPassword = await hashPassword(newPassword);
+
+      // Update user password
+      user.password = hashedPassword;
+      await user.save();
+
+      res.status(200).json({ message: 'Password updated successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error updating password' });
     }
   },
 };

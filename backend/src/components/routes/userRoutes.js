@@ -1,5 +1,6 @@
 import express from 'express';
 
+import idToReq from '../../middlewares/chechUserId.js';
 import checkPermission from '../../middlewares/checkPermission.js';
 import { validateUser } from '../../middlewares/userValidation.js';
 import userController from '../controllers/userController.js';
@@ -140,5 +141,124 @@ router.get('/', userController.getAllUsers);
  */
 // checkPermission('deleteUser'),
 router.delete('/:id', userController.deleteUser);
+
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ * security:
+ *   - bearerAuth: []
+ * /users:
+ *   put:
+ *     summary: Updates a user's information
+ *     description: Allows updating the user's name, surname, date of birth, and phone number.
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: The user's updated name
+ *               surname:
+ *                 type: string
+ *                 description: The user's updated surname
+ *               dob:
+ *                 type: string
+ *                 format: date
+ *                 description: The user's updated date of birth
+ *               phoneNumber:
+ *                 type: string
+ *                 description: The user's updated phone number
+ *             example:
+ *               username: "Jane"
+ *               surname: "Doe"
+ *               dob: "1990-01-01"
+ *               phoneNumber: "+1234567890"
+ *     responses:
+ *       200:
+ *         description: User information updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User updated successfully.
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *       400:
+ *         description: User ID is required or other validation error
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Error updating user
+ */
+router.put('/', idToReq(), userController.updateUser);
+
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ * security:
+ *   - bearerAuth: []
+ * /users/password:
+ *   put:
+ *     summary: Updates a user's password
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               oldPassword:
+ *                 type: string
+ *                 format: password
+ *                 description: The user's current password
+ *               newPassword:
+ *                 type: string
+ *                 format: password
+ *                 description: The new password for the user
+ *             required:
+ *               - oldPassword
+ *               - newPassword
+ *     responses:
+ *       200:
+ *         description: Password updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Password updated successfully
+ *       400:
+ *         description: Missing fields or incorrect old password
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Error updating password
+ */
+
+router.put('/password', idToReq(), userController.updatePassword);
 
 export default router;
