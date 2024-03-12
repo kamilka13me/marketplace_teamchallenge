@@ -112,7 +112,7 @@ const productController = {
         .skip(offset)
         .limit(limit);
 
-      res.json(products);
+      res.status(200).json(products);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
