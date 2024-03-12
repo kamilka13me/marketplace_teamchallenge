@@ -163,7 +163,7 @@ const LoginForm: FC<LoginFormProps> = (props) => {
           onClick={onClickChangeForm}
           className="outfit text-right text-black text-[14px] font-semibold decoration-solid decoration-black underline decoration-1"
         >
-          {t('Зареєструватись')}
+          {t('Зареєструватися')}
         </Button>
       </VStack>
     </form>
