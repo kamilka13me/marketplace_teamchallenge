@@ -36,7 +36,14 @@
  *           items:
  *              type: string
  *              format: uuid
- *           description: Array of product IDs that the user has viewed
+ *           description: Array of product IDs in the user's wishlist
+ *         dob:
+ *           type: string
+ *           format: date
+ *           description: The user's date of birth
+ *         phoneNumber:
+ *           type: string
+ *           description: The user's phone number
  *       example:
  *         username: JohnDoe
  *         surname: Doe
@@ -45,6 +52,8 @@
  *         role: "5e9f8f8f8f8f8f8f8f8f8f8"
  *         views: ["5e9f8f8f8f8f8f8f8f8f8f8","5e9f8f8f8f8f8f8f8f8f8f8"]
  *         wishlist: ["5e9f8f8f8f8f8f8f8f8f8f8","5e9f8f8f8f8f8f8f8f8f8f8"]
+ *         dob: "1990-01-01"
+ *         phoneNumber: "123-456-7890"
  *
  */
 
@@ -93,6 +102,15 @@ const userSchema = new mongoose.Schema({
   created_at: {
     type: Date,
     default: Date.now,
+  },
+  dob: {
+    // Date of birth
+    type: Date,
+    required: false,
+  },
+  phoneNumber: {
+    type: String,
+    required: false,
   },
 });
 
