@@ -90,7 +90,7 @@ const Footer: FC<Props> = () => {
   const { t } = useTranslation();
 
   return (
-    <footer className="bg-gray-900 mt-0 overflow-hidden relative">
+    <footer className="bg-gray-900 overflow-hidden relative">
       <Container>
         <div className="z-10 w-[550px] h-[550px] origin-top-left rotate-[120deg] bg-neutral-900 rounded-[217px] absolute left-[33%]  top-[-20%]" />
         <div className="w-[550px] h-[550px] origin-top-left rotate-[120deg] bg-neutral-900 rounded-[217px] absolute right-[-40%] top-[100%]" />
