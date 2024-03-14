@@ -59,7 +59,8 @@ $api.interceptors.response.use(
 
     if (
       error.response.status === 419 ||
-      (error.response.status === 400 && error.response.statusText === 'Token is required')
+      (error.response.status === 400 &&
+        error.response.data.message === 'Token is required')
     ) {
       clearCookies();
       window.location.reload();
@@ -68,6 +69,8 @@ $api.interceptors.response.use(
     if (error.response.status === 500) {
       window.location.href = getServerErrorRoute();
     }
+
+    console.log(error.response);
 
     return Promise.reject(error);
   },
