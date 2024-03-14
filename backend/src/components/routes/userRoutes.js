@@ -40,6 +40,8 @@ const router = express.Router();
  *           application/json:
  *             example:
  *                  message: "user with this email allready exist"
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 // checkPermission('createUser'),
 router.post('/', validateUser, userController.createUser);
@@ -51,6 +53,8 @@ router.post('/', validateUser, userController.createUser);
  *     summary: Get user by Id
  *     description: "Retrieve details of a user by their Id. \n\n premission: \"getUser\""
  *     tags: [User]
+ *     security:
+ *       - JWTAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -71,15 +75,11 @@ router.post('/', validateUser, userController.createUser);
  *           application/json:
  *             example:
  *                message: 'Invalid user Id'
- *       500:
- *         description: Server error
- *         content:
- *           application/json:
- *             example:
- *               message: "Server error"
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 // checkPermission('getUser'),
-router.get('/:id', userController.getUser);
+router.get('/:id', checkPermission('none'), userController.getUser);
 
 /**
  * @openapi
@@ -95,12 +95,8 @@ router.get('/:id', userController.getUser);
  *           application/json:
  *             example:
  *               user: [{ _id: "some_id",  surname: "some_username", username: "some_username", email: "user@example.com" },{ _id: "some_id",  surname: "some_username", username: "some_username", email: "user@example.com" }]
- *       500:
- *         description: Server error
- *         content:
- *           application/json:
- *             example:
- *               message: "Server error"
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 //  checkPermission('getAllUsers'),
 router.get('/', userController.getAllUsers);
@@ -110,7 +106,12 @@ router.get('/', userController.getAllUsers);
  * /users/{id}:
  *   delete:
  *     summary: Delete a user
- *     description: "Deletes a user by Id.\n\n premission: \"deleteUser\""
+ *     security:
+ *       - JWTAuth: []
+ *     description: >
+ *       This endpoint is only accessible by users with the 'admin' role.
+ *
+ *       **Required Roles**: `admin`:
  *     tags: [User]
  *     parameters:
  *       - in: path
@@ -132,12 +133,8 @@ router.get('/', userController.getAllUsers);
  *           application/json:
  *             example:
  *               message: "User not found."
- *       500:
- *         description: Server error.
- *         content:
- *           application/json:
- *             example:
- *               message: "Error deleting user."
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 // checkPermission('deleteUser'),
 router.delete('/:id', userController.deleteUser);
@@ -201,10 +198,10 @@ router.delete('/:id', userController.deleteUser);
  *         description: User ID is required or other validation error
  *       404:
  *         description: User not found
- *       500:
- *         description: Error updating user
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
-router.put('/', idToReq(), userController.updateUser);
+router.put('/', checkPermission('none'), userController.updateUser);
 
 /**
  * @swagger
@@ -255,10 +252,10 @@ router.put('/', idToReq(), userController.updateUser);
  *         description: Missing fields or incorrect old password
  *       404:
  *         description: User not found
- *       500:
- *         description: Error updating password
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 
-router.put('/password', idToReq(), userController.updatePassword);
+router.put('/password', checkPermission('none'), userController.updatePassword);
 
 export default router;

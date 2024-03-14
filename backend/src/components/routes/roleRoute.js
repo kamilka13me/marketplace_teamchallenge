@@ -12,6 +12,8 @@ const router = express.Router();
  *     summary: Create a new role
  *     description: "Create a new role with optional parameters\n\n premission: \"createRole\""
  *     tags: [Roles]
+ *     security:
+ *       - JWTAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -39,8 +41,8 @@ const router = express.Router();
  *         description: Role created successfully
  *       400:
  *         description: Bad request
- *       500:
- *         description: Server error
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 
 router.post('/', checkPermission('createRole'), RoleController.createRole);
@@ -52,6 +54,8 @@ router.post('/', checkPermission('createRole'), RoleController.createRole);
  *     summary: Get all roles
  *     description: "get all avalible roles\n\n premission: \"getRoles\""
  *     tags: [Roles]
+ *     security:
+ *       - JWTAuth: []
  *     responses:
  *       200:
  *         description: A list of roles
@@ -70,8 +74,8 @@ router.post('/', checkPermission('createRole'), RoleController.createRole);
  *                     items:
  *                       type: string
  *                     example: ["read"]
- *       500:
- *         description: Server error
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 router.get('/', checkPermission('getRoles'), RoleController.getRoles);
 
@@ -81,6 +85,8 @@ router.get('/', checkPermission('getRoles'), RoleController.getRoles);
  *   put:
  *     summary: Update a role
  *     tags: [Roles]
+ *     security:
+ *       - JWTAuth: []
  *     description: add permissions to avalibale roles<br><br>
  *           premission:"updateRole"<br><br>
  *           Available permissions:[
@@ -120,8 +126,8 @@ router.get('/', checkPermission('getRoles'), RoleController.getRoles);
  *               $ref: '#/components/schemas/Role'
  *       404:
  *         description: Role not found
- *       500:
- *         description: Internal server error
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 router.put('/:roleId', checkPermission('updateRole'), RoleController.updateRole);
 /**
@@ -131,6 +137,8 @@ router.put('/:roleId', checkPermission('updateRole'), RoleController.updateRole)
  *     summary: Init roles
  *     description: "Init default users roles and \n\ncreate superadmin : email: superadmin@gmail.com password: superadmin .\n\n premission: \"none\" "
  *     tags: [Roles]
+ *     security:
+ *       - JWTAuth: []
  *     responses:
  *       '201':
  *         description: Role and superadmin successfully crated .
@@ -143,7 +151,7 @@ router.put('/:roleId', checkPermission('updateRole'), RoleController.updateRole)
  *                     type: string
  *                     example: user
  *       '500':
- *         description: Internal server error.
+ *         $ref: '#/components/responses/InternalServerError'
  */
 router.post('/init', RoleController.initRoles);
 
@@ -154,6 +162,8 @@ router.post('/init', RoleController.initRoles);
  *     summary: Assign a role to a user
  *     description: "Assign a specific role to a user by their IDs.\n\n premission: \"assignRole\""
  *     tags: [Roles]
+ *     security:
+ *       - JWTAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -185,7 +195,7 @@ router.post('/init', RoleController.initRoles);
  *       '404':
  *         description: User or role not found.
  *       '500':
- *         description: Internal server error.
+ *         $ref: '#/components/responses/InternalServerError'
  */
 router.post('/:roleId', checkPermission('assignRole'), RoleController.assignRole);
 

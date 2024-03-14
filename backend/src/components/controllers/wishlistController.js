@@ -32,7 +32,7 @@ const wishlistController = {
       }
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error(error);
+      console.log(error);
       res.status(500).json({ message: 'An error occurred while updating the wishlist' });
     }
   },
@@ -54,6 +54,7 @@ const wishlistController = {
 
       res.status(200).json(wishlist);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(error);
       res.status(500).json({ message: 'internal server error' });
     }
@@ -74,6 +75,7 @@ const wishlistController = {
 
       res.status(200).json({ message: 'Wishlist cleared successfully', user });
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(error);
       res.status(500).json({ message: 'An error occurred while clearing the wishlist' });
     }

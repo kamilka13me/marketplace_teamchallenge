@@ -1,8 +1,11 @@
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 
 import config from '../config/config.js';
 import Role from '../models/Role.js';
 import User from '../models/User.js';
+
+const { ObjectId } = mongoose.Types;
 
 /**
  * Middleware to check if the user has permission to perform a specific action.
@@ -14,6 +17,7 @@ import User from '../models/User.js';
 const checkPermission = (action) => {
   return async (req, res, next) => {
     try {
+      const paramId = req.params.id;
       const tokenHeaders = req.headers.authorization?.split(' ')[1];
       const tokenCoockies = req.cookies.accessToken;
       let accessToken;
@@ -31,11 +35,17 @@ const checkPermission = (action) => {
 
         const user = await User.findById(decoded.id).populate('role');
 
+        // eslint-disable-next-line no-param-reassign
+        req.body.userId = decoded.id;
+
         if (!user) {
           return res.status(401).json({ message: 'Access denied. User not found.' });
         }
-        // req.user = user; // Optionally set user data to request object
-        hasPermission = user.role.permissions.includes(action);
+        if (new ObjectId(user._id).equals(paramId)) {
+          hasPermission = true;
+        } else {
+          hasPermission = user.role.permissions.includes(action);
+        }
       } else {
         const role = await Role.findOne({ name: 'notLoginUser' });
 

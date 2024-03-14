@@ -38,8 +38,8 @@ const wishlistRoute = express.Router();
  *         description: Access denied due to missing or invalid accessToken.
  *       404:
  *         description: User not found or product not found.
- *       500:
- *         description: An error occurred while updating the wishlist.
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 
 wishlistRoute.put('/:id', idToReq(), wishlistController.addToWishlist);
@@ -82,8 +82,8 @@ wishlistRoute.put('/:id', idToReq(), wishlistController.addToWishlist);
  *                       $ref: '#/components/schemas/WishlistItem'
  *         '401':
  *           description: Unauthorized. Token not found or invalid.
- *         '500':
- *           description: Internal server error
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  * components:
  *   securitySchemes:
  *     bearerAuth:
@@ -148,16 +148,8 @@ wishlistRoute.get('/', idToReq(), wishlistController.getAllWishlist);
  *                 message:
  *                   type: string
  *                   example: User not found
- *       500:
- *         description: An error occurred while clearing the wishlist
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: An error occurred while clearing the wishlist
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 
 wishlistRoute.delete('/', idToReq(), wishlistController.clearWishlist);

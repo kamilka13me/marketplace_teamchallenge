@@ -36,10 +36,9 @@ const sendMail = async (mailTo, theme, token) => {
   try {
     // Send mail
     const result = await transporter.sendMail(mailOptions);
-
-    console.log('Email sent:', result);
   } catch (error) {
-    console.error(error);
+    // eslint-disable-next-line no-console
+    console.log(error);
   }
 };
 

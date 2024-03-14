@@ -10,7 +10,7 @@ const authRoute = express.Router();
  * /auth/:
  *   post:
  *     summary: Login user
- *     description: "Authenticate a user and return a JWT accessToken.\n\n premission: \"none\""
+ *     description: "Authenticate a user. Return a JWT `accessToken` and set `refreshToken` to http only cookies.\n\n premission: `none`"
  *     tags:
  *       - Authentication
  *     requestBody:
@@ -90,15 +90,7 @@ const authRoute = express.Router();
  *                   type: string
  *                   example: too many failed attempts
  *       '500':
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Internal server error
+ *         $ref: '#/components/responses/InternalServerError'
  */
 // checkPermission('login'),
 authRoute.post('/', authController.login);
@@ -118,8 +110,8 @@ authRoute.post('/', authController.login);
  *             schema:
  *               type: string
  *               example: Logged out successfully.
- *       500:
- *         description: Internal server error.
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 // checkPermission('logout'),
 authRoute.delete('/', authController.logout);
@@ -149,6 +141,8 @@ authRoute.delete('/', authController.logout);
  *         description: Token has been successfully set in cookies.
  *       400:
  *         description: Token is required in the request body.
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 
 authRoute.post('/set-accessToken', authController.setToken);
@@ -194,16 +188,8 @@ authRoute.post('/set-accessToken', authController.setToken);
  *                 message:
  *                   type: string
  *                   example: Token expired
- *       500:
- *         description: Unexpected error.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Unexpected error
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 
 authRoute.get('/refresh-token', authController.refreshTokens);

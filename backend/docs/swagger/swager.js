@@ -4,6 +4,9 @@ import { fileURLToPath } from 'url';
 
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+
+import { JWTAuth } from './swagger.secure.js';
+import * as apiResponses from './swaggerResponses.js';
 /* eslint-disable no-underscore-dangle */
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -63,6 +66,14 @@ const options = {
         description: 'Operations related to user roles in the system.',
       },
     ],
+    components: {
+      securitySchemes: {
+        JWTAuth,
+      },
+      responses: {
+        ...apiResponses,
+      },
+    },
   },
   apis: [`${fullPath}`, `${modelsPath}`],
 };
@@ -85,3 +96,5 @@ function swaggerDocs(app, port) {
 }
 
 export default swaggerDocs;
+
+export { specs };

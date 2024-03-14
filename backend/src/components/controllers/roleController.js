@@ -19,8 +19,8 @@ const RoleController = {
   initRoles: async (req, res) => {
     try {
       const rolesToCreate = [
-        { name: 'notLoginUser', permissions: ['login', 'logout', 'createUser'] },
-        { name: 'user', permissions: ['login', 'logout', 'createUser'] },
+        { name: 'notLoginUser', permissions: ['login', 'logout', 'createUser', 'none'] },
+        { name: 'user', permissions: ['login', 'logout', 'createUser', 'none'] },
         {
           name: 'admin',
           permissions: [
@@ -30,6 +30,7 @@ const RoleController = {
             'getUser',
             'getAllUsers',
             'deleteUser',
+            'none',
           ],
         },
         {
@@ -45,6 +46,7 @@ const RoleController = {
             'getRoles',
             'updateRole',
             'assignRole',
+            'none',
           ],
         },
       ];
