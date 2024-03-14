@@ -51,7 +51,7 @@ const ProfileSidebar: FC<Props> = (props) => {
           color="white"
         />
       </div>
-      <div className="h-[1px] bg-gradient-to-r from-0% from-[rgba(224,225,226,0)] via-50% via-[rgba(224,225,226,1)] to-100% to-[rgba(224,225,226,0)] mt-6" />
+      <div className="h-[2px] bg-gradient-to-r from-0% from-[rgba(224,225,226,0)] via-50% via-[rgba(224,225,226,1)] to-100% to-[rgba(224,225,226,0)] mt-6" />
       <HStack align="center" justify="between" className="gap-[6px] h-full w-full mt-6">
         <ul className="flex flex-col gap-[6px] w-full">
           {tabs.map((item, index) => (
