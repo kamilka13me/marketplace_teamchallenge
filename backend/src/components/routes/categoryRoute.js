@@ -59,8 +59,8 @@ const categoryRoute = express.Router();
  *                 message:
  *                   type: string
  *                   example: "Bad Request: Missing required fields"
- *       500:
- *         description: Internal server error
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 
 categoryRoute.post(
@@ -104,8 +104,8 @@ categoryRoute.post(
  *                     items:
  *                       $ref: '#/components/schemas/Category'
  *                     description: Nested subcategories
- *       500:
- *         description: Internal server error
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 
 categoryRoute.get('/', categoryController.getCategory);

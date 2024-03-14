@@ -29,7 +29,8 @@
     "lint": "npx eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write .",
-    "prepare": "cd .. && husky install backend/.husky"
+    "prepare": "cd .. && husky install backend/.husky",
+    "docs": "node cli/docs-parser.js"
   },
   "keywords": [],
   "author": "",

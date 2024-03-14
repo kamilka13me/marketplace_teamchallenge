@@ -21,6 +21,8 @@ const router = express.Router();
  *           application/json:
  *             example:
  *               message: server online
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 // ping server route
 router.get('/ping', StatusController.ping);
@@ -40,6 +42,8 @@ router.get('/ping', StatusController.ping);
  *             example:
  *               message: "server online"
  *               serverTime: "2024-01-21T21:20:08.786Z"
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 router.post('/info', StatusController.info);
 
@@ -75,6 +79,8 @@ router.post('/info', StatusController.info);
  *                 message:
  *                   type: string
  *                   example: "Invalid count provided"
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 
 router.get('/clear/:count', StatusController.clear);

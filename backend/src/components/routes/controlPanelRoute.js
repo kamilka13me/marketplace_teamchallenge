@@ -19,19 +19,8 @@ const controlPanelRoute = express.Router();
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Banner'
- *       500:
- *         description: Server Error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: 'Server Error'
- *                 error:
- *                   type: string
- *                   example: 'Error'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  *
  * components:
  *   schemas:
@@ -82,19 +71,8 @@ controlPanelRoute.get('/Banner', controlPanelController.getBanner);
  *       400:
  *         description: Error uploading an image
  *
- *       500:
- *         description: Server Error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: 'Server Error'
- *                 error:
- *                   type: string
- *                   example: 'Error'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 
 controlPanelRoute.post(
@@ -139,16 +117,8 @@ controlPanelRoute.post(
  *                 message:
  *                   type: string
  *                   example: Banner not found
- *       500:
- *         description: Server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: An error occurred while trying to delete the banner
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 controlPanelRoute.delete('/Banner/:id', controlPanelController.deleteBanner);
 
@@ -170,16 +140,8 @@ controlPanelRoute.delete('/Banner/:id', controlPanelController.deleteBanner);
  *                 message:
  *                   type: string
  *                   example: All banners deleted successfully
- *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error message detailing the server issue
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 controlPanelRoute.delete('/Banner', controlPanelController.deleteAllBanner);
 

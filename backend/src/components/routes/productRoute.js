@@ -74,15 +74,7 @@ const productRoute = express.Router();
  *                   type: string
  *                   example:  Invalid request body
  *       '500':
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Internal server error
+ *         $ref: '#/components/responses/InternalServerError'
  */
 
 productRoute.post(
@@ -126,14 +118,8 @@ productRoute.post(
  *             schema:
  *                example:
  *                  message: Product not found
- *       500:
- *         description: Server error
- *         content:
- *           application/json:
- *             schema:
- *                example:
- *                  message: Server error
- *                  error: error
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 
 productRoute.get('/:id', viewsCounter(), productController.getOneProduct);
@@ -203,6 +189,8 @@ productRoute.get('/:id', viewsCounter(), productController.getOneProduct);
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Product'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
  */
 
 productRoute.get('/', productController.getAllProducts);

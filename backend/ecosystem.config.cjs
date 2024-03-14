@@ -5,6 +5,7 @@ module.exports = {
       name: 'MT_start',
       script: 'server.js',
       watch: true,
+      log_date_format: 'YYYY-MM-DD HH:mm Z',
       ignore_watch: ['node_modules', 'logs', 'public'],
       min_uptime: '60s',
       max_restarts: 5,
@@ -19,6 +20,7 @@ module.exports = {
     {
       name: 'MT_prod',
       script: 'server.js',
+      log_date_format: 'YYYY-MM-DD HH:mm Z',
       min_uptime: '60s',
       max_restarts: 5,
       env: {
@@ -33,6 +35,7 @@ module.exports = {
       name: 'MT_dev',
       script: 'server.js',
       watch: true,
+      log_date_format: 'YYYY-MM-DD HH:mm Z',
       ignore_watch: ['node_modules', 'logs', 'public'],
       min_uptime: '60s',
       max_restarts: 1,

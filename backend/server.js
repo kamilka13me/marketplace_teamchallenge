@@ -117,6 +117,8 @@ app.use('/static/category', express.static(path.join(__dirname, 'public/category
 
 server.listen(config.port, async () => {
   // eslint-disable-next-line no-console
+  console.log('\n\n\n\n\n');
+  // eslint-disable-next-line no-console
   console.log(`Server is running on https://localhost:${config.port}`);
 
   swaggerDocs(app, config.port);

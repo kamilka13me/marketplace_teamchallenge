@@ -1,0 +1,2240 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Marketplace Api",
+    "version": "1.0.0",
+    "description": "Simple Marketplace Api",
+    "contact": {
+      "name": "Yaroslav",
+      "email": "kamilka13me@gmal.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://localhost:3001/api/",
+      "description": "Main local server Api"
+    },
+    {
+      "url": "https://localhost:3002/api/",
+      "description": "Main local prod server Api"
+    },
+    {
+      "url": "https://alicesocial.pp.ua:3001/api/",
+      "description": "Main dev server Api"
+    },
+    {
+      "url": "https://alicesocial.pp.ua:3002/api/",
+      "description": "Main  server Api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Status",
+      "description": "Operations related to server status."
+    },
+    {
+      "name": "User",
+      "description": "Operations related to User."
+    },
+    {
+      "name": "Authentication",
+      "description": "Operations related to Authentication."
+    },
+    {
+      "name": "Products",
+      "description": "Operations related to Products."
+    },
+    {
+      "name": "Roles",
+      "description": "Operations related to user roles in the system."
+    }
+  ],
+  "paths": {
+    "/auth/": {
+      "post": {
+        "summary": "Login user",
+        "description": "Authenticate a user and return a JWT accessToken.\n\n premission: \"none\"",
+        "tags": [
+          "Authentication"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "User's email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "description": "User's password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Auth success."
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string"
+                        },
+                        "username": {
+                          "type": "string"
+                        },
+                        "surname": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "example": {
+                    "message": "Auth success.",
+                    "user": {
+                      "_id": "some_id",
+                      "username": "some_username",
+                      "surname": "some_surname",
+                      "email": "user@example.com",
+                      "role": "user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Invalid password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid password"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid email"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "423": {
+            "description": "too many failed attempts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "too many failed attempts"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Logout user",
+        "description": "Clears the authentication accessToken cookie and logs the user out.\n\n premission: \"none\"",
+        "tags": [
+          "Authentication"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully logged out.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Logged out successfully."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/auth/set-accessToken": {
+      "post": {
+        "summary": "Sets a accessToken in cookies",
+        "description": "This endpoint accepts a accessToken and sets it in HTTP cookies for further authentication processes.",
+        "tags": [
+          "Authentication"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "refreshToken"
+                ],
+                "properties": {
+                  "refreshToken": {
+                    "type": "string",
+                    "description": "The JWT refreshToken to be stored in cookies for authentication.",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token has been successfully set in cookies."
+          },
+          "400": {
+            "description": "Token is required in the request body."
+          }
+        }
+      }
+    },
+    "/auth/refresh-token": {
+      "get": {
+        "summary": "Refresh Access Token",
+        "description": "Use this API to refresh the access token using a refresh token.",
+        "tags": [
+          "Authentication"
+        ],
+        "responses": {
+          "200": {
+            "description": "Access token has been successfully refreshed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token has been updated"
+                    },
+                    "accessToken": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMzQ1Njc4OTAiLCJpYXQiOjE1MTYyMzkwMjJ9.QSflKxofmeJ6_y7TIphn2LJInrG7SWMweq5Z7HePpWk"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request, token is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token is required"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, token expired.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token expired"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/category": {
+      "post": {
+        "summary": "Creates a new category",
+        "tags": [
+          "Category"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Category name",
+                    "example": "Electronics"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Category description",
+                    "example": "Diverse electronics"
+                  },
+                  "parentId": {
+                    "type": "string",
+                    "description": "Category description",
+                    "example": "_id"
+                  },
+                  "image": {
+                    "type": "string",
+                    "description": "Path to the category image",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Category successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "New category created"
+                    },
+                    "category": {
+                      "$ref": "#/components/schemas/Category"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Bad Request: Missing required fields"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "get": {
+        "summary": "Gets a list of all root categories with nested subcategories",
+        "tags": [
+          "Category"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully received the list of categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "description": "Unique category identifier"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Category name"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "Category description"
+                      },
+                      "parentId": {
+                        "type": "string",
+                        "description": "Parent category identifier",
+                        "nullable": true
+                      },
+                      "subcategories": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Category"
+                        },
+                        "description": "Nested subcategories"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/control-panel/banner": {
+      "get": {
+        "summary": "Returns a list of all banners",
+        "tags": [
+          "Control Panel"
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of banners.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Banner"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Server Error"
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Adds a new banner",
+        "description": "Allows you to upload a banner image and add it to your website.",
+        "tags": [
+          "Control Panel"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "description": "Banner image"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Banner successfully added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Banner"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error uploading an image"
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Server Error"
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete all banners",
+        "description": "Deletes all banners from the database.",
+        "tags": [
+          "Control Panel"
+        ],
+        "responses": {
+          "200": {
+            "description": "All banners deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "All banners deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Error message detailing the server issue"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/control-panel/banner/{id}": {
+      "delete": {
+        "summary": "Removes a banner by its ID",
+        "description": "Deletes a banner from the database based on the provided ID.",
+        "tags": [
+          "Control Panel"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Unique identifier of the banner to be deleted",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Banner deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Banner deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Banner not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Banner not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "An error occurred while trying to delete the banner"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "post": {
+        "summary": "Creates a new product",
+        "tags": [
+          "Products"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Product name"
+                  },
+                  "description": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Product description"
+                  },
+                  "price": {
+                    "type": "number",
+                    "required": true,
+                    "format": "double",
+                    "description": "Product price"
+                  },
+                  "discount": {
+                    "type": "number",
+                    "required": true,
+                    "format": "int",
+                    "description": "Product price"
+                  },
+                  "category": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Product category"
+                  },
+                  "quantity": {
+                    "type": "number",
+                    "required": true,
+                    "format": "int64",
+                    "description": "Quantity"
+                  },
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "description": "Product image"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "product": {
+                      "$ref": "#/components/schemas/Product"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "typevj;yf": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid request body"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get a list of All products",
+        "description": "Get a list of all products according to filters and sorting.",
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Limit number of products returned."
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            },
+            "description": "Offset in products list."
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Name of the product to search for."
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by product category or product Id."
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string",
+              "default": "_id"
+            },
+            "description": "Field to sort by."
+          },
+          {
+            "in": "query",
+            "name": "sortDirection",
+            "schema": {
+              "type": "integer",
+              "enum": [
+                1,
+                -1
+              ],
+              "default": 1
+            },
+            "description": "Sort direction, where 1 is ascending and -1 is descending."
+          },
+          {
+            "in": "query",
+            "name": "discount",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            },
+            "description": "discount filter. if 0 off."
+          },
+          {
+            "in": "query",
+            "name": "quantity",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "quantity filter. if 0 off."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of products.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "summary": "Get a product by ID",
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The product ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The product description by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ObjectId format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "Invalid ObjectId format"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "Product not found"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "Server error",
+                    "error": "error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/roles": {
+      "post": {
+        "summary": "Create a new role",
+        "description": "Create a new role with optional parameters\n\n premission: \"createRole\"",
+        "tags": [
+          "Roles"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "admin"
+                  },
+                  "permissions": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": [
+                      "createUser",
+                      "getUser",
+                      "getAllUsers"
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "permissions"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Role created successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all roles",
+        "description": "get all avalible roles\n\n premission: \"getRoles\"",
+        "tags": [
+          "Roles"
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of roles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "user"
+                      },
+                      "permissions": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "example": [
+                          "read"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/roles/{roleId}": {
+      "put": {
+        "summary": "Update a role",
+        "tags": [
+          "Roles"
+        ],
+        "description": "add permissions to avalibale roles<br><br> premission:\"updateRole\"<br><br> Available permissions:[ <br>Users:[\"createUser\",\"getUser\",\"getAllUsers\",\"deleteUser\",] <br>Roles:[\"updateRole\",\"assignRole\",\"createRole\",\"getRoles\",] <br>Authentication:[\"login\",\"logout\"] <br>]",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "roleId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The role ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "permissionsToAdd": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "read",
+                        "write",
+                        "delete"
+                      ]
+                    },
+                    "description": "Array of permissions to add to the role"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The role was successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Role"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Role not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/roles/init": {
+      "post": {
+        "summary": "Init roles",
+        "description": "Init default users roles and \n\ncreate superadmin : email: superadmin@gmail.com password: superadmin .\n\n premission: \"none\" ",
+        "tags": [
+          "Roles"
+        ],
+        "responses": {
+          "201": {
+            "description": "Role and superadmin successfully crated .",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "string",
+                      "example": "user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/roles/assign": {
+      "post": {
+        "summary": "Assign a role to a user",
+        "description": "Assign a specific role to a user by their IDs.\n\n premission: \"assignRole\"",
+        "tags": [
+          "Roles"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "userId",
+                  "roleId"
+                ],
+                "properties": {
+                  "userId": {
+                    "type": "string",
+                    "description": "The unique identifier of the user."
+                  },
+                  "roleId": {
+                    "type": "string",
+                    "description": "The unique identifier of the role to assign."
+                  }
+                },
+                "example": {
+                  "userId": "60d0fe4f5311236168a109ca",
+                  "roleId": "60d0fe4f5311236168a109cb"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Role successfully assigned to the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input."
+          },
+          "404": {
+            "description": "User or role not found."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/status/ping": {
+      "get": {
+        "summary": "Ping server",
+        "description": "return server status",
+        "tags": [
+          "Status"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful status",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "server online"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/status/info": {
+      "post": {
+        "summary": "Get server info",
+        "description": "return server info",
+        "tags": [
+          "Status"
+        ],
+        "responses": {
+          "200": {
+            "description": "server online",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "server online",
+                  "serverTime": "2024-01-21T21:20:08.786Z"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/status/clear/{count}": {
+      "get": {
+        "summary": "Prints backslashes a specified number of times and shows current date",
+        "description": "This endpoint prints the backslash symbol (`\\`) a specified number of times to the console and returns the current date.",
+        "tags": [
+          "Status"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "count",
+            "required": true,
+            "description": "Number of times to print the backslash symbol",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully printed the specified number of backslashes and returned the current date.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Message printed to console 10 times. Current date: 2024-02-20T12:00:00"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid count provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid count provided"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/": {
+      "post": {
+        "summary": "Create new user",
+        "description": "Create a new user with optional parameters\n\n premission: \"none\"",
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "User created successfully",
+                  "user": {
+                    "_id": "some_id",
+                    "username": "some_username",
+                    "surname": "some_surname",
+                    "email": "user@example.com",
+                    "role": "user"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Invalid request body"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "User allready exist",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "user with this email allready exist"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all users",
+        "description": "Retrieve details of a user by their Id.\n\n premission: \"getAllUsers\"",
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "Users retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "user": [
+                    {
+                      "_id": "some_id",
+                      "surname": "some_username",
+                      "username": "some_username",
+                      "email": "user@example.com"
+                    },
+                    {
+                      "_id": "some_id",
+                      "surname": "some_username",
+                      "username": "some_username",
+                      "email": "user@example.com"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Get user by Id",
+        "description": "Retrieve details of a user by their Id. \n\n premission: \"getUser\"",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Unique Id of the user to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "user": {
+                    "_id": "some_id",
+                    "surname": "some_username",
+                    "username": "some_username",
+                    "email": "user@example.com"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Invalid user Id"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Server error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a user",
+        "description": "Deletes a user by Id.\n\n premission: \"deleteUser\"",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Unique Id of the user to delete.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted successfully.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "User deleted successfully."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "User not found."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Error deleting user."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "security": {
+      "0": {
+        "bearerAuth": []
+      }
+    },
+    "/users": {
+      "put": {
+        "summary": "Updates a user's information",
+        "description": "Allows updating the user's name, surname, date of birth, and phone number.",
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "The user's updated name"
+                  },
+                  "surname": {
+                    "type": "string",
+                    "description": "The user's updated surname"
+                  },
+                  "dob": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The user's updated date of birth"
+                  },
+                  "phoneNumber": {
+                    "type": "string",
+                    "description": "The user's updated phone number"
+                  }
+                },
+                "example": {
+                  "username": "Jane",
+                  "surname": "Doe",
+                  "dob": "1990-01-01",
+                  "phoneNumber": "+1234567890"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User information updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User updated successfully."
+                    },
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User ID is required or other validation error"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Error updating user"
+          }
+        }
+      }
+    },
+    "/users/password": {
+      "put": {
+        "summary": "Updates a user's password",
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "oldPassword": {
+                    "type": "string",
+                    "format": "password",
+                    "description": "The user's current password"
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "format": "password",
+                    "description": "The new password for the user"
+                  }
+                },
+                "required": [
+                  "oldPassword",
+                  "newPassword"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Password updated successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing fields or incorrect old password"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Error updating password"
+          }
+        }
+      }
+    },
+    "/wishlist/{id}": {
+      "put": {
+        "summary": "Toggle a product in the user's wishlist",
+        "description": "Adds a product to the user's wishlist if it's not already present, or removes it if it is.",
+        "tags": [
+          "Wishlist"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The ID of the product to toggle in the wishlist.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully added or removed the product from the wishlist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Product added to wishlist successfully"
+                    },
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access denied due to missing or invalid accessToken."
+          },
+          "404": {
+            "description": "User not found or product not found."
+          },
+          "500": {
+            "description": "An error occurred while updating the wishlist."
+          }
+        }
+      }
+    },
+    "/wishlist": {
+      "get": {
+        "summary": "Retrieves all items in a user's wishlist",
+        "description": "This endpoint returns all wishlist items for a specific user, based on the user ID provided. Pagination is supported through limit and offset parameters.",
+        "tags": [
+          "Wishlist"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Limit the number of items returned"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "The number of items to skip before starting to collect the result set"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved wishlist items",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "wishlist": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/WishlistItem"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Token not found or invalid."
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Removes all products from the user's wishlist",
+        "tags": [
+          "Wishlist"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All products have been successfully deleted from the wishlist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Wishlist cleared successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error occurred while clearing the wishlist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "An error occurred while clearing the wishlist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Banner": {
+        "type": "object",
+        "required": [
+          "name",
+          "imageUrl"
+        ],
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "The auto-generated id of the banner"
+          },
+          "image": {
+            "type": "string",
+            "description": "URL to the banner image"
+          },
+          "id": {
+            "type": "string",
+            "description": "The auto-generated id of the banner"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the banner"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the banner"
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "The URL to the banner image"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date",
+            "description": "The date when the banner was created"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Status of the banner's visibility"
+          }
+        },
+        "example": {
+          "_id": "d5fE_asz",
+          "image": "/static/banners/8478bb72-76d7-4b9e-9db7-3b8a91dc33c1.png",
+          "createdAt": "2021-07-21T17:32:28Z",
+          "isActive": true
+        }
+      },
+      "WishlistItem": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string",
+            "description": "Unique identifier of the product"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the product"
+          },
+          "description": {
+            "type": "string",
+            "description": "Product description"
+          },
+          "price": {
+            "type": "number",
+            "format": "float",
+            "description": "Price of the product"
+          }
+        }
+      },
+      "BrowserInfo": {
+        "type": "object",
+        "required": [
+          "userId"
+        ],
+        "properties": {
+          "browser": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the browser"
+              },
+              "version": {
+                "type": "string",
+                "description": "Version of the browser"
+              }
+            }
+          },
+          "os": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Operating system name"
+              },
+              "version": {
+                "type": "string",
+                "description": "Operating system version"
+              },
+              "versionName": {
+                "type": "string",
+                "description": "Human-readable name of the operating system version"
+              }
+            }
+          },
+          "platform": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Platform type (e.g., desktop, mobile)"
+              }
+            }
+          },
+          "engine": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Browser's layout engine"
+              }
+            }
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date and time when the info was recorded"
+          },
+          "userIp": {
+            "type": "string",
+            "description": "IP address of the user"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier of the user"
+          }
+        },
+        "example": {
+          "browser": {
+            "name": "Chrome",
+            "version": "89.0.4389.82"
+          },
+          "os": {
+            "name": "Windows",
+            "version": "10",
+            "versionName": "Redstone"
+          },
+          "platform": {
+            "type": "Desktop"
+          },
+          "engine": {
+            "name": "Blink"
+          },
+          "date": "2021-03-17T03:24:00",
+          "userIp": "192.168.1.1",
+          "userId": "507f1f77bcf86cd799439011"
+        }
+      },
+      "Category": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the category."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the category."
+          },
+          "parentId": {
+            "type": "string",
+            "description": "Reference to the parent category's ID."
+          }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "required": [
+          "name",
+          "description",
+          "price",
+          "category",
+          "quantity"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the product"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the product"
+          },
+          "price": {
+            "type": "number",
+            "description": "The price of the product"
+          },
+          "discount": {
+            "type": "number",
+            "description": "The discount on the product (if any)",
+            "default": 0
+          },
+          "category": {
+            "type": "string",
+            "description": "The category of the product"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "The quantity of the product in stock"
+          },
+          "views": {
+            "type": "number",
+            "description": "The number of views of the product",
+            "required": false
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The images URLs of the product"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the product was created"
+          }
+        },
+        "example": {
+          "name": "Example Product Name",
+          "description": "This is an example product description.",
+          "price": 99.99,
+          "discount": 10,
+          "category": "Example Category",
+          "quantity": 100,
+          "views": 150,
+          "images": [
+            "/image1.jpg",
+            "/image2.jpg"
+          ],
+          "created_at": "2023-01-01T00:00:00Z"
+        }
+      },
+      "Role": {
+        "type": "object",
+        "required": [
+          "name",
+          "permissions"
+        ],
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The auto-generated id of the role"
+          },
+          "name": {
+            "type": "string",
+            "description": "Unique name of the role"
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of permissions assigned to the role"
+          }
+        },
+        "example": {
+          "_id": "d5fE_asz",
+          "name": "admin",
+          "permissions": [
+            "create_user",
+            "delete_user",
+            "view_all_users"
+          ]
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "The user's name"
+          },
+          "surname": {
+            "type": "string",
+            "description": "The user's surname"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The user's unique email address"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "description": "The user's password"
+          },
+          "role": {
+            "type": "string",
+            "description": "The ObjectId of the user's role"
+          },
+          "views": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Array of product IDs that the user has viewed"
+          },
+          "wishlist": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Array of product IDs in the user's wishlist"
+          },
+          "dob": {
+            "type": "string",
+            "format": "date",
+            "description": "The user's date of birth"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "The user's phone number"
+          }
+        },
+        "example": {
+          "username": "JohnDoe",
+          "surname": "Doe",
+          "email": "johndoe@example.com",
+          "password": "123456",
+          "role": "5e9f8f8f8f8f8f8f8f8f8f8",
+          "views": [
+            "5e9f8f8f8f8f8f8f8f8f8f8",
+            "5e9f8f8f8f8f8f8f8f8f8f8"
+          ],
+          "wishlist": [
+            "5e9f8f8f8f8f8f8f8f8f8f8",
+            "5e9f8f8f8f8f8f8f8f8f8f8"
+          ],
+          "dob": "1990-01-01",
+          "phoneNumber": "123-456-7890"
+        }
+      },
+      "UserOnlineStatus": {
+        "type": "object",
+        "required": [
+          "userId",
+          "socketId",
+          "isOnline",
+          "lastOnline"
+        ],
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "Унікальний ідентифікатор користувача"
+          },
+          "socketId": {
+            "type": "string",
+            "description": "Ідентифікатор сокета, через який користувач підключений"
+          },
+          "isOnline": {
+            "type": "boolean",
+            "description": "Прапорець, що вказує чи є користувач онлайн"
+          },
+          "lastOnline": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Останній час, коли користувач був онлайн"
+          }
+        },
+        "example": {
+          "userId": "12345",
+          "socketId": "abcd1234",
+          "isOnline": true,
+          "lastOnline": "2023-01-01T12:00:00.000Z"
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "parameters": {
+      "bannerId": {
+        "in": "path",
+        "name": "id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "The banner id"
+      }
+    }
+  }
+}

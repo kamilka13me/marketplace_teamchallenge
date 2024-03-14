@@ -175,7 +175,8 @@ const userController = {
         user: updatedUser,
       });
     } catch (error) {
-      console.error(error);
+      // eslint-disable-next-line no-console
+      console.log(error);
       res.status(500).json({ message: 'Error updating user.', error: error.message });
     }
   },
@@ -211,7 +212,8 @@ const userController = {
 
       res.status(200).json({ message: 'Password updated successfully' });
     } catch (error) {
-      console.error(error);
+      // eslint-disable-next-line no-console
+      console.log(error);
       res.status(500).json({ message: 'Error updating password' });
     }
   },
