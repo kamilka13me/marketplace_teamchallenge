@@ -3,6 +3,7 @@ import React, { FC, RefObject, useEffect, useRef, useState } from 'react';
 import { Transition } from '@headlessui/react';
 
 import SubCategory from './SubCategory';
+import testdata from './testdata.json';
 
 import { Category } from '@/enteties/Category';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
@@ -93,10 +94,10 @@ const ModalCategory: FC<Props> = (props) => {
                 </li>
               ))}
             </ul>
-            <div>
+            <div className="overflow-auto h-[500px] w-full">
               {data && (
                 <SubCategory
-                  data={data[currentCategory!]?.subcategories as Category[]}
+                  data={testdata[currentCategory!]?.subcategories as Category[]}
                   isFirstSubCategory
                 />
               )}

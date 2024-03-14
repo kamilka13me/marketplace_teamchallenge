@@ -3,9 +3,7 @@ export enum AppRoutes {
   // PRODUCT = 'product',
   // PRODUCTS = 'products',
   PROFILE = 'profile',
-  VERIFY = 'verify',
 
-  SERVER_ERROR = 'server_error',
   NOT_FOUND = 'not_found',
 }
 

@@ -18,12 +18,14 @@ const SubCategory = (props: SubCategoryProps) => {
   }
 
   return (
-    <ul>
+    <ul
+      className={`${isFirstSubCategory && 'grid grid-flow-row auto-rows-max grid-cols-4'} `}
+    >
       {data.map((item) => (
         <li key={item._id}>
           <NavLink
             to={`${getRouteProducts()}?category=${item._id}`}
-            className={`capitalize ${isFirstSubCategory && 'font-bold'}`}
+            className={`capitalize truncate ${isFirstSubCategory && 'font-bold '}`}
           >
             {item.name}
           </NavLink>
