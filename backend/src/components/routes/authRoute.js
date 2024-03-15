@@ -57,7 +57,7 @@ const authRoute = express.Router();
  *                      type: string
  *              example:
  *               message: "Auth success."
- *               user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user", dob: "1990-01-01T00:00:00.000Z" , isAccountConfirm: false,  phoneNumber: "+1234567890" }
+ *               user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user", dob: "1990-01-01T00:00:00.000Z" , isAccountConfirm: false,  phoneNumber: "+1234567890","wishlist": [] }
  *               accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjhmNDdmMmYyYTAwZmY4Nzk2NTlkYSIsImlhdCI6MTcxMDUwNTUyOCwiZXhwIjoxNzEwNTA4NTI4fQ.MVx5jAMHEljgC9DGHI6XJELpQJZ--QOGIcHIAQ6LYLY"
  *
  *       '403':

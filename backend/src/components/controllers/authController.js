@@ -49,13 +49,14 @@ const authController = {
       }
       const userCallback = {
         _id: user._id,
-        username: user.username,
-        surname: user.username,
+        username: user.username || null,
+        surname: user.username || null,
         email: user.email,
-        role: user.role.name,
-        dob: user.dob,
+        role: 'user',
+        dob: user.dob || null,
         isAccountConfirm: user.isAccountConfirm,
-        phoneNumber: user.phoneNumber,
+        phoneNumber: user.phoneNumber || null,
+        wishlist: user.wishlist,
       };
 
       if (Attempts) {
