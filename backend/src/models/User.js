@@ -105,7 +105,7 @@ const userSchema = new mongoose.Schema({
   },
   dob: {
     // Date of birth
-    type: Date,
+    type: String,
     required: false,
   },
   phoneNumber: {
