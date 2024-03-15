@@ -48,13 +48,14 @@ const userController = {
       // user callback
       const userCallback = {
         _id: user._id,
-        username: user.username,
-        surname: user.username,
+        username: user.username || null,
+        surname: user.username || null,
         email: user.email,
-        role: user.role.name,
-        dob: user.dob,
+        role: 'user',
+        dob: user.dob || null,
         isAccountConfirm: user.isAccountConfirm,
-        phoneNumber: user.phoneNumber,
+        phoneNumber: user.phoneNumber || null,
+        wishlist: user.wishlist,
       };
 
       const accessToken = generateAccessToken(user._id);
@@ -73,7 +74,6 @@ const userController = {
       // res.cookie('user', JSON.stringify(userCallback), {httpOnly: false,secure: false,});
       res.setHeader('Authorization', `Bearer ${accessToken}`);
       res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true });
-
       res
         .status(201)
         .json({ message: 'User created successfully', user: userCallback, accessToken });
@@ -108,13 +108,14 @@ const userController = {
       // user callback
       const userCallback = {
         _id: user._id,
-        username: user.username,
-        surname: user.username,
+        username: user.username || null,
+        surname: user.username || null,
         email: user.email,
-        role: user.role.name,
-        dob: user.dob,
+        role: 'user',
+        dob: user.dob || null,
         isAccountConfirm: user.isAccountConfirm,
-        phoneNumber: user.phoneNumber,
+        phoneNumber: user.phoneNumber || null,
+        wishlist: user.wishlist,
       };
 
       res.status(200).json({ message: 'User get successfully.', user: userCallback });
@@ -183,6 +184,7 @@ const userController = {
         dob: updatedUser.dob,
         isAccountConfirm: updatedUser.isAccountConfirm,
         phoneNumber: updatedUser.phoneNumber,
+        wishlist: updatedUser.wishlist,
       };
 
       res.status(200).json({

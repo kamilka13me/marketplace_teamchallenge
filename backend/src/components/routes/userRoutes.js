@@ -27,7 +27,7 @@ const router = express.Router();
  *           application/json:
  *             example:
  *               message: "User created successfully"
- *               user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user", dob: "1990-01-01T00:00:00.000Z" , isAccountConfirm: false,  phoneNumber: "+1234567890" }
+ *               user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user", dob: "1990-01-01T00:00:00.000Z" , isAccountConfirm: false,  phoneNumber: "+1234567890","wishlist": [] }
  *               accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjhmNDdmMmYyYTAwZmY4Nzk2NTlkYSIsImlhdCI6MTcxMDUwNTUyOCwiZXhwIjoxNzEwNTA4NTI4fQ.MVx5jAMHEljgC9DGHI6XJELpQJZ--QOGIcHIAQ6LYLY"
  *
  *       400:
@@ -71,7 +71,7 @@ router.post('/', validateUser, userController.createUser);
  *           application/json:
  *             example:
  *               message: "User get successfully."
- *               user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user", dob: "1990-01-01T00:00:00.000Z" , isAccountConfirm: false,  phoneNumber: "+1234567890" }
+ *               user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user", dob: "1990-01-01T00:00:00.000Z" , isAccountConfirm: false,  phoneNumber: "+1234567890","wishlist": [] }
  *       404:
  *         description: User not found
  *         content:
@@ -97,7 +97,7 @@ router.get('/:id', checkPermission('none'), userController.getUser);
  *         content:
  *           application/json:
  *             example:
- *               user: [ user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user", dob: "1990-01-01T00:00:00.000Z" , isAccountConfirm: false,  phoneNumber: "+1234567890" }, user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user", dob: "1990-01-01T00:00:00.000Z" , isAccountConfirm: false,  phoneNumber: "+1234567890" }]
+ *               user: [ user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user", dob: "1990-01-01T00:00:00.000Z" , isAccountConfirm: false,  phoneNumber: "+1234567890","wishlist": [] }, user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user", dob: "1990-01-01T00:00:00.000Z" , isAccountConfirm: false,  phoneNumber: "+1234567890" ,"wishlist": []}]
  *       '500':
  *         $ref: '#/components/responses/InternalServerError'
  */
@@ -191,7 +191,7 @@ router.delete('/:id', userController.deleteUser);
  *           application/json:
  *             example:
  *               message: "User created successfully."
- *               user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user", dob: "1990-01-01T00:00:00.000Z" , isAccountConfirm: false,  phoneNumber: "+1234567890" }
+ *               user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user", dob: "1990-01-01T00:00:00.000Z" , isAccountConfirm: false,  phoneNumber: "+1234567890","wishlist": [] }
  *
  *       400:
  *         description: User ID is required or other validation error
@@ -243,7 +243,7 @@ router.put('/', checkPermission('none'), userController.updateUser);
  *           application/json:
  *             example:
  *               message: "Password updated successfully."
- *               user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user", dob: "1990-01-01T00:00:00.000Z" , isAccountConfirm: false,  phoneNumber: "+1234567890" }
+ *               user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user", dob: "1990-01-01T00:00:00.000Z" , isAccountConfirm: false,  phoneNumber: "+1234567890","wishlist": [] }
  *       400:
  *         description: Missing fields or incorrect old password
  *       404:
