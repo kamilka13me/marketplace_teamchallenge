@@ -1,11 +1,25 @@
-import { FC, useState } from 'react';
+import { FC, useLayoutEffect, useState } from 'react';
+
+import { useParams } from 'react-router-dom';
 
 import { Container } from '@/shared/layouts/Container';
 import { VStack } from '@/shared/ui/Stack';
 import ProfileSidebar from '@/widgets/ProfileSidebar/ui/ProfileSidebar';
 
 const ProfilePage: FC = () => {
+  const { id } = useParams<{ id: string }>();
+
   const [currentTab, setCurrentTab] = useState(0);
+
+  useLayoutEffect(() => {
+    if (id === 'info') {
+      setCurrentTab(0);
+    } else if (id === 'wishlist') {
+      setCurrentTab(1);
+    } else {
+      setCurrentTab(0);
+    }
+  }, [id]);
 
   const setCurrentTabHandler = (index: number) => {
     setCurrentTab(index);

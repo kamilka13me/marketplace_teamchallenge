@@ -7,27 +7,31 @@ import { getRouteProducts } from '@/shared/const/routes';
 
 interface SubCategoryProps {
   data: Category[];
+  closeModal: () => void;
   isFirstSubCategory?: boolean;
 }
 
 const SubCategory = (props: SubCategoryProps) => {
-  const { data, isFirstSubCategory } = props;
+  const { data, isFirstSubCategory, closeModal } = props;
 
   if (!data) {
     return null;
   }
 
   return (
-    <ul>
+    <ul
+      className={`${isFirstSubCategory && 'grid grid-flow-row auto-rows-max grid-cols-4'} `}
+    >
       {data.map((item) => (
         <li key={item._id}>
           <NavLink
             to={`${getRouteProducts()}?category=${item._id}`}
-            className={`capitalize ${isFirstSubCategory && 'font-bold'}`}
+            className={`capitalize truncate ${isFirstSubCategory && 'font-bold '}`}
+            onClick={() => closeModal()}
           >
             {item.name}
           </NavLink>
-          <SubCategory data={item.subcategories} />
+          <SubCategory closeModal={closeModal} data={item.subcategories} />
         </li>
       ))}
     </ul>
