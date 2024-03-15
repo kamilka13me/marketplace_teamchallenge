@@ -53,6 +53,9 @@ const authController = {
         surname: user.username,
         email: user.email,
         role: user.role.name,
+        dob: user.dob,
+        isAccountConfirm: user.isAccountConfirm,
+        phoneNumber: user.phoneNumber,
       };
 
       if (Attempts) {
