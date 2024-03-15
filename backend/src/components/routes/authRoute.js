@@ -195,4 +195,37 @@ authRoute.post('/set-accessToken', authController.setToken);
 
 authRoute.get('/refresh-token', authController.refreshTokens);
 
+/**
+ * @openapi
+ * /auth/confirm/{confirmToken}:
+ *   get:
+ *     summary: Get user by Id
+ *     description: "Retrieve details of a user by their Id. \n\n premission: \"getUser\""
+ *     tags: [Authentication]
+ *     parameters:
+ *       - in: path
+ *         name: confirmToken
+ *         required: true
+ *         description: Unique Id of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User retrieved successfully
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: "User get successfully."
+ *               user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user", dob: "1990-01-01T00:00:00.000Z" , isAccountConfirm: false,  phoneNumber: "+1234567890","wishlist": [] }
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             example:
+ *                message: 'Invalid user Id'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
+authRoute.get('/confirm/:confirmToken', authController.confirmToken);
+
 export default authRoute;
