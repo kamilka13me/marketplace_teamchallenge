@@ -48,15 +48,16 @@ const ProfileSidebar: FC<Props> = (props) => {
       <VStack align="center" gap="4" className="px-4">
         <div className="flex justify-center items-center w-[56px] h-[56px] rounded-full bg-gray-900">
           <Text
-            Tag="span"
-            text={`${user?.username[0]}${user?.surname[0]}`}
+            Tag="p"
+            text={`${user?.username?.[0] || ''}${user?.surname?.[0] || ''}`}
             size="md"
+            align="center"
             color="white"
           />
         </div>
         <Text
           Tag="p"
-          text={`${user?.username} ${user?.surname}`}
+          text={`${user?.username || ''} ${user?.surname || ''}`}
           size="md"
           align="center"
           color="white"
