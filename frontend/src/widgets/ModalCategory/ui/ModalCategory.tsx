@@ -3,7 +3,6 @@ import React, { FC, RefObject, useEffect, useRef, useState } from 'react';
 import { Transition } from '@headlessui/react';
 
 import SubCategory from './SubCategory';
-import testdata from './testdata.json';
 
 import { Category } from '@/enteties/Category';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
@@ -55,7 +54,7 @@ const ModalCategory: FC<Props> = (props) => {
   }, [setClose, modalCategoriesRef, modalButtonRef, isOpen]);
 
   if (isLoading) {
-    return <>Loading</>;
+    return null;
   }
 
   if (error) {
@@ -90,14 +89,15 @@ const ModalCategory: FC<Props> = (props) => {
                   onMouseEnter={() => setCurrentCategory(i)}
                   className={`max-w-[313px] relative ${currentCategory === i && 'font-bold'}`}
                 >
-                  <CategoryLink category={item} />
+                  <CategoryLink category={item} closeModal={setClose} />
                 </li>
               ))}
             </ul>
             <div className="overflow-auto h-[500px] w-full">
               {data && (
                 <SubCategory
-                  data={testdata[currentCategory!]?.subcategories as Category[]}
+                  closeModal={setClose}
+                  data={data[currentCategory!]?.subcategories as Category[]}
                   isFirstSubCategory
                 />
               )}

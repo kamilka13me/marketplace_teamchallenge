@@ -3,6 +3,7 @@ export enum AppRoutes {
   // PRODUCT = 'product',
   // PRODUCTS = 'products',
   PROFILE = 'profile',
+  VERIFY = 'verify',
 
   NOT_FOUND = 'not_found',
 }
@@ -17,4 +18,4 @@ export const getServerErrorRoute = () => `/500`;
 
 export const getVerifyRoute = (id: string) => `/verify/${id}`;
 
-export const getRouteProfile = () => '/profile';
+export const getRouteProfile = (tab?: string) => `/profile/${tab}`;

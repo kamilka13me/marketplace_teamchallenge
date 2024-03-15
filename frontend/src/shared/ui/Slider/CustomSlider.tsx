@@ -30,7 +30,7 @@ const CustomSlider: FC<Props> = (props) => {
   };
 
   return (
-    <Slider {...settings} className={`min-w-[300px] min-h-[200px] ${className}`}>
+    <Slider {...settings} className={`min-w-[350px] min-h-[203px] ${className}`}>
       {images.map((item, i) => (
         // eslint-disable-next-line react/no-array-index-key
         <div key={i}>

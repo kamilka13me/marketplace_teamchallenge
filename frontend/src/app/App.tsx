@@ -41,7 +41,7 @@ const App: FC = () => {
   if (location.pathname === '/500') {
     return (
       <Suspense fallback="">
-        <Page500 />{' '}
+        <Page500 />
       </Suspense>
     );
   }

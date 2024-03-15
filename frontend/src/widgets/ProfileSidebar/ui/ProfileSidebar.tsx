@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
 
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import { getUserAuthData, userActions } from '@/enteties/User';
 import like from '@/shared/assets/icons/like.svg?react';
 import logout from '@/shared/assets/icons/logout.svg?react';
 import person from '@/shared/assets/icons/person.svg?react';
+import { getRouteProfile } from '@/shared/const/routes';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
@@ -17,11 +18,13 @@ const tabs = [
   {
     id: 1,
     title: 'Персональні дані',
+    urlId: 'info',
     icon: person,
   },
   {
     id: 2,
     title: 'Список бажань',
+    urlId: 'wishlist',
     icon: like,
   },
 ];
@@ -59,24 +62,28 @@ const ProfileSidebar: FC<Props> = (props) => {
               key={item.id}
               className={`px-4 py-3 ${tab === index && 'bg-gray-900'} rounded-2xl`}
             >
-              <Button variant="clear" onClick={() => setTab(index)}>
-                <VStack align="center" gap="4">
-                  <div className={`${tab === index && 'bg-primary'} p-[7px] rounded-md`}>
-                    <Icon
-                      Svg={item.icon}
-                      width={16}
-                      height={16}
-                      className={`${tab === index ? 'stroke-gray-400' : 'stroke-white-400'} stroke-2 `}
+              <NavLink to={getRouteProfile(item.urlId)}>
+                <Button variant="clear" onClick={() => setTab(index)}>
+                  <VStack align="center" gap="4">
+                    <div
+                      className={`${tab === index && 'bg-primary'} p-[7px] rounded-md`}
+                    >
+                      <Icon
+                        Svg={item.icon}
+                        width={16}
+                        height={16}
+                        className={`${tab === index ? 'stroke-gray-400' : 'stroke-white-400'} stroke-2 `}
+                      />
+                    </div>
+                    <Text
+                      className={`${tab === index ? 'text-white' : 'text-white-400'} `}
+                      Tag="p"
+                      text={item.title}
+                      size="md"
                     />
-                  </div>
-                  <Text
-                    className={`${tab === index ? 'text-white' : 'text-white-400'} `}
-                    Tag="p"
-                    text={item.title}
-                    size="md"
-                  />
-                </VStack>
-              </Button>
+                  </VStack>
+                </Button>
+              </NavLink>
             </li>
           ))}
         </ul>

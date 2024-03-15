@@ -7,11 +7,12 @@ import { getRouteProducts } from '@/shared/const/routes';
 
 interface SubCategoryProps {
   data: Category[];
+  closeModal: () => void;
   isFirstSubCategory?: boolean;
 }
 
 const SubCategory = (props: SubCategoryProps) => {
-  const { data, isFirstSubCategory } = props;
+  const { data, isFirstSubCategory, closeModal } = props;
 
   if (!data) {
     return null;
@@ -26,10 +27,11 @@ const SubCategory = (props: SubCategoryProps) => {
           <NavLink
             to={`${getRouteProducts()}?category=${item._id}`}
             className={`capitalize truncate ${isFirstSubCategory && 'font-bold '}`}
+            onClick={() => closeModal()}
           >
             {item.name}
           </NavLink>
-          <SubCategory data={item.subcategories} />
+          <SubCategory closeModal={closeModal} data={item.subcategories} />
         </li>
       ))}
     </ul>
