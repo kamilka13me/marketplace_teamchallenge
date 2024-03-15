@@ -7,6 +7,7 @@ import { NotFoundPage } from '@/pages/NotFoundPage';
 // import { ProductsPage } from '@/pages/ProductsPage';
 // import { ProductsPage } from '@/pages/ProductsPage';
 import { ProfilePage } from '@/pages/ProfilePage';
+import { VerifyPage } from '@/pages/VerifyPage';
 import {
   AppRoutes,
   getRouteMain,
@@ -14,6 +15,7 @@ import {
   // getRouteProduct,
   // getRouteProducts,
   getRouteProfile,
+  getVerifyRoute,
 } from '@/shared/const/routes';
 
 export type AppRoutesProps = RouteProps & {
@@ -35,10 +37,14 @@ export const RouteConfig: Record<AppRoutes, AppRoutesProps> = {
   //   element: <ProductsPage />,
   // },
   [AppRoutes.PROFILE]: {
-    path: getRouteProfile(),
+    path: getRouteProfile(':id'),
     authOnly: true,
     element: <ProfilePage />,
     roles: [UserRoles.USER, UserRoles.SUPER_ADMIN, UserRoles.ADMIN],
+  },
+  [AppRoutes.VERIFY]: {
+    path: getVerifyRoute(':id'),
+    element: <VerifyPage />,
   },
   [AppRoutes.NOT_FOUND]: {
     path: '*',
