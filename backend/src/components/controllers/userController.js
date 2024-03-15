@@ -51,8 +51,10 @@ const userController = {
         username: user.username,
         surname: user.username,
         email: user.email,
-        role: 'user',
-        wishlist: user.wishlist,
+        role: user.role.name,
+        dob: user.dob,
+        isAccountConfirm: user.isAccountConfirm,
+        phoneNumber: user.phoneNumber,
       };
 
       const accessToken = generateAccessToken(user._id);
@@ -109,11 +111,13 @@ const userController = {
         username: user.username,
         surname: user.username,
         email: user.email,
-        role: 'user',
-        wishlist: user.wishlist,
+        role: user.role.name,
+        dob: user.dob,
+        isAccountConfirm: user.isAccountConfirm,
+        phoneNumber: user.phoneNumber,
       };
 
-      res.status(200).json({ user: userCallback });
+      res.status(200).json({ message: 'User get successfully.', user: userCallback });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
@@ -144,7 +148,7 @@ const userController = {
         return res.status(404).send({ message: 'User not found' });
       }
 
-      res.status(200).send({ message: 'User deleted successfully' });
+      res.status(200).send({ message: 'User deleted successfully.' });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
@@ -164,15 +168,26 @@ const userController = {
         userId,
         { username, surname, dob, phoneNumber },
         { new: true, runValidators: true },
-      );
+      ).populate('role');
 
       if (!updatedUser) {
         return res.status(404).json({ message: 'User not found.' });
       }
 
+      const userCallback = {
+        _id: updatedUser._id,
+        username: updatedUser.username,
+        surname: updatedUser.username,
+        email: updatedUser.email,
+        role: updatedUser.role.name,
+        dob: updatedUser.dob,
+        isAccountConfirm: updatedUser.isAccountConfirm,
+        phoneNumber: updatedUser.phoneNumber,
+      };
+
       res.status(200).json({
         message: 'User updated successfully.',
-        user: updatedUser,
+        user: userCallback,
       });
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -210,7 +225,20 @@ const userController = {
       user.password = hashedPassword;
       await user.save();
 
-      res.status(200).json({ message: 'Password updated successfully' });
+      const userCallback = {
+        _id: user._id,
+        username: user.username,
+        surname: user.username,
+        email: user.email,
+        role: user.role.name,
+        dob: user.dob,
+        isAccountConfirm: user.isAccountConfirm,
+        phoneNumber: user.phoneNumber,
+      };
+
+      res
+        .status(200)
+        .json({ message: 'Password updated successfully.', user: userCallback });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
