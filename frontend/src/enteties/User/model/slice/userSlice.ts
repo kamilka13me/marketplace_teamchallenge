@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 
-import { User, UserSchema } from '@/enteties/User';
+import { setPasswordUser, User, UserSchema } from '@/enteties/User';
 import { getUserWishlist } from '@/enteties/User/model/services/getUserWishlist';
 import { setInformationUser } from '@/enteties/User/model/services/setInformationUser';
 import { setNewUser } from '@/enteties/User/model/services/setNewUser';
@@ -87,6 +87,10 @@ export const userSlice = createSlice({
         state.error = undefined;
         state.isLoading = true;
       })
+      .addCase(setPasswordUser.pending, (state) => {
+        state.error = undefined;
+        state.isLoading = true;
+      })
       .addCase(getUserByCredentials.fulfilled, (state) => {
         state.userWishlist.isLoading = false;
       })
@@ -95,6 +99,10 @@ export const userSlice = createSlice({
         state.error = undefined;
       })
       .addCase(setInformationUser.fulfilled, (state) => {
+        state.isLoading = false;
+        state.error = undefined;
+      })
+      .addCase(setPasswordUser.fulfilled, (state) => {
         state.isLoading = false;
         state.error = undefined;
       })
@@ -107,6 +115,10 @@ export const userSlice = createSlice({
         state.error = action.payload as string;
       })
       .addCase(setInformationUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(setPasswordUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       });
