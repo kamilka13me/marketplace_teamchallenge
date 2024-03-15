@@ -45,7 +45,15 @@ const ProfileSidebar: FC<Props> = (props) => {
 
   return (
     <div className="flex flex-col px-4 pt-8 pb-[15px] rounded-2xl bg-gray-400 w-[266px] h-[568px]">
-      <div className="py-19px">
+      <VStack align="center" gap="4" className="px-4">
+        <div className="flex justify-center items-center w-[56px] h-[56px] rounded-full bg-gray-900">
+          <Text
+            Tag="span"
+            text={`${user?.username[0]}${user?.surname[0]}`}
+            size="md"
+            color="white"
+          />
+        </div>
         <Text
           Tag="p"
           text={`${user?.username} ${user?.surname}`}
@@ -53,7 +61,7 @@ const ProfileSidebar: FC<Props> = (props) => {
           align="center"
           color="white"
         />
-      </div>
+      </VStack>
       <div className="h-[2px] bg-gradient-to-r from-0% from-[rgba(224,225,226,0)] via-50% via-[rgba(224,225,226,1)] to-100% to-[rgba(224,225,226,0)] mt-6" />
       <HStack align="center" justify="between" className="gap-[6px] h-full w-full mt-6">
         <ul className="flex flex-col gap-[6px] w-full">
