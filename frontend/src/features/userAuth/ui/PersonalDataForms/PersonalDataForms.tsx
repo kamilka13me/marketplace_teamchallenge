@@ -1,10 +1,13 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { setInformationUser } from '@/enteties/User';
-import { getUserAuthData } from '@/enteties/User/model/selectors/getUserAuthData';
+import { setInformationUser, setPasswordUser, userActions } from '@/enteties/User';
+import {
+  getUserAuthData,
+  userHasError,
+} from '@/enteties/User/model/selectors/getUserAuthData';
 import privateEye from '@/shared/assets/icons/private-eye-white.svg?react';
 import unPrivateEye from '@/shared/assets/icons/unprivate-eye-white.svg?react';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
@@ -31,6 +34,7 @@ interface InputsPasswordValues {
 
 const PersonalDataForms: FC = () => {
   const user = useAppSelector(getUserAuthData);
+  const errorServer = useAppSelector(userHasError);
 
   const { t } = useTranslation();
 
@@ -46,7 +50,7 @@ const PersonalDataForms: FC = () => {
     handleSubmit,
     formState: { errors, isValid },
     reset,
-    // setError,
+    setError,
   } = useForm<InputsInformationValues & InputsPasswordValues>({
     mode: 'all',
     defaultValues: {
@@ -55,6 +59,9 @@ const PersonalDataForms: FC = () => {
       inputDateBirth: user?.dob,
       inputEmail: user?.email,
       inputPhone: user?.phoneNumber,
+      inputOldPassword: '',
+      inputNewPassword: '',
+      inputConfirmationPassword: '',
     },
   });
 
@@ -73,21 +80,40 @@ const PersonalDataForms: FC = () => {
           dob: data.inputDateBirth,
           phoneNumber: data.inputPhone,
         }),
-      );
-      // console.log(JSON.stringify(data));
+      ).then((value) => {
+        if (value.meta.requestStatus !== 'rejected') {
+          setShowModal(!showModal);
+        }
+      });
+    } else if (data.inputNewPassword !== data.inputConfirmationPassword) {
+      setError('inputConfirmationPassword', {
+        message: t('Пароль введено не вірно'), // translate
+      });
     } else {
-      // console.log(JSON.stringify(data.inputOldPassword));
+      await dispatch(
+        setPasswordUser({
+          oldPassword: data.inputOldPassword,
+          newPassword: data.inputNewPassword,
+        }),
+      ).then((value) => {
+        if (value.meta.requestStatus !== 'rejected') {
+          reset({
+            inputOldPassword: '',
+            inputNewPassword: '',
+            inputConfirmationPassword: '',
+          });
+          setShowModal(!showModal);
+          dispatch(userActions.resetError());
+        }
+      });
     }
-
-    // if (data.inputNewPassword !== data.inputConfirmationPassword) {
-    //   setError('inputConfirmationPassword', {
-    //     message: 'NOT COOL THIS PASSWORD NO SAME',
-    //   });
-    //   console.log('WRONGGGGGGGGGGG');
-    // }
-    reset();
-    // setShowModal(!showModal);
   };
+
+  useEffect(() => {
+    setError('inputOldPassword', {
+      message: errorServer?.includes('400') ? 'Пароль введено не вірно' : '',
+    });
+  }, [setError, handleSubmit, errorServer, t]);
 
   const addDots = (e: ChangeEvent<HTMLInputElement>) => {
     let { value } = e.target;
