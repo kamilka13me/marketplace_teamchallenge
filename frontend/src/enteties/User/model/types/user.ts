@@ -4,8 +4,6 @@ export interface User {
   surname: string;
   email: string;
   role: string;
-  dob?: string;
-  phoneNumber?: string;
 }
 
 export interface UserWithWishlist extends User {

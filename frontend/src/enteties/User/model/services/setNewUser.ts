@@ -11,8 +11,6 @@ interface ApiResponse {
   role: string;
   views: string[];
   wishlist: string[];
-  dob: string;
-  phoneNumber: string;
 }
 
 interface newUserDataProps {

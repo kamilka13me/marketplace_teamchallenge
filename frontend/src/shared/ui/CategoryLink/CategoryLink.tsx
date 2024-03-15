@@ -7,14 +7,17 @@ import { Category } from '@/enteties/Category';
 import arrowRight from '@/shared/assets/icons/arrow-right.svg?react';
 import { getRouteProducts } from '@/shared/const/routes';
 import { Icon } from '@/shared/ui/Icon';
+import { Skeleton } from '@/shared/ui/Skeleton';
 import { VStack } from '@/shared/ui/Stack';
+import { Text } from '@/shared/ui/Text';
 
 interface Props {
   category: Category;
+  closeModal?: () => void;
 }
 
 const CategoryLink: FC<Props> = (props) => {
-  const { category } = props;
+  const { category, closeModal } = props;
   const [Svg, setSvg] = useState<string | null>(null); // Initialize data with null
   const [svgIsLoading, setSvgIsLoading] = useState(true);
 
@@ -36,21 +39,28 @@ const CategoryLink: FC<Props> = (props) => {
   }, [category.image]);
 
   return (
-    <div className="flex justify-between items-center w-full group">
+    <NavLink
+      to={`${getRouteProducts()}?category=${category._id}`}
+      className="flex justify-between items-center w-full group"
+      onClick={() => closeModal && closeModal()}
+    >
       <VStack gap="2" justify="center" align="center">
-        {!svgIsLoading && Svg !== null && (
+        {!svgIsLoading && Svg !== null ? (
           <div
             aria-hidden="true"
             dangerouslySetInnerHTML={{ __html: Svg }}
             className="sidebarSvg w-6 h-6 flex justify-center items-center"
           />
+        ) : (
+          <Skeleton width={24} height={24} />
         )}
-        <NavLink
-          to={`${getRouteProducts()}?category=${category._id}`}
+
+        <Text
+          Tag="p"
+          size="lg"
+          text={category.name}
           className="group-hover:font-bold duration-75 text-[18px] leading-[40px]"
-        >
-          {category.name}
-        </NavLink>
+        />
       </VStack>
       <div>
         <Icon
@@ -59,7 +69,7 @@ const CategoryLink: FC<Props> = (props) => {
           className="group-hover:w-[26px] group-hover:h-[26px] duration-75"
         />
       </div>
-    </div>
+    </NavLink>
   );
 };
 

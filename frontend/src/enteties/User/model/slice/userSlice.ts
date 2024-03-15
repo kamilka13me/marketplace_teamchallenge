@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 
-import { setPasswordUser, User, UserSchema } from '@/enteties/User';
+import { User, UserSchema } from '@/enteties/User';
 import { getUserWishlist } from '@/enteties/User/model/services/getUserWishlist';
-import { setInformationUser } from '@/enteties/User/model/services/setInformationUser';
 import { setNewUser } from '@/enteties/User/model/services/setNewUser';
 import { getUserByCredentials } from '@/features/userAuth/model/services/getUserByCredentials';
 import { $api } from '@/shared/api/api';
@@ -83,26 +82,10 @@ export const userSlice = createSlice({
         state.error = undefined;
         state.isLoading = true;
       })
-      .addCase(setInformationUser.pending, (state) => {
-        state.error = undefined;
-        state.isLoading = true;
-      })
-      .addCase(setPasswordUser.pending, (state) => {
-        state.error = undefined;
-        state.isLoading = true;
-      })
       .addCase(getUserByCredentials.fulfilled, (state) => {
         state.userWishlist.isLoading = false;
       })
       .addCase(setNewUser.fulfilled, (state) => {
-        state.isLoading = false;
-        state.error = undefined;
-      })
-      .addCase(setInformationUser.fulfilled, (state) => {
-        state.isLoading = false;
-        state.error = undefined;
-      })
-      .addCase(setPasswordUser.fulfilled, (state) => {
         state.isLoading = false;
         state.error = undefined;
       })
@@ -111,14 +94,6 @@ export const userSlice = createSlice({
         state.userWishlist.error = action.payload as string;
       })
       .addCase(setNewUser.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload as string;
-      })
-      .addCase(setInformationUser.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload as string;
-      })
-      .addCase(setPasswordUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       });

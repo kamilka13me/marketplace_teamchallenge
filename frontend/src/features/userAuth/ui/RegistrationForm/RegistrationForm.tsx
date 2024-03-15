@@ -4,8 +4,8 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { setNewUser } from '@/enteties/User';
 import { userHasError } from '@/enteties/User/model/selectors/getUserAuthData';
+import { setNewUser } from '@/enteties/User/model/services/setNewUser';
 import privateEye from '@/shared/assets/icons/private-eye.svg?react';
 import unPrivateEye from '@/shared/assets/icons/unprivate-eye.svg?react';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
