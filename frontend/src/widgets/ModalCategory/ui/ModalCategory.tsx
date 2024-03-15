@@ -54,7 +54,7 @@ const ModalCategory: FC<Props> = (props) => {
   }, [setClose, modalCategoriesRef, modalButtonRef, isOpen]);
 
   if (isLoading) {
-    return null;
+    return <>Loading</>;
   }
 
   if (error) {
@@ -71,9 +71,9 @@ const ModalCategory: FC<Props> = (props) => {
       >
         <Transition
           show={isOpen}
-          enter="ease-out duration-500"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
+          enter="transition-all duration-300"
+          enterFrom="-translate-y-[125px] opacity-0"
+          enterTo="translate-y-0 opacity-100"
         >
           <VStack
             gap="5"
@@ -89,14 +89,13 @@ const ModalCategory: FC<Props> = (props) => {
                   onMouseEnter={() => setCurrentCategory(i)}
                   className={`max-w-[313px] relative ${currentCategory === i && 'font-bold'}`}
                 >
-                  <CategoryLink category={item} closeModal={setClose} />
+                  <CategoryLink category={item} />
                 </li>
               ))}
             </ul>
-            <div className="overflow-auto h-[500px] w-full">
+            <div>
               {data && (
                 <SubCategory
-                  closeModal={setClose}
                   data={data[currentCategory!]?.subcategories as Category[]}
                   isFirstSubCategory
                 />
@@ -108,7 +107,7 @@ const ModalCategory: FC<Props> = (props) => {
       {isOpen && (
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
         <div
-          className="fixed left-0 right-0 bottom-0 top-[100px] z-[98] bg-black-transparent-50"
+          className="fixed left-0 right-0 bottom-0 top-[100px] z-[98] bg-black/20 "
           onClick={setClose}
         />
       )}

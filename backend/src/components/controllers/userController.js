@@ -6,11 +6,7 @@ import Role from '../../models/Role.js';
 import User from '../../models/User.js';
 import sendMail from '../../services/nodemailer/nodemailer.js';
 import hashPassword from '../../utils/hashPasswordUtils.js';
-import {
-  generateAccessToken,
-  generateConfirmToken,
-  generateRefreshToken,
-} from '../../utils/tokenUtils.js';
+import { generateAccessToken, generateRefreshToken } from '../../utils/tokenUtils.js';
 
 const userController = {
   // create user
@@ -53,7 +49,7 @@ const userController = {
       const userCallback = {
         _id: user._id,
         username: user.username || null,
-        surname: user.surname || null,
+        surname: user.username || null,
         email: user.email,
         role: 'user',
         dob: user.dob || null,
@@ -73,9 +69,7 @@ const userController = {
 
       const refreshToken = generateRefreshToken(user._id);
 
-      const confirmToken = generateConfirmToken(user._id);
-
-      sendMail(user.email, 'register', confirmToken);
+      sendMail(user.email, 'register', refreshToken);
       // res.cookie('accessToken', accessToken, { httpOnly: false, secure: false });
       // res.cookie('user', JSON.stringify(userCallback), {httpOnly: false,secure: false,});
       res.setHeader('Authorization', `Bearer ${accessToken}`);
@@ -115,7 +109,7 @@ const userController = {
       const userCallback = {
         _id: user._id,
         username: user.username || null,
-        surname: user.surname || null,
+        surname: user.username || null,
         email: user.email,
         role: 'user',
         dob: user.dob || null,
@@ -184,7 +178,7 @@ const userController = {
       const userCallback = {
         _id: updatedUser._id,
         username: updatedUser.username,
-        surname: updatedUser.surname,
+        surname: updatedUser.username,
         email: updatedUser.email,
         role: updatedUser.role.name,
         dob: updatedUser.dob,
@@ -236,7 +230,7 @@ const userController = {
       const userCallback = {
         _id: user._id,
         username: user.username,
-        surname: user.surname,
+        surname: user.username,
         email: user.email,
         role: user.role.name,
         dob: user.dob,

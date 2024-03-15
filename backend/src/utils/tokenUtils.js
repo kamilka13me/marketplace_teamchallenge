@@ -37,22 +37,4 @@ const generateRefreshToken = (userId) => {
   return refreshToken;
 };
 
-/**
- * generate jwt confirmToken
- * @param {string} userId
- *
- * @example
- * import generateConfirmToken from "path/tokenUtils.js"
- * const confirmToken = generateRefreshToken(userId);
- */
-const generateConfirmToken = (userId) => {
-  const { confirmSecretKey } = config;
-  const confirmToken = jwt.sign({ id: userId }, confirmSecretKey, {
-    expiresIn: `${config.confirmTokenTime}`,
-    // expiresIn: `-1h`,
-  });
-
-  return confirmToken;
-};
-
-export { generateAccessToken, generateRefreshToken, generateConfirmToken };
+export { generateAccessToken, generateRefreshToken };

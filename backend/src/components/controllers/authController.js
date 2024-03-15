@@ -50,7 +50,7 @@ const authController = {
       const userCallback = {
         _id: user._id,
         username: user.username || null,
-        surname: user.surname || null,
+        surname: user.username || null,
         email: user.email,
         role: 'user',
         dob: user.dob || null,
@@ -121,53 +121,6 @@ const authController = {
       res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true });
 
       return res.status(200).json({ message: 'Token has been updated', accessToken });
-    } catch (error) {
-      if (error instanceof jwt.TokenExpiredError) {
-        res.status(419).json({ message: 'Token expired' });
-      } else {
-        // eslint-disable-next-line no-console
-        console.log(error);
-        res.status(500).json({ message: 'Unexpected error' });
-      }
-    }
-  },
-
-  // confirm token
-  confirmToken: async (req, res) => {
-    try {
-      const { confirmToken } = req.params;
-
-      if (!confirmToken) {
-        return res.status(400).json({ message: 'Token is required' });
-      }
-      const decoded = jwt.verify(confirmToken, config.confirmSecretKey);
-
-      const updatedUser = await User.findByIdAndUpdate(
-        decoded.id,
-        { isAccountConfirm: true },
-        { new: true, runValidators: true },
-      ).populate('role');
-
-      if (!updatedUser) {
-        return res.status(404).json({ message: 'User not found.' });
-      }
-
-      const userCallback = {
-        _id: updatedUser._id,
-        username: updatedUser.username,
-        surname: updatedUser.surname,
-        email: updatedUser.email,
-        role: updatedUser.role.name,
-        dob: updatedUser.dob,
-        isAccountConfirm: updatedUser.isAccountConfirm,
-        phoneNumber: updatedUser.phoneNumber,
-        wishlist: updatedUser.wishlist,
-      };
-
-      res.status(200).json({
-        message: 'User verify successfully.',
-        user: userCallback,
-      });
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {
         res.status(419).json({ message: 'Token expired' });

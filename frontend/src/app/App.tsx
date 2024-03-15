@@ -1,7 +1,5 @@
 import { FC, Suspense, useEffect } from 'react';
 
-import { useLocation } from 'react-router-dom';
-
 import { AppRouter } from '@/app/providers/router';
 import {
   getIsInitedAuthData,
@@ -9,7 +7,6 @@ import {
   getUserWishlist,
   userActions,
 } from '@/enteties/User';
-import { Page500 } from '@/pages/Page500';
 import { MainLayout } from '@/shared/layouts/MainLayout';
 import MainLoaderLayout from '@/shared/layouts/MainLoaderLayout/MainLoaderLayout';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
@@ -20,8 +17,6 @@ import { Header } from '@/widgets/Header';
 const App: FC = () => {
   const dispatch = useAppDispatch();
   const inited = useAppSelector(getIsInitedAuthData);
-
-  const location = useLocation();
 
   const user = useAppSelector(getUserAuthData);
 
@@ -36,14 +31,6 @@ const App: FC = () => {
 
   if (!inited) {
     return <MainLoaderLayout />;
-  }
-
-  if (location.pathname === '/500') {
-    return (
-      <Suspense fallback="">
-        <Page500 />
-      </Suspense>
-    );
   }
 
   return (

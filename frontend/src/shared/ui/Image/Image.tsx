@@ -1,57 +1,24 @@
-import {
-  FC,
-  ImgHTMLAttributes,
-  memo,
-  ReactElement,
-  useLayoutEffect,
-  useState,
-} from 'react';
+import { FC, ImgHTMLAttributes } from 'react';
 
 interface Props extends ImgHTMLAttributes<HTMLImageElement> {
   src: string;
   alt: string;
   width?: string;
   height?: string;
-  loadingFallback?: ReactElement;
   objectFit?: 'cover' | 'contain';
   className?: string;
 }
 
-const AppImage: FC<Props> = (props) => {
+const Image: FC<Props> = (props) => {
   const {
     src,
     alt,
     height,
     width,
-    loadingFallback,
     objectFit = 'cover',
     className,
     ...otherProps
   } = props;
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
-
-  useLayoutEffect(() => {
-    const img = new Image();
-
-    img.src = src || '';
-    img.onload = () => {
-      setIsLoading(false);
-    };
-    img.onerror = () => {
-      setIsLoading(false);
-      setHasError(true);
-    };
-  }, [src]);
-
-  if (isLoading) {
-    return loadingFallback;
-  }
-
-  if (hasError) {
-    return <div>something went wrong</div>;
-  }
 
   return (
     <img
@@ -65,4 +32,4 @@ const AppImage: FC<Props> = (props) => {
   );
 };
 
-export default memo(AppImage);
+export default Image;

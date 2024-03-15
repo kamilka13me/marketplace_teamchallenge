@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, FormEventHandler, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { getUserAuthData, getWishlist, userActions } from '@/enteties/User';
 import { actionLogin } from '@/features/userAuth';
@@ -73,7 +73,7 @@ const Header: FC<Props> = () => {
 
   const onOfficeBtnClick = (): void => {
     if (user) {
-      navigate(getRouteProfile('info'));
+      navigate(getRouteProfile());
     } else {
       setShowModal(!showModal);
     }
@@ -161,10 +161,7 @@ const Header: FC<Props> = () => {
                   </HStack>
                 </Button>
 
-                <NavLink
-                  to={getRouteProfile('wishlist')}
-                  className="group duration-300 text-amber-50 w-[86px]"
-                >
+                <Link to="/" className="group duration-300 text-amber-50 w-[86px]">
                   <HStack
                     align="center"
                     className="relative gap-1.5 group-hover:text-primary duration-300"
@@ -175,27 +172,26 @@ const Header: FC<Props> = () => {
                       height={28}
                       className="stroke-white group-hover:stroke-primary duration-300"
                     />
-
                     <div
                       className={
-                        wishlist?.length < 1
+                        wishlist.length < 1
                           ? 'hidden'
                           : 'absolute right-[29px] flex justify-items-center items-center bg-primary border-[1.5px] border-gray-900 rounded-full'
                       }
                     >
                       <span
                         className={
-                          wishlist?.length < 1
+                          wishlist.length < 1
                             ? 'hidden'
                             : 'outfit font-normal min-w-[10px] m-[2px] text-center text-black text-[10px] leading-[10px]'
                         }
                       >
-                        {wishlist?.length}
+                        {wishlist.length}
                       </span>
                     </div>
                     {t('Список')}
                   </HStack>
-                </NavLink>
+                </Link>
               </VStack>
             </VStack>
 

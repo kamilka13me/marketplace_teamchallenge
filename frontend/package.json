@@ -39,8 +39,7 @@
     "react-router-dom": "^6.21.3",
     "react-slick": "^0.30.2",
     "slick-carousel": "^1.8.1",
-    "sort-by": "^1.2.0",
-    "web-vitals": "^3.5.2"
+    "sort-by": "^1.2.0"
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^5.0.5",
@@ -91,7 +90,6 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "vite": "^5.0.11",
-    "vite-bundle-visualizer": "^1.0.1",
     "vite-plugin-env-compatible": "^2.0.1",
     "vite-plugin-svgr": "^4.2.0"
   }

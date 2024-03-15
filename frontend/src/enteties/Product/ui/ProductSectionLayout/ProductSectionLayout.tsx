@@ -45,19 +45,10 @@ const ProductSectionLayout: FC<Props> = (props) => {
           onClick={setSearchParams}
         >
           Дивитись більше
-          <div
-            className="absolute -z-[1] w-[56px] h-[56px] -top-[15px] -right-[17px]
-            group-hover:top-[11px]
-            group-hover:-right-[24px]
-            group-hover:w-[12px]
-            group-hover:h-[12px]
-            ease-out
-            duration-200
-            bg-secondary rounded-full cursor-pointer"
-          />
+          <div className="absolute -z-[1] w-[56px] h-[56px] -top-[15px] -right-[17px] group-hover:-top-[4px] group-hover:-right-[4px] bg-secondary rounded-full cursor-pointer origin-center group-hover:w-8 group-hover:h-8 duration-300" />
           <div className="absolute -top-[22px] left-[165px] w-5 h-5 bg-secondary rounded-full opacity-0 group-hover:opacity-100 duration-300" />
           <div className="absolute -top-[22px] left-[200px] w-[14px] h-[14px] bg-secondary rounded-full opacity-0 group-hover:opacity-100 duration-300" />
-          <div className="absolute -z-[1] -top-[4px] -right-[4px] w-8 h-8 bg-secondary rounded-full opacity-0 group-hover:opacity-100 duration-300" />
+          <div className="absolute top-[23px] left-[224px] w-[12px] h-[12px] bg-secondary rounded-full opacity-0 group-hover:opacity-100 duration-300" />
           <Icon Svg={arrowRight} className="w-[24px] h-[24px]" />
         </Link>
       </VStack>

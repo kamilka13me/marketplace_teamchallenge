@@ -17,7 +17,6 @@ import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Image } from '@/shared/ui/Image';
 import { Link } from '@/shared/ui/Link';
-import { Skeleton } from '@/shared/ui/Skeleton';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text, TextColors } from '@/shared/ui/Text';
 
@@ -101,7 +100,6 @@ const ProductCard: FC<Props> = (props) => {
           className="line-clamp-2 text-[16px] !leading-[22.4px]"
         >
           <Image
-            loadingFallback={<Skeleton width={281} height={252} />}
             src={`${process.env.BASE_URL}${images[0]}`}
             alt="product-card-img"
             className="!h-[252px] !w-[281px]"
@@ -181,7 +179,7 @@ const ProductCard: FC<Props> = (props) => {
         >
           <Icon
             Svg={heart}
-            className={`${wishlist?.includes(_id) ? 'fill-secondary' : '!stroke-2 !stroke-gray-900'}  ${heartIsDisabled && 'opacity-40'}`}
+            className={`${wishlist.includes(_id) ? 'fill-secondary' : '!stroke-2 !stroke-gray-900'}  ${heartIsDisabled && 'opacity-40'}`}
           />
         </Button>
       </HStack>
