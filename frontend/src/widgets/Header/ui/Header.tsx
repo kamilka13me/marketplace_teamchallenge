@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, FormEventHandler, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { getUserAuthData, getWishlist, userActions } from '@/enteties/User';
 import { actionLogin } from '@/features/userAuth';
@@ -74,6 +74,14 @@ const Header: FC<Props> = () => {
   const onOfficeBtnClick = (): void => {
     if (user) {
       navigate(getRouteProfile('info'));
+    } else {
+      setShowModal(!showModal);
+    }
+  };
+
+  const onWishListBtnClick = (): void => {
+    if (user) {
+      navigate(getRouteProfile('wishlist'));
     } else {
       setShowModal(!showModal);
     }
@@ -161,9 +169,10 @@ const Header: FC<Props> = () => {
                   </HStack>
                 </Button>
 
-                <NavLink
-                  to={getRouteProfile('wishlist')}
+                <Button
+                  variant="clear"
                   className="group duration-300 text-amber-50 w-[86px]"
+                  onClick={onWishListBtnClick}
                 >
                   <HStack
                     align="center"
@@ -195,7 +204,7 @@ const Header: FC<Props> = () => {
                     </div>
                     {t('Список')}
                   </HStack>
-                </NavLink>
+                </Button>
               </VStack>
             </VStack>
 
