@@ -2,9 +2,9 @@ import { FC, useLayoutEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import { PersonalDataForms } from '@/features/userAuth/ui/PersonalDataForms';
 import { Container } from '@/shared/layouts/Container';
 import { VStack } from '@/shared/ui/Stack';
+import { PersonalDataForms } from '@/widgets/PersonalDataForms';
 import ProfileSidebar from '@/widgets/ProfileSidebar/ui/ProfileSidebar';
 
 const ProfilePage: FC = () => {
