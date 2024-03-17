@@ -1,7 +1,9 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
+import 'react-international-phone/style.css';
 
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { PhoneInput } from 'react-international-phone';
 
 import { setInformationUser, setPasswordUser, userActions } from '@/enteties/User';
 import {
@@ -42,6 +44,7 @@ const PersonalDataForms: FC = () => {
   const [passOldShown, setPassOldShown] = useState(false);
   const [passNewShown, setPassNewShown] = useState(false);
   const [passConfirmShown, setPassConfirmShown] = useState(false);
+  const [sendChangePassForm, setSendChangePassForm] = useState(false);
   const dispatch = useAppDispatch();
 
   const {
@@ -50,6 +53,7 @@ const PersonalDataForms: FC = () => {
     formState: { errors, isValid },
     reset,
     setError,
+    control,
   } = useForm<InputsInformationValues & InputsPasswordValues>({
     mode: 'all',
     defaultValues: {
@@ -86,7 +90,7 @@ const PersonalDataForms: FC = () => {
       });
     } else if (data.inputNewPassword !== data.inputConfirmationPassword) {
       setError('inputConfirmationPassword', {
-        message: t('Пароль введено не вірно'), // translate
+        message: t('Пароль введено не вірно'),
       });
     } else {
       await dispatch(
@@ -102,6 +106,7 @@ const PersonalDataForms: FC = () => {
             inputConfirmationPassword: '',
           });
           setShowModal(!showModal);
+          setSendChangePassForm(true);
           dispatch(userActions.resetError());
         }
       });
@@ -187,22 +192,22 @@ const PersonalDataForms: FC = () => {
             <Input
               variant="personal"
               autoComplete="off"
-              placeholder={t('Прізвище')} // translate
+              placeholder={t('Прізвище')}
               type="text"
               {...register('inputSurname', {
                 required: false,
                 minLength: {
                   value: 3,
-                  message: t('Ваше прізвище має бути не менше 3 символів'), // translate
+                  message: t('Ваше прізвище має бути не менше 3 символів'),
                 },
                 maxLength: {
                   value: 25,
-                  message: t('Ваше прізвище має бути не більше 25 символів'), // translate
+                  message: t('Ваше прізвище має бути не більше 25 символів'),
                 },
                 pattern: {
                   value: /^[A-Za-zҐґЄєІіЇїА-Яа-я]+$/,
                   message: t(
-                    'Ваше прізвище може включати тільки українські або англійські літери', // translate
+                    'Ваше прізвище може включати тільки українські або англійські літери',
                   ),
                 },
               })}
@@ -212,15 +217,13 @@ const PersonalDataForms: FC = () => {
             <Input
               variant="personal"
               autoComplete="off"
-              placeholder={t('Дата народження')} // translate
+              placeholder={t('Дата народження')}
               type="text"
               {...register('inputDateBirth', {
                 required: false,
                 pattern: {
                   value: /^(0[1-9]|[12][0-9]|30|31)\.(0[1-9]|1[0-2])\.\d{4}$/,
-                  message: t(
-                    'Дата повинна містити цифри та бути по формату ХХ.ХХ.ХХХХ', // translate
-                  ),
+                  message: t('Дата повинна містити цифри та бути по формату ХХ.ХХ.ХХХХ'),
                 },
                 onChange: addDots,
               })}
@@ -237,17 +240,45 @@ const PersonalDataForms: FC = () => {
               error={errors?.inputEmail && errors?.inputEmail.message}
               className="mt-8"
             />
-            <Input
-              variant="personal"
-              autoComplete="off"
-              placeholder={t('Телефон')} // translate
-              type="text"
-              {...register('inputPhone', {
-                required: false,
-              })}
-              error={errors?.inputPhone && errors?.inputPhone.message}
-              className="mt-8"
-            />
+            <HStack gap="1">
+              <Controller
+                name="inputPhone"
+                control={control}
+                rules={{
+                  required: false,
+                }}
+                render={({ field }) => (
+                  <PhoneInput
+                    defaultCountry="ua"
+                    defaultMask=".........."
+                    placeholder={t('Телефон')}
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                    className="mt-8 border-b-[1px] border-white-transparent-70"
+                    inputClassName="!outfit !min-h-[48px] !min-w-[275px] !pl-4 !bg-transparent !placeholder:white-transparent-70 !text-[16px] !text-white-transparent-70 !font-normal !border-none !focus:text-white-transparent-70 !outline-none"
+                    countrySelectorStyleProps={{
+                      buttonClassName: '!bg-transparent !min-h-[48px] !border-none',
+                      dropdownStyleProps: {
+                        className: '!max-h-[84px] !bg-gray-400 !border-none',
+                        listItemClassName: 'focus:!bg-gray-950 hover:!bg-gray-950',
+                        listItemCountryNameClassName: 'text-white-transparent-70',
+                        listItemStyle: {
+                          '--react-international-phone-selected-dropdown-item-background-color':
+                            '#1D1D1D',
+                        } as never,
+                      },
+                    }}
+                  />
+                )}
+              />
+              {errors?.inputPhone && (
+                <p className="outfit font-normal text-[12px] text-red-200">
+                  {errors?.inputPhone.message}
+                </p>
+              )}
+            </HStack>
           </div>
         </form>
 
@@ -257,7 +288,7 @@ const PersonalDataForms: FC = () => {
               <div className="relative mb-[34px]">
                 <Input
                   variant="personal"
-                  placeholder={t('Старий пароль')} // translate
+                  placeholder={t('Старий пароль')}
                   type={passOldShown ? 'text' : 'password'}
                   {...register('inputOldPassword', {
                     required: false,
@@ -288,7 +319,7 @@ const PersonalDataForms: FC = () => {
               <div className="relative mb-[34px]">
                 <Input
                   variant="personal"
-                  placeholder={t('Новий пароль')} // translate
+                  placeholder={t('Новий пароль')}
                   type={passNewShown ? 'text' : 'password'}
                   {...register('inputNewPassword', {
                     required: false,
@@ -319,7 +350,7 @@ const PersonalDataForms: FC = () => {
               <div className="relative">
                 <Input
                   variant="personal"
-                  placeholder={t('Підтвердження пароля')} // translate
+                  placeholder={t('Підтвердження пароля')}
                   type={passConfirmShown ? 'text' : 'password'}
                   {...register('inputConfirmationPassword', {
                     required: false,
@@ -361,7 +392,11 @@ const PersonalDataForms: FC = () => {
             >
               <Text
                 Tag="p"
-                text={t('Ваші дані успішно змінено translate')}
+                text={
+                  sendChangePassForm
+                    ? t('Ваш пароль успішно змінено')
+                    : t('Дані успішно змінено')
+                }
                 size="sm"
                 className="leading-[18px] text-white"
               />
@@ -373,7 +408,7 @@ const PersonalDataForms: FC = () => {
               type="submit"
               disabled={!isValid}
             >
-              {t('Зберегти')} {/* translate */}
+              {t('Зберегти')}
             </button>
           </HStack>
         </form>
