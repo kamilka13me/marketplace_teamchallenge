@@ -1,3 +1,5 @@
+import plugin from 'tailwindcss'
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
@@ -16,6 +18,7 @@ export default {
       },
       dropShadow: {
         'custom-primary': '0px 2px 16px rgba(255, 255, 255, 0.25)',
+        'custom-user-info': '0px 2px 6px rgba(50, 196, 47, 0.25)',
       },
       fontSize: {
         sm: ['14px', '17.6px'],
@@ -54,6 +57,21 @@ export default {
         'gray-900': '#1E1E1E',
         'gray-950': '#1D1D1D',
       },
+      keyframes: {
+        'openModalMessage': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(20px)',
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)',
+          },
+        },
+      },
+      animation: {
+        'open-info-modal': 'openModalMessage 0.3s ease-in-out',
+      }
     },
   },
   plugins: [],
