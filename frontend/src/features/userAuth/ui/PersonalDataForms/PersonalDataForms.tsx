@@ -12,11 +12,10 @@ import privateEye from '@/shared/assets/icons/private-eye-white.svg?react';
 import unPrivateEye from '@/shared/assets/icons/unprivate-eye-white.svg?react';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
-import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Input } from '@/shared/ui/Input';
-import { ModalWindow } from '@/shared/ui/ModalWindow';
 import { HStack, VStack } from '@/shared/ui/Stack';
+import { Text } from '@/shared/ui/Text';
 
 interface InputsInformationValues {
   inputName: string;
@@ -113,7 +112,17 @@ const PersonalDataForms: FC = () => {
     setError('inputOldPassword', {
       message: errorServer?.includes('400') ? 'Пароль введено не вірно' : '',
     });
-  }, [setError, handleSubmit, errorServer, t]);
+
+    let timeout: NodeJS.Timeout;
+
+    if (showModal) {
+      timeout = setTimeout(() => {
+        setShowModal(false);
+      }, 3000);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [setError, handleSubmit, errorServer, t, showModal]);
 
   const addDots = (e: ChangeEvent<HTMLInputElement>) => {
     let { value } = e.target;
@@ -131,10 +140,6 @@ const PersonalDataForms: FC = () => {
     // eslint-disable-next-line no-param-reassign
     e.target.value = value;
     setDateValue(value);
-  };
-
-  const onHandleClickPortal = (): void => {
-    setShowModal(!showModal);
   };
 
   const onPassOldVisibility = () => {
@@ -247,7 +252,7 @@ const PersonalDataForms: FC = () => {
         </form>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <HStack align="end" className="gap-[104px]">
+          <HStack align="end" className="min-h-[452px]" justify="between">
             <div className="max-w-[444px] p-[42px] bg-gray-950 rounded-2xl">
               <div className="relative mb-[34px]">
                 <Input
@@ -347,6 +352,22 @@ const PersonalDataForms: FC = () => {
               </div>
             </div>
 
+            <div
+              className={
+                showModal
+                  ? 'block bg-gray-400 py-[21px] px-3 rounded-lg drop-shadow-custom-user-info relative animate-open-info-modal'
+                  : 'opacity-0 duration-500'
+              }
+            >
+              <Text
+                Tag="p"
+                text={t('Ваші дані успішно змінено translate')}
+                size="sm"
+                className="leading-[18px] text-white"
+              />
+              <div className="absolute bottom-0 right-[10px] transform -translate-x-0 translate-y-[8px] border-x-8 border-t-8 border-transparent border-t-gray-400" />
+            </div>
+
             <button
               className="outfit bg-primary px-[124px] py-[15px] rounded-lg font-normal leading-[22px] text-[16px] text-gray-900 duration-300 hover:bg-secondary active:bg-primary disabled:opacity-40"
               type="submit"
@@ -357,22 +378,6 @@ const PersonalDataForms: FC = () => {
           </HStack>
         </form>
       </VStack>
-
-      {showModal && (
-        <ModalWindow onCloseFunc={onHandleClickPortal}>
-          <HStack gap="2" align="center">
-            SUCCESSFUL SEND FORM
-            <Button
-              variant="fill"
-              onClick={() => {
-                setShowModal(!showModal);
-              }}
-            >
-              OK
-            </Button>
-          </HStack>
-        </ModalWindow>
-      )}
     </div>
   );
 };
