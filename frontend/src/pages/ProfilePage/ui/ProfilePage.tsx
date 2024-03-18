@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 
+// import LikePage from '@/pages/ProfilePage/LikePage';
 import { Container } from '@/shared/layouts/Container';
 import { VStack } from '@/shared/ui/Stack';
 import ProfileSidebar from '@/widgets/ProfileSidebar/ui/ProfileSidebar';
@@ -21,8 +22,9 @@ const ProfilePage: FC = () => {
           <ProfileSidebar tab={currentTab} setTab={setCurrentTabHandler} />
 
           {/* JUST EXAMPLE */}
-          <div className="flex-1 bg-gray-400 h-[600px] rounded-2xl p-5">
+          <div className="flex-1 bg-gray-900 h-[600px] rounded-2xl p-5 overflow-auto">
             {currentTab === 0 ? <div>{currentTab}</div> : <div>{currentTab}</div>}
+            {/* <LikePage />} */}
           </div>
         </VStack>
       </Container>

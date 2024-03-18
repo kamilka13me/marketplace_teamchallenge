@@ -94,7 +94,7 @@ const ProductCard: FC<Props> = (props) => {
 
   return (
     <div className="relative w-[313px] h-[445px] p-4 rounded-2xl shadow-custom-base hover:shadow-custom-hover duration-75">
-      {images.length > 0 ? (
+      {images?.length > 0 ? (
         <Link
           to={getRouteProduct(`${_id}`)}
           className="line-clamp-2 text-[16px] !leading-[22.4px]"
