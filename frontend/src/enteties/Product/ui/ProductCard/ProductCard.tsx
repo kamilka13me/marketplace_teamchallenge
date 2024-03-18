@@ -56,12 +56,13 @@ const countDiscount = (value: number, percentage: number): string => {
 
 interface Props {
   product: Product;
+  dark?: boolean;
 }
 
 const ProductCard: FC<Props> = (props) => {
   const { t } = useTranslation();
 
-  const { product } = props;
+  const { product, dark } = props;
 
   const { _id, name, discount, images, price, quantity } = product;
 
@@ -94,12 +95,13 @@ const ProductCard: FC<Props> = (props) => {
   }
 
   return (
-    <div className="relative w-[313px] h-[445px] p-4 rounded-2xl shadow-custom-base hover:shadow-custom-hover duration-75">
-      {images.length > 0 ? (
-        <Link
-          to={getRouteProduct(`${_id}`)}
-          className="line-clamp-2 text-[16px] !leading-[22.4px]"
-        >
+    <div
+      className={`relative w-[313px] h-[445px] p-4 rounded-2xl ${
+        !dark ? 'shadow-custom-base hover:shadow-custom-hover' : 'bg-gray-400'
+      }  duration-75`}
+    >
+      {images?.length > 0 ? (
+        <Link to={getRouteProduct(`${_id}`)}>
           <Image
             loadingFallback={<Skeleton width={281} height={252} />}
             src={`${process.env.BASE_URL}${images[0]}`}
@@ -108,22 +110,21 @@ const ProductCard: FC<Props> = (props) => {
           />
         </Link>
       ) : (
-        <Link
-          to={getRouteProduct(`${_id}`)}
-          className="line-clamp-2 text-[16px] !leading-[22.4px]"
-        >
-          <Image src="#" alt="product-card-img" className="!h-[252px] !w-[281px]" />
+        <Link to={getRouteProduct(`${_id}`)}>
+          <Image src="" alt="product-card-img" className="!h-[252px] !w-[281px]" />
         </Link>
       )}
 
       <div className="mt-2">
         {/* Name */}
         <div className="h-[44px] ">
-          <Link
-            to={getRouteProduct(`${_id}`)}
-            className="line-clamp-2 text-[16px] !leading-[22.4px]"
-          >
-            {name}
+          <Link to={getRouteProduct(`${_id}`)}>
+            <Text
+              Tag="span"
+              text={name}
+              size="md"
+              className={`${dark && 'text-white'}`}
+            />
           </Link>
         </div>
 

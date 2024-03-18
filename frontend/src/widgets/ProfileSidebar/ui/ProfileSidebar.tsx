@@ -44,10 +44,7 @@ const ProfileSidebar: FC<Props> = (props) => {
   const user = useAppSelector(getUserAuthData);
 
   return (
-    <div
-      data-testid="ProfileSidebar"
-      className="flex flex-col px-4 pt-8 pb-[15px] rounded-2xl bg-gray-400 w-[266px] h-[568px]"
-    >
+    <div className="flex flex-col px-4 pt-8 pb-[15px] rounded-2xl bg-gray-400 w-[266px] h-[568px] whitespace-nowrap">
       <VStack align="center" gap="4" className="px-4">
         <div className="flex justify-center items-center w-[56px] h-[56px] rounded-full bg-gray-900">
           <Text
@@ -71,7 +68,6 @@ const ProfileSidebar: FC<Props> = (props) => {
         <ul className="flex flex-col gap-[6px] w-full">
           {tabs.map((item, index) => (
             <li
-              data-testid="ProfileSidebarCurrentTab"
               key={item.id}
               className={`px-4 py-3 ${tab === index && 'bg-gray-900'} rounded-2xl`}
             >
