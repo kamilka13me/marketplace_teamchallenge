@@ -104,7 +104,7 @@ const LoginForm: FC<LoginFormProps> = (props) => {
         type="text"
         {...register('inputEmail', {
           required: t("Це поле є обов'язковим"),
-          minLength: { value: 5, message: t('Ваш логін має бути не менше 6 символів') },
+          minLength: { value: 6, message: t('Ваш логін має бути не менше 6 символів') },
           pattern: {
             value:
               /^([a-zA-Z0-9_-]+\.)*[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*\.[a-zA-Z]{2,6}$/,
@@ -122,8 +122,14 @@ const LoginForm: FC<LoginFormProps> = (props) => {
           {...register('inputPassword', {
             required: t("Це поле є обов'язковим"),
             minLength: {
-              value: 8,
+              value: 9,
               message: t('Ваш пароль має бути не менше 9 символів'),
+            },
+            pattern: {
+              value: /^(?=.*[A-Z])[A-Za-z0-9~`!@#$%^&*()_\-+={[}\]|\\:;"'<,>.?/]*$/,
+              message: t(
+                'Пароль має містити 9 символів, з яких має бути одна велика літера',
+              ),
             },
           })}
           error={errors?.inputPassword && errors?.inputPassword.message}
