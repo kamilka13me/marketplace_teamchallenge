@@ -293,7 +293,7 @@ const PersonalDataForms: FC = () => {
                   {...register('inputOldPassword', {
                     required: false,
                     minLength: {
-                      value: 8,
+                      value: 9,
                       message: t('Ваш пароль має бути не менше 9 символів'),
                     },
                     pattern: {
@@ -324,7 +324,7 @@ const PersonalDataForms: FC = () => {
                   {...register('inputNewPassword', {
                     required: false,
                     minLength: {
-                      value: 8,
+                      value: 9,
                       message: t('Ваш пароль має бути не менше 9 символів'),
                     },
                     pattern: {
@@ -355,7 +355,7 @@ const PersonalDataForms: FC = () => {
                   {...register('inputConfirmationPassword', {
                     required: false,
                     minLength: {
-                      value: 8,
+                      value: 9,
                       message: t('Ваш пароль має бути не менше 9 символів'),
                     },
                     pattern: {
