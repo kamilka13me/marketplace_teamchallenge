@@ -61,7 +61,7 @@ const PersonalDataForms: FC = () => {
       inputSurname: user?.surname,
       inputDateBirth: user?.dob,
       inputEmail: user?.email,
-      inputPhone: user?.phoneNumber,
+      inputPhone: user?.phoneNumber || '',
       inputOldPassword: '',
       inputNewPassword: '',
       inputConfirmationPassword: '',
