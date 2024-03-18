@@ -7,7 +7,7 @@ interface Props {}
 
 const ProductCardSkeleton: FC<Props> = () => {
   return (
-    <div className="w-[313px] h-[445px] rounded-2xl bg-[#E5E5E5] p-4">
+    <div className="w-[313px] h-[445px] rounded-2xl p-4">
       <Skeleton height="252px" width="281px" border="16px" className="mb-2" />
       <HStack gap="2" className="mb-[49px]">
         <Skeleton height="16px" width="281px" border="4px" />
