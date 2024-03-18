@@ -14,7 +14,7 @@ const Sidebar: FC<Props> = () => {
 
   if (isLoading) {
     return (
-      <HStack gap="2" className="">
+      <HStack gap="2" className="" data-testid="loading-sidebar">
         {Array(11)
           .fill(null)
           .map((_, i) => (
@@ -39,7 +39,7 @@ const Sidebar: FC<Props> = () => {
   }
 
   return (
-    <aside className="max-w-[314px] w-full">
+    <aside data-testid="sidebar" className="max-w-[314px] w-full">
       <ul className="flex flex-col gap-2">
         {data.slice(0, 11).map((item) => (
           <li key={item._id}>

@@ -112,7 +112,7 @@ const ProductCard: FC<Props> = (props) => {
           to={getRouteProduct(`${_id}`)}
           className="line-clamp-2 text-[16px] !leading-[22.4px]"
         >
-          <Image src="" alt="product-card-img" className="!h-[252px] !w-[281px]" />
+          <Image src="#" alt="product-card-img" className="!h-[252px] !w-[281px]" />
         </Link>
       )}
 

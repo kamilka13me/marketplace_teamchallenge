@@ -10,7 +10,9 @@ export default defineConfig(({ command, mode }) => {
     define: {
       'process.env.BASE_URL': JSON.stringify(env.BASE_URL),
       'process.env.RECAPTCHA_API_SITE_KEY': JSON.stringify(env.RECAPTCHA_API_SITE_KEY),
-      'process.env.RECAPTCHA_API_SECRET_KEY': JSON.stringify(env.RECAPTCHA_API_SECRET_KEY),
+      'process.env.RECAPTCHA_API_SECRET_KEY': JSON.stringify(
+        env.RECAPTCHA_API_SECRET_KEY,
+      ),
     },
     plugins: [react(), svgr({ include: '**/*.svg?react' }), basicSsl()],
     resolve: {
