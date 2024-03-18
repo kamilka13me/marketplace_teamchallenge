@@ -111,7 +111,7 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
         type="text"
         {...register('inputEmail', {
           required: t("Це поле є обов'язковим"),
-          minLength: { value: 5, message: t('Ваш логін має бути не менше 6 символів') },
+          minLength: { value: 6, message: t('Ваш логін має бути не менше 6 символів') },
           pattern: {
             value:
               /^([a-zA-Z0-9_-]+\.)*[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*\.[a-zA-Z]{2,6}$/,
