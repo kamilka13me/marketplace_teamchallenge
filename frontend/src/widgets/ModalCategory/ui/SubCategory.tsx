@@ -19,9 +19,7 @@ const SubCategory = (props: SubCategoryProps) => {
   }
 
   return (
-    <ul
-      className={`${isFirstSubCategory && 'grid grid-flow-row auto-rows-max grid-cols-4'} `}
-    >
+    <ul className={`${isFirstSubCategory && 'grid grid-cols-4'} `}>
       {data.map((item) => (
         <li key={item._id}>
           <NavLink

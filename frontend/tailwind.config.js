@@ -19,6 +19,8 @@ export default {
         'custom-user-info': '0px 2px 6px rgba(50, 196, 47, 0.25)',
       },
       fontSize: {
+        xxs: ['10px', '12.6px'],
+        xs: ['12px', '16.8px'],
         sm: ['14px', '17.6px'],
         md: ['16px', '22.4px'],
         lg: ['18px', '40px'],
@@ -56,7 +58,7 @@ export default {
         'gray-950': '#1D1D1D',
       },
       keyframes: {
-        'openModalMessage': {
+        openModalMessage: {
           '0%': {
             opacity: '0',
             transform: 'translateY(20px)',
@@ -69,7 +71,7 @@ export default {
       },
       animation: {
         'open-info-modal': 'openModalMessage 0.3s ease-in-out',
-      }
+      },
     },
   },
   plugins: [],

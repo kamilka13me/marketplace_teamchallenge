@@ -8,7 +8,9 @@ interface Props {
 const Container: FC<Props> = (props) => {
   const { children, className } = props;
 
-  return <div className={`max-w-[1440px] px-16 mx-auto ${className}`}>{children}</div>;
+  return (
+    <div className={`max-w-[1440px] px-4 xl:px-16 mx-auto ${className}`}>{children}</div>
+  );
 };
 
 export default Container;

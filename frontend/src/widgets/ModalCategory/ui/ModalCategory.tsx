@@ -23,7 +23,7 @@ const ModalCategory: FC<Props> = (props) => {
   const listItemRef = useRef<HTMLUListElement>(null);
 
   const { data, error, isLoading } = useAxios<Category[]>(ApiRoutes.CATEGORY);
-  const [currentCategory, setCurrentCategory] = useState<number | null>(null);
+  const [currentCategory, setCurrentCategory] = useState<number>(0);
 
   useEffect(() => {
     const outsideClickHandler = (event: MouseEvent | TouchEvent) => {

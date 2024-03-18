@@ -32,21 +32,21 @@ const ProductSectionLayout: FC<Props> = (props) => {
 
   return (
     <div className="w-full">
-      <Text size="3xl" Tag="h2" text={title} bold className="mb-6" />
-      <VStack gap="5">
+      <Text size="xl" Tag="h2" text={title} bold className="lg:text-3xl mb-4 lg:mb-6" />
+      <div className="grid grid-cols-2 gap-[7px] ">
         {isLoading
           ? renderLoadingSkeletons()
           : products?.map((prod) => <ProductCard key={prod._id} product={prod} />)}
-      </VStack>
-      <VStack justify="end" align="center" className="w-full mt-8 relative ">
+      </div>
+      <VStack justify="end" align="center" className="w-full mt-6 lg:mt-8 relative ">
         <Link
           to={getRouteProducts()}
-          className="group relative flex items-center text-[24px] tracking-[0.16px] leading-[18px]"
+          className="group relative flex items-center"
           onClick={setSearchParams}
         >
-          Дивитись більше
+          <Text Tag="span" text="Дивитись більше" size="md" className="lg:text-2xl" />
           <div
-            className="absolute -z-[1] w-[56px] h-[56px] -top-[15px] -right-[17px]
+            className="hidden xl:block absolute -z-[1] w-[56px] h-[56px] -top-[15px] -right-[17px]
             group-hover:top-[11px]
             group-hover:-right-[24px]
             group-hover:w-[12px]
@@ -55,10 +55,10 @@ const ProductSectionLayout: FC<Props> = (props) => {
             duration-200
             bg-secondary rounded-full cursor-pointer"
           />
-          <div className="absolute -top-[22px] left-[165px] w-5 h-5 bg-secondary rounded-full opacity-0 group-hover:opacity-100 duration-300" />
-          <div className="absolute -top-[22px] left-[200px] w-[14px] h-[14px] bg-secondary rounded-full opacity-0 group-hover:opacity-100 duration-300" />
-          <div className="absolute -z-[1] -top-[4px] -right-[4px] w-8 h-8 bg-secondary rounded-full opacity-0 group-hover:opacity-100 duration-300" />
-          <Icon Svg={arrowRight} className="w-[24px] h-[24px]" />
+          <div className="hidden xl:block absolute -top-[22px] left-[165px] w-5 h-5 bg-secondary rounded-full opacity-0 group-hover:opacity-100 duration-300" />
+          <div className="hidden xl:block absolute -top-[22px] left-[200px] w-[14px] h-[14px] bg-secondary rounded-full opacity-0 group-hover:opacity-100 duration-300" />
+          <div className="hidden xl:block absolute -z-[1] -top-[4px] -right-[4px] w-8 h-8 bg-secondary rounded-full opacity-0 group-hover:opacity-100 duration-300" />
+          <Icon Svg={arrowRight} className="w-[20px] h-[20px]  xl:w-[20px] xl:h-[20px]" />
         </Link>
       </VStack>
     </div>
