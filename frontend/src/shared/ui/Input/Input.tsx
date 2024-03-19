@@ -38,7 +38,7 @@ const variantClasses: Record<VariantTypes, string> = {
   basic:
     'outfit min-h-[48px] min-w-[360px] pl-4 bg-transparent placeholder:white-400 text-[16px] text-gray-900 font-normal border-b-[1px] border-gray-900 focus:text-gray-900 outline-none',
   search:
-    'outfit min-h-[38px] min-w-[443px] pl-5 bg-gray-700 text-gray-300 placeholder:white-400 text-[14px] font-normal focus:text-gray-300 outline-none rounded-l-lg',
+    'outfit min-h-[38px] min-w-[295px] lg:min-w-[443px] pl-5 bg-gray-700 text-gray-300 placeholder:white-400 text-[14px] font-normal focus:text-gray-300 outline-none rounded-l-lg',
   personal:
     'outfit min-h-[48px] min-w-[318px] pl-4 bg-transparent placeholder:white-transparent-70 text-[16px] text-white-transparent-70 font-normal border-b-[1px] border-white-transparent-70 focus:text-white-transparent-70 outline-none',
 };

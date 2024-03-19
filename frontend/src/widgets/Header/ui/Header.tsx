@@ -8,6 +8,7 @@ import { actionLogin } from '@/features/userAuth';
 import { LoginForm } from '@/features/userAuth/ui/LoginForm';
 import { RegistrationForm } from '@/features/userAuth/ui/RegistrationForm';
 import allProducts from '@/shared/assets/icons/allProducts.svg?react';
+import burger from '@/shared/assets/icons/burger.svg?react';
 import cancel from '@/shared/assets/icons/cancel.svg?react';
 import en from '@/shared/assets/icons/en.svg?react';
 import like from '@/shared/assets/icons/like.svg?react';
@@ -98,13 +99,16 @@ const Header: FC<Props> = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-[100] bg-gray-900">
       <Container>
-        <VStack align="center" justify="between" className="py-4">
+        <VStack align="center" className="justify-center lg:justify-between py-4">
           <Link to={getRouteMain()}>
-            <Icon Svg={logo} width={202} height={68} />
+            <Icon Svg={logo} width={202} height={68} className="hidden lg:block" />
           </Link>
 
           <VStack align="center">
-            <VStack gap="5" align="center" className="mr-[75px]">
+            <VStack
+              gap="4"
+              className="flex-col-reverse items-end lg:items-center lg:flex-row lg:mr-[75px]"
+            >
               <Button
                 id="all-category-button"
                 aria-controls="all-category-modal"
@@ -112,7 +116,7 @@ const Header: FC<Props> = () => {
                 variant="fill"
                 aria-haspopup
                 aria-expanded={showModalCategory}
-                className=" all-products-button"
+                className="hidden lg:block all-products-button"
                 onClick={onAllProductsClick}
               >
                 <VStack align="center" gap="1">
@@ -149,10 +153,13 @@ const Header: FC<Props> = () => {
                 </Button>
               </form>
 
-              <VStack gap="1" className="">
+              <VStack
+                gap="1"
+                className="flex-row-reverse items-center justify-between w-full lg:w-auto"
+              >
                 <Button
                   variant="clear"
-                  className="group duration-300 text-amber-50 w-[86px]"
+                  className="hidden lg:block group duration-300 text-amber-50 w-[86px]"
                   onClick={onOfficeBtnClick}
                 >
                   <HStack
@@ -165,13 +172,13 @@ const Header: FC<Props> = () => {
                       height={28}
                       className="stroke-white group-hover:stroke-primary duration-300"
                     />
-                    {t('Кабінет')}
+                    <span>{t('Кабінет')}</span>
                   </HStack>
                 </Button>
 
                 <Button
                   variant="clear"
-                  className="group duration-300 text-amber-50 w-[86px]"
+                  className="group duration-300 text-amber-50 w-[28px] lg:w-[86px]"
                   onClick={onWishListBtnClick}
                 >
                   <HStack
@@ -180,16 +187,14 @@ const Header: FC<Props> = () => {
                   >
                     <Icon
                       Svg={like}
-                      width={28}
-                      height={28}
-                      className="stroke-white group-hover:stroke-primary duration-300"
+                      className="lg:w-[28px] lg:h-[28px] stroke-white group-hover:stroke-primary duration-300"
                     />
 
                     <div
                       className={
                         wishlist?.length < 1
                           ? 'hidden'
-                          : 'absolute right-[29px] flex justify-items-center items-center bg-primary border-[1.5px] border-gray-900 rounded-full'
+                          : 'absolute right-0 lg:right-[29px] flex justify-items-center items-center bg-primary border-[1.5px] border-gray-900 rounded-full'
                       }
                     >
                       <span
@@ -202,9 +207,17 @@ const Header: FC<Props> = () => {
                         {wishlist?.length}
                       </span>
                     </div>
-                    {t('Список')}
+                    <span className="hidden lg:block">{t('Список')}</span>
                   </HStack>
                 </Button>
+                <VStack className="block lg:hidden" align="center" gap="4">
+                  <Button variant="clear" onClick={() => {}} className="lg:hidden">
+                    <Icon Svg={burger} />
+                  </Button>
+                  <Link to={getRouteMain()}>
+                    <Icon Svg={logo} width={110} height={38} />
+                  </Link>
+                </VStack>
               </VStack>
             </VStack>
 
@@ -215,20 +228,29 @@ const Header: FC<Props> = () => {
                 Svg={ua}
                 width={24}
                 height={18}
-                className={i18n.language === 'ua' ? 'opacity-50 duration-200' : ''}
+                className={
+                  i18n.language === 'ua'
+                    ? 'hidden lg:block opacity-50 duration-200'
+                    : 'hidden lg:block'
+                }
               />
-              <div className="h-6 border-r-[1px] border-solid border-primary" />
+              <div className="hidden lg:block h-6 border-r-[1px] border-solid border-primary" />
               <Icon
                 clickable
                 onClick={onEnChange}
                 Svg={en}
                 width={22}
                 height={18}
-                className={i18n.language === 'en' ? 'opacity-50 duration-200' : ''}
+                className={
+                  i18n.language === 'en'
+                    ? 'hidden lg:block opacity-50 duration-200'
+                    : 'hidden lg:block'
+                }
               />
             </VStack>
           </VStack>
         </VStack>
+
         <ModalCategory
           modalButtonRef={categoryButtonRef}
           setClose={() => setShowModalCategory(false)}
