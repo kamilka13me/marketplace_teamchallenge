@@ -31,6 +31,9 @@ const Portal: FC<PortalProps> = (props) => {
       'h-screen',
       'bg-black-transparent-50',
       'z-[99999]',
+      'opacity-0',
+      'transition-opacity',
+      'duration-300',
     );
 
     portalRoot.classList.add('overflow-hidden');
@@ -40,6 +43,12 @@ const Portal: FC<PortalProps> = (props) => {
     }
 
     portalRoot.addEventListener('keydown', handleKeyDown);
+
+    setTimeout(() => {
+      if (elRef.current) {
+        elRef.current.classList.remove('opacity-0');
+      }
+    }, 0);
   }
 
   useEffect(() => {
