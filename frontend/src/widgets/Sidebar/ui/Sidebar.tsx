@@ -39,7 +39,7 @@ const Sidebar: FC<Props> = () => {
   }
 
   return (
-    <aside className="max-w-[314px] w-full">
+    <aside>
       <ul className="flex flex-col gap-2">
         {data.slice(0, 11).map((item) => (
           <li key={item._id}>
