@@ -108,7 +108,7 @@ const ProductCard: FC<Props> = (props) => {
             loadingFallback={<Skeleton width={281} height={252} />}
             src={`${process.env.BASE_URL}${images[0]}`}
             alt="product-card-img"
-            className="h-[140px] !xl:h-[252px] !min-w-[156px] !max-w-[281px] w-full"
+            className="h-[140px] lg:h-[252px] !min-w-[156px] !max-w-[281px] w-full"
           />
         </Link>
       ) : (

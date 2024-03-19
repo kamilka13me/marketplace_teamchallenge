@@ -33,7 +33,7 @@ const ProductSectionLayout: FC<Props> = (props) => {
   return (
     <div className="w-full">
       <Text size="xl" Tag="h2" text={title} bold className="lg:text-3xl mb-4 lg:mb-6" />
-      <div className="grid grid-cols-2 gap-[7px] ">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-[7px] ">
         {isLoading
           ? renderLoadingSkeletons()
           : products?.map((prod) => <ProductCard key={prod._id} product={prod} />)}
