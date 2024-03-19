@@ -96,9 +96,11 @@ const ProductCard: FC<Props> = (props) => {
 
   return (
     <div
-      className={`relative w-[313px] h-[445px] p-4 rounded-2xl ${
-        !dark ? 'shadow-custom-base hover:shadow-custom-hover' : 'bg-gray-400'
-      }  duration-75`}
+      className={`relative p-[6px] lg:p-4 rounded-2xl
+      min-w-[168px] max-w-[313px] w-full 
+      min-h-[248px] max-h-[445px] h-full
+       ${!dark ? 'shadow-custom-base hover:shadow-custom-hover' : 'bg-gray-400'}  
+       duration-75`}
     >
       {images?.length > 0 ? (
         <Link to={getRouteProduct(`${_id}`)}>
@@ -106,7 +108,7 @@ const ProductCard: FC<Props> = (props) => {
             loadingFallback={<Skeleton width={281} height={252} />}
             src={`${process.env.BASE_URL}${images[0]}`}
             alt="product-card-img"
-            className="!h-[252px] !w-[281px]"
+            className="h-[140px] lg:h-[252px] !min-w-[156px] !max-w-[281px] w-full"
           />
         </Link>
       ) : (
@@ -117,13 +119,13 @@ const ProductCard: FC<Props> = (props) => {
 
       <div className="mt-2">
         {/* Name */}
-        <div className="h-[44px] ">
+        <div className="h-[34px] lg:h-[44px] ">
           <Link to={getRouteProduct(`${_id}`)}>
             <Text
               Tag="span"
               text={name}
-              size="md"
-              className={`${dark && 'text-white'}`}
+              size="xs"
+              className={`${dark && 'text-white'} lg:text-md`}
             />
           </Link>
         </div>
@@ -132,27 +134,27 @@ const ProductCard: FC<Props> = (props) => {
         {discount ? (
           <VStack gap="1" align="center" className="mt-1">
             <Text
-              size="lg"
+              size="sm"
               font="ibm-plex-sans"
               Tag="p"
               text={price.toString()}
-              className="line-through font-semibold"
+              className="line-through font-semibold lg:text-lg"
               color="gray"
             />
             <Text font="ibm-plex-sans" size="sm" Tag="span" text="грн" color="gray" />
           </VStack>
         ) : (
-          <div className="h-[40px]" />
+          <div className="h-[18px] lg:h-[40px]" />
         )}
 
         {/*  Main price */}
         <VStack gap="1" align="center" className="gap-1 ">
           <Text
-            size="4xl"
+            size="xl"
             font="ibm-plex-sans"
             Tag="p"
             text={countDiscount(price, discount || 0).toString()}
-            className={`${discount && 'text-red'}`}
+            className={`${discount && 'text-red'} font-medium lg:text-4xl`}
           />
           <Text
             size="2xl"
@@ -166,15 +168,15 @@ const ProductCard: FC<Props> = (props) => {
         {/*  Quantity */}
         <Text
           Tag="span"
-          size="sm"
+          size="xxs"
           text={t(quantityCalc(quantity).text)}
           color={quantityCalc(quantity).color}
-          className="mt-2"
+          className="mt-2 lg:text-sm"
         />
       </div>
 
       {/*  Heart Icon */}
-      <HStack className="absolute top-[24px] right-[24px]">
+      <HStack className="absolute top-[12px] right-[12px] lg:top-[24px] lg:right-[24px]">
         <Button
           variant="clear"
           disabled={heartIsDisabled}
