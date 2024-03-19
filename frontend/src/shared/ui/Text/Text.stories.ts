@@ -25,7 +25,7 @@ const meta = {
       control: { type: 'select' },
     },
     size: {
-      options: ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'],
+      options: ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'],
       control: { type: 'select' },
     },
   },

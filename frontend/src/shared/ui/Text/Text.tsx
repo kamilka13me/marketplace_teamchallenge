@@ -6,7 +6,7 @@ export type HeaderTagType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'spa
 
 export type TextColors = 'primary' | 'gray' | 'orange' | 'red' | 'green' | 'white';
 
-export type FontSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
+export type FontSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
 
 export type TextFonts = 'ibm-plex-sans' | 'outfit';
 
@@ -31,6 +31,8 @@ const TextFont: Record<TextFonts, string> = {
 };
 
 const fontSize: Record<FontSize, string> = {
+  xxs: 'text-xxs',
+  xs: 'text-xs',
   sm: 'text-sm',
   md: 'text-md',
   lg: 'text-lg',
