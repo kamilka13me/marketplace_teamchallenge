@@ -155,7 +155,7 @@ const Header: FC<Props> = () => {
 
               <VStack
                 gap="1"
-                className="flex-row-reverse items-center justify-between w-full lg:w-auto"
+                className="flex-row-reverse lg:flex-row items-center justify-between w-full lg:w-auto"
               >
                 <Button
                   variant="clear"
