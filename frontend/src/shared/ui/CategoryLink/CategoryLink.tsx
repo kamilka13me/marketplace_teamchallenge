@@ -41,7 +41,7 @@ const CategoryLink: FC<Props> = (props) => {
   return (
     <NavLink
       to={`${getRouteProducts()}?category=${category._id}`}
-      className="flex justify-between items-center w-full group"
+      className="flex justify-between items-center w-full group whitespace-nowrap"
       onClick={() => closeModal && closeModal()}
     >
       <VStack gap="2" justify="center" align="center">

@@ -29,7 +29,7 @@ const SliderWidget: FC = () => {
     }
 
     return (
-      <div className="max-w-[979px] h-[504px] w-full">
+      <div className="max-w-[979px] lg:h-[504px] w-full">
         <Slider images={data} />
       </div>
     );
