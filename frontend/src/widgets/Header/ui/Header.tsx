@@ -259,7 +259,10 @@ const Header: FC<Props> = () => {
       </Container>
 
       {showModal && (
-        <ModalWindow onCloseFunc={onHandleClickPortal} className="px-8 py-10">
+        <ModalWindow
+          onCloseFunc={onHandleClickPortal}
+          className="px-8 py-10 animate-open-forms-modal"
+        >
           <VStack align="center" justify="between">
             <span className="outfit text-right text-gray-900 text-[32px] leading-[28px] font-semibold">
               {toggleForm ? t('Вхід') : t('Реєстрація')}

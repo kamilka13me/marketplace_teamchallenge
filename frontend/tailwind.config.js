@@ -68,9 +68,20 @@ export default {
             transform: 'translateY(0)',
           },
         },
+        openForms: {
+          '0%': {
+            opacity: '0',
+            transform: 'translate(-50%, -50%) scale(.5)',
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translate(-50%, -50%) scale(1)',
+          },
+        },
       },
       animation: {
         'open-info-modal': 'openModalMessage 0.3s ease-in-out',
+        'open-forms-modal': 'openForms 0.3s ease-in-out',
       },
     },
   },
