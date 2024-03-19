@@ -5,7 +5,7 @@ import useAxios from '@/shared/lib/hooks/useAxios';
 import { Skeleton } from '@/shared/ui/Skeleton';
 import { Slider } from '@/shared/ui/Slider';
 
-export interface ImageData {
+interface ImageData {
   _id: string;
   image: string;
 }
@@ -17,11 +17,7 @@ const SliderWidget: FC = () => {
 
   const renderContent = () => {
     if (isLoading) {
-      return (
-        <div data-testid="loading-slider-widget">
-          <Skeleton width="979px" height="504px" className="!rounded-2xl" />
-        </div>
-      );
+      return <Skeleton width="979px" height="504px" className="!rounded-2xl" />;
     }
 
     if (error) {
@@ -33,7 +29,7 @@ const SliderWidget: FC = () => {
     }
 
     return (
-      <div data-testid="slider" className="max-w-[979px] h-[504px] w-full">
+      <div className="max-w-[979px] lg:h-[504px] w-full">
         <Slider images={data} />
       </div>
     );

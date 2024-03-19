@@ -22,14 +22,14 @@ const CustomSlider: FC<Props> = (props) => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    draggable: false,
+    draggable: true,
     adaptiveHeight: true,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
   };
 
   return (
-    <Slider {...settings} className={`min-w-[350px] min-h-[203px] ${className}`}>
+    <Slider {...settings} className={`min-w-[343px] min-h-[178px] ${className}`}>
       {images.map((item, i) => (
         // eslint-disable-next-line react/no-array-index-key
         <div key={i}>
