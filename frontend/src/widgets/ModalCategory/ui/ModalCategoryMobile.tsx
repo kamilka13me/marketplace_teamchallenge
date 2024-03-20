@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 
 import { Category } from '@/enteties/Category';
 import close from '@/shared/assets/icons/cancel.svg?react';
