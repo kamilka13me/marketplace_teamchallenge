@@ -81,7 +81,7 @@ const ModalCategory: FC<Props> = (props) => {
           >
             <ul
               ref={listItemRef}
-              className="w-[313px] h-[520px] overflow-auto flex flex-col gap-2 px-[13px]"
+              className="w-[323px] h-[520px] overflow-auto flex flex-col gap-2 px-[13px]"
             >
               {data?.map((item, i) => (
                 <li
