@@ -1,3 +1,3 @@
-import PersonalDataForms from '@/widgets/PersonalDataForms/PersonalDataForms';
+import PersonalDataForms from '@/widgets/PersonalDataForms/ui/PersonalDataForms';
 
 export { PersonalDataForms };
