@@ -129,7 +129,7 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
           {...register('inputPassword', {
             required: t("Це поле є обов'язковим"),
             minLength: {
-              value: 8,
+              value: 9,
               message: t('Ваш пароль має бути не менше 9 символів'),
             },
             pattern: {

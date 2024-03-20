@@ -26,6 +26,7 @@ import { Input } from '@/shared/ui/Input';
 import { Link } from '@/shared/ui/Link';
 import { ModalWindow } from '@/shared/ui/ModalWindow';
 import { HStack, VStack } from '@/shared/ui/Stack';
+import { BurgerMenu } from '@/widgets/BurgerMenu';
 import { ModalCategory } from '@/widgets/ModalCategory';
 
 interface Props {}
@@ -34,11 +35,13 @@ const Header: FC<Props> = () => {
   const { t, i18n } = useTranslation();
 
   const categoryButtonRef = useRef<HTMLButtonElement>(null);
+  const burgerButtonRef = useRef<HTMLButtonElement>(null);
 
   const [showModalCategory, setShowModalCategory] = useState(false);
   const [inputData, setInputData] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
   const [toggleForm, setToggleForm] = useState(true);
+  const [showBurgerMenu, setShowBurgerMenu] = useState(false);
 
   const { wishlist } = useAppSelector(getWishlist);
   const user = useAppSelector(getUserAuthData);
@@ -94,6 +97,10 @@ const Header: FC<Props> = () => {
 
   const onEnChange = (): void => {
     i18n.changeLanguage('en').then(() => {});
+  };
+
+  const onHandleClickBurger = (): void => {
+    setShowBurgerMenu(!showBurgerMenu);
   };
 
   return (
@@ -211,7 +218,16 @@ const Header: FC<Props> = () => {
                   </HStack>
                 </Button>
                 <VStack className="block lg:hidden" align="center" gap="4">
-                  <Button variant="clear" onClick={() => {}} className="lg:hidden">
+                  <Button
+                    id="burger-menu-button"
+                    aria-controls="burger-menu"
+                    ref={burgerButtonRef}
+                    variant="clear"
+                    aria-haspopup
+                    aria-expanded={showBurgerMenu}
+                    onClick={onHandleClickBurger}
+                    className="lg:hidden"
+                  >
                     <Icon Svg={burger} />
                   </Button>
                   <Link to={getRouteMain()}>
@@ -256,10 +272,24 @@ const Header: FC<Props> = () => {
           setClose={() => setShowModalCategory(false)}
           isOpen={showModalCategory}
         />
+
+        <BurgerMenu
+          burgerButtonRef={burgerButtonRef}
+          isOpen={showBurgerMenu}
+          setModalLoginForm={() => setShowModal(true)}
+          setModalRegistrationForm={() => {
+            setToggleForm(false);
+            setShowModal(true);
+          }}
+          setClose={() => setShowBurgerMenu(false)}
+        />
       </Container>
 
       {showModal && (
-        <ModalWindow onCloseFunc={onHandleClickPortal} className="px-8 py-10">
+        <ModalWindow
+          onCloseFunc={onHandleClickPortal}
+          className="px-8 py-10 animate-open-forms-modal"
+        >
           <VStack align="center" justify="between">
             <span className="outfit text-right text-gray-900 text-[32px] leading-[28px] font-semibold">
               {toggleForm ? t('Вхід') : t('Реєстрація')}

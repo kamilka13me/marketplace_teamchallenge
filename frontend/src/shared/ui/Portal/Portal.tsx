@@ -31,6 +31,9 @@ const Portal: FC<PortalProps> = (props) => {
       'h-screen',
       'bg-black-transparent-50',
       'z-[99999]',
+      'opacity-0',
+      'transition-opacity',
+      'duration-300',
     );
 
     portalRoot.classList.add('overflow-hidden');
@@ -40,23 +43,31 @@ const Portal: FC<PortalProps> = (props) => {
     }
 
     portalRoot.addEventListener('keydown', handleKeyDown);
+
+    setTimeout(() => {
+      if (elRef.current) {
+        elRef.current.classList.remove('opacity-0');
+      }
+    }, 0);
   }
 
   useEffect(() => {
     const el = elRef.current!;
 
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (event.target === el) {
         onClose();
       }
     };
 
-    el.addEventListener('click', handleClickOutside);
+    el.addEventListener('mousedown', handleClickOutside);
+    el.addEventListener('touchstart', handleClickOutside);
 
     portalRoot.appendChild(el);
 
     return () => {
-      el.removeEventListener('click', handleClickOutside);
+      el.removeEventListener('mousedown', handleClickOutside);
+      el.removeEventListener('touchstart', handleClickOutside);
       portalRoot.removeEventListener('keydown', handleKeyDown);
       portalRoot.removeChild(el);
       portalRoot.classList.remove('overflow-hidden');
