@@ -69,7 +69,7 @@ const ModalCategoryMobile: FC<Props> = (props) => {
   }, [setWidth]);
 
   const renderCategories = () => (
-    <ul className="flex flex-col gap-2 mt-[44px] max-h-[520px] overflow-auto">
+    <ul className="flex flex-col gap-2 mt-[22px] max-h-[520px] overflow-auto">
       {data?.map((item, i) => (
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions
         <li key={item._id} onClick={() => setCurrentSub(i)}>
@@ -80,7 +80,7 @@ const ModalCategoryMobile: FC<Props> = (props) => {
   );
 
   const renderSubCategories = () => (
-    <ul className="flex flex-col gap-2 mt-[44px] max-h-[520px] overflow-auto">
+    <ul className="flex flex-col gap-2 mt-[22px] max-h-[520px] overflow-auto">
       {data &&
         currentSub !== null &&
         data[currentSub]?.subcategories.map((item, i) => (
@@ -98,7 +98,7 @@ const ModalCategoryMobile: FC<Props> = (props) => {
   );
 
   const renderSubSubCategories = () => (
-    <ul className="flex flex-col gap-2 mt-[44px] max-h-[520px] overflow-auto">
+    <ul className="flex flex-col gap-2 mt-[22px] max-h-[520px] overflow-auto">
       {data &&
         currentSub !== null &&
         currentSubSub !== null &&
@@ -120,7 +120,7 @@ const ModalCategoryMobile: FC<Props> = (props) => {
       {isOpen && (
         <div
           ref={modalCategoriesRef}
-          className="absolute bottom-0 bg-white left-0 right-0 top-[160px] w-full min-h-[100vh_-_160px] overflow-auto px-4 pt-[22px] z-[999]"
+          className="absolute bottom-0 bg-white left-0 right-0 top-[130px] w-full min-h-[100vh_-_160px] overflow-auto px-4 pt-[22px] z-[999]"
         >
           <VStack justify="between" align="center">
             <Text Tag="h3" text="Всі товари" size="xl" bold />
@@ -135,7 +135,7 @@ const ModalCategoryMobile: FC<Props> = (props) => {
               <Icon Svg={close} />
             </Button>
           </VStack>
-          {/* eslint-disable-next-line no-nested-ternary */}
+          <div className="h-[2px] bg-gradient-to-r from-0% from-[rgba(224,225,226,0)] via-50% via-[rgba(224,225,226,1)] to-100% to-[rgba(224,225,226,0)] my-[22px]" />
           {currentSub === null && currentSubSub === null && renderCategories()}
           {currentSub !== null && currentSubSub === null && renderSubCategories()}
           {currentSub !== null && currentSubSub !== null && renderSubSubCategories()}
