@@ -54,18 +54,20 @@ const Portal: FC<PortalProps> = (props) => {
   useEffect(() => {
     const el = elRef.current!;
 
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (event.target === el) {
         onClose();
       }
     };
 
-    el.addEventListener('click', handleClickOutside);
+    el.addEventListener('mousedown', handleClickOutside);
+    el.addEventListener('touchstart', handleClickOutside);
 
     portalRoot.appendChild(el);
 
     return () => {
-      el.removeEventListener('click', handleClickOutside);
+      el.removeEventListener('mousedown', handleClickOutside);
+      el.removeEventListener('touchstart', handleClickOutside);
       portalRoot.removeEventListener('keydown', handleKeyDown);
       portalRoot.removeChild(el);
       portalRoot.classList.remove('overflow-hidden');
