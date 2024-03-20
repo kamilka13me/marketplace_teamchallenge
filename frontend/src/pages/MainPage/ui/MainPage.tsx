@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 
 import SliderWidget from '../../../widgets/Slider/ui/SliderWidget';
 
@@ -17,14 +17,21 @@ import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { HStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
+import ModalCategoryMobile from '@/widgets/ModalCategory/ui/ModalCategoryMobile';
 import { Sidebar } from '@/widgets/Sidebar';
 
 const MainPage: FC = () => {
+  const [mobileAllCategories, setMobileAllCategories] = useState(false);
+
   const newProduct = useGetNewProductsQuery({});
   const popularProduct = useGetPopularProductsQuery({});
   const promotionsProduct = useGetPromotionsProductsQuery({});
 
   const dispatch = useAppDispatch();
+
+  const openMobileAllCategoriesHandler = () => {
+    setMobileAllCategories(false);
+  };
 
   const newProductsSearchParamsHandler = () => {
     dispatch(productsPageActions.clearSortParams());
@@ -57,6 +64,7 @@ const MainPage: FC = () => {
           <Button
             variant="fill"
             className="relative lg:hidden w-full mt-4 h-[38px] text-center"
+            onClick={() => setMobileAllCategories(true)}
           >
             <Icon
               aria-hidden="true"
@@ -94,6 +102,12 @@ const MainPage: FC = () => {
             setSearchParams={promotionsProductsSearchParamsHandler}
           />
         </HStack>
+        <div className="lg:hidden">
+          <ModalCategoryMobile
+            isOpen={mobileAllCategories}
+            setIsOpen={openMobileAllCategoriesHandler}
+          />
+        </div>
       </Container>
     </div>
   );

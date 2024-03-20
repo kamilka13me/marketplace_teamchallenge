@@ -14,10 +14,11 @@ import { Text } from '@/shared/ui/Text';
 interface Props {
   category: Category;
   closeModal?: () => void;
+  isLink?: boolean;
 }
 
 const CategoryLink: FC<Props> = (props) => {
-  const { category, closeModal } = props;
+  const { category, closeModal, isLink = true } = props;
   const [Svg, setSvg] = useState<string | null>(null); // Initialize data with null
   const [svgIsLoading, setSvgIsLoading] = useState(true);
 
@@ -38,12 +39,8 @@ const CategoryLink: FC<Props> = (props) => {
     fetchData();
   }, [category.image]);
 
-  return (
-    <NavLink
-      to={`${getRouteProducts()}?category=${category._id}`}
-      className="flex justify-between items-center w-full group whitespace-nowrap"
-      onClick={() => closeModal && closeModal()}
-    >
+  const renderCategoryLink = () => (
+    <>
       <VStack gap="2" justify="center" align="center">
         {!svgIsLoading && Svg !== null ? (
           <div
@@ -69,7 +66,26 @@ const CategoryLink: FC<Props> = (props) => {
           className="group-hover:w-[26px] group-hover:h-[26px] duration-75"
         />
       </div>
-    </NavLink>
+    </>
+  );
+
+  return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <>
+      {isLink ? (
+        <NavLink
+          to={`${getRouteProducts()}?category=${category._id}`}
+          className="flex justify-between items-center w-full group whitespace-nowrap"
+          onClick={() => closeModal && closeModal()}
+        >
+          {renderCategoryLink()}
+        </NavLink>
+      ) : (
+        <div className="flex justify-between items-center w-full whitespace-nowrap">
+          {renderCategoryLink()}
+        </div>
+      )}
+    </>
   );
 };
 
