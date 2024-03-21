@@ -100,7 +100,7 @@ const BurgerMenu: FC<Props> = (props) => {
         leave="ease-in-out duration-500"
         leaveFrom="opacity-100 translate-y-0"
         leaveTo="opacity-0 translate-y-[-242px]"
-        className="absolute lg:hidden top-0 left-1/2 transform -translate-x-1/2 z-[99]"
+        className="absolute lg:hidden w-full top-0 left-1/2 transform -translate-x-1/2 z-[99]"
       >
         <div
           id="burger-menu"
@@ -147,7 +147,11 @@ const BurgerMenu: FC<Props> = (props) => {
             </VStack>
           </HStack>
           <HStack justify="between" className="min-h-[118px] p-4 rounded-b-2xl bg-white">
-            <Button variant="fill" className="relative w-full h-[38px] text-center">
+            <Button
+              variant="fill"
+              onClick={() => {}}
+              className="relative w-full h-[38px] text-center"
+            >
               <Icon
                 aria-hidden="true"
                 Svg={allProducts}
