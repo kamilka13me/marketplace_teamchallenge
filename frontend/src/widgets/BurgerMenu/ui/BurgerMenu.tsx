@@ -65,8 +65,11 @@ const BurgerMenu: FC<Props> = (props) => {
 
         return;
       }
-      document.body.classList.remove('overflow-hidden');
-      setClose();
+
+      if (event.target === document.querySelector('#outside-burger')) {
+        document.body.classList.remove('overflow-hidden');
+        setClose();
+      }
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -194,6 +197,7 @@ const BurgerMenu: FC<Props> = (props) => {
       {isOpen && (
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
         <div
+          id="outside-burger"
           className="fixed lg:hidden top-0 left-0 w-screen h-screen z-[98] bg-black-transparent-50"
           onClick={setClose}
         />

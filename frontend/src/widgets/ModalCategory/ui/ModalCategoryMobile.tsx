@@ -27,10 +27,6 @@ const ModalCategoryMobile: FC<Props> = (props) => {
   const { data, isLoading } = useAxios<Category[]>(ApiRoutes.CATEGORY);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    }
-
     if (width > 1024) {
       setIsOpen();
       setCurrentSub(null);
@@ -49,7 +45,6 @@ const ModalCategoryMobile: FC<Props> = (props) => {
     document.addEventListener('touchstart', outsideClickHandler);
 
     return () => {
-      document.body.style.overflow = 'auto';
       document.removeEventListener('touchstart', outsideClickHandler);
     };
   }, [isOpen, setIsOpen, width]);
