@@ -1,4 +1,4 @@
-import React, { FC, RefObject, useEffect, useRef } from 'react';
+import React, { FC, RefObject, useEffect, useRef, useState } from 'react';
 
 import { Transition } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +15,7 @@ import { Icon } from '@/shared/ui/Icon';
 import { Link } from '@/shared/ui/Link';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
+import ModalCategoryMobile from '@/widgets/ModalCategory/ui/ModalCategoryMobile';
 
 interface Props {
   burgerButtonRef: RefObject<HTMLButtonElement> | null;
@@ -36,6 +37,12 @@ const BurgerMenu: FC<Props> = (props) => {
   const { t, i18n } = useTranslation();
 
   const burgerDataRef = useRef<HTMLDivElement>(null);
+
+  const [mobileAllCategories, setMobileAllCategories] = useState(false);
+
+  const openMobileAllCategoriesHandler = () => {
+    setMobileAllCategories(false);
+  };
 
   const onClickLogin = (): void => {
     setClose();
@@ -149,7 +156,11 @@ const BurgerMenu: FC<Props> = (props) => {
           <HStack justify="between" className="min-h-[118px] p-4 rounded-b-2xl bg-white">
             <Button
               variant="fill"
-              onClick={() => {}}
+              onClick={() => {
+                setMobileAllCategories(true);
+                setClose();
+                document.body.classList.remove('overflow-hidden');
+              }}
               className="relative w-full h-[38px] text-center"
             >
               <Icon
@@ -206,6 +217,12 @@ const BurgerMenu: FC<Props> = (props) => {
           onClick={setClose}
         />
       )}
+      <div className="lg:hidden">
+        <ModalCategoryMobile
+          isOpen={mobileAllCategories}
+          setIsOpen={openMobileAllCategoriesHandler}
+        />
+      </div>
     </>
   );
 };
