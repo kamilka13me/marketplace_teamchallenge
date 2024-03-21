@@ -1,12 +1,17 @@
 import { FC } from 'react';
 
-import Errorr from '@/shared/assets/img/Error404vector.png';
+import { useNavigate } from 'react-router-dom';
+
+import Error from '@/shared/assets/img/Error404vector.png';
 import Image from '@/shared/assets/img/Mask3.png';
-import { Link } from '@/shared/ui/Link';
+import { getRouteMain } from '@/shared/const/routes';
+import { Button } from '@/shared/ui/Button';
 import { VStack, HStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
 const Error404: FC = () => {
+  const navigate = useNavigate();
+
   return (
     <VStack gap="1" className="h-full w-1166 bg-cover rounded-lg items-center">
       <VStack>
@@ -14,21 +19,23 @@ const Error404: FC = () => {
       </VStack>
       <VStack className="absolute top-619 left-[64px]">
         <HStack gap="8">
-          <img className="mb-8" src={Errorr} alt="404" />
+          <img className="mb-8" src={Error} alt="404" />
           <Text
             Tag="p"
-            size="md"
+            size="3xl"
             text="Ми знайшли для вас все, крім цієї сторінки"
             font="ibm-plex-sans"
-            className=" w-[374px] text-3xl text-[32px]"
+            className="w-[374px] leading-8"
             color="white"
           />
-          <Link
-            className="bg-gradient-to-r from-secondary-200 to-salmon-100 text-white h-[48px] w-[282px] rounded-lg pt-[10px] pl-[105px] pr-[105px] font-outfit font-semibold text-base leading-[22.4px]"
-            to="/"
+          <Button
+            variant="notFound"
+            onClick={() => {
+              navigate(getRouteMain());
+            }}
           >
             Головна
-          </Link>
+          </Button>
         </HStack>
       </VStack>
     </VStack>
