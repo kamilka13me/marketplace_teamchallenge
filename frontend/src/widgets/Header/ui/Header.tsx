@@ -111,10 +111,10 @@ const Header: FC<Props> = () => {
             <Icon Svg={logo} width={202} height={68} className="hidden lg:block" />
           </Link>
 
-          <VStack align="center">
+          <VStack align="center" className="w-full lg:w-auto">
             <VStack
               gap="4"
-              className="flex-col-reverse items-end lg:items-center lg:flex-row lg:mr-[75px]"
+              className="w-full flex-col-reverse items-end lg:items-center lg:flex-row lg:mr-[75px]"
             >
               <Button
                 id="all-category-button"
@@ -138,7 +138,7 @@ const Header: FC<Props> = () => {
               </Button>
               <form
                 onSubmit={onSubmitSearch}
-                className="flex flex-nowrap items-center hover:drop-shadow-custom-primary duration-300"
+                className="flex flex-nowrap items-center w-full lg:w-auto hover:drop-shadow-custom-primary duration-300"
                 autoComplete="off"
               >
                 <Input
@@ -148,6 +148,7 @@ const Header: FC<Props> = () => {
                   value={inputData}
                   placeholder={t('Я шукаю')}
                   onChange={onChangeInput}
+                  classNameBlockWrap="w-full"
                 />
                 <Button
                   variant="search"
