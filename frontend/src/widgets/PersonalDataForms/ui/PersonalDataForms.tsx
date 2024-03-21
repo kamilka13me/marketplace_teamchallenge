@@ -36,6 +36,9 @@ interface InputsPasswordValues {
 const PersonalDataForms: FC = () => {
   const user = useAppSelector(getUserAuthData);
   const errorServer = useAppSelector(userHasError);
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1; // Місяці в JavaScript нумеруються з 0
+  const currentDay = new Date().getDate();
 
   const { t } = useTranslation();
 
@@ -147,6 +150,31 @@ const PersonalDataForms: FC = () => {
     setDateValue(value);
   };
 
+  const validateDate = (value: string | undefined) => {
+    if (!value || value === '') {
+      return true;
+    }
+
+    const [dayStr, monthStr, yearStr] = value.split('.');
+    const day = dayStr ? Number(dayStr) : undefined;
+    const month = monthStr ? Number(monthStr) : undefined;
+    const year = yearStr ? Number(yearStr) : undefined;
+
+    if (
+      year !== undefined &&
+      (year > currentYear ||
+        (year === currentYear && month !== undefined && month > currentMonth) ||
+        (year === currentYear &&
+          month === currentMonth &&
+          day !== undefined &&
+          day > currentDay))
+    ) {
+      return t('Дата народження не може бути більшою за поточну');
+    }
+
+    return true;
+  };
+
   const onPassOldVisibility = () => {
     setPassOldShown(!passOldShown);
   };
@@ -224,6 +252,9 @@ const PersonalDataForms: FC = () => {
                 pattern: {
                   value: /^(0[1-9]|[12][0-9]|30|31)\.(0[1-9]|1[0-2])\.\d{4}$/,
                   message: t('Дата повинна містити цифри та бути по формату ХХ.ХХ.ХХХХ'),
+                },
+                validate: {
+                  validateDate: (value) => validateDate(value),
                 },
                 onChange: addDots,
               })}

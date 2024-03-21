@@ -1,4 +1,4 @@
-import React, { FC, RefObject, useEffect, useRef } from 'react';
+import React, { FC, RefObject, useEffect, useRef, useState } from 'react';
 
 import { Transition } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +15,7 @@ import { Icon } from '@/shared/ui/Icon';
 import { Link } from '@/shared/ui/Link';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
+import ModalCategoryMobile from '@/widgets/ModalCategory/ui/ModalCategoryMobile';
 
 interface Props {
   burgerButtonRef: RefObject<HTMLButtonElement> | null;
@@ -36,6 +37,12 @@ const BurgerMenu: FC<Props> = (props) => {
   const { t, i18n } = useTranslation();
 
   const burgerDataRef = useRef<HTMLDivElement>(null);
+
+  const [mobileAllCategories, setMobileAllCategories] = useState(false);
+
+  const openMobileAllCategoriesHandler = () => {
+    setMobileAllCategories(false);
+  };
 
   const onClickLogin = (): void => {
     setClose();
@@ -100,7 +107,7 @@ const BurgerMenu: FC<Props> = (props) => {
         leave="ease-in-out duration-500"
         leaveFrom="opacity-100 translate-y-0"
         leaveTo="opacity-0 translate-y-[-242px]"
-        className="absolute lg:hidden top-0 left-1/2 transform -translate-x-1/2 z-[99]"
+        className="absolute lg:hidden w-full top-0 left-1/2 transform -translate-x-1/2 z-[99]"
       >
         <div
           id="burger-menu"
@@ -147,7 +154,15 @@ const BurgerMenu: FC<Props> = (props) => {
             </VStack>
           </HStack>
           <HStack justify="between" className="min-h-[118px] p-4 rounded-b-2xl bg-white">
-            <Button variant="fill" className="relative w-full h-[38px] text-center">
+            <Button
+              variant="fill"
+              onClick={() => {
+                setMobileAllCategories(true);
+                setClose();
+                document.body.classList.remove('overflow-hidden');
+              }}
+              className="relative w-full h-[38px] text-center"
+            >
               <Icon
                 aria-hidden="true"
                 Svg={allProducts}
@@ -202,6 +217,12 @@ const BurgerMenu: FC<Props> = (props) => {
           onClick={setClose}
         />
       )}
+      <div className="lg:hidden">
+        <ModalCategoryMobile
+          isOpen={mobileAllCategories}
+          setIsOpen={openMobileAllCategoriesHandler}
+        />
+      </div>
     </>
   );
 };
