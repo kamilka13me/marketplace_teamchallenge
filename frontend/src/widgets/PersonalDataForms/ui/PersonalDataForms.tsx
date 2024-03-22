@@ -36,9 +36,6 @@ interface InputsPasswordValues {
 const PersonalDataForms: FC = () => {
   const user = useAppSelector(getUserAuthData);
   const errorServer = useAppSelector(userHasError);
-  const currentYear = new Date().getFullYear();
-  const currentMonth = new Date().getMonth() + 1; // Місяці в JavaScript нумеруються з 0
-  const currentDay = new Date().getDate();
 
   const { t } = useTranslation();
 
@@ -151,14 +148,31 @@ const PersonalDataForms: FC = () => {
   };
 
   const validateDate = (value: string | undefined) => {
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth() + 1;
+    const currentDay = new Date().getDate();
+
     if (!value || value === '') {
       return true;
     }
 
     const [dayStr, monthStr, yearStr] = value.split('.');
-    const day = dayStr ? Number(dayStr) : undefined;
-    const month = monthStr ? Number(monthStr) : undefined;
-    const year = yearStr ? Number(yearStr) : undefined;
+    const { day, month, year } = {
+      day: dayStr ? Number(dayStr) : undefined,
+      month: monthStr ? Number(monthStr) : undefined,
+      year: yearStr ? Number(yearStr) : undefined,
+    };
+    const maxDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    if (month !== undefined && day !== undefined) {
+      const isLeapYear =
+        year !== undefined && year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+      const maxDays = month === 2 && isLeapYear ? 29 : maxDaysInMonth[month - 1];
+
+      if (maxDays !== undefined && day > maxDays) {
+        return t('Невірна кількість днів в місяці');
+      }
+    }
 
     if (
       year !== undefined &&
