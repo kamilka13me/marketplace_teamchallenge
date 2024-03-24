@@ -90,22 +90,22 @@ const Footer: FC<Props> = () => {
   const { t } = useTranslation();
 
   return (
-    <footer className="bg-gray-900 overflow-hidden relative">
+    <footer className="bg-gray-900 mt-20 overflow-hidden relative">
       <Container>
-        <div className="z-10 w-[550px] h-[550px] origin-top-left rotate-[120deg] bg-neutral-900 rounded-[217px] absolute left-[33%]  top-[-20%]" />
-        <div className="w-[550px] h-[550px] origin-top-left rotate-[120deg] bg-neutral-900 rounded-[217px] absolute right-[-40%] top-[100%]" />
+        <div className="z-10 w-[550px] h-[550px] origin-top-left rotate-[120deg] bg-neutral-900 rounded-[217px] absolute left-[33%] top-[-20%] " />
+        <div className="w-[550px] h-[550px] origin-top-left rotate-[120deg] bg-neutral-900 rounded-[217px] absolute right-[-40%] top-[100%] " />
         <div className="z-20 relative">
-          <VStack align="start" justify="around" className="pt-12">
+          <VStack className="flex-col lg:flex-row items-start justify-center lg:justify-around pt-4 lg:pt-12">
             <HStack align="start" justify="between" className="w-1/2">
               <Link to={getRouteMain()}>
-                <Icon Svg={logo} width={202} height={68} />
+                <Icon className="w-[110px] lg:w-[220px]" Svg={logo} height={68} />
               </Link>
               <Text
                 size="md"
                 Tag="p"
                 color="white"
                 text={t('Дізнавайтесь першими про акції та новини')}
-                className="mt-6"
+                className="mt-4 lg:mt-6 w-[339px]"
               />
               <VStack align="center" justify="between" className=" gap-4 mt-4">
                 <Icon Svg={facebook} width={36} height={36} />
@@ -114,15 +114,19 @@ const Footer: FC<Props> = () => {
               </VStack>
               <Button
                 variant="fill"
-                className="w-[313px] h-[52px] mt-[26px] mb-[77px] text-[16px]"
+                className="w-[313px] h-[52px] mt-[26px] mb-10 lg:mb-[77px] text-[16px]"
               >
                 Стати продавцем
               </Button>
             </HStack>
-            <VStack align="start" justify="between" className=" gap-5 w-1/2">
+            <VStack
+              align="start"
+              wrap="wrap"
+              className="gap-[33px] lg:gap-5 w-full lg:w-1/2 justify-normal lg:justify-between grid grid-cols-2 sm:grid-cols-3 mb-12 lg:mb-[115px]"
+            >
               {footerLinks.map((titleLink, i) => (
                 // eslint-disable-next-line react/no-array-index-key
-                <HStack key={i} gap="6">
+                <HStack className="w-full lg:max-w-[202px]" key={i} gap="6">
                   <Text size="xl" Tag="h4" color="white" text={t(titleLink.title)} />
                   {titleLink.links.map((link, i) => (
                     // eslint-disable-next-line react/no-array-index-key
