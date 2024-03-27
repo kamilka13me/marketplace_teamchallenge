@@ -14,9 +14,11 @@
     "prepare": "cd .. && husky install frontend/.husky",
     "build-storybook": "storybook build",
     "test": "jest --runInBand --detectOpenHandles --config ./config/jest/jest.config.ts",
-    "chromatic": "npx chromatic --project-token="
+    "chromatic": "npx chromatic --project-token=",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
+    "-": "^0.0.1",
     "@headlessui/react": "^1.7.18",
     "@reduxjs/toolkit": "^2.0.1",
     "axios": "^1.6.5",
@@ -70,6 +72,7 @@
     "autoprefixer": "^10.4.17",
     "chromatic": "^10.9.0",
     "cross-env": "^7.0.3",
+    "cypress": "^13.7.1",
     "eslint": "^8.56.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.1.0",
@@ -92,7 +95,7 @@
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
-    "vite": "^5.0.11",
+    "vite": "^5.2.6",
     "vite-bundle-visualizer": "^1.0.1",
     "vite-plugin-env-compatible": "^2.0.1",
     "vite-plugin-svgr": "^4.2.0",

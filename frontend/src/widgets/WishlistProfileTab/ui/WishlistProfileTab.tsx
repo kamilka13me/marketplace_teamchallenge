@@ -57,7 +57,7 @@ const WishlistProfileTab: FC<Props> = () => {
     try {
       const response = await $api.delete(`${ApiRoutes.WISHLIST}`);
 
-      await dispatch(userActions.setUserWishList([]));
+      dispatch(userActions.setUserWishList([]));
 
       return response;
     } catch (error) {

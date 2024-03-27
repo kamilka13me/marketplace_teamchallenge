@@ -5,7 +5,7 @@ import useAxios from '@/shared/lib/hooks/useAxios';
 import { Skeleton } from '@/shared/ui/Skeleton';
 import { Slider } from '@/shared/ui/Slider';
 
-interface ImageData {
+export interface ImageData {
   _id: string;
   image: string;
 }

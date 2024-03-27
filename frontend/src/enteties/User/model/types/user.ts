@@ -8,6 +8,12 @@ export interface User {
   phoneNumber?: string;
 }
 
+export interface LoginResponse {
+  user: User;
+  message: string;
+  accessToken: string;
+}
+
 export interface UserWithWishlist extends User {
   wishlist: string[];
 }
