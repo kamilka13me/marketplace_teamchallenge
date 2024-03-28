@@ -69,9 +69,9 @@ const ProfileSidebar: FC<Props> = (props) => {
           {tabs.map((item, index) => (
             <li
               key={item.id}
-              className={`px-4 py-3 ${tab === index && 'bg-gray-900'} rounded-2xl`}
+              className={`px-4 py-3 ${tab === index && 'bg-gray-900'} rounded-2xl min-w-[234px]`}
             >
-              <NavLink to={getRouteProfile(item.urlId)}>
+              <NavLink to={getRouteProfile(item.urlId)} className="flex">
                 <Button variant="clear" onClick={() => setTab(index)}>
                   <VStack align="center" gap="4">
                     <div
