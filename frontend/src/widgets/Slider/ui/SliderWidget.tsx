@@ -2,8 +2,8 @@ import { FC } from 'react';
 
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import useAxios from '@/shared/lib/hooks/useAxios';
-import { Skeleton } from '@/shared/ui/Skeleton';
 import { Slider } from '@/shared/ui/Slider';
+import SliderWidgetLoader from '@/widgets/Slider/ui/SliderWidgetLoader';
 
 interface ImageData {
   _id: string;
@@ -17,7 +17,7 @@ const SliderWidget: FC = () => {
 
   const renderContent = () => {
     if (isLoading) {
-      return <Skeleton width="979px" height="504px" className="!rounded-2xl" />;
+      return <SliderWidgetLoader />;
     }
 
     if (error) {

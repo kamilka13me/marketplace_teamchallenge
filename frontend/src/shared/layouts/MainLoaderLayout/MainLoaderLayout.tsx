@@ -4,20 +4,35 @@ import { ProductCardSkeleton } from '@/enteties/Product';
 import { Container } from '@/shared/layouts/Container';
 import { Skeleton } from '@/shared/ui/Skeleton';
 import { HStack, VStack } from '@/shared/ui/Stack';
+import { SidebarLoader } from '@/widgets/Sidebar';
+import SliderWidgetLoader from '@/widgets/Slider/ui/SliderWidgetLoader';
 
 interface Props {
   withHeader?: boolean;
 }
 
 const MainLoaderLayout: FC<Props> = (props) => {
-  const { withHeader = false } = props;
+  const { withHeader = true } = props;
 
   return (
     <>
       {withHeader && (
         <div className="fixed top-0 left-0 right-0 z-[100] bg-white-500 h-[100px]">
           <Container className="flex flex-col justify-center h-full">
-            <VStack justify="between" align="center">
+            {/* MOBILE HEADER */}
+            <HStack gap="4" className="pt-4 pb-2 lg:hidden">
+              <VStack justify="between" align="center" className="w-full">
+                <VStack gap="4" align="center">
+                  <Skeleton width={24} height={24} />
+                  <Skeleton width={110} height={38} />
+                </VStack>
+                <Skeleton width={24} height={24} />
+              </VStack>
+              <Skeleton width="100%" height="38px" />
+            </HStack>
+
+            {/* DESKTOP HEADER */}
+            <VStack justify="between" align="center" className="hidden lg:flex">
               <Skeleton width={202} height={68} />
               <VStack justify="center" align="center">
                 <VStack gap="6">
@@ -41,34 +56,35 @@ const MainLoaderLayout: FC<Props> = (props) => {
         </div>
       )}
 
-      <Container className={`${withHeader ? 'mt-[144px]' : ' mt-[44px]'} mb-[72px]`}>
-        <VStack justify="between" className="mb-10">
-          <HStack gap="2" className="">
-            {Array(11)
-              .fill(null)
-              .map((_, i) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <VStack key={i} gap="4" className="p-2">
-                  <Skeleton width={24} height={24} />
-                  <div className="">
-                    <Skeleton width={Math.random() * (200 - 100) + 100} height={24} />
-                  </div>
-                  <Skeleton width={24} height={24} />
-                </VStack>
-              ))}
-          </HStack>
-          <Skeleton width="979px" height="504px" className="!rounded-2xl" />
+      <Container
+        className={`${withHeader ? 'mt-[120px] lg:mt-[144px]' : 'mt-[44px]'} mb-[72px]`}
+      >
+        {/* MOBILE HERO */}
+        <HStack gap="4" className="mb-6 lg:hidden">
+          <SliderWidgetLoader />
+          <Skeleton width="100%" height="38px" />
+        </HStack>
+
+        {/* DESKTOP HERO */}
+        <VStack justify="between" className="hidden lg:flex mb-10">
+          <SidebarLoader sections={11} />
+          <SliderWidgetLoader />
         </VStack>
+
         <HStack gap="5">
-          <Skeleton height={30} width={156} />
-          <VStack gap="5">
+          <Skeleton
+            height="100%"
+            width="100%"
+            className="!h-[24px] !w-[100px] lg:!h-[30px] lg:!w-[156px]"
+          />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-[7px] w-full ">
             {Array(4)
               .fill(null)
               .map((_, i) => (
                 // eslint-disable-next-line react/no-array-index-key
                 <ProductCardSkeleton key={i} />
               ))}
-          </VStack>
+          </div>
         </HStack>
       </Container>
     </>
