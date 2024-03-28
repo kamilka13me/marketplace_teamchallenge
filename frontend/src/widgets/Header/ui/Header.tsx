@@ -289,10 +289,10 @@ const Header: FC<Props> = () => {
       {showModal && (
         <ModalWindow
           onCloseFunc={onHandleClickPortal}
-          className="px-8 py-10 animate-open-forms-modal"
+          className="px-4 md:px-8 py-6 md:py-10 h-screen md:h-auto w-screen md:w-auto rounded-none md:rounded-2xl animate-open-forms-modal"
         >
           <VStack align="center" justify="between">
-            <span className="outfit text-right text-gray-900 text-[32px] leading-[28px] font-semibold">
+            <span className="outfit text-right text-gray-900 text-[20px] md:text-[32px] leading-[24px] md:leading-[28px] font-semibold">
               {toggleForm ? t('Вхід') : t('Реєстрація')}
             </span>
             <Icon
