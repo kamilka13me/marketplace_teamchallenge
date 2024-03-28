@@ -46,7 +46,7 @@ const ProductSectionLayout: FC<Props> = (props) => {
         >
           <Text Tag="span" text="Дивитись більше" size="md" className="lg:text-2xl" />
           <div
-            className="hidden xl:block absolute -z-[1] w-[56px] h-[56px] -top-[15px] -right-[17px]
+            className="hidden xl:block absolute -z-[1] w-[56px] h-[56px] -top-[16px] -right-[17px]
             group-hover:top-[11px]
             group-hover:-right-[24px]
             group-hover:w-[12px]
@@ -57,7 +57,7 @@ const ProductSectionLayout: FC<Props> = (props) => {
           />
           <div className="hidden xl:block absolute -top-[22px] left-[165px] w-5 h-5 bg-secondary rounded-full opacity-0 group-hover:opacity-100 duration-300" />
           <div className="hidden xl:block absolute -top-[22px] left-[200px] w-[14px] h-[14px] bg-secondary rounded-full opacity-0 group-hover:opacity-100 duration-300" />
-          <div className="hidden xl:block absolute -z-[1] -top-[4px] -right-[4px] w-8 h-8 bg-secondary rounded-full opacity-0 group-hover:opacity-100 duration-300" />
+          <div className="hidden xl:block absolute -z-[1] -top-[5px] -right-[5px] w-8 h-8 bg-secondary rounded-full opacity-0 group-hover:opacity-100 duration-300" />
           <Icon Svg={arrowRight} className="w-[20px] h-[20px]  xl:w-[20px] xl:h-[20px]" />
         </Link>
       </VStack>

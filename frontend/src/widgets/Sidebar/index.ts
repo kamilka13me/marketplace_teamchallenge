@@ -1,3 +1,5 @@
 import Sidebar from './ui/Sidebar';
 
-export { Sidebar };
+import SidebarLoader from '@/widgets/Sidebar/ui/SidebarLoader';
+
+export { Sidebar, SidebarLoader };
