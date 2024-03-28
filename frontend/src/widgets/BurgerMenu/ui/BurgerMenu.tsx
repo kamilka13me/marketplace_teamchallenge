@@ -2,14 +2,17 @@ import React, { FC, RefObject, useEffect, useRef, useState } from 'react';
 
 import { Transition } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
+import { getUserAuthData } from '@/enteties/User';
 import allProducts from '@/shared/assets/icons/allProducts.svg?react';
 import cancelWhite from '@/shared/assets/icons/cancel-white.svg?react';
 import enBlack from '@/shared/assets/icons/en-black.svg?react';
 import logo from '@/shared/assets/icons/logo.svg?react';
 import person from '@/shared/assets/icons/person.svg?react';
 import uaBlack from '@/shared/assets/icons/ua-black.svg?react';
-import { getRouteMain } from '@/shared/const/routes';
+import { getRouteMain, getRouteProfile } from '@/shared/const/routes';
+import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Link } from '@/shared/ui/Link';
@@ -34,6 +37,9 @@ const BurgerMenu: FC<Props> = (props) => {
     burgerButtonRef,
   } = props;
 
+  const user = useAppSelector(getUserAuthData);
+  const navigate = useNavigate();
+
   const { t, i18n } = useTranslation();
 
   const burgerDataRef = useRef<HTMLDivElement>(null);
@@ -42,6 +48,12 @@ const BurgerMenu: FC<Props> = (props) => {
 
   const openMobileAllCategoriesHandler = () => {
     setMobileAllCategories(false);
+  };
+
+  const onEmailClick = (): void => {
+    navigate(getRouteProfile('info'));
+    setClose();
+    document.body.classList.remove('overflow-hidden');
   };
 
   const onClickLogin = (): void => {
@@ -135,22 +147,47 @@ const BurgerMenu: FC<Props> = (props) => {
               />
             </VStack>
             <VStack align="center" className="gap-[22px]">
-              <Link to={getRouteMain()}>
-                <Icon Svg={person} width={28} height={28} className="stroke-white" />
-              </Link>
-              <VStack align="center" className="gap-[7.5px]">
-                <Button variant="clear" onClick={onClickLogin}>
-                  <span className="outfit font-normal text-base text-white">
-                    {t('Вхід')}
-                  </span>
-                </Button>
-                <div className="h-6 border-r-[1px] border-solid border-primary" />
-                <Button variant="clear" onClick={onClickRegistation}>
-                  <span className="outfit font-normal text-base text-white">
-                    {t('Реєстрація')}
-                  </span>
-                </Button>
-              </VStack>
+              {user ? (
+                <>
+                  <div className="flex justify-center items-center w-[34px] h-[34px] rounded-full bg-gray-400">
+                    <Text
+                      Tag="p"
+                      text={`${user?.username?.[0] || ''}${user?.surname?.[0] || ''}`}
+                      size="xxs"
+                      align="center"
+                      color="white"
+                    />
+                  </div>
+                  <Button variant="clear" onClick={onEmailClick}>
+                    <Text
+                      Tag="p"
+                      text={user?.email}
+                      size="md"
+                      align="center"
+                      color="white"
+                    />
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link to={getRouteMain()}>
+                    <Icon Svg={person} width={28} height={28} className="stroke-white" />
+                  </Link>
+                  <VStack align="center" className="gap-[7.5px]">
+                    <Button variant="clear" onClick={onClickLogin}>
+                      <span className="outfit font-normal text-base text-white">
+                        {t('Вхід')}
+                      </span>
+                    </Button>
+                    <div className="h-6 border-r-[1px] border-solid border-primary" />
+                    <Button variant="clear" onClick={onClickRegistation}>
+                      <span className="outfit font-normal text-base text-white">
+                        {t('Реєстрація')}
+                      </span>
+                    </Button>
+                  </VStack>
+                </>
+              )}
             </VStack>
           </HStack>
           <HStack justify="between" className="min-h-[118px] p-4 rounded-b-2xl bg-white">
