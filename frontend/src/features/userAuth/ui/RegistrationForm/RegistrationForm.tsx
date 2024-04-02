@@ -163,7 +163,7 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
         <Checkbox
           type="checkbox"
           variant="basic"
-          label={t('Ви надаєте згоду на')} // translate
+          label={t('Ви надаєте згоду на')}
           {...register('personalTerms', {
             required: true,
           })}
