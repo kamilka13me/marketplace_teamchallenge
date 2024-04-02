@@ -97,7 +97,7 @@ const LoginForm: FC<LoginFormProps> = (props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-[360px]">
+    <form onSubmit={handleSubmit(onSubmit)} className="md:max-w-[360px]">
       <Input
         variant="basic"
         placeholder="Email"

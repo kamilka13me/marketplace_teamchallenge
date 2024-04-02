@@ -85,7 +85,7 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-[360px]">
+    <form onSubmit={handleSubmit(onSubmit)} className="md:max-w-[360px]">
       <Input
         variant="basic"
         placeholder={t("Ім'я")}
@@ -159,14 +159,23 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
           }}
         />
       </div>
-      <Checkbox
-        type="checkbox"
-        variant="basic"
-        label={t('Надання згоди про обробку персональних даних')}
-        {...register('personalTerms', {
-          required: true,
-        })}
-      />
+      <VStack align="center" className="gap-[4px]">
+        <Checkbox
+          type="checkbox"
+          variant="basic"
+          label={t('Ви надаєте згоду на')}
+          {...register('personalTerms', {
+            required: true,
+          })}
+        />
+        <a
+          href="src/shared/assets/img/Error404vector.png" // test file, later to change to real document.
+          download="User-agreement"
+          className="outfit font-normal text-[14px] text-[#0F62FE] underline"
+        >
+          {t('Користувацьку угоду')}
+        </a>
+      </VStack>
       <Input
         variant="clear"
         value={t('Зареєструватись')}
