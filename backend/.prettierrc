@@ -4,5 +4,6 @@
   "printWidth": 90,
   "singleQuote": true,
   "bracketSpacing": true,
-  "trailingComma": "all"
+  "trailingComma": "all",
+  "endOfLine": "crlf"
 }
