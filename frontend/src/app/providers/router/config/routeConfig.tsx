@@ -7,6 +7,7 @@ import { NotFoundPage } from '@/pages/NotFoundPage';
 // import { ProductsPage } from '@/pages/ProductsPage';
 // import { ProductsPage } from '@/pages/ProductsPage';
 import { ProfilePage } from '@/pages/ProfilePage';
+import { SellerPage } from '@/pages/SellerPage';
 import { VerifyPage } from '@/pages/VerifyPage';
 import {
   AppRoutes,
@@ -15,6 +16,7 @@ import {
   // getRouteProduct,
   // getRouteProducts,
   getRouteProfile,
+  getSellerProfile,
   getVerifyRoute,
 } from '@/shared/const/routes';
 
@@ -41,6 +43,12 @@ export const RouteConfig: Record<AppRoutes, AppRoutesProps> = {
     authOnly: true,
     element: <ProfilePage />,
     roles: [UserRoles.USER, UserRoles.SUPER_ADMIN, UserRoles.ADMIN],
+  },
+  [AppRoutes.SELLER]: {
+    path: getSellerProfile(':id'),
+    authOnly: true,
+    element: <SellerPage />,
+    roles: [UserRoles.SELLER, UserRoles.SUPER_ADMIN, UserRoles.ADMIN],
   },
   [AppRoutes.VERIFY]: {
     path: getVerifyRoute(':id'),
