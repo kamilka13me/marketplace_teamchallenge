@@ -60,7 +60,7 @@ const LoginForm: FC<LoginFormProps> = (props) => {
         if (onCloseModal) {
           onCloseModal();
         }
-        navigate(getRouteProfile());
+        navigate(getRouteProfile('info'));
       }
     });
   };
