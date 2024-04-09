@@ -104,7 +104,7 @@ const Header: FC<Props> = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-[100] bg-gray-900">
+    <header className="fixed top-0 left-0 right-0 z-[100] bg-main-dark">
       <Container>
         <VStack align="center" className="justify-center lg:justify-between py-4">
           <Link to={getRouteMain()}>
@@ -120,7 +120,7 @@ const Header: FC<Props> = () => {
                 id="all-category-button"
                 aria-controls="all-category-modal"
                 ref={categoryButtonRef}
-                variant="fill"
+                variant="primary"
                 aria-haspopup
                 aria-expanded={showModalCategory}
                 className="hidden lg:block all-products-button"
@@ -151,7 +151,8 @@ const Header: FC<Props> = () => {
                   classNameBlockWrap="w-full"
                 />
                 <Button
-                  variant="search"
+                  variant="primary"
+                  className="rounded-l-none !px-[14px] py-[9px]"
                   type="submit"
                   onClick={() => {
                     setInputData('');
@@ -172,13 +173,13 @@ const Header: FC<Props> = () => {
                 >
                   <HStack
                     align="center"
-                    className="gap-1.5 group-hover:text-primary duration-300"
+                    className="gap-1.5 group-hover:text-main duration-300"
                   >
                     <Icon
                       Svg={person}
                       width={28}
                       height={28}
-                      className="stroke-white group-hover:stroke-primary duration-300"
+                      className="stroke-main-white group-hover:stroke-main duration-300"
                     />
                     <span>{t('Кабінет')}</span>
                   </HStack>
@@ -191,25 +192,25 @@ const Header: FC<Props> = () => {
                 >
                   <HStack
                     align="center"
-                    className="relative gap-1.5 group-hover:text-primary duration-300"
+                    className="relative gap-1.5 group-hover:text-main duration-300"
                   >
                     <Icon
                       Svg={like}
-                      className="lg:w-[28px] lg:h-[28px] stroke-white group-hover:stroke-primary duration-300"
+                      className="lg:w-[28px] lg:h-[28px] stroke-main-white group-hover:stroke-main duration-300"
                     />
 
                     <div
                       className={
                         wishlist?.length < 1
                           ? 'hidden'
-                          : 'absolute right-0 lg:right-[29px] flex justify-items-center items-center bg-primary border-[1.5px] border-gray-900 rounded-full'
+                          : 'absolute right-0 lg:right-[29px] flex justify-items-center items-center bg-main border-[1.5px] border-main-dark rounded-full'
                       }
                     >
                       <span
                         className={
                           wishlist?.length < 1
                             ? 'hidden'
-                            : 'outfit font-normal min-w-[10px] m-[2px] text-center text-black text-[10px] leading-[10px]'
+                            : 'outfit font-normal min-w-[10px] m-[2px] text-center text-main-dark text-[10px] leading-[10px]'
                         }
                       >
                         {wishlist?.length}
@@ -251,7 +252,7 @@ const Header: FC<Props> = () => {
                     : 'hidden lg:block'
                 }
               />
-              <div className="hidden lg:block h-6 border-r-[1px] border-solid border-primary" />
+              <div className="hidden lg:block h-6 border-r-[1px] border-solid border-main" />
               <Icon
                 clickable
                 onClick={onEnChange}
@@ -292,7 +293,7 @@ const Header: FC<Props> = () => {
           className="px-4 md:px-8 py-6 md:py-10 h-full md:h-auto w-screen md:w-auto rounded-none md:rounded-2xl animate-open-forms-modal"
         >
           <VStack align="center" justify="between">
-            <span className="outfit text-right text-gray-900 text-[20px] md:text-[32px] leading-[24px] md:leading-[28px] font-semibold">
+            <span className="outfit text-right text-main-dark text-[20px] md:text-[32px] leading-[24px] md:leading-[28px] font-semibold">
               {toggleForm ? t('Вхід') : t('Реєстрація')}
             </span>
             <Icon

@@ -202,11 +202,11 @@ const PersonalDataForms: FC = () => {
   };
 
   return (
-    <div className="bg-gray-400 rounded-2xl px-[38px] pb-[38px] pt-[72px] min-h-[568px] overflow-hidden relative z-10">
-      <div className="w-[370px] h-[370px] bg-primary opacity-40 blur-[100px] rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -z-20" />
+    <div className="bg-dark-grey rounded-2xl px-[38px] pb-[38px] pt-[72px] min-h-[568px] overflow-hidden relative z-10">
+      <div className="w-[370px] h-[370px] bg-main opacity-40 blur-[100px] rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -z-20" />
       <VStack className="gap-[48px]">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="max-w-[414px] py-[42px] px-12 bg-gray-950 rounded-2xl">
+          <div className="max-w-[414px] py-[42px] px-12 bg-selected-dark rounded-2xl">
             <Input
               variant="personal"
               autoComplete="off"
@@ -306,8 +306,9 @@ const PersonalDataForms: FC = () => {
                     countrySelectorStyleProps={{
                       buttonClassName: '!bg-transparent !min-h-[48px] !border-none',
                       dropdownStyleProps: {
-                        className: '!max-h-[84px] !bg-gray-400 !border-none',
-                        listItemClassName: 'focus:!bg-gray-950 hover:!bg-gray-950',
+                        className: '!max-h-[84px] !bg-dark-grey !border-none',
+                        listItemClassName:
+                          'focus:!bg-selected-dark hover:!bg-selected-dark',
                         listItemCountryNameClassName: 'text-white-transparent-70',
                         listItemStyle: {
                           '--react-international-phone-selected-dropdown-item-background-color':
@@ -319,7 +320,7 @@ const PersonalDataForms: FC = () => {
                 )}
               />
               {errors?.inputPhone && (
-                <p className="outfit font-normal text-[12px] text-red-200">
+                <p className="outfit font-normal text-[12px] text-error-red">
                   {errors?.inputPhone.message}
                 </p>
               )}
@@ -329,7 +330,7 @@ const PersonalDataForms: FC = () => {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <HStack align="end" className="min-h-[452px]" justify="between">
-            <div className="max-w-[444px] p-[42px] bg-gray-950 rounded-2xl">
+            <div className="max-w-[444px] p-[42px] bg-selected-dark rounded-2xl">
               <div className="relative mb-[34px]">
                 <Input
                   variant="personal"
@@ -431,7 +432,7 @@ const PersonalDataForms: FC = () => {
             <div
               className={
                 showModal
-                  ? 'block bg-gray-400 py-[21px] px-3 rounded-lg drop-shadow-custom-user-info relative animate-open-info-modal'
+                  ? 'block bg-dark-grey py-[21px] px-3 rounded-lg drop-shadow-custom-user-info relative animate-open-info-modal'
                   : 'opacity-0 duration-500'
               }
             >
@@ -445,11 +446,11 @@ const PersonalDataForms: FC = () => {
                 size="sm"
                 className="leading-[18px] text-white"
               />
-              <div className="absolute bottom-0 right-[10px] transform -translate-x-0 translate-y-[8px] border-x-8 border-t-8 border-transparent border-t-gray-400" />
+              <div className="absolute bottom-0 right-[10px] transform -translate-x-0 translate-y-[8px] border-x-8 border-t-8 border-transparent border-t-dark-grey" />
             </div>
 
             <button
-              className="outfit bg-primary px-[124px] py-[15px] rounded-lg font-normal leading-[22px] text-[16px] text-gray-900 duration-300 hover:bg-secondary active:bg-primary disabled:opacity-40"
+              className="outfit bg-main px-[124px] py-[15px] rounded-lg font-normal leading-[22px] text-[16px] text-main-dark duration-300 hover:bg-secondary-yellow active:bg-main disabled:opacity-40"
               type="submit"
               disabled={!isValid}
             >

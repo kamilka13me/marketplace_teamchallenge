@@ -11,12 +11,12 @@ export type FontSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' 
 export type TextFonts = 'ibm-plex-sans' | 'outfit';
 
 const TextColor: Record<TextColors, string> = {
-  primary: 'text-black',
-  gray: 'text-gray',
+  primary: 'text-main-dark',
+  gray: 'text-grey',
   orange: 'text-orange',
-  red: 'text-red',
+  red: 'text-error-red',
   green: 'text-green',
-  white: 'text-white',
+  white: 'text-main-white',
 };
 
 const TextAlignClass: Record<TextAlign, string> = {

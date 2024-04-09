@@ -13,7 +13,7 @@ const Page500: FC = () => {
   return (
     <HStack justify="center" gap="4" align="center" className="h-screen">
       <Text Tag="h1" text="Server Error" size="4xl" />
-      <Button onClick={reloadPage} variant="fill">
+      <Button onClick={reloadPage} variant="primary">
         Home
       </Button>
     </HStack>

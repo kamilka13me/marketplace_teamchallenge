@@ -18,7 +18,7 @@ export const Skeleton = memo((props: SkeletonProps) => {
 
   return (
     <div
-      className={`${className} animate-pulse bg-[#C6C6C6] rounded-[4px]`}
+      className={`${className} animate-pulse bg-disabled rounded-[4px]`}
       style={styles}
     />
   );

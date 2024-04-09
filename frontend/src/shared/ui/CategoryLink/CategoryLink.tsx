@@ -56,7 +56,7 @@ const CategoryLink: FC<Props> = (props) => {
           Tag="p"
           size="lg"
           text={category.name}
-          className="group-hover:font-bold duration-75 text-[18px] leading-[40px]"
+          className="group-hover:font-bold duration-75 text-[18px] leading-[40px] cursor-pointer"
         />
       </VStack>
       <div>

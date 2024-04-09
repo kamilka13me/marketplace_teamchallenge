@@ -44,9 +44,9 @@ const ProfileSidebar: FC<Props> = (props) => {
   const user = useAppSelector(getUserAuthData);
 
   return (
-    <div className="flex flex-col px-4 pt-8 pb-[15px] rounded-2xl bg-gray-400 w-[266px] h-[568px] whitespace-nowrap">
+    <div className="flex flex-col px-4 pt-8 pb-[15px] rounded-2xl bg-dark-grey w-[266px] h-[568px] whitespace-nowrap">
       <VStack align="center" gap="4" className="px-4">
-        <div className="flex justify-center items-center w-[56px] h-[56px] rounded-full bg-gray-900">
+        <div className="flex justify-center items-center w-[56px] h-[56px] rounded-full bg-selected-dark">
           <Text
             Tag="p"
             text={`${user?.username?.[0] || ''}${user?.surname?.[0] || ''}`}
@@ -69,23 +69,21 @@ const ProfileSidebar: FC<Props> = (props) => {
           {tabs.map((item, index) => (
             <li
               key={item.id}
-              className={`px-4 py-3 ${tab === index && 'bg-gray-900'} rounded-2xl min-w-[234px]`}
+              className={`px-4 py-3 ${tab === index && 'bg-selected-dark'} rounded-2xl min-w-[234px]`}
             >
               <NavLink to={getRouteProfile(item.urlId)} className="flex">
                 <Button variant="clear" onClick={() => setTab(index)}>
                   <VStack align="center" gap="4">
-                    <div
-                      className={`${tab === index && 'bg-primary'} p-[7px] rounded-md`}
-                    >
+                    <div className={`${tab === index && 'bg-main'} p-[7px] rounded-md`}>
                       <Icon
                         Svg={item.icon}
                         width={16}
                         height={16}
-                        className={`${tab === index ? 'stroke-gray-400' : 'stroke-white-400'} stroke-2 `}
+                        className={`${tab === index ? 'stroke-dark-grey' : 'stroke-disabled '} stroke-2 `}
                       />
                     </div>
                     <Text
-                      className={`${tab === index ? 'text-white' : 'text-white-400'} `}
+                      className={`${tab === index ? '!text-main-white' : '!text-disabled'} `}
                       Tag="p"
                       text={item.title}
                       size="md"
@@ -110,10 +108,10 @@ const ProfileSidebar: FC<Props> = (props) => {
                 Svg={logout}
                 width={16}
                 height={16}
-                className={`stroke-white-400 stroke-2 `}
+                className={`stroke-disabled stroke-2 `}
               />
             </div>
-            <Text className="text-white-400" Tag="p" text="Вихід" size="md" />
+            <Text className="!text-disabled mt-[3px]" Tag="p" text="Вихід" size="md" />
           </VStack>
         </Button>
       </HStack>

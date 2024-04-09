@@ -12,7 +12,7 @@ const ProductCardSkeleton: FC<Props> = (props) => {
 
   return (
     <div
-      className={`max-w-[313px] h-[248px] lg:h-[445px] rounded-2xl lg:p-4 ${dark && 'bg-gray-400'}`}
+      className={`max-w-[313px] h-[248px] lg:h-[445px] rounded-2xl lg:p-4 ${dark && 'bg-dark-grey'}`}
     >
       <Skeleton height="248px" width="100%" className="min-w-[168px] lg:hidden" />
       <div className="hidden lg:block">

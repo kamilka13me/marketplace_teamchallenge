@@ -128,7 +128,7 @@ const ModalCategoryMobile: FC<Props> = ({ isOpen, setIsOpen }) => {
       {isOpen && (
         <div
           ref={modalCategoriesRef}
-          className={`fixed bottom-0 bg-white left-0 right-0 ${currentSub !== null ? 'top-0' : 'top-[123px]'} w-full min-h-[100vh_-_160px] overflow-auto px-4 pt-[22px] z-[999]`}
+          className={`fixed bottom-0 bg-main-white left-0 right-0 ${currentSub !== null ? 'top-0' : 'top-[123px]'} w-full min-h-[100vh_-_160px] overflow-auto px-4 pt-[22px] z-[999]`}
         >
           <VStack justify="between" align="center">
             <Text

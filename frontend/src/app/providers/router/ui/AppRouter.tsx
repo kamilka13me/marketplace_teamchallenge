@@ -10,7 +10,11 @@ interface Props {}
 
 const AppRouter: FC<Props> = () => {
   const renderWithWrapper = useCallback((route: AppRoutesProps) => {
-    const element = <Suspense fallback={<MainLoaderLayout />}>{route.element}</Suspense>;
+    const element = (
+      <Suspense fallback={<MainLoaderLayout withHeader={false} />}>
+        {route.element}
+      </Suspense>
+    );
 
     return (
       <Route
