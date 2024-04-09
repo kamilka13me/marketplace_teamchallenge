@@ -182,7 +182,7 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
         name="btnInput"
         type="submit"
         disabled={!isValid || !reCaphaValue}
-        className="outfit bg-main min-w-full py-[4px] mt-6 rounded-lg font-normal text-[18px] leading-[40px] text-main-dark duration-300 hover:bg-secondary-yellow active:bg-main disabled:text-main-white disabled:bg-main-white"
+        className="outfit bg-main min-w-full py-[4px] mt-6 rounded-lg font-normal text-[18px] leading-[40px] text-main-dark duration-300 hover:bg-secondary-yellow active:bg-main disabled:text-main-white disabled:bg-disabled"
       />
       <VStack align="center" className="mt-6" justify="between">
         <span className="outfit text-right text-main-dark text-[14px] font-normal leading-[18px]">

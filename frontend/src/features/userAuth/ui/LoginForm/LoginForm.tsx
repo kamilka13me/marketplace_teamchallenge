@@ -158,7 +158,7 @@ const LoginForm: FC<LoginFormProps> = (props) => {
         name="btnInput"
         type="submit"
         disabled={!isValid}
-        className="cursor-pointer outfit bg-main min-w-full py-[4px] rounded-lg font-normal text-[18px] leading-[40px] text-main-dark duration-300 hover:bg-secondary-yellow active:bg-main disabled:text-main-white disabled:bg-main-white"
+        className="cursor-pointer outfit bg-main min-w-full py-[4px] rounded-lg font-normal text-[18px] leading-[40px] text-main-dark duration-300 hover:bg-secondary-yellow active:bg-main disabled:text-main-white disabled:bg-disabled"
       />
       <VStack align="center" className="mt-6" justify="between">
         <span className="outfit text-right text-main-dark text-[14px] font-normal leading-[18px]">
