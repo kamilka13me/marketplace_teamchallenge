@@ -2,11 +2,30 @@ import { FC, useLayoutEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
+import like from '@/shared/assets/icons/like.svg?react';
+import person from '@/shared/assets/icons/person.svg?react';
+import { getRouteProfile } from '@/shared/const/routes';
 import { Container } from '@/shared/layouts/Container';
 import { VStack } from '@/shared/ui/Stack';
 import { PersonalDataForms } from '@/widgets/PersonalDataForms';
 import { ProfileSidebar } from '@/widgets/ProfileSidebar';
+import { ITab } from '@/widgets/ProfileSidebar/ui/ProfileSidebar';
 import { WishlistProfileTab } from '@/widgets/WishlistProfileTab';
+
+const tabs: ITab[] = [
+  {
+    id: 0,
+    title: 'Персональні дані',
+    urlId: getRouteProfile('info'),
+    icon: person,
+  },
+  {
+    id: 1,
+    title: 'Список бажань',
+    urlId: getRouteProfile('wishlist'),
+    icon: like,
+  },
+];
 
 const ProfilePage: FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -34,9 +53,8 @@ const ProfilePage: FC = () => {
     >
       <Container>
         <VStack className={`${currentTab === 0 ? 'gap-[64px]' : 'gap-5'}`}>
-          <ProfileSidebar tab={currentTab} setTab={setCurrentTabHandler} />
+          <ProfileSidebar tabs={tabs} tab={currentTab} setTab={setCurrentTabHandler} />
 
-          {/* JUST EXAMPLE */}
           {currentTab === 0 ? <PersonalDataForms /> : <WishlistProfileTab />}
         </VStack>
       </Container>
