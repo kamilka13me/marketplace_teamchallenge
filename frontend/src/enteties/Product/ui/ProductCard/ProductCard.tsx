@@ -99,7 +99,7 @@ const ProductCard: FC<Props> = (props) => {
       className={`relative p-[6px] lg:p-4 rounded-2xl
       min-w-[168px] max-w-[313px] w-full 
       min-h-[248px] max-h-[445px] h-full
-       ${!dark ? 'shadow-custom-base hover:shadow-custom-hover' : 'bg-gray-400'}  
+       ${!dark ? 'shadow-custom-base hover:shadow-custom-hover' : 'bg-dark-grey'}  
        duration-75`}
     >
       {images?.length > 0 ? (
@@ -125,7 +125,7 @@ const ProductCard: FC<Props> = (props) => {
               Tag="span"
               text={name}
               size="xs"
-              className={`${dark && 'text-white'} lg:text-md`}
+              className={`${dark && 'text-main-white'} lg:text-md`}
             />
           </Link>
         </div>
@@ -154,14 +154,14 @@ const ProductCard: FC<Props> = (props) => {
             font="ibm-plex-sans"
             Tag="p"
             text={countDiscount(price, discount || 0).toString()}
-            className={`${discount && 'text-red'} font-medium lg:text-4xl`}
+            className={`${dark && 'text-main-white'} font-medium lg:text-4xl`}
           />
           <Text
             size="2xl"
             font="ibm-plex-sans"
             Tag="span"
             text="грн"
-            className={` ${discount && 'text-red'}`}
+            className={`${dark && 'text-main-white'}`}
           />
         </VStack>
 
@@ -184,7 +184,7 @@ const ProductCard: FC<Props> = (props) => {
         >
           <Icon
             Svg={heart}
-            className={`${wishlist?.includes(_id) ? 'fill-secondary' : '!stroke-2 !stroke-gray-900'}  ${heartIsDisabled && 'opacity-40'}`}
+            className={`${wishlist?.includes(_id) ? 'fill-secondary-yellow' : '!stroke-2 !stroke-main-dark'}  ${heartIsDisabled && 'opacity-40'}`}
           />
         </Button>
       </HStack>

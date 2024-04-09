@@ -13,7 +13,7 @@ type VariantTypes = 'basic';
 
 const variantClasses: Record<VariantTypes, string> = {
   basic:
-    'peer relative appearance-none cursor-pointer w-[18px] h-[18px] border-[3px] border-gray-300 rounded-[3px] hover:border-gray-900 checked:border-green-100 checked:bg-green-100 checked:hover:border-green-100 focus:outline-none',
+    'peer relative appearance-none cursor-pointer w-[18px] h-[18px] border-[3px] border-light-grey rounded-[3px] hover:border-main-dark checked:border-green checked:bg-green checked:hover:border-green focus:outline-none',
 };
 
 interface Props extends HTMLInputProps {
@@ -36,7 +36,7 @@ const Checkbox = forwardRef<HTMLInputElement, Props>((props, ref) => {
     <VStack gap="1" align="center">
       <label
         htmlFor={name}
-        className="outfit font-normal text-gray-300 text-[14px] has-[:checked]:text-gray-900 hover:text-gray-300 cursor-pointer duration-300"
+        className="outfit font-normal text-light-grey text-[14px] has-[:checked]:text-main-dark hover:text-light-grey cursor-pointer duration-300"
       >
         <VStack gap="1" align="center" className="relative">
           <input

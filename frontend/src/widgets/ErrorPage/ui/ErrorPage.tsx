@@ -33,12 +33,13 @@ const Error404: FC = () => {
             color="white"
           />
           <Button
-            variant="notFound"
+            variant="gradient"
+            className="py-4 max-w-[282px] w-full self-start"
             onClick={() => {
               navigate(getRouteMain());
             }}
           >
-            Головна
+            <Text Tag="span" text="Головна" size="md" bold color="white" />
           </Button>
         </HStack>
       </VStack>

@@ -1,18 +1,15 @@
 import { ButtonHTMLAttributes, forwardRef, ReactNode } from 'react';
 
-type VariantTypes = 'search' | 'fill' | 'outlined' | 'notFound' | 'clear' | 'login';
+type VariantTypes = 'clear' | 'primary' | 'gradient' | 'gray' | 'outlined';
 
 const variantClasses: Record<VariantTypes, string> = {
   clear: '',
-  search:
-    'outfit bg-primary px-[14px] py-[9px] rounded-r-lg font-normal text-[14px] text-gray-900 duration-300 hover:bg-secondary  active:bg-primary disabled:opacity-40',
-  fill: 'outfit bg-primary px-4 py-[7px] rounded-lg font-normal text-[14px] text-gray-900 duration-300 hover:bg-secondary active:bg-primary disabled:opacity-40',
-  notFound:
-    'outfit bg-gradient-to-r from-secondary-200 to-salmon-100 min-w-[282px] px-[106.5px] py-[13px] rounded-lg font-semibold text-[16px] leading-[22px] text-white duration-300 hover:from-secondary hover:to-salmon-200 disabled:opacity-50',
-  login:
-    'outfit bg-primary px-[151px] py-[4px] rounded-lg font-normal text-[18px] leading-[40px] text-black duration-300 hover:bg-secondary active:bg-primary disabled:text-white-300 disabled:bg-white-400',
+  primary:
+    'bg-main py-2 px-4 text-main-dark rounded-lg hover:bg-secondary-yellow disabled:bg-disabled duration-200',
+  gray: '',
+  gradient: 'bg-gradient-to-r from-[#F8DA2C] to-[#F16644] rounded-lg text-main-white',
   outlined:
-    'outfit border-primary border-[1px] px-4 py-[7px] rounded-lg font-normal text-[16px] text-primary duration-300 hover:border-white hover:text-white active:border-secondary active:text-secondary disabled:opacity-40',
+    'outfit border-main border-[1px] px-4 py-[7px] rounded-lg font-normal text-[16px] text-main-dark duration-300 hover:border-main-white hover:text-white active:border-secondary active:text-secondary disabled:opacity-40',
 };
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -31,7 +28,7 @@ const Button = forwardRef<HTMLButtonElement, Props>((props, ref) => {
       onClick={onClick}
       {...otherProps}
       type="button"
-      className={`${variantClasses[variant]} ${className}`}
+      className={`text-center ${variantClasses[variant]} ${className} `}
     >
       {children}
     </button>

@@ -90,7 +90,7 @@ const Footer: FC<Props> = () => {
   const { t } = useTranslation();
 
   return (
-    <footer className="bg-gray-900 overflow-hidden relative">
+    <footer className="bg-main-dark overflow-hidden relative">
       <Container>
         <div className="z-10 w-[550px] h-[550px] origin-top-left rotate-[120deg] bg-neutral-900 rounded-[217px] absolute left-[33%] top-[-20%] " />
         <div className="w-[550px] h-[550px] origin-top-left rotate-[120deg] bg-neutral-900 rounded-[217px] absolute right-[-40%] top-[100%] " />
@@ -113,7 +113,7 @@ const Footer: FC<Props> = () => {
                 <Icon Svg={linkedin} width={36} height={36} />
               </VStack>
               <Button
-                variant="fill"
+                variant="primary"
                 className="w-[313px] h-[52px] mt-[26px] mb-10 lg:mb-[77px] text-[16px]"
               >
                 Стати продавцем
@@ -139,7 +139,7 @@ const Footer: FC<Props> = () => {
             </VStack>
           </VStack>
           <VStack
-            className="border-t-2 border-white pt-6 mb-5"
+            className="border-t-2 border-main-white pt-6 mb-5"
             align="center"
             justify="center"
           >

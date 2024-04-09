@@ -62,8 +62,8 @@ const MainPage: FC = () => {
           </div>
           <SliderWidget />
           <Button
-            variant="fill"
-            className="relative lg:hidden w-full mt-4 h-[38px] text-center"
+            variant="primary"
+            className="relative lg:hidden w-full mt-4 h-[38px]"
             onClick={() => setMobileAllCategories(true)}
           >
             <Icon

@@ -38,47 +38,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Fill: Story = {
-  args: {
-    children: 'Button',
-    onClick: () => {},
-    variant: 'fill',
-    className: '',
-  },
-  name: 'Fill',
-};
-
-export const NotFound: Story = {
-  args: {
-    children: 'Main',
-    onClick: () => {},
-    variant: 'notFound',
-    className: '',
-  },
-  name: 'NotFound',
-};
-
-export const Search: Story = {
-  args: {
-    children: 'X',
-    onClick: () => {},
-    variant: 'search',
-    className: '',
-  },
-  name: 'Search',
-};
-
-export const Login: Story = {
-  args: {
-    children: 'Sign Up',
-    onClick: () => {},
-    variant: 'login',
-    className: '',
-    disabled: false,
-  },
-  name: 'Login',
-};
-
 export const Outlined: Story = {
   args: {
     children: 'Save',

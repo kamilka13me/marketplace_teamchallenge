@@ -129,7 +129,7 @@ const BurgerMenu: FC<Props> = (props) => {
         >
           <HStack
             justify="between"
-            className="min-h-[124px] p-4 rounded-t-2xl bg-gray-900"
+            className="min-h-[124px] p-4 rounded-t-2xl bg-main-dark"
           >
             <VStack align="center" justify="between" className="w-full">
               <Link to={getRouteMain()}>
@@ -149,7 +149,7 @@ const BurgerMenu: FC<Props> = (props) => {
             <VStack align="center" className="gap-[22px]">
               {user ? (
                 <>
-                  <div className="flex justify-center items-center w-[34px] h-[34px] rounded-full bg-gray-400">
+                  <div className="flex justify-center items-center w-[34px] h-[34px] rounded-full bg-dark-grey">
                     <Text
                       Tag="p"
                       text={`${user?.username?.[0] || ''}${user?.surname?.[0] || ''}`}
@@ -179,7 +179,7 @@ const BurgerMenu: FC<Props> = (props) => {
                         {t('Вхід')}
                       </span>
                     </Button>
-                    <div className="h-6 border-r-[1px] border-solid border-primary" />
+                    <div className="h-6 border-r-[1px] border-solid border-main" />
                     <Button variant="clear" onClick={onClickRegistation}>
                       <span className="outfit font-normal text-base text-white">
                         {t('Реєстрація')}
@@ -192,7 +192,7 @@ const BurgerMenu: FC<Props> = (props) => {
           </HStack>
           <HStack justify="between" className="min-h-[118px] p-4 rounded-b-2xl bg-white">
             <Button
-              variant="fill"
+              variant="primary"
               onClick={() => {
                 setMobileAllCategories(true);
                 setClose();
@@ -232,7 +232,7 @@ const BurgerMenu: FC<Props> = (props) => {
                   height={22}
                   className={i18n.language === 'ua' ? 'opacity-50 duration-200' : ''}
                 />
-                <div className="h-6 border-r-[1px] border-solid border-primary" />
+                <div className="h-6 border-r-[1px] border-solid border-main" />
                 <Icon
                   clickable
                   onClick={onEnChange}
@@ -250,7 +250,7 @@ const BurgerMenu: FC<Props> = (props) => {
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
         <div
           id="outside-burger"
-          className="fixed lg:hidden top-0 left-0 w-screen h-screen z-[98] bg-black-transparent-50"
+          className="fixed lg:hidden top-0 left-0 w-screen h-screen z-[98] bg-main-dark/50"
           onClick={setClose}
         />
       )}

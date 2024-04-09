@@ -182,16 +182,16 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
         name="btnInput"
         type="submit"
         disabled={!isValid || !reCaphaValue}
-        className="outfit bg-primary min-w-full py-[4px] mt-6 rounded-lg font-normal text-[18px] leading-[40px] text-black duration-300 hover:bg-secondary active:bg-primary disabled:text-white-300 disabled:bg-white-400"
+        className="outfit bg-main min-w-full py-[4px] mt-6 rounded-lg font-normal text-[18px] leading-[40px] text-main-dark duration-300 hover:bg-secondary-yellow active:bg-main disabled:text-main-white disabled:bg-main-white"
       />
       <VStack align="center" className="mt-6" justify="between">
-        <span className="outfit text-right text-gray-900 text-[14px] font-normal leading-[18px]">
+        <span className="outfit text-right text-main-dark text-[14px] font-normal leading-[18px]">
           {t('Є обліковий запис?')}
         </span>
         <Button
           variant="clear"
           onClick={onClickChangeForm}
-          className="outfit text-right text-black text-[14px] font-semibold decoration-solid decoration-black underline decoration-1"
+          className="outfit text-right text-main-dark text-[14px] font-semibold decoration-solid decoration-main-dark underline decoration-1"
         >
           {t('Увійти')}
         </Button>

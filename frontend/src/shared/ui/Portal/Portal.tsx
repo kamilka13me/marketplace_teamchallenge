@@ -29,7 +29,7 @@ const Portal: FC<PortalProps> = (props) => {
       'left-0',
       'w-screen',
       'h-screen',
-      'bg-black-transparent-50',
+      'bg-main-dark/50',
       'z-[99999]',
       'opacity-0',
       'transition-opacity',

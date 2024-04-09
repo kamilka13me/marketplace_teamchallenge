@@ -84,7 +84,7 @@ const WishlistProfileTab: FC<Props> = () => {
         onClick={handlerDeleteAll}
         className="mb-4"
       >
-        <Text Tag="span" text="Видалити все" size="lg" color="white" />
+        <Text Tag="span" text="Видалити все" size="lg" className="!text-disabled" />
       </Button>
       {isLoading ? (
         renderSkeletons()

@@ -77,7 +77,7 @@ const ModalCategory: FC<Props> = (props) => {
         >
           <VStack
             gap="5"
-            className="pt-9 pl-2 pb-6 bg-white-200 whitespace-nowrap rounded-b-2xl"
+            className="pt-9 pl-2 pb-6 bg-main-white whitespace-nowrap rounded-b-2xl"
           >
             <ul
               ref={listItemRef}
@@ -108,7 +108,7 @@ const ModalCategory: FC<Props> = (props) => {
       {isOpen && (
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
         <div
-          className="fixed left-0 right-0 bottom-0 top-[100px] z-[98] bg-black-transparent-50"
+          className="fixed left-0 right-0 bottom-0 top-[100px] z-[98] bg-main-dark/50"
           onClick={setClose}
         />
       )}

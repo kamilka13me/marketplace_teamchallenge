@@ -30,7 +30,7 @@ const ProfilePage: FC = () => {
   return (
     <div
       data-testid="ProfilePage"
-      className="bg-gray-900 min-h-[100vh_-_20%] pt-[44px] pb-[72px]"
+      className="bg-main-dark min-h-[100vh_-_20%] pt-[44px] pb-[72px]"
     >
       <Container>
         <VStack className={`${currentTab === 0 ? 'gap-[64px]' : 'gap-5'}`}>
