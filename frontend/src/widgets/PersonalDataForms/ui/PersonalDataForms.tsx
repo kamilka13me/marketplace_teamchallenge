@@ -479,7 +479,7 @@ const PersonalDataForms: FC = () => {
           onCloseFunc={() => {
             setShowMobileModal(!showMobileModal);
           }}
-          className="bg-selected-dark px-3 py-4 h-auto w-auto rounded-2xl animate-open-forms-modal"
+          className="min-w-[233px] bg-selected-dark px-3 py-4 rounded-2xl animate-open-forms-modal"
         >
           <VStack align="center" justify="end">
             <Icon
@@ -492,7 +492,7 @@ const PersonalDataForms: FC = () => {
               height={24}
             />
           </VStack>
-          <HStack align="center" className="pt-5 px-3.5 pb-8 gap-3">
+          <HStack align="center" className="mt-5 mx-3.5 mb-8 gap-3">
             <Text Tag="p" text="Вітаємо!" size="md" className="text-main-white" />
             <Text
               Tag="p"
@@ -501,7 +501,8 @@ const PersonalDataForms: FC = () => {
                   ? t('Ваш пароль успішно змінено')
                   : t('Дані успішно змінено')
               }
-              size="md"
+              size="sm"
+              align="center"
               className="text-main-white"
             />
           </HStack>

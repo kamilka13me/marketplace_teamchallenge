@@ -34,7 +34,7 @@ const Error404: FC = () => {
           />
           <Button
             variant="gradient"
-            className="py-4 max-w-[282px] w-full self-start"
+            className="py-4 max-w-[282px] w-full self-center md:self-start"
             onClick={() => {
               navigate(getRouteMain());
             }}
