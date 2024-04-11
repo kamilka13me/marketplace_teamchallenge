@@ -1,4 +1,4 @@
-import { FC, useLayoutEffect, useState } from 'react';
+import { FC, useEffect, useLayoutEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
@@ -31,6 +31,17 @@ const ProfilePage: FC = () => {
   const { id } = useParams<{ id: string }>();
 
   const [currentTab, setCurrentTab] = useState(0);
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useLayoutEffect(() => {
     if (id === 'info') {
@@ -49,13 +60,14 @@ const ProfilePage: FC = () => {
   return (
     <div
       data-testid="ProfilePage"
-      className="bg-main-dark min-h-[100vh_-_20%] pt-[44px] pb-[72px]"
+      className="bg-main-dark min-h-[100vh_-_20%] py-4 lg:py-10"
     >
       <Container>
-        <VStack className={`${currentTab === 0 ? 'gap-[64px]' : 'gap-5'}`}>
+        <VStack className={`${currentTab === 0 ? 'lg:gap-12' : 'lg:gap-5'}`}>
           <ProfileSidebar tabs={tabs} tab={currentTab} setTab={setCurrentTabHandler} />
 
-          {currentTab === 0 ? <PersonalDataForms /> : <WishlistProfileTab />}
+          {windowWidth >= 1024 &&
+            (currentTab === 0 ? <PersonalDataForms /> : <WishlistProfileTab />)}
         </VStack>
       </Container>
     </div>
