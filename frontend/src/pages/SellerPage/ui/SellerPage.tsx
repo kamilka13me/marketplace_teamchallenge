@@ -2,6 +2,7 @@ import { FC, useLayoutEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
+import SellerDashboard from '@/pages/SellerPage/ui/Tabs/SellerDashboard/SellerDashboard';
 import dashboard from '@/shared/assets/icons/dashboard.svg?react';
 import manageProducts from '@/shared/assets/icons/manage-products.svg?react';
 import reviews from '@/shared/assets/icons/reviews.svg?react';
@@ -13,7 +14,6 @@ import { Container } from '@/shared/layouts/Container';
 import { VStack } from '@/shared/ui/Stack';
 import { ProfileSidebar } from '@/widgets/ProfileSidebar';
 import { ITab } from '@/widgets/ProfileSidebar/ui/ProfileSidebar';
-import { QuantityStats } from '@/widgets/QuantityStats';
 
 const tabs: ITab[] = [
   {
@@ -86,13 +86,11 @@ const SellerPage: FC = () => {
       data-testid="ProfilePage"
       className="bg-main-dark min-h-[100vh_-_20%] pt-[44px] pb-[72px]"
     >
-      <Container>
+      <Container className="">
         <VStack className={`${currentTab === 0 ? 'gap-[64px]' : 'gap-5'}`}>
           <ProfileSidebar tabs={tabs} tab={currentTab} setTab={setCurrentTabHandler} />
-          <VStack className="gap-6">
-            <QuantityStats stats="views" />
-            <QuantityStats stats="clicks" />
-          </VStack>
+
+          {currentTab === 0 && <SellerDashboard />}
         </VStack>
       </Container>
     </div>

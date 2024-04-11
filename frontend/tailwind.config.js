@@ -24,7 +24,7 @@ export default {
         sm: ['14px', '17.6px'],
         md: ['16px', '22.4px'],
         lg: ['18px', '40px'],
-        xl: ['20px', '25.2px'],
+        xl: ['20px', 'auto'],
         '2xl': ['24px', '18px'],
         '3xl': ['32px', '24px'],
         '4xl': ['32px', '40px'],
@@ -47,6 +47,7 @@ export default {
         orange: '#D75810',
         'error-red': '#F40A0A',
         green: '#32C42F',
+        purple: '#8A3FFC',
       },
       keyframes: {
         openModalMessage: {
