@@ -1,4 +1,4 @@
-import React, { FC, SVGProps, VFC } from 'react';
+import React, { FC, SVGProps, useEffect, useState, VFC } from 'react';
 
 import { NavLink, useNavigate } from 'react-router-dom';
 
@@ -10,6 +10,7 @@ import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
+import { PersonalDataForms } from '@/widgets/PersonalDataForms';
 
 export interface ITab {
   id: number;
@@ -33,10 +34,22 @@ const ProfileSidebar: FC<Props> = (props) => {
 
   const user = useAppSelector(getUserAuthData);
 
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
-    <div className="flex flex-col justify-between px-4 pt-8 pb-[15px] rounded-2xl bg-dark-grey w-[282px] min-h-[568px] whitespace-nowrap">
+    <div className="flex flex-col justify-between px-3 lg:px-4 py-5 lg:py-8 rounded-2xl bg-dark-grey w-full lg:w-[282px] min-h-[568px] whitespace-nowrap">
       <div>
-        <VStack align="center" gap="4" className="px-4">
+        <VStack align="center" gap="4" className="hidden lg:flex px-4">
           <div className="flex justify-center items-center w-[56px] h-[56px] rounded-full bg-selected-dark">
             <Text
               Tag="p"
@@ -54,9 +67,13 @@ const ProfileSidebar: FC<Props> = (props) => {
             color="white"
           />
         </VStack>
-        <div className="h-[2px] bg-gradient-to-r from-0% from-[rgba(224,225,226,0)] via-50% via-[rgba(224,225,226,1)] to-100% to-[rgba(224,225,226,0)] mt-6" />
-        <HStack align="center" justify="between" className="gap-[6px] h-full w-full mt-6">
-          <ul className="flex flex-col gap-[6px] w-full mb-[42px]">
+        <div className="hidden lg:block h-[2px] bg-gradient-to-r from-0% from-[rgba(224,225,226,0)] via-50% via-[rgba(224,225,226,1)] to-100% to-[rgba(224,225,226,0)] mt-6" />
+        <HStack
+          align="center"
+          justify="between"
+          className="gap-[6px] h-full w-full lg:mt-6"
+        >
+          <ul className="flex flex-col gap-[6px] w-full lg:mb-[42px]">
             {tabs.map((item, index) => (
               <li
                 key={item?.id}
@@ -87,9 +104,12 @@ const ProfileSidebar: FC<Props> = (props) => {
           </ul>
         </HStack>
       </div>
+
+      {windowWidth <= 1024 && (tab === 0 ? <PersonalDataForms /> : null)}
+
       <Button
         variant="clear"
-        className="justify-self-end px-[17px]"
+        className="justify-self-end px-4 py-3"
         onClick={() => {
           dispatch(userActions.logout());
           navigate(0);
