@@ -192,6 +192,10 @@ const config = {
   // watchman: true,
 
   forceExit: true,
+
+  // custom
+  transform: {},
+  testEnvironment: 'jest-environment-node',
 };
 
-module.exports = config;
+export default config;

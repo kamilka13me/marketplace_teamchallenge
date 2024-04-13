@@ -1,77 +1,9 @@
 import mongoose, { isValidObjectId } from 'mongoose';
 
-import Category from '../../models/Category.js';
 import Product from '../../models/Product.js';
 import findChildCategories from '../../utils/findChildCategories.js';
 
-const productController = {
-  // create new product
-  createProduct: async (req, res) => {
-    try {
-      const {
-        name,
-        description,
-        price,
-        category,
-        quantity,
-        discount,
-        userId,
-        discountStart,
-        discountEnd,
-      } = req.body;
-
-      let { images } = req.body;
-
-      images = images.map((name) => `/static/products/${name}`);
-
-      const product = {
-        name,
-        description,
-        price,
-        category,
-        quantity,
-        discount,
-        images,
-        sellerId: userId,
-        discount_start: new Date(discountStart),
-        discount_end: new Date(discountEnd),
-      };
-
-      const newProduct = new Product(product);
-      const saveProduct = await newProduct.save();
-
-      res.status(201).json({ product: saveProduct });
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-      res.status(500).json({ error });
-    }
-  },
-
-  // get product by id
-  getOneProduct: async (req, res) => {
-    try {
-      const { id } = req.params;
-
-      if (!isValidObjectId(id)) {
-        return res.status(400).json({ message: 'Invalid ObjectId format' });
-      }
-
-      const product = await Product.findById(id);
-
-      if (!product) {
-        // If the product is not found, we return a 404 status
-        return res.status(404).json({ message: 'Product not found' });
-      }
-
-      res.status(200).json({ product });
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-      res.status(500).json({ message: 'Server error', error });
-    }
-  },
-
+const sellerController = {
   // get all products
   getAllProducts: async (req, res) => {
     try {
@@ -85,8 +17,12 @@ const productController = {
       } = req.query;
       let { sortBy, sortDirection } = req.query;
 
+      const { userId } = req.body;
+
       // Building a filter object based on name and category
       const query = {};
+
+      query.sellerId = userId;
 
       if (name) {
         query.name = { $regex: name, $options: 'i' }; // Search by name
@@ -135,4 +71,4 @@ const productController = {
   },
 };
 
-export default productController;
+export default sellerController;

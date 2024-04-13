@@ -103,6 +103,20 @@ const productSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  discount_start: {
+    type: Date,
+  },
+  discount_end: {
+    type: Date,
+  },
+  sellerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const Product = mongoose.model('Product', productSchema);

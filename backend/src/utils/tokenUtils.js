@@ -3,56 +3,53 @@ import jwt from 'jsonwebtoken';
 import config from '../config/config.js';
 
 /**
- * generate jwt acessToken
- * @param {string} userId
+ * Generates a JWT token for a given user ID.
  *
- * @example
- * import generateAccessToken from "path/tokenUtils.js"
- * const acessToken = generateAccessToken(userId);
+ * This utility function abstracts the common logic for generating various JWT tokens
+ * such as access tokens, refresh tokens, and confirmation tokens. It takes the user ID,
+ * a secret key, and an expiration time as parameters to return a signed JWT token.
+ *
+ * @param {string} userId - The unique identifier of the user for whom the token is generated.
+ * @param {string} secretKey - The secret key used to sign the JWT token. Ensure this is secure.
+ * @param {string|number} expiresIn - The validity period of the token, expressed in seconds or a string describing the time span.
+ *
+ * @returns {string} The generated JWT token.
+ */
+const generateToken = (userId, secretKey, expiresIn) => {
+  return jwt.sign({ id: userId }, secretKey, { expiresIn });
+};
+
+/**
+ * Generates an access token for a given user ID.
+ *
+ * @param {string} userId - The unique identifier of the user.
+ *
+ * @returns {string} The generated access token.
  */
 const generateAccessToken = (userId) => {
-  const { accessSecretKey } = config;
-  const acessToken = jwt.sign({ id: userId }, accessSecretKey, {
-    expiresIn: `${config.accessTokenTime}`,
-  });
-
-  return acessToken;
+  return generateToken(userId, config.accessSecretKey, config.accessTokenTime);
 };
 
 /**
- * generate jwt refreshToken
- * @param {string} userId
+ * Generates a refresh token for a given user ID.
  *
- * @example
- * import generateRefreshToken from "path/tokenUtils.js"
- * const acessToken = generateRefreshToken(userId);
+ * @param {string} userId - The unique identifier of the user.
+ *
+ * @returns {string} The generated refresh token.
  */
 const generateRefreshToken = (userId) => {
-  const { refreshSecretKey } = config;
-  const refreshToken = jwt.sign({ id: userId }, refreshSecretKey, {
-    expiresIn: `${config.refreshTokenTime}`,
-    // expiresIn: `-1h`,
-  });
-
-  return refreshToken;
+  return generateToken(userId, config.refreshSecretKey, config.refreshTokenTime);
 };
 
 /**
- * generate jwt confirmToken
- * @param {string} userId
+ * Generates a confirmation token for a given user ID.
  *
- * @example
- * import generateConfirmToken from "path/tokenUtils.js"
- * const confirmToken = generateRefreshToken(userId);
+ * @param {string} userId - The unique identifier of the user.
+ *
+ * @returns {string} The generated confirmation token.
  */
 const generateConfirmToken = (userId) => {
-  const { confirmSecretKey } = config;
-  const confirmToken = jwt.sign({ id: userId }, confirmSecretKey, {
-    expiresIn: `${config.confirmTokenTime}`,
-    // expiresIn: `-1h`,
-  });
-
-  return confirmToken;
+  return generateToken(userId, config.confirmSecretKey, config.confirmTokenTime);
 };
 
 export { generateAccessToken, generateRefreshToken, generateConfirmToken };
