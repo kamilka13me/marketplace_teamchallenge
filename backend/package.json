@@ -24,7 +24,7 @@
     "stop:all": "pm2 delete all",
     "logs:all": "pm2 logs",
     "send": "node cli/send_log.js",
-    "test": "jest",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "ecc": "node cli/create.js",
     "lint": "npx eslint .",
     "lint:fix": "eslint --fix .",
