@@ -13,6 +13,7 @@ import { Container } from '@/shared/layouts/Container';
 import { VStack } from '@/shared/ui/Stack';
 import { ProfileSidebar } from '@/widgets/ProfileSidebar';
 import { ITab } from '@/widgets/ProfileSidebar/ui/ProfileSidebar';
+import { QuantityStats } from '@/widgets/QuantityStats';
 
 const tabs: ITab[] = [
   {
@@ -88,6 +89,10 @@ const SellerPage: FC = () => {
       <Container>
         <VStack className={`${currentTab === 0 ? 'gap-[64px]' : 'gap-5'}`}>
           <ProfileSidebar tabs={tabs} tab={currentTab} setTab={setCurrentTabHandler} />
+          <VStack className="gap-6">
+            <QuantityStats stats="views" />
+            <QuantityStats stats="clicks" />
+          </VStack>
         </VStack>
       </Container>
     </div>
