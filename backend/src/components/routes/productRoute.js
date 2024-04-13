@@ -1,5 +1,6 @@
 import express from 'express';
 
+import idToReq from '../../middlewares/chechUserId.js';
 import { appendFileNamesToBody, upload } from '../../middlewares/uploadProducts.js';
 import viewsCounter from '../../middlewares/viewsCounter.js';
 import productController from '../controllers/productController.js';
@@ -12,6 +13,8 @@ const productRoute = express.Router();
  *     summary: Creates a new product
  *     tags:
  *        - Products
+ *     security:
+ *        - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -37,6 +40,14 @@ const productRoute = express.Router();
  *                 required: true
  *                 format: int
  *                 description: Product price
+ *               discountStart:
+ *                 type: string
+ *                 format: date-time
+ *                 description: Start date of the discount period yy,mm,dd
+ *               discountEnd:
+ *                 type: string
+ *                 format: date-time
+ *                 description: End date of the discount period yy,mm,dd
  *               category:
  *                 type: string
  *                 required: true
@@ -79,11 +90,12 @@ const productRoute = express.Router();
 
 productRoute.post(
   '/',
+
   upload.array('images'),
   appendFileNamesToBody,
+  idToReq(),
   productController.createProduct,
 );
-
 /**
  * @swagger
  * /products/{id}:
