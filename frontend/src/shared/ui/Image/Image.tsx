@@ -50,7 +50,7 @@ const AppImage: FC<Props> = (props) => {
   }
 
   if (hasError) {
-    return <div>something went wrong</div>;
+    return <div>err</div>;
   }
 
   return (

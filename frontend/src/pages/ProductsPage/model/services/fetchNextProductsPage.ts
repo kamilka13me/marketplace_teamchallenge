@@ -10,7 +10,7 @@ import { fetchProductsList } from '@/pages/ProductsPage/model/services/getProduc
 import { productsPageActions } from '@/pages/ProductsPage/model/slices/productsPageSlice';
 
 export const fetchNextProductsPage = createAsyncThunk<void, void, ThunkConfig<string>>(
-  'articlesPage/fetchNextArticlesPage',
+  'productsPage/fetchNextProductsPage',
   async (_, thunkApi) => {
     const { getState, dispatch } = thunkApi;
     const offset = getProductsPageOffset(getState());

@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
 
 import { UserSchema } from '@/enteties/User';
+import { SellerProductsPageSchema } from '@/features/managingProducts';
 import { LoginSchema } from '@/features/userAuth';
 import { ProductsPageSchema } from '@/pages/ProductsPage';
 import { rtkApi } from '@/shared/api/rtkApi';
@@ -9,6 +10,7 @@ export interface StateSchema {
   login: LoginSchema;
   user: UserSchema;
   products: ProductsPageSchema;
+  sellerProducts: SellerProductsPageSchema;
 
   [rtkApi.reducerPath]: ReturnType<typeof rtkApi.reducer>;
 }
