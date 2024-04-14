@@ -26,7 +26,7 @@ const TextAlignClass: Record<TextAlign, string> = {
 };
 
 const TextFont: Record<TextFonts, string> = {
-  outfit: 'font-oufit',
+  outfit: 'font-outfit',
   'ibm-plex-sans': 'font-ibm-plex-sans',
 };
 
