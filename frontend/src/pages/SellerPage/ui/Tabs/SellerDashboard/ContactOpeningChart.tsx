@@ -11,6 +11,8 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
+import caretDown from '@/shared/assets/icons/caret-down.svg?react';
+import { Icon } from '@/shared/ui/Icon';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
@@ -18,7 +20,7 @@ ChartJS.register(LinearScale, CategoryScale, BarElement, ArcElement, Tooltip, Le
 
 const ContactOpeningChart: FC = () => {
   return (
-    <div className="w-full max-w-[604px] bg-dark-grey rounded-2xl pb-[50px] h-full pt-8 px-6">
+    <div className="w-full bg-dark-grey rounded-2xl pb-[50px] h-full pt-8 px-6">
       <Text
         Tag="h3"
         text="Відкриття контактів"
@@ -30,7 +32,10 @@ const ContactOpeningChart: FC = () => {
       <HStack gap="2" className="mb-5">
         <VStack align="center" gap="5">
           <Text Tag="p" text="250" size="2xl" color="white" bold />
-          <Text Tag="span" text="1.8%" size="sm" color="green" />
+          <span className="flex gap-1">
+            <Icon Svg={caretDown} width={16} height={16} />
+            <Text Tag="span" text="1.8%" size="sm" color="green" />
+          </span>
         </VStack>
         <VStack gap="2">
           <Text Tag="p" text="Січень" size="xs" color="gray" />
