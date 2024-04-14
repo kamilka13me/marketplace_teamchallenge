@@ -2,7 +2,8 @@ import attachment from '@/shared/assets/icons/attachment.svg?react';
 import caretDown from '@/shared/assets/icons/caret-down.svg?react';
 import image from '@/shared/assets/icons/image.svg?react';
 import { Icon } from '@/shared/ui/Icon';
-import { HStack } from '@/shared/ui/Stack';
+import { HStack, VStack } from '@/shared/ui/Stack';
+import { Text } from '@/shared/ui/Text';
 
 export interface Props {
   stats: 'views' | 'clicks';
@@ -15,19 +16,25 @@ const QuantityStats = ({ stats }: Props) => {
         <div className="bg-main p-[7px] rounded-md">
           <Icon Svg={stats === 'views' ? image : attachment} width={16} height={16} />
         </div>
-        <div>
-          <p className="flex items-center gap-2 font-semibold text-2xl leading-[30px]  text-center">
-            500
-            <span className="flex gap-1 text-[#24a148] text-sm font-normal text-start">
+        <HStack gap="1">
+          <VStack gap="2">
+            <Text Tag="p" size="2xl" text="500" color="white" className="font-semibold" />
+            <VStack align="center" gap="1">
               <Icon Svg={caretDown} width={16} height={16} />
-              2.8%
-            </span>
-          </p>
-          <p>Кількість {stats === 'views' ? 'переглядів' : 'кліків'}</p>
-        </div>
-        <p className="text-disabled text-xs">
-          Січень: <span className="text-main-white">143</span>
-        </p>
+              <Text Tag="span" size="sm" text="2.8%" className="!text-[#24a148]" />
+            </VStack>
+          </VStack>
+          <Text
+            Tag="p"
+            size="md"
+            text={`Кількість ${stats === 'views' ? 'переглядів' : 'кліків'}`}
+            color="white"
+          />
+        </HStack>
+        <VStack gap="1">
+          <Text Tag="p" size="xs" text="Січень:" color="gray" />
+          <Text Tag="span" size="xs" text="143" color="white" />
+        </VStack>
       </HStack>
     </div>
   );
