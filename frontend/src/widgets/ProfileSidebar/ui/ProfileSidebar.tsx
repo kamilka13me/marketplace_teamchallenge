@@ -81,7 +81,7 @@ const ProfileSidebar: FC<Props> = (props) => {
         >
           {windowWidth <= 1024 ? (
             <div className="w-full">
-              <div className="relative mt-1 max-w-[320px] z-40">
+              <div className="relative mt-1 z-40">
                 <Listbox value={selectedTab} onChange={setSelectedTab}>
                   <Listbox.Button
                     className="relative w-full h-[54px] cursor-default rounded-lg bg-stone-900 pl-3 pr-10  py-3 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
