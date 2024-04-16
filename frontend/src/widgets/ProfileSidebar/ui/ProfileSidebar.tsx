@@ -1,10 +1,10 @@
 import React, { FC, SVGProps, useEffect, useState, VFC, Fragment } from 'react';
 
 import { Listbox, Transition } from '@headlessui/react';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import { getUserAuthData, userActions } from '@/enteties/User';
+import arrow from '@/shared/assets/icons/arrow-right.svg?react';
 import logout from '@/shared/assets/icons/logout.svg?react';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
@@ -99,13 +99,15 @@ const ProfileSidebar: FC<Props> = (props) => {
                     </span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                       {isOpen ? (
-                        <ChevronDownIcon
-                          className="h-5 w-5 text-gray-400"
+                        <Icon
+                          Svg={arrow}
+                          className="fill-white -rotate-90"
                           aria-hidden="true"
                         />
                       ) : (
-                        <ChevronUpIcon
-                          className="h-5 w-5 text-gray-400"
+                        <Icon
+                          Svg={arrow}
+                          className="fill-white rotate-90"
                           aria-hidden="true"
                         />
                       )}

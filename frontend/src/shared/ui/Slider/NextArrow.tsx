@@ -19,7 +19,7 @@ const NextArrow: FC<Props> = (props) => {
       ${className?.includes('slick-disabled') && 'cursor-default !hover:from-[#FFFFFF1E] !from-[#FFFFFF1E]'}`}
       onClick={onClick}
     >
-      <Icon Svg={arrowRight} width={32} height={32} />
+      <Icon Svg={arrowRight} width={32} height={32} className="fill-black" />
     </button>
   );
 };
