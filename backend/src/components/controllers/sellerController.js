@@ -61,8 +61,9 @@ const sellerController = {
         .sort(sortObject)
         .skip(offset)
         .limit(limit);
+      const count = await Product.countDocuments({ sellerId: userId });
 
-      res.status(200).json(products);
+      res.status(200).json({ count, products });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);

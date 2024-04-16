@@ -126,11 +126,32 @@ const productController = {
         .skip(offset)
         .limit(limit);
 
-      res.status(200).json(products);
+      const count = await Product.countDocuments();
+
+      res.status(200).json({ count, products });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
       res.status(500).send(error.message);
+    }
+  },
+
+  deleteProducts: async (req, res) => {
+    const { ids } = req.body;
+
+    try {
+      const idsToDelete = Array.isArray(ids) ? ids : [ids];
+      const result = await Product.deleteMany({
+        _id: { $in: idsToDelete },
+      });
+
+      if (result.deletedCount === 0) {
+        return res.status(404).send('No items found with the given IDs.');
+      }
+
+      res.send(`Successfully deleted ${result.deletedCount} items.`);
+    } catch (error) {
+      res.status(500).send(`Server error: ${error.message}`);
     }
   },
 };

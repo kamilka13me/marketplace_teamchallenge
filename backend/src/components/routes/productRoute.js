@@ -207,4 +207,43 @@ productRoute.get('/:id', viewsCounter(), productController.getOneProduct);
 
 productRoute.get('/', productController.getAllProducts);
 
+/**
+ * @swagger
+ * /products:
+ *   delete:
+ *     summary: Delete items by IDs
+ *     description: Deletes all items whose ID is in the provided array.
+ *     tags:
+ *       - Products
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               ids:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: An array of item IDs to delete. Can also be a single ID.
+ *                 example: ["5f40a6baac77a903d8f682c6", "5f40a6baac77a903d8f682c7"]
+ *     responses:
+ *       200:
+ *         description: Successfully deleted items
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Successfully deleted 2 items.
+ *       404:
+ *         description: No items found with the given IDs
+ *       500:
+ *         description: Server error
+ */
+productRoute.delete('/', productController.deleteProducts);
+
 export default productRoute;
