@@ -78,7 +78,7 @@ const ModalCategoryMobile: FC<Props> = ({ isOpen, setIsOpen }) => {
         onClick={() => setCurrentSub(null)}
         className="flex gap-3 items-center"
       >
-        <Icon Svg={arrow} className="rotate-180" />
+        <Icon Svg={arrow} className="rotate-180 fill-black" />
         <Text Tag="span" text="Всі товари" size="lg" />
       </Button>
       <ul className="flex flex-col gap-4 mt-[20px] h-full overflow-auto">
@@ -100,7 +100,7 @@ const ModalCategoryMobile: FC<Props> = ({ isOpen, setIsOpen }) => {
         onClick={() => setCurrentSubSub(null)}
         className="flex gap-3 items-center"
       >
-        <Icon Svg={arrow} className="rotate-180" />
+        <Icon Svg={arrow} className="rotate-180 fill-black" />
         <Text
           Tag="span"
           text={data![currentSub!]?.subcategories[currentSubSub!]?.name || ''}

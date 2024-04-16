@@ -20,7 +20,7 @@ const PrevArrow: FC<Props> = (props) => {
       `}
       onClick={onClick}
     >
-      <Icon Svg={arrowRight} width={32} height={32} className="rotate-180" />
+      <Icon Svg={arrowRight} width={32} height={32} className="rotate-180 fill-black" />
     </button>
   );
 };

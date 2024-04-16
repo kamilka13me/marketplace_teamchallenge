@@ -63,7 +63,7 @@ const CategoryLink: FC<Props> = (props) => {
         <Icon
           aria-hidden="true"
           Svg={arrowRight}
-          className="group-hover:w-[26px] group-hover:h-[26px] duration-75"
+          className="group-hover:w-[26px] group-hover:h-[26px] duration-75 fill-black"
         />
       </div>
     </>

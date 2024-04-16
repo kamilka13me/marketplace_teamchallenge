@@ -58,7 +58,10 @@ const ProductSectionLayout: FC<Props> = (props) => {
           <div className="hidden xl:block absolute -top-[22px] left-[165px] w-5 h-5 bg-secondary-yellow rounded-full opacity-0 group-hover:opacity-100 duration-300" />
           <div className="hidden xl:block absolute -top-[22px] left-[200px] w-[14px] h-[14px] bg-secondary-yellow rounded-full opacity-0 group-hover:opacity-100 duration-300" />
           <div className="hidden xl:block absolute -z-[1] -top-[5px] -right-[5px] w-8 h-8 bg-secondary-yellow rounded-full opacity-0 group-hover:opacity-100 duration-300" />
-          <Icon Svg={arrowRight} className="w-[20px] h-[20px]  xl:w-[20px] xl:h-[20px]" />
+          <Icon
+            Svg={arrowRight}
+            className="w-[20px] h-[20px] xl:w-[20px] xl:h-[20px] fill-black"
+          />
         </Link>
       </VStack>
     </div>
