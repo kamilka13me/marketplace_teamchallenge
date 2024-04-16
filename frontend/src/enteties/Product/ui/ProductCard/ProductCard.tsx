@@ -46,7 +46,7 @@ const quantityCalc = (quantity: number): quantityResult => {
   };
 };
 
-const countDiscount = (value: number, percentage: number): string => {
+export const countDiscount = (value: number, percentage: number): string => {
   if (percentage === 100) {
     return '0';
   }

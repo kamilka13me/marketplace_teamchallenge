@@ -10,12 +10,8 @@ export interface SellerProductsPageSchema extends EntityState<SellerProduct, str
   offset: number;
   limit: number;
   // filters
-  name: string;
-  category: string;
   sortBy: string;
   sortDirection: '1' | '-1';
-  discount: string;
-  quantity: string;
 
   _inited: boolean;
 }

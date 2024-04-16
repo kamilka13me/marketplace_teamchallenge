@@ -25,43 +25,23 @@ export const sellerProductsSlice = createSlice({
     limit: 5,
     offset: 0,
 
-    name: '',
     sortBy: '',
-    discount: '0',
-    category: '',
-    quantity: '1',
     sortDirection: '1',
 
     _inited: false,
   }),
   reducers: {
-    setName: (state, action: PayloadAction<string>) => {
-      state.name = action.payload;
-    },
     setSortBy: (state, action: PayloadAction<string>) => {
       state.sortBy = action.payload;
     },
-    setDiscount: (state, action: PayloadAction<string>) => {
-      state.discount = action.payload;
-    },
-    setCategory: (state, action: PayloadAction<string>) => {
-      state.category = action.payload;
-    },
     setOffset: (state, action: PayloadAction<number>) => {
       state.offset = action.payload;
-    },
-    setQuantity: (state, action: PayloadAction<string>) => {
-      state.quantity = action.payload;
     },
     setSortDirection: (state, action: PayloadAction<'1' | '-1'>) => {
       state.sortDirection = action.payload;
     },
     clearSortParams: (state) => {
-      state.name = '';
       state.sortBy = '';
-      state.discount = '0';
-      state.category = '';
-      state.quantity = '0';
       state.sortDirection = '1';
     },
     initState: (state) => {

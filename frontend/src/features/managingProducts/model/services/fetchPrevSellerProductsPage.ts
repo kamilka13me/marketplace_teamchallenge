@@ -20,9 +20,11 @@ export const fetchPrevSellerProductsPage = createAsyncThunk<
   const isLoading = getSellerProductsPageIsLoading(getState());
 
   if (!isLoading) {
-    const newOffset = offset - limit;
+    if (offset >= 5) {
+      const newOffset = offset - limit;
 
-    dispatch(sellerProductsPageActions.setOffset(newOffset));
-    dispatch(fetchSellerProductsList({}));
+      dispatch(sellerProductsPageActions.setOffset(newOffset));
+      dispatch(fetchSellerProductsList({}));
+    }
   }
 });
