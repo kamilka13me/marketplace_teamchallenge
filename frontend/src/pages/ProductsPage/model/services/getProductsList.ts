@@ -16,12 +16,17 @@ import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { addQueryParams } from '@/shared/lib/url/addQueryParams';
 
+interface ApiResponse {
+  count: number;
+  products: Product[];
+}
+
 interface FetchProductsListProps {
   replace?: boolean;
 }
 
 export const fetchProductsList = createAsyncThunk<
-  Product[],
+  ApiResponse,
   FetchProductsListProps,
   ThunkConfig<string>
 >('productsPage/fetchProductsList', async (props, thunkApi) => {
@@ -47,7 +52,7 @@ export const fetchProductsList = createAsyncThunk<
       discount,
       quantity,
     });
-    const response = await $api.get<Product[]>(ApiRoutes.PRODUCTS, {
+    const response = await $api.get<ApiResponse>(ApiRoutes.PRODUCTS, {
       params: {
         offset,
         limit,

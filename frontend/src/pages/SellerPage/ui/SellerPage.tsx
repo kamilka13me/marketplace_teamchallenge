@@ -2,6 +2,7 @@ import { FC, useLayoutEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
+import ManagingProducts from '@/features/managingProducts/ui/ManagingProducts';
 import SellerDashboard from '@/pages/SellerPage/ui/Tabs/SellerDashboard/SellerDashboard';
 import dashboard from '@/shared/assets/icons/dashboard.svg?react';
 import manageProducts from '@/shared/assets/icons/manage-products.svg?react';
@@ -91,6 +92,7 @@ const SellerPage: FC = () => {
           <ProfileSidebar tabs={tabs} tab={currentTab} setTab={setCurrentTabHandler} />
 
           {currentTab === 0 && <SellerDashboard />}
+          {currentTab === 1 && <ManagingProducts />}
         </VStack>
       </Container>
     </div>

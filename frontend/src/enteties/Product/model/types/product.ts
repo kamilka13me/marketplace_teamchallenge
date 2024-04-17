@@ -10,3 +10,10 @@ export interface Product {
   images: string[];
   created_at: string;
 }
+
+export interface SellerProduct extends Product {
+  discount_start: string;
+  discount_end: string;
+  sellerId: string;
+  isActive: boolean;
+}

@@ -46,7 +46,7 @@ const quantityCalc = (quantity: number): quantityResult => {
   };
 };
 
-const countDiscount = (value: number, percentage: number): string => {
+export const countDiscount = (value: number, percentage: number): string => {
   if (percentage === 100) {
     return '0';
   }
@@ -153,7 +153,7 @@ const ProductCard: FC<Props> = (props) => {
             size="xl"
             font="ibm-plex-sans"
             Tag="p"
-            text={countDiscount(price, discount || 0).toString()}
+            text={product?.discount?.toString() || ''}
             className={`${dark && 'text-main-white'} font-medium lg:text-4xl`}
           />
           <Text

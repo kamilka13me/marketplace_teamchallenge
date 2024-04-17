@@ -86,19 +86,19 @@ const MainPage: FC = () => {
           <ProductSectionLayout
             isLoading={newProduct.isLoading}
             title="Новинки"
-            products={newProduct.data}
+            products={newProduct.data?.products}
             setSearchParams={newProductsSearchParamsHandler}
           />
           <ProductSectionLayout
             isLoading={promotionsProduct.isLoading}
             title="Акційні пропозиції"
-            products={promotionsProduct.data}
+            products={promotionsProduct.data?.products}
             setSearchParams={popularProductsSearchParamsHandler}
           />
           <ProductSectionLayout
             isLoading={popularProduct.isLoading}
             title="Популярні товари"
-            products={popularProduct.data}
+            products={popularProduct.data?.products}
             setSearchParams={promotionsProductsSearchParamsHandler}
           />
         </HStack>

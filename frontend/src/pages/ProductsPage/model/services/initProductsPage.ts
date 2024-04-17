@@ -5,7 +5,7 @@ import { getProductsPageInited } from '@/pages/ProductsPage/model/selectors/prod
 import { fetchProductsList } from '@/pages/ProductsPage/model/services/getProductsList';
 import { productsPageActions } from '@/pages/ProductsPage/model/slices/productsPageSlice';
 
-export const initArticlesPage = createAsyncThunk<
+export const initProductsPage = createAsyncThunk<
   void,
   URLSearchParams,
   ThunkConfig<string>

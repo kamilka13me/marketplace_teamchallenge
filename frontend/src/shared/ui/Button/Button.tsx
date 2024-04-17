@@ -1,6 +1,12 @@
 import { ButtonHTMLAttributes, forwardRef, ReactNode } from 'react';
 
-type VariantTypes = 'clear' | 'primary' | 'gradient' | 'gray' | 'outlined';
+type VariantTypes =
+  | 'clear'
+  | 'primary'
+  | 'gradient'
+  | 'gray'
+  | 'outlined'
+  | 'grey-outlined';
 
 const variantClasses: Record<VariantTypes, string> = {
   clear: '',
@@ -10,6 +16,8 @@ const variantClasses: Record<VariantTypes, string> = {
   gradient: 'bg-gradient-to-r from-[#F8DA2C] to-[#F16644] rounded-lg text-main-white',
   outlined:
     'outfit border-main border-[1px] px-4 py-[7px] rounded-lg font-normal text-[16px] text-main-dark duration-300 hover:border-main-white hover:text-white active:border-secondary active:text-secondary disabled:opacity-40',
+  'grey-outlined':
+    'bg-transparent rounded-lg border-[1px] border-dark-grey hover:bg-dark-grey duration-100',
 };
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
