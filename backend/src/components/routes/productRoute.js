@@ -79,7 +79,7 @@ const productRoute = express.Router();
  *         content:
  *           application/json:
  *             schema:
- *               typevj;yf: object
+ *               type: object
  *               properties:
  *                 message:
  *                   type: string
