@@ -103,6 +103,7 @@ module.exports = {
             }
         ],
         "no-shadow": "off",
+        "react/no-array-index-key": "off",
         "no-underscore-dangle": "off",
         "no-debugger": "error",
         "no-unused-vars": "off",

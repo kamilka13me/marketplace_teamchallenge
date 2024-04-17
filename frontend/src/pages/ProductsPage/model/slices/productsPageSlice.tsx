@@ -82,14 +82,14 @@ export const productsPageSlice = createSlice({
         state.isLoading = false;
 
         if (action.meta.arg.replace) {
-          productsAdapter.setAll(state, action.payload);
+          productsAdapter.setAll(state, action.payload.products);
         } else {
-          productsAdapter.addMany(state, action.payload);
+          productsAdapter.addMany(state, action.payload.products);
         }
       })
       .addCase(fetchProductsList.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload;
+        state.error = action.payload?.toString();
       });
   },
 });

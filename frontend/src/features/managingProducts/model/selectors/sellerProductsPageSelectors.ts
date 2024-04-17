@@ -19,4 +19,7 @@ export const getSellerProductsPageOffset = (state: StateSchema) =>
   state.sellerProducts.offset;
 
 export const getSellerProductsPageSortDirection = (state: StateSchema) =>
-  state.products.sortDirection;
+  state.sellerProducts.sortDirection;
+
+export const getTotalSellerProducts = (state: StateSchema) =>
+  state.sellerProducts.totalProducts;

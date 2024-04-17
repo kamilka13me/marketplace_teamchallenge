@@ -5,6 +5,7 @@ import { SellerProduct } from '@/enteties/Product';
 export interface SellerProductsPageSchema extends EntityState<SellerProduct, string> {
   isLoading?: boolean;
   error?: string;
+  totalProducts: number;
 
   // pagination
   offset: number;

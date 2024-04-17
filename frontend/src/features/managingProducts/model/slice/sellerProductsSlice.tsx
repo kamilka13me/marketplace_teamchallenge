@@ -20,13 +20,14 @@ export const sellerProductsSlice = createSlice({
     entities: {},
     isLoading: false,
     error: undefined,
+    totalProducts: 0,
 
     // pagination
     limit: 5,
     offset: 0,
 
     sortBy: '',
-    sortDirection: '1',
+    sortDirection: '-1',
 
     _inited: false,
   }),
@@ -61,11 +62,12 @@ export const sellerProductsSlice = createSlice({
       .addCase(fetchSellerProductsList.fulfilled, (state, action) => {
         state.isLoading = false;
 
-        sellerProductsAdapter.setAll(state, action.payload);
+        sellerProductsAdapter.setAll(state, action.payload.products);
+        state.totalProducts = action.payload.count;
       })
       .addCase(fetchSellerProductsList.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload;
+        state.error = action.payload?.toString();
       });
   },
 });
