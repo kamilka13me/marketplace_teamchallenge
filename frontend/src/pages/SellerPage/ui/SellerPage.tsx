@@ -15,6 +15,7 @@ import { Container } from '@/shared/layouts/Container';
 import { VStack } from '@/shared/ui/Stack';
 import { ProfileSidebar } from '@/widgets/ProfileSidebar';
 import { ITab } from '@/widgets/ProfileSidebar/ui/ProfileSidebar';
+import ProfileSidebarMobile from '@/widgets/ProfileSidebar/ui/ProfileSidebarMobile';
 
 const tabs: ITab[] = [
   {
@@ -55,6 +56,8 @@ const tabs: ITab[] = [
   },
 ];
 
+const components: FC[] = [SellerDashboard]; // Сюди передати просто інші компоненти для відображення в мобільній версії, послідовність важлива
+
 const SellerPage: FC = () => {
   const { id } = useParams<{ id: string }>();
 
@@ -87,13 +90,20 @@ const SellerPage: FC = () => {
       data-testid="ProfilePage"
       className="bg-main-dark min-h-[100vh_-_20%] pt-[44px] pb-[72px]"
     >
-      <Container className="">
-        <VStack className={`${currentTab === 0 ? 'gap-[64px]' : 'gap-5'}`}>
+      <Container>
+        <VStack className="hidden lg:flex gap-12">
           <ProfileSidebar tabs={tabs} tab={currentTab} setTab={setCurrentTabHandler} />
 
           {currentTab === 0 && <SellerDashboard />}
           {currentTab === 1 && <ManagingProducts />}
         </VStack>
+
+        <ProfileSidebarMobile
+          tabs={tabs}
+          tab={currentTab}
+          setTab={setCurrentTabHandler}
+          renderContent={components}
+        />
       </Container>
     </div>
   );

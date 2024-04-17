@@ -1,4 +1,4 @@
-import { FC, useEffect, useLayoutEffect, useState } from 'react';
+import { FC, useLayoutEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
@@ -10,6 +10,7 @@ import { VStack } from '@/shared/ui/Stack';
 import { PersonalDataForms } from '@/widgets/PersonalDataForms';
 import { ProfileSidebar } from '@/widgets/ProfileSidebar';
 import { ITab } from '@/widgets/ProfileSidebar/ui/ProfileSidebar';
+import ProfileSidebarMobile from '@/widgets/ProfileSidebar/ui/ProfileSidebarMobile';
 import { WishlistProfileTab } from '@/widgets/WishlistProfileTab';
 
 const tabs: ITab[] = [
@@ -27,21 +28,12 @@ const tabs: ITab[] = [
   },
 ];
 
+const components: FC[] = [PersonalDataForms, WishlistProfileTab];
+
 const ProfilePage: FC = () => {
   const { id } = useParams<{ id: string }>();
 
   const [currentTab, setCurrentTab] = useState(0);
-  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   useLayoutEffect(() => {
     if (id === 'info') {
@@ -63,12 +55,18 @@ const ProfilePage: FC = () => {
       className="bg-main-dark min-h-[100vh_-_20%] py-4 lg:py-10"
     >
       <Container>
-        <VStack className={`${currentTab === 0 ? 'lg:gap-12' : 'lg:gap-5'}`}>
+        <VStack className={`hidden lg:flex ${currentTab === 0 ? 'gap-12' : 'gap-5'}`}>
           <ProfileSidebar tabs={tabs} tab={currentTab} setTab={setCurrentTabHandler} />
 
-          {windowWidth >= 1024 &&
-            (currentTab === 0 ? <PersonalDataForms /> : <WishlistProfileTab />)}
+          {currentTab === 0 ? <PersonalDataForms /> : <WishlistProfileTab />}
         </VStack>
+
+        <ProfileSidebarMobile
+          tabs={tabs}
+          tab={currentTab}
+          setTab={setCurrentTabHandler}
+          renderContent={components}
+        />
       </Container>
     </div>
   );
