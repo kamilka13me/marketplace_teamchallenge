@@ -77,7 +77,7 @@ const WishlistProfileTab: FC<Props> = () => {
   );
 
   return (
-    <HStack className="h-full w-full">
+    <HStack className="h-full w-full pt-6 pb-12 px-3 mb-12 bg-selected-dark rounded-2xl md:p-0 md:bg-inherit md:rounded-none">
       <Button
         disabled={isLoading}
         variant="clear"
@@ -89,9 +89,9 @@ const WishlistProfileTab: FC<Props> = () => {
       {isLoading ? (
         renderSkeletons()
       ) : (
-        <div className="grid grid-cols-3 max-h-[920px] gap-6 overflow-auto pr-[31px]">
+        <div className="grid grid-cols-2 gap-x-[7px] gap-y-[18px] overflow-auto md:grid-cols-3 md:max-h-[920px] md:gap-6 md:pr-[31px] ">
           {products.map((value) => (
-            <ProductCard dark product={value.product} key={value.product._id} />
+            <ProductCard dashboard dark product={value.product} key={value.product._id} />
           ))}
         </div>
       )}
