@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import { PersonalDataForms } from '@/pages/ProfilePage/ui/Tabs/ProfileInfo/index';
+import PersonalDataForms from '@/pages/ProfilePage/ui/Tabs/ProfileInfo/PersonalDataForms';
 
 const meta = {
   title: 'Widgets/PersonalDataForms',

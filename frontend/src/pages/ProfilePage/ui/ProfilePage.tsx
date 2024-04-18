@@ -2,7 +2,7 @@ import { FC, useLayoutEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import { PersonalDataForms } from '@/pages/ProfilePage/ui/Tabs/ProfileInfo';
+import PersonalDataForms from '@/pages/ProfilePage/ui/Tabs/ProfileInfo/PersonalDataForms';
 import like from '@/shared/assets/icons/like.svg?react';
 import person from '@/shared/assets/icons/person.svg?react';
 import { getRouteProfile } from '@/shared/const/routes';
