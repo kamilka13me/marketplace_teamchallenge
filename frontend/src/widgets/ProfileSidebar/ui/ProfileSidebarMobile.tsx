@@ -57,7 +57,7 @@ const ProfileSidebar: FC<Props> = (props) => {
   }, [tab, tabs]);
 
   return (
-    <div className="lg:hidden flex flex-col justify-between px-3 py-5 rounded-2xl bg-dark-grey w-full min-h-[568px] whitespace-nowrap">
+    <div className="md:hidden flex flex-col justify-between px-3 py-5 rounded-2xl bg-dark-grey w-full min-h-[568px] whitespace-nowrap">
       <div>
         <HStack align="center" justify="between" className="gap-[6px] h-full w-full">
           <div className="relative w-full z-40">

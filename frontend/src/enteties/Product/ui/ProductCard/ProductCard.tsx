@@ -56,12 +56,13 @@ export const countDiscount = (value: number, percentage: number): string => {
 interface Props {
   product: Product;
   dark?: boolean;
+  dashboard?: boolean;
 }
 
 const ProductCard: FC<Props> = (props) => {
   const { t } = useTranslation();
 
-  const { product, dark } = props;
+  const { product, dark, dashboard } = props;
 
   const { _id, name, discount, images, price, quantity } = product;
 
@@ -94,10 +95,12 @@ const ProductCard: FC<Props> = (props) => {
   }
 
   return (
-    <div
+    <HStack
+      justify="between"
       className={`relative p-[6px] lg:p-4 rounded-2xl
-      min-w-[168px] max-w-[313px] w-full 
-      min-h-[248px] max-h-[445px] h-full
+      ${dashboard ? 'min-w-[132px] min-h-[248px]' : 'min-w-[168px] min-h-[248px]'}
+       max-w-[313px] w-full 
+       max-h-[445px] h-full
        ${!dark ? 'shadow-custom-base hover:shadow-custom-hover' : 'bg-dark-grey'}  
        duration-75`}
     >
@@ -107,7 +110,8 @@ const ProductCard: FC<Props> = (props) => {
             loadingFallback={<Skeleton width={281} height={252} />}
             src={`${process.env.BASE_URL}${images[0]}`}
             alt="product-card-img"
-            className="h-[140px] lg:h-[252px] !min-w-[156px] !max-w-[281px] w-full"
+            className={`${dashboard ? 'min-h-[118px] !min-w-[132px]' : 'h-[140px] !min-w-[156px]'} 
+            lg:h-[252px] !max-w-[281px] w-full`}
           />
         </Link>
       ) : (
@@ -118,13 +122,13 @@ const ProductCard: FC<Props> = (props) => {
 
       <div className="mt-2">
         {/* Name */}
-        <div className="h-[34px] lg:h-[44px] ">
+        <div className="lg:h-[44px]">
           <Link to={getRouteProduct(`${_id}`)}>
             <Text
               Tag="span"
               text={name}
               size="xs"
-              className={`${dark && 'text-main-white'} lg:text-md`}
+              className={`${dark && 'text-main-white'} lg:text-md text-wrap`}
             />
           </Link>
         </div>
@@ -163,16 +167,16 @@ const ProductCard: FC<Props> = (props) => {
             className={`${dark && 'text-main-white'}`}
           />
         </VStack>
-
-        {/*  Quantity */}
-        <Text
-          Tag="span"
-          size="xxs"
-          text={t(quantityCalc(quantity).text)}
-          color={quantityCalc(quantity).color}
-          className="mt-2 lg:text-sm"
-        />
       </div>
+
+      {/*  Quantity */}
+      <Text
+        Tag="span"
+        size="xxs"
+        text={t(quantityCalc(quantity).text)}
+        color={quantityCalc(quantity).color}
+        className="mt-2 lg:text-sm"
+      />
 
       {/*  Heart Icon */}
       <HStack className="absolute top-[12px] right-[12px] lg:top-[24px] lg:right-[24px]">
@@ -187,7 +191,7 @@ const ProductCard: FC<Props> = (props) => {
           />
         </Button>
       </HStack>
-    </div>
+    </HStack>
   );
 };
 
