@@ -2,10 +2,9 @@ import { FC, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { Product } from '../../model/types/product';
-
 import ProductCardSkeleton from './ProductCardSkeleton';
 
+import { Product } from '@/enteties/Product';
 import { getUserAuthData, getUserWishlist, getWishlist } from '@/enteties/User';
 import { $api } from '@/shared/api/api';
 import heart from '@/shared/assets/icons/heart.svg?react';
@@ -153,7 +152,7 @@ const ProductCard: FC<Props> = (props) => {
             size="xl"
             font="ibm-plex-sans"
             Tag="p"
-            text={product?.discount?.toString() || ''}
+            text={countDiscount(price, discount || 0).toString()}
             className={`${dark && 'text-main-white'} font-medium lg:text-4xl`}
           />
           <Text
