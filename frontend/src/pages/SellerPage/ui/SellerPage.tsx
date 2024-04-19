@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import ManagingProducts from '@/features/managingProducts/ui/ManagingProducts';
 import SellerDashboard from '@/pages/SellerPage/ui/Tabs/SellerDashboard/SellerDashboard';
+import SupportCentre from '@/pages/SellerPage/ui/Tabs/SupportCentre/SupportCentre';
 import dashboard from '@/shared/assets/icons/dashboard.svg?react';
 import manageProducts from '@/shared/assets/icons/manage-products.svg?react';
 import reviews from '@/shared/assets/icons/reviews.svg?react';
@@ -56,7 +57,13 @@ const tabs: ITab[] = [
   },
 ];
 
-const components: FC[] = [SellerDashboard]; // Сюди передати просто інші компоненти для відображення в мобільній версії, послідовність важлива
+const components: FC[] = [
+  SellerDashboard,
+  ManagingProducts,
+  ManagingProducts,
+  ManagingProducts,
+  SupportCentre,
+]; // Сюди передати просто інші компоненти для відображення в мобільній версії, послідовність важлива
 
 const SellerPage: FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -96,6 +103,7 @@ const SellerPage: FC = () => {
 
           {currentTab === 0 && <SellerDashboard />}
           {currentTab === 1 && <ManagingProducts />}
+          {currentTab === 4 && <SupportCentre />}
         </VStack>
 
         <ProfileSidebarMobile

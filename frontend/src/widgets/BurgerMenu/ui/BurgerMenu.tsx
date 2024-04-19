@@ -132,7 +132,13 @@ const BurgerMenu: FC<Props> = (props) => {
             className="min-h-[124px] p-4 rounded-t-2xl bg-main-dark"
           >
             <VStack align="center" justify="between" className="w-full">
-              <Link to={getRouteMain()}>
+              <Link
+                to={getRouteMain()}
+                onClick={() => {
+                  setClose();
+                  document.body.classList.remove('overflow-hidden');
+                }}
+              >
                 <Icon Svg={logo} width={110} height={38} />
               </Link>
               <Icon
@@ -170,9 +176,7 @@ const BurgerMenu: FC<Props> = (props) => {
                 </>
               ) : (
                 <>
-                  <Link to={getRouteMain()}>
-                    <Icon Svg={person} width={28} height={28} className="stroke-white" />
-                  </Link>
+                  <Icon Svg={person} width={28} height={28} className="stroke-white" />
                   <VStack align="center" className="gap-[7.5px]">
                     <Button variant="clear" onClick={onClickLogin}>
                       <span className="outfit font-normal text-base text-white">
