@@ -55,7 +55,7 @@ const ProfilePage: FC = () => {
       className="bg-main-dark min-h-[100vh_-_20%] py-4 lg:py-10"
     >
       <Container>
-        <VStack className={`hidden md:flex ${currentTab === 0 ? 'gap-12' : 'gap-5'}`}>
+        <VStack className={`hidden lg:flex ${currentTab === 0 ? 'gap-12' : 'gap-5'}`}>
           <ProfileSidebar tabs={tabs} tab={currentTab} setTab={setCurrentTabHandler} />
 
           {currentTab === 0 ? <PersonalDataForms /> : <WishlistProfileTab />}
