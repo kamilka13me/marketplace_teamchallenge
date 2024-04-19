@@ -53,13 +53,13 @@ const SupportCentre: FC = () => {
       const invalidSizeFiles = files.filter((file) => file.size > maxSize);
 
       if (invalidTypeFiles.length > 0) {
-        setErrorMessage('Недопустиме розширення файлу!');
+        setErrorMessage(t('Недопустиме розширення файлу!'));
 
         return;
       }
 
       if (invalidSizeFiles.length > 0) {
-        setErrorMessage('Один або кілька файлів розміром більше 10 МБ!');
+        setErrorMessage(t('Один або кілька файлів розміром більше 10 МБ!'));
 
         return;
       }
@@ -67,7 +67,7 @@ const SupportCentre: FC = () => {
       const totalFilesCount = selectedFiles.length + files.length;
 
       if (totalFilesCount > 5) {
-        setErrorMessage('Максимум 5 файлів!');
+        setErrorMessage(t('Максимум 5 файлів!'));
 
         return;
       }
@@ -122,7 +122,7 @@ const SupportCentre: FC = () => {
               required: t("Це поле є обов'язковим"),
               maxLength: {
                 value: 100,
-                message: t('Ваша тема має бути не більше 100 символів'),
+                message: t('Ваша тема має містити не більше 100 символів'),
               },
             })}
             error={errors?.inputTopic && errors?.inputTopic.message}
@@ -137,14 +137,14 @@ const SupportCentre: FC = () => {
               required: t("Це поле є обов'язковим"),
               maxLength: {
                 value: 500,
-                message: t('Вашє питання має бути не більше 500 символів'),
+                message: t('Ваше питання має містити не більше 500 символів'),
               },
             })}
             error={errors?.textareaQuestion && errors?.textareaQuestion.message}
           />
           <Text
             Tag="p"
-            text={t('Файли форматів: png, jpg, pdf, doc, docx')}
+            text={`${t('Файли форматів: ')} png, jpg, pdf, doc, docx`}
             size="sm"
             className="!text-disabled mb-2"
           />
@@ -173,7 +173,7 @@ const SupportCentre: FC = () => {
             ) : (
               <Text
                 Tag="span"
-                text={`${selectedFiles.length > 0 ? `${selectedFiles.length} з 5 файлів вибрано` : 'файл не вибрано'}`}
+                text={`${selectedFiles.length > 0 ? `${selectedFiles.length} ${t('з 5 файлів обрано')}` : t('файл не обрано')}`}
                 size="md"
                 className="!text-disabled"
               />
@@ -201,17 +201,22 @@ const SupportCentre: FC = () => {
           />
           <Text
             Tag="p"
-            text={t('тел: +38 044 234 234 234')}
+            text={`${t('тел: ')} +38 044 234 234 234`}
             size="md"
             className="!text-disabled"
           />
           <Text
             Tag="p"
-            text={t('e-mail: office@peach.ua')}
+            text="e-mail: office@peach.ua"
             size="md"
             className="!text-disabled mb-5 lg:mb-9"
           />
-          <Text Tag="p" text="ТОВ “Peach”" size="md" className="!text-disabled" />
+          <Text
+            Tag="p"
+            text={`${t('ТОВ')} “Peach”`}
+            size="md"
+            className="!text-disabled"
+          />
           <Text
             Tag="p"
             text={t('вул. Хрещатик, 15 офіс 24 м. Київ, 01001')}
@@ -242,7 +247,7 @@ const SupportCentre: FC = () => {
           <HStack align="center" className="max-w-[320px] mt-3 md:m-5 gap-3 md:gap-10">
             <Text
               Tag="p"
-              text="Дякуємо за звернення!"
+              text={t('Дякуємо за звернення!')}
               size="xl"
               align="center"
               className="text-main-white text-nowrap !text-md md:!text-xl"
