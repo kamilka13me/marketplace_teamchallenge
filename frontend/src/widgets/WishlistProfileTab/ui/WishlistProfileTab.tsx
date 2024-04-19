@@ -2,14 +2,11 @@ import { FC, useEffect, useState } from 'react';
 
 import { Product, ProductCardSkeleton } from '@/enteties/Product';
 import ProductCard from '@/enteties/Product/ui/ProductCard/ProductCard';
-import { getWishlist, userActions } from '@/enteties/User';
+import { getWishlist } from '@/enteties/User';
 import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
-import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
-import { Button } from '@/shared/ui/Button';
 import { HStack, VStack } from '@/shared/ui/Stack';
-import { Text } from '@/shared/ui/Text';
 
 interface ApiResponse {
   product: Product;
@@ -18,7 +15,6 @@ interface ApiResponse {
 interface Props {}
 
 const WishlistProfileTab: FC<Props> = () => {
-  const dispatch = useAppDispatch();
   const { wishlist } = useAppSelector(getWishlist);
   const [products, setProducts] = useState<ApiResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -53,18 +49,6 @@ const WishlistProfileTab: FC<Props> = () => {
     fetchProducts();
   }, [wishlist]);
 
-  const handlerDeleteAll = async () => {
-    try {
-      const response = await $api.delete(`${ApiRoutes.WISHLIST}`);
-
-      await dispatch(userActions.setUserWishList([]));
-
-      return response;
-    } catch (error) {
-      console.error('Error Wishlist:', error);
-    }
-  };
-
   const renderSkeletons = () => (
     <VStack className="grid grid-cols-3 max-h-[920px] gap-6 overflow-auto pr-[31px]">
       {Array(3)
@@ -78,14 +62,6 @@ const WishlistProfileTab: FC<Props> = () => {
 
   return (
     <HStack className="h-full w-full pt-6 pb-12 px-3 mb-12 bg-selected-dark rounded-2xl md:p-0 md:bg-inherit md:rounded-none">
-      <Button
-        disabled={isLoading}
-        variant="clear"
-        onClick={handlerDeleteAll}
-        className="mb-4"
-      >
-        <Text Tag="span" text="Видалити все" size="lg" className="!text-disabled" />
-      </Button>
       {isLoading ? (
         renderSkeletons()
       ) : (
