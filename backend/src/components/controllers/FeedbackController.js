@@ -157,7 +157,7 @@ const FeedbackController = {
         // eslint-disable-next-line radix
         .limit(parseInt(limit));
 
-      const totalCount = await Comment.countDocuments({ sellerId });
+      const totalCount = await Comment.countDocuments({ query });
 
       res.status(200).json({
         totalComments: totalCount,
