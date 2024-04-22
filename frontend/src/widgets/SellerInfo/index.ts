@@ -1,3 +1,3 @@
-import SellerInfo from './ui/SellerInfo';
+// import SellerInfo from './ui/SellerInfo';
 
-export { SellerInfo };
+// export { SellerInfo };
