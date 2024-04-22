@@ -117,7 +117,6 @@ app.use('/api/seller', sellerRoute);
 app.use('/api/support', supportRoute);
 app.use('/api/feedback', FeedbackRoute);
 
-
 app.use('/static/products', express.static(path.join(__dirname, 'public/uploads')));
 app.use('/static/banners', express.static(path.join(__dirname, 'public/banners')));
 app.use('/static/category', express.static(path.join(__dirname, 'public/category')));
