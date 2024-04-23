@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { RegistrationForm } from '@/features/userAuth/ui/RegistrationForm/index';
 
 const meta = {
-  title: 'UI/RegistrationForm',
+  title: 'Forms/RegistrationForm',
   component: RegistrationForm,
   parameters: {
     layout: 'centered',
