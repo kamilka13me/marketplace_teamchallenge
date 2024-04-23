@@ -260,10 +260,25 @@ const userController = {
     try {
       const user = await User.findOne({ email });
 
+
+      if (!user) {
+        return res
+          .status(400)
+          .json({ message: 'User not found with this email address.' });
+      }
+
+      const confirmToken = generateConfirmToken(user._id);
+
+      sendMail(user.email, 'recovery', confirmToken);
+      res
+        .status(200)
+        .json({ message: 'The password recovery email was sent successfully.' });
+
       const confirmToken = generateConfirmToken(user._id);
 
       sendMail(user.email, 'recovery', confirmToken);
       res.status(200).json({ message: 'email send succes.' });
+
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);

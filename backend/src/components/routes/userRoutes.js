@@ -258,11 +258,12 @@ router.put('/password', checkPermission('none'), userController.updatePassword);
  * @swagger
  * /users/recover-password:
  *   post:
- *     summary: Відновлення паролю користувача
- *     description: Цей ендпойнт ініціює процес відновлення паролю, відправляючи лист із посиланням для підтвердження на електронну пошту користувача.
+ *     summary: Recovering a user's password
+ *     description: This endpoint initiates the password recovery process by sending an email with a confirmation link to the user's email.
  *     tags: [User]
  *     requestBody:
- *       description: Електронна адреса користувача для відновлення паролю
+ *       description: User email address for password recovery
+
  *       required: true
  *       content:
  *         application/json:
@@ -277,7 +278,7 @@ router.put('/password', checkPermission('none'), userController.updatePassword);
  *                 example: user@example.com
  *     responses:
  *       200:
- *         description: Лист для відновлення паролю було успішно відправлено
+ *         description: The password recovery email was sent successfully
  *         content:
  *           application/json:
  *             schema:
@@ -285,9 +286,9 @@ router.put('/password', checkPermission('none'), userController.updatePassword);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Лист для відновлення паролю відправлено на вашу електронну пошту."
+ *                   example: "The password recovery email was sent successfully."
  *       404:
- *         description: Користувач з вказаною електронною поштою не знайдений
+ *         description: User not found with this email address
  *         content:
  *           application/json:
  *             schema:
@@ -295,9 +296,9 @@ router.put('/password', checkPermission('none'), userController.updatePassword);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Користувач з такою електронною поштою не знайдений."
+ *                   example: "User not found with this email address."
  *       500:
- *         description: Внутрішня помилка сервера
+ *         description: Error recovering password
  *         content:
  *           application/json:
  *             schema:
@@ -305,7 +306,7 @@ router.put('/password', checkPermission('none'), userController.updatePassword);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Виникла помилка при відправленні електронного листа."
+ *                   example: "Error recovering password."
  */
 router.post('/recover-password', userController.recoverPassword);
 
