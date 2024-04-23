@@ -253,6 +253,23 @@ const userController = {
       res.status(500).json({ message: 'Error updating password' });
     }
   },
+
+  recoverPassword: async (req, res) => {
+    const { email } = req.body;
+
+    try {
+      const user = await User.findOne({ email });
+
+      const confirmToken = generateConfirmToken(user._id);
+
+      sendMail(user.email, 'recovery', confirmToken);
+      res.status(200).json({ message: 'email send succes.' });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+      res.status(500).json({ message: 'Error recovering password' });
+    }
+  },
 };
 
 export default userController;
