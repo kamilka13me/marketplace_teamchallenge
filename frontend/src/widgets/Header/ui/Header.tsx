@@ -106,15 +106,21 @@ const Header: FC<Props> = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-[100] bg-main-dark">
       <Container>
-        <VStack align="center" className="justify-center lg:justify-between py-4">
+        <VStack
+          align="center"
+          className="justify-center lg:justify-between py-4 lg:py-6 xl:py-4"
+        >
           <Link to={getRouteMain()}>
-            <Icon Svg={logo} width={202} height={68} className="hidden lg:block" />
+            <Icon
+              Svg={logo}
+              className="hidden lg:block lg:w-[152px] lg:h-[52px] xl:w-[202px] xl:h-[68px]"
+            />
           </Link>
 
           <VStack align="center" className="w-full lg:w-auto">
             <VStack
               gap="4"
-              className="w-full flex-col-reverse items-end lg:items-center lg:flex-row lg:mr-[75px]"
+              className="w-full flex-col-reverse items-end lg:items-center lg:flex-row lg:mr-[25px] xl:mr-[75px]"
             >
               <Button
                 id="all-category-button"
@@ -123,7 +129,7 @@ const Header: FC<Props> = () => {
                 variant="primary"
                 aria-haspopup
                 aria-expanded={showModalCategory}
-                className="hidden lg:block all-products-button"
+                className="hidden lg:block all-products-button text-[14px] py-[7px] w-[126px]"
                 onClick={onAllProductsClick}
               >
                 <VStack align="center" gap="1">
@@ -148,6 +154,7 @@ const Header: FC<Props> = () => {
                   value={inputData}
                   placeholder={t('Я шукаю')}
                   onChange={onChangeInput}
+                  className="min-h-[38px] w-full lg:min-w-[395px] xl:min-w-[443px]"
                   classNameBlockWrap="w-full"
                 />
                 <Button
@@ -168,7 +175,7 @@ const Header: FC<Props> = () => {
               >
                 <Button
                   variant="clear"
-                  className="hidden lg:block group duration-300 text-amber-50 w-[86px]"
+                  className="hidden lg:block group duration-300 text-amber-50 lg:w-[76px] xl:w-[86px]"
                   onClick={onOfficeBtnClick}
                 >
                   <HStack
@@ -187,7 +194,7 @@ const Header: FC<Props> = () => {
 
                 <Button
                   variant="clear"
-                  className="group duration-300 text-amber-50 w-[28px] lg:w-[86px]"
+                  className="group duration-300 text-amber-50 w-[28px] lg:w-[76px] xl:w-[86px]"
                   onClick={onWishListBtnClick}
                 >
                   <HStack
@@ -203,7 +210,7 @@ const Header: FC<Props> = () => {
                       className={
                         wishlist?.length < 1
                           ? 'hidden'
-                          : 'absolute right-0 lg:right-[29px] flex justify-items-center items-center bg-main border-[1.5px] border-main-dark rounded-full'
+                          : 'absolute right-0 lg:right-[24px] xl:right-[29px] flex justify-items-center items-center bg-main border-[1.5px] border-main-dark rounded-full'
                       }
                     >
                       <span

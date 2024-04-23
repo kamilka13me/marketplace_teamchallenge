@@ -250,6 +250,7 @@ const PersonalDataForms: FC = () => {
               },
             })}
             error={errors?.inputName && errors?.inputName.message}
+            className="min-h-[48px] w-full"
           />
           <Input
             variant="personal"
@@ -274,7 +275,7 @@ const PersonalDataForms: FC = () => {
               },
             })}
             error={errors?.inputSurname && errors?.inputSurname.message}
-            className="mt-6 lg:mt-8"
+            className="min-h-[48px] w-full mt-6 lg:mt-8"
           />
           <Input
             variant="personal"
@@ -293,7 +294,7 @@ const PersonalDataForms: FC = () => {
               onChange: addDots,
             })}
             error={errors?.inputDateBirth && errors?.inputDateBirth.message}
-            className="mt-6 lg:mt-8"
+            className="min-h-[48px] w-full mt-6 lg:mt-8"
           />
           <Input
             variant="personal"
@@ -303,7 +304,7 @@ const PersonalDataForms: FC = () => {
               disabled: true,
             })}
             error={errors?.inputEmail && errors?.inputEmail.message}
-            className="mt-6 lg:mt-8"
+            className="min-h-[48px] w-full mt-6 lg:mt-8"
           />
           <HStack gap="1">
             <Controller
@@ -352,6 +353,7 @@ const PersonalDataForms: FC = () => {
             <div className="relative mb-6 lg:mb-[34px] lg:min-w-[360px]">
               <Input
                 variant="personal"
+                className="min-h-[48px] w-full"
                 placeholder={t('Старий пароль')}
                 type={passOldShown ? 'text' : 'password'}
                 {...register('inputOldPassword', {
@@ -381,6 +383,7 @@ const PersonalDataForms: FC = () => {
             <div className="relative mb-6 lg:mb-[34px]">
               <Input
                 variant="personal"
+                className="min-h-[48px] w-full"
                 placeholder={t('Новий пароль')}
                 type={passNewShown ? 'text' : 'password'}
                 {...register('inputNewPassword', {
@@ -410,6 +413,7 @@ const PersonalDataForms: FC = () => {
             <div className="relative">
               <Input
                 variant="personal"
+                className="min-h-[48px] w-full"
                 placeholder={t('Підтвердження пароля')}
                 type={passConfirmShown ? 'text' : 'password'}
                 {...register('inputConfirmationPassword', {
