@@ -1,12 +1,11 @@
 import { FC } from 'react';
 
-import { IRating } from '@/enteties/Rating';
 import star from '@/shared/assets/icons/star-2.svg?react';
 import { Icon } from '@/shared/ui/Icon';
 import { VStack } from '@/shared/ui/Stack';
 
 interface Props {
-  rating: IRating;
+  rating: number;
 }
 
 const Rating: FC<Props> = (props) => {
@@ -22,7 +21,7 @@ const Rating: FC<Props> = (props) => {
             width={15}
             height={15}
             Svg={star}
-            className={`${i + 1 <= rating.rating ? 'fill-main' : 'stroke-main'}`}
+            className={`${i + 1 <= rating ? 'fill-main' : 'stroke-main'}`}
           />
         ))}
     </VStack>

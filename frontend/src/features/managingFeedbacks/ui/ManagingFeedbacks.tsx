@@ -4,6 +4,7 @@ import { DateRange, RangeKeyDict } from 'react-date-range';
 
 import Comment from '../../../enteties/Comment/ui/Comment';
 
+import { getUserAuthData } from '@/enteties/User';
 import {
   getSellerFeedbacksPageLimit,
   getSellerFeedbacksPageOffset,
@@ -18,8 +19,11 @@ import {
   sellerFeedbackPageActions,
 } from '@/features/managingFeedbacks/model/slice/commentsSlice';
 import DisputeFeedbackModal from '@/features/managingFeedbacks/ui/DisputeFeedbackModal';
+import SellerRatings from '@/features/managingFeedbacks/ui/SellerRatings';
+import { $api } from '@/shared/api/api';
 import calendar from '@/shared/assets/icons/calendar.svg?react';
 import plane from '@/shared/assets/icons/plane.svg?react';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
@@ -28,19 +32,27 @@ import { Input } from '@/shared/ui/Input';
 import Pagination from '@/shared/ui/Pagination/Pagination';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
+
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 
 type RangeSortType = 'day' | 'week' | 'month' | 'year' | 'range';
+
+export interface SellerRatingResponse {
+  current: NumbersMap;
+  previous: NumbersMap;
+}
+
+interface NumbersMap {
+  [key: string]: number;
+}
 
 const buttonData: { type: RangeSortType; label: string; clb: () => Date }[] = [
   {
     type: 'day',
     label: 'день',
     clb: () => {
-      const date = new Date();
-
-      return date;
+      return new Date();
     },
   },
   {
@@ -48,9 +60,8 @@ const buttonData: { type: RangeSortType; label: string; clb: () => Date }[] = [
     label: 'тиждень',
     clb: () => {
       const date = new Date();
-      const previousWeek = new Date(date.getTime() - 7 * 24 * 60 * 60 * 1000);
 
-      return previousWeek;
+      return new Date(date.getTime() - 7 * 24 * 60 * 60 * 1000);
     },
   },
   {
@@ -58,9 +69,8 @@ const buttonData: { type: RangeSortType; label: string; clb: () => Date }[] = [
     label: 'місяць',
     clb: () => {
       const date = new Date();
-      const previousMonth = new Date(date.getFullYear(), date.getMonth() - 1, 1);
 
-      return previousMonth;
+      return new Date(date.getFullYear(), date.getMonth() - 1, 1);
     },
   },
   {
@@ -68,9 +78,8 @@ const buttonData: { type: RangeSortType; label: string; clb: () => Date }[] = [
     label: 'рік',
     clb: () => {
       const date = new Date();
-      const previousYear = new Date(date.getFullYear() - 1, 0, 1);
 
-      return previousYear;
+      return new Date(date.getFullYear() - 1, 0, 1);
     },
   },
 ];
@@ -84,6 +93,8 @@ interface IRangeDate {
 const ManagingFeedbacks: FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentRange, setCurrentRange] = useState<RangeSortType | null>(null);
+  const [ratingsData, setRatingsData] = useState<SellerRatingResponse | null>(null);
+  const [ratingDataIsLoading, setRatingDataIsLoading] = useState(true);
   const [calendarIsOpened, setCalendarIsOpened] = useState(false);
   const [isDisputeModalOpen, setIsDisputeModalOpen] = useState(false);
   const [state, setState] = useState<IRangeDate[]>([
@@ -96,7 +107,7 @@ const ManagingFeedbacks: FC = () => {
 
   const feedbacks = useAppSelector(getSellerFeedbacks.selectAll);
   const totalFeedbacks = useAppSelector(getTotalSellerFeedbacks);
-  // const isLoading = useAppSelector(getSellerFeedbacksPageIsLoading);
+  const user = useAppSelector(getUserAuthData);
   const offset = useAppSelector(getSellerFeedbacksPageOffset);
   const startDate = useAppSelector(getSellerFeedbacksPageStartDate);
   const endDate = useAppSelector(getSellerFeedbacksPageStartDate);
@@ -104,8 +115,26 @@ const ManagingFeedbacks: FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
+    const fetchProducts = async () => {
+      setRatingDataIsLoading(true);
+      try {
+        const response = await $api.get<SellerRatingResponse>(
+          `${ApiRoutes.RATINGS}/?sellerId=${user?._id}&startDate=${startDate}&endDate=${endDate}`,
+        );
+
+        setRatingsData(response.data);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('Error fetching ratings:', error);
+      } finally {
+        setRatingDataIsLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [user, startDate, endDate, dispatch]);
+
+  useEffect(() => {
     dispatch(fetchSellerFeedbacksList({}));
   }, [dispatch, offset, startDate, endDate]);
 
@@ -132,15 +161,13 @@ const ManagingFeedbacks: FC = () => {
 
   const fetchNext = () => {
     setCurrentPage((prev) => prev + 1);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
+
     dispatch(fetchNextSellerFeedbacksPage());
   };
 
   const fetchPrev = () => {
     setCurrentPage((prev) => prev - 1);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
+
     dispatch(fetchPrevSellerFeedbacksPage());
   };
 
@@ -247,6 +274,11 @@ const ManagingFeedbacks: FC = () => {
           </div>
         </VStack>
       </VStack>
+
+      <SellerRatings
+        isLoading={ratingDataIsLoading}
+        data={ratingsData as SellerRatingResponse}
+      />
 
       {/* COMMENTS */}
       <HStack gap="4">

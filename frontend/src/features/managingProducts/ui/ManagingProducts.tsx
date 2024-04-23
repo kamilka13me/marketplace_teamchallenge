@@ -64,9 +64,7 @@ const ManagingProducts: FC = () => {
       dispatch(deleteProductsById(ids))
         .unwrap()
         .then(() => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          dispatch(fetchSellerProductsList({}));
+          dispatch(fetchSellerProductsList({ replace: true }));
         })
         .catch(() => {});
       setSelectedProductsIds([]);
@@ -74,30 +72,24 @@ const ManagingProducts: FC = () => {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     dispatch(initSellerProductsPage(searchParams));
   }, [dispatch, searchParams]);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     dispatch(fetchSellerProductsList({}));
   }, [dispatch, offset, sortBy, sortDirection]);
 
   const fetchNext = () => {
     setCurrentPage((prev) => prev + 1);
     setSelectedProductsIds([]);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
+
     dispatch(fetchNextSellerProductsPage());
   };
 
   const fetchPrev = () => {
     setCurrentPage((prev) => prev - 1);
     setSelectedProductsIds([]);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
+
     dispatch(fetchPrevSellerProductsPage());
   };
 
