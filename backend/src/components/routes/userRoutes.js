@@ -263,6 +263,7 @@ router.put('/password', checkPermission('none'), userController.updatePassword);
  *     tags: [User]
  *     requestBody:
  *       description: User email address for password recovery
+
  *       required: true
  *       content:
  *         application/json:

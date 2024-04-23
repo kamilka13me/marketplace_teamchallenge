@@ -260,6 +260,7 @@ const userController = {
     try {
       const user = await User.findOne({ email });
 
+
       if (!user) {
         return res
           .status(400)
@@ -272,6 +273,12 @@ const userController = {
       res
         .status(200)
         .json({ message: 'The password recovery email was sent successfully.' });
+
+      const confirmToken = generateConfirmToken(user._id);
+
+      sendMail(user.email, 'recovery', confirmToken);
+      res.status(200).json({ message: 'email send succes.' });
+
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
