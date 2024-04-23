@@ -6,6 +6,7 @@ import { getUserWishlist } from '@/enteties/User/model/services/getUserWishlist'
 import { setEmailRecoverPasswordUser } from '@/enteties/User/model/services/setEmailRecoverPasswordUser';
 import { setInformationUser } from '@/enteties/User/model/services/setInformationUser';
 import { setNewUser } from '@/enteties/User/model/services/setNewUser';
+import { setRecoverPasswordUser } from '@/enteties/User/model/services/setRecoverPasswordUser';
 import { getUserByCredentials } from '@/features/userAuth/model/services/getUserByCredentials';
 import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
@@ -96,6 +97,10 @@ export const userSlice = createSlice({
         state.error = undefined;
         state.isLoading = true;
       })
+      .addCase(setRecoverPasswordUser.pending, (state) => {
+        state.error = undefined;
+        state.isLoading = true;
+      })
       .addCase(getUserByCredentials.fulfilled, (state) => {
         state.userWishlist.isLoading = false;
       })
@@ -112,6 +117,10 @@ export const userSlice = createSlice({
         state.error = undefined;
       })
       .addCase(setEmailRecoverPasswordUser.fulfilled, (state) => {
+        state.isLoading = false;
+        state.error = undefined;
+      })
+      .addCase(setRecoverPasswordUser.fulfilled, (state) => {
         state.isLoading = false;
         state.error = undefined;
       })
@@ -132,6 +141,10 @@ export const userSlice = createSlice({
         state.error = action.payload as string;
       })
       .addCase(setEmailRecoverPasswordUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(setRecoverPasswordUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       });
