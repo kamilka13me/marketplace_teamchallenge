@@ -329,18 +329,6 @@ const Header: FC<Props> = () => {
               onCloseModal={onHandleClickPortal}
             />
           )}
-          {/* {currentForm ? ( */}
-          {/*  <LoginForm */}
-          {/*    onToggleForm={onToggleChangeForm} */}
-          {/*    onCloseModal={onHandleClickPortal} */}
-          {/*  /> */}
-          {/* ) : ( */}
-          {/*  <RegistrationForm */}
-          {/*    onToggleForm={onToggleChangeForm} */}
-          {/*    onCloseModal={onHandleClickPortal} */}
-          {/*  /> */}
-          {/* )} */}
-          {/* {forgottenForm && <ForgottenPasswordForm />} */}
         </ModalWindow>
       )}
     </header>
