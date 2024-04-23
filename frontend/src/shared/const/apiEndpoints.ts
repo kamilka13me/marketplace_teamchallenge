@@ -5,7 +5,7 @@ export enum ApiRoutes {
   CATEGORY = '/category',
   CONTROL_PANEL = '/control-panel',
   SELLER_PRODUCTS = '/seller',
-  Ratings = '/feedback',
+  SELLER_FEEDBACKS = '/feedback/comments',
   SUPPORT = '/support',
   WISHLIST = '/wishlist',
 }

@@ -34,7 +34,7 @@ const ProfileSidebar: FC<Props> = (props) => {
   const user = useAppSelector(getUserAuthData);
 
   return (
-    <div className="flex flex-col justify-between px-4 py-8 rounded-2xl bg-dark-grey min-w-[282px] min-h-[610px] whitespace-nowrap">
+    <div className="flex flex-col justify-between px-4 py-8 rounded-2xl bg-dark-grey max-w-[282px] w-full min-h-[610px] whitespace-nowrap">
       <div>
         <VStack align="center" gap="4" className="px-4">
           <div className="flex justify-center items-center w-[56px] h-[56px] rounded-full bg-selected-dark">

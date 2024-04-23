@@ -25,7 +25,7 @@ export const fetchSellerProductsList = createAsyncThunk<
   ApiResponse,
   FetchProductsListProps,
   ThunkConfig<string>
->('productsPage/fetchProductsList', async (props, thunkApi) => {
+>('sellerProductsPage/fetchProductsList', async (props, thunkApi) => {
   const { rejectWithValue, getState } = thunkApi;
 
   const limit = getSellerProductsPageLimit(getState());

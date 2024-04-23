@@ -9,10 +9,23 @@ interface Props {
   itemsPerPage: number;
   currentPage: number;
   setPage: (val: number) => void;
+  offset: number;
+  fetchNext: () => void;
+  fetchPrev: () => void;
+  className?: string;
 }
 
 const Pagination: FC<Props> = (props) => {
-  const { currentPage, setPage, dataLength, itemsPerPage } = props;
+  const {
+    currentPage,
+    setPage,
+    dataLength,
+    itemsPerPage,
+    offset,
+    fetchPrev,
+    fetchNext,
+    className,
+  } = props;
 
   const renderPages = (
     pages: number,
@@ -103,7 +116,30 @@ const Pagination: FC<Props> = (props) => {
     );
   };
 
-  return <>{renderPages(Math.ceil(dataLength / itemsPerPage), currentPage, setPage)}</>;
+  return (
+    <VStack gap="4" justify="center" className={`w-full mt-5 ${className}`}>
+      <Button
+        disabled={offset === 0}
+        variant="grey-outlined"
+        onClick={fetchPrev}
+        className="px-3 py-[3.3px] disabled:invisible"
+      >
+        <Text Tag="span" text="Попередня" size="sm" color="white" />
+      </Button>
+      <VStack gap="2">
+        {renderPages(Math.ceil(dataLength / itemsPerPage), currentPage, setPage)}
+      </VStack>
+      <Button
+        disabled={offset + itemsPerPage >= dataLength}
+        variant="grey-outlined"
+        type="button"
+        onClick={fetchNext}
+        className="px-3 py-[3.3px] disabled:invisible"
+      >
+        <Text Tag="span" text="Наступна" size="sm" color="white" />
+      </Button>
+    </VStack>
+  );
 };
 
 export default Pagination;

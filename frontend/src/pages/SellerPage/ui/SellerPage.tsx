@@ -2,6 +2,7 @@ import { FC, useLayoutEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
+import { ManagingFeedbacks } from '@/features/managingFeedbacks';
 import ManagingProducts from '@/features/managingProducts/ui/ManagingProducts';
 import SellerDashboard from '@/pages/SellerPage/ui/Tabs/SellerDashboard/SellerDashboard';
 import SupportCentre from '@/pages/SellerPage/ui/Tabs/SupportCentre/SupportCentre';
@@ -17,7 +18,6 @@ import { VStack } from '@/shared/ui/Stack';
 import { ProfileSidebar } from '@/widgets/ProfileSidebar';
 import { ITab } from '@/widgets/ProfileSidebar/ui/ProfileSidebar';
 import ProfileSidebarMobile from '@/widgets/ProfileSidebar/ui/ProfileSidebarMobile';
-// import { SellerInfo } from '@/widgets/SellerInfo';
 
 const tabs: ITab[] = [
   {
@@ -62,7 +62,7 @@ const components: FC[] = [
   SellerDashboard,
   ManagingProducts,
   ManagingProducts,
-  ManagingProducts,
+  ManagingFeedbacks,
   SupportCentre,
 ]; // Сюди передати просто інші компоненти для відображення в мобільній версії, послідовність важлива
 
@@ -104,7 +104,7 @@ const SellerPage: FC = () => {
 
           {currentTab === 0 && <SellerDashboard />}
           {currentTab === 1 && <ManagingProducts />}
-          {/* {currentTab === 3 && <SellerInfo />} */}
+          {currentTab === 3 && <ManagingFeedbacks />}
           {currentTab === 4 && <SupportCentre />}
         </VStack>
 
