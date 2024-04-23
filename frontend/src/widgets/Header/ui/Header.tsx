@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { getUserAuthData, getWishlist, userActions } from '@/enteties/User';
 import { actionLogin } from '@/features/userAuth';
+import { ForgottenPasswordForm } from '@/features/userAuth/ui/ForgottenPasswordForm';
 import { LoginForm } from '@/features/userAuth/ui/LoginForm';
 import { RegistrationForm } from '@/features/userAuth/ui/RegistrationForm';
 import allProducts from '@/shared/assets/icons/allProducts.svg?react';
@@ -40,7 +41,7 @@ const Header: FC<Props> = () => {
   const [showModalCategory, setShowModalCategory] = useState(false);
   const [inputData, setInputData] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
-  const [toggleForm, setToggleForm] = useState(true);
+  const [currentForm, setCurrentForm] = useState<number>(0);
   const [showBurgerMenu, setShowBurgerMenu] = useState(false);
 
   const { wishlist } = useAppSelector(getWishlist);
@@ -66,13 +67,13 @@ const Header: FC<Props> = () => {
 
   const onHandleClickPortal = (): void => {
     setShowModal(!showModal);
-    setToggleForm(true);
+    setCurrentForm(0);
     dispatch(actionLogin.resetError());
     dispatch(userActions.resetError());
   };
 
-  const onToggleChangeForm = (): void => {
-    setToggleForm(!toggleForm);
+  const onToggleForm = (index: number) => {
+    setCurrentForm(index);
   };
 
   const onOfficeBtnClick = (): void => {
@@ -287,7 +288,7 @@ const Header: FC<Props> = () => {
           isOpen={showBurgerMenu}
           setModalLoginForm={() => setShowModal(true)}
           setModalRegistrationForm={() => {
-            setToggleForm(false);
+            setCurrentForm(1);
             setShowModal(true);
           }}
           setClose={() => setShowBurgerMenu(false)}
@@ -301,7 +302,8 @@ const Header: FC<Props> = () => {
         >
           <VStack align="center" justify="between">
             <span className="outfit text-right text-main-dark text-[20px] md:text-[32px] leading-[24px] md:leading-[28px] font-semibold">
-              {toggleForm ? t('Вхід') : t('Реєстрація')}
+              {currentForm !== 1 && t('Вхід')}
+              {currentForm === 1 && t('Реєстрація')}
             </span>
             <Icon
               clickable
@@ -312,14 +314,18 @@ const Header: FC<Props> = () => {
               className="hover:transition hover:rotate-90 hover:duration-300 duration-300"
             />
           </VStack>
-          {toggleForm ? (
-            <LoginForm
-              onToggleForm={onToggleChangeForm}
+          {currentForm === 0 && (
+            <LoginForm onToggleForm={onToggleForm} onCloseModal={onHandleClickPortal} />
+          )}
+          {currentForm === 1 && (
+            <RegistrationForm
+              onToggleForm={onToggleForm}
               onCloseModal={onHandleClickPortal}
             />
-          ) : (
-            <RegistrationForm
-              onToggleForm={onToggleChangeForm}
+          )}
+          {currentForm === 2 && (
+            <ForgottenPasswordForm
+              onToggleForm={onToggleForm}
               onCloseModal={onHandleClickPortal}
             />
           )}

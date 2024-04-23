@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 
 import { setPasswordUser, User, UserSchema } from '@/enteties/User';
 import { getUserWishlist } from '@/enteties/User/model/services/getUserWishlist';
+import { setEmailRecoverPasswordUser } from '@/enteties/User/model/services/setEmailRecoverPasswordUser';
 import { setInformationUser } from '@/enteties/User/model/services/setInformationUser';
 import { setNewUser } from '@/enteties/User/model/services/setNewUser';
 import { getUserByCredentials } from '@/features/userAuth/model/services/getUserByCredentials';
@@ -91,6 +92,10 @@ export const userSlice = createSlice({
         state.error = undefined;
         state.isLoading = true;
       })
+      .addCase(setEmailRecoverPasswordUser.pending, (state) => {
+        state.error = undefined;
+        state.isLoading = true;
+      })
       .addCase(getUserByCredentials.fulfilled, (state) => {
         state.userWishlist.isLoading = false;
       })
@@ -103,6 +108,10 @@ export const userSlice = createSlice({
         state.error = undefined;
       })
       .addCase(setPasswordUser.fulfilled, (state) => {
+        state.isLoading = false;
+        state.error = undefined;
+      })
+      .addCase(setEmailRecoverPasswordUser.fulfilled, (state) => {
         state.isLoading = false;
         state.error = undefined;
       })
@@ -119,6 +128,10 @@ export const userSlice = createSlice({
         state.error = action.payload as string;
       })
       .addCase(setPasswordUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(setEmailRecoverPasswordUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       });

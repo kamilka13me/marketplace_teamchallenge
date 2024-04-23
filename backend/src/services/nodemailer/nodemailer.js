@@ -12,13 +12,6 @@ const sendMail = async (mailTo, theme, token) => {
       html: `<a href="https://marketplace-teamchallenge.vercel.app/verify/${token}">Confirm Email</a>`,
     },
     recovery: {
-      from: 'peach market <peachSupport>',
-      to: mailTo,
-      subject: 'peach account password recovery',
-      text: 'to recovery password, follow the link',
-      html: `<a href="https://marketplace-teamchallenge.vercel.app/recovery/${token}">Recover Password</a>`,
-    },
-    else: {
       // other themes
     },
   };
