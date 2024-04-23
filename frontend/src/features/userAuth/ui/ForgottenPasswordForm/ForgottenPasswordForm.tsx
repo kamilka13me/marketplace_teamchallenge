@@ -1,12 +1,16 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import { userHasError } from '@/enteties/User/model/selectors/getUserAuthData';
+import { setEmailRecoverPasswordUser } from '@/enteties/User/model/services/setEmailRecoverPasswordUser';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
+import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Input } from '@/shared/ui/Input';
 
-interface LoginFormProps {
+interface ForgottenPasswordProps {
   onToggleForm?: (index: number) => void;
   onCloseModal?: () => void;
 }
@@ -15,26 +19,46 @@ interface InputsValues {
   inputEmail: string;
 }
 
-const ForgottenPasswordForm: FC<LoginFormProps> = (props) => {
+const ForgottenPasswordForm: FC<ForgottenPasswordProps> = (props) => {
+  const errorServer = useAppSelector(userHasError);
+
   const { onToggleForm, onCloseModal } = props;
 
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-    // reset,
-    // setError,
+    reset,
+    setError,
   } = useForm<InputsValues>({
     mode: 'all',
   });
 
-  const onSubmit: SubmitHandler<InputsValues> = () => {
-    if (onCloseModal) {
-      onCloseModal();
-    }
+  const onSubmit: SubmitHandler<InputsValues> = async (data) => {
+    await dispatch(setEmailRecoverPasswordUser({ email: data.inputEmail })).then(
+      (value) => {
+        if (value.meta.requestStatus !== 'rejected') {
+          reset();
+          if (onCloseModal) {
+            onCloseModal();
+          }
+        }
+      },
+    );
   };
+
+  useEffect(() => {
+    setError('inputEmail', {
+      message: errorServer?.includes('404')
+        ? t(
+            'За даним e-mail не зареєстрований жоден користувач. Введіть вірний e-mail, або зареєструйтесь',
+          )
+        : '',
+    });
+  }, [setError, handleSubmit, errorServer, t]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="md:max-w-[360px]">
