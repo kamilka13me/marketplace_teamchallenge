@@ -17,7 +17,7 @@ import { Input } from '@/shared/ui/Input';
 import { VStack } from '@/shared/ui/Stack';
 
 interface RegistrationFormProps {
-  onToggleForm?: () => void;
+  onToggleForm?: (index: number) => void;
   onCloseModal?: () => void;
 }
 
@@ -80,7 +80,7 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
 
   const onClickChangeForm = () => {
     if (onToggleForm) {
-      onToggleForm();
+      onToggleForm(0);
     }
   };
 

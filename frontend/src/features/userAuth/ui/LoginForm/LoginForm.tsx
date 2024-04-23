@@ -14,11 +14,10 @@ import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Input } from '@/shared/ui/Input';
-import { Link } from '@/shared/ui/Link';
 import { VStack } from '@/shared/ui/Stack';
 
 interface LoginFormProps {
-  onToggleForm?: () => void;
+  onToggleForm?: (index: number) => void;
   onCloseModal?: () => void;
 }
 
@@ -92,7 +91,7 @@ const LoginForm: FC<LoginFormProps> = (props) => {
 
   const onClickChangeForm = () => {
     if (onToggleForm) {
-      onToggleForm();
+      onToggleForm(1);
     }
   };
 
@@ -145,13 +144,17 @@ const LoginForm: FC<LoginFormProps> = (props) => {
         />
       </div>
       <div className="text-right">
-        <Link
-          to="/*" // how create page, update this routes
-          onClick={onCloseModal}
+        <Button
+          variant="clear"
+          onClick={() => {
+            if (onToggleForm) {
+              onToggleForm(2);
+            }
+          }}
           className="inline-block outfit text-main-dark text-[14px] font-normal leading-[18px] mt-5 mb-6"
         >
           {t('Забули пароль?')}
-        </Link>
+        </Button>
       </div>
       <Input
         variant="clear"
