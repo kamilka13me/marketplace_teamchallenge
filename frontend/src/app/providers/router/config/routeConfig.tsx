@@ -7,6 +7,7 @@ import { NotFoundPage } from '@/pages/NotFoundPage';
 // import { ProductsPage } from '@/pages/ProductsPage';
 // import { ProductsPage } from '@/pages/ProductsPage';
 import { ProfilePage } from '@/pages/ProfilePage';
+import { RecoverPasswordPage } from '@/pages/RecoverPasswordPage';
 import { SellerPage } from '@/pages/SellerPage';
 import { VerifyPage } from '@/pages/VerifyPage';
 import {
@@ -18,6 +19,7 @@ import {
   getRouteProfile,
   getSellerProfile,
   getVerifyRoute,
+  getRecoverPasswordRoute,
 } from '@/shared/const/routes';
 
 export type AppRoutesProps = RouteProps & {
@@ -53,6 +55,10 @@ export const RouteConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.VERIFY]: {
     path: getVerifyRoute(':id'),
     element: <VerifyPage />,
+  },
+  [AppRoutes.RECOVER_PASSWORD]: {
+    path: getRecoverPasswordRoute(':id'),
+    element: <RecoverPasswordPage />,
   },
   [AppRoutes.NOT_FOUND]: {
     path: '*',

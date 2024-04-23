@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { ForgottenPasswordForm } from '@/features/userAuth/ui/ForgottenPasswordForm/index';
 
 const meta = {
-  title: 'UI/ForgottenPasswordForm',
+  title: 'Forms/ForgottenPasswordForm',
   component: ForgottenPasswordForm,
   parameters: {
     layout: 'centered',

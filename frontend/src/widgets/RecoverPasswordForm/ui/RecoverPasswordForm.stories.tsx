@@ -1,20 +1,22 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import { LoginForm } from '@/features/userAuth/ui/LoginForm/index';
+import { RecoverPasswordForm } from '@/widgets/RecoverPasswordForm/index';
 
 const meta = {
-  title: 'Forms/LoginForm',
-  component: LoginForm,
+  title: 'Forms/RecoverPasswordForm',
+  component: RecoverPasswordForm,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof LoginForm>;
+} satisfies Meta<typeof RecoverPasswordForm>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  args: {},
+  args: {
+    token: 'email-recovery-token-test',
+  },
   decorators: [(Story) => <Story />],
 };
