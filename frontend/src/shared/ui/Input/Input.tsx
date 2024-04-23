@@ -36,11 +36,11 @@ type VariantTypes = 'basic' | 'search' | 'clear' | 'personal';
 const variantClasses: Record<VariantTypes, string> = {
   clear: '',
   basic:
-    'outfit min-h-[48px] w-full md:min-w-[360px] pl-4 bg-transparent placeholder:main-white text-[16px] text-main-dark font-normal border-b-[1px] border-gray-900 focus:text-gray-900 outline-none',
+    'outfit h-auto w-auto pl-4 bg-transparent placeholder:main-white text-[16px] text-main-dark font-normal border-b-[1px] border-gray-900 focus:text-gray-900 outline-none',
   search:
-    'outfit min-h-[38px] w-full lg:min-w-[443px] pl-5 bg-dark-grey text-light-grey placeholder:main-white text-[14px] font-normal focus:text-light-grey outline-none rounded-l-lg',
+    'outfit h-auto w-auto pl-5 bg-dark-grey text-light-grey placeholder:main-white text-[14px] font-normal focus:text-light-grey outline-none rounded-l-lg',
   personal:
-    'outfit min-h-[48px] w-full lg:min-w-[318px] pl-4 bg-transparent placeholder:white-transparent-70 text-[16px] text-white-transparent-70 font-normal border-b-[1px] border-white-transparent-70 focus:text-white-transparent-70 outline-none',
+    'outfit h-auto w-auto pl-4 bg-transparent placeholder:white-transparent-70 text-[16px] text-white-transparent-70 font-normal border-b-[1px] border-white-transparent-70 focus:text-white-transparent-70 outline-none',
 };
 
 interface Props extends HTMLInputProps {

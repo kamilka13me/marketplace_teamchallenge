@@ -114,6 +114,7 @@ const SupportCentre: FC = () => {
           />
           <Input
             variant="personal"
+            className="min-h-[48px] w-full"
             classNameBlockWrap="mb-6"
             autoComplete="off"
             placeholder={t('Вкажіть тему звернення')}
@@ -129,7 +130,7 @@ const SupportCentre: FC = () => {
           />
           <Textarea
             variant="personal"
-            className="resize-none px-4 py-2 w-full lg:min-w-[360px] min-h-[216px]"
+            className="resize-none px-4 py-2 w-full min-h-[216px]"
             classNameBlockWrap="mb-2"
             autoComplete="off"
             placeholder={t('Опишіть суть питання')}

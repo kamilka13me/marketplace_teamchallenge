@@ -103,7 +103,7 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
           },
         })}
         error={errors?.inputName && errors?.inputName.message}
-        className="mt-6"
+        className="min-h-[48px] w-full md:min-w-[360px] mt-6"
       />
       <Input
         variant="basic"
@@ -119,7 +119,7 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
           },
         })}
         error={errors?.inputEmail && errors?.inputEmail.message}
-        className="mt-10"
+        className="min-h-[48px] w-full md:min-w-[360px] mt-10"
       />
       <div className="relative mt-10 mb-10">
         <Input
@@ -140,6 +140,7 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
             },
           })}
           error={errors?.inputPassword && errors?.inputPassword.message}
+          className="min-h-[48px] w-full md:min-w-[360px]"
         />
         <Icon
           clickable

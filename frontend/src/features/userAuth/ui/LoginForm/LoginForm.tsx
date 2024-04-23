@@ -112,7 +112,7 @@ const LoginForm: FC<LoginFormProps> = (props) => {
           },
         })}
         error={errors?.inputEmail && errors?.inputEmail.message}
-        className="mt-6"
+        className="min-h-[48px] w-full md:min-w-[360px] mt-6"
       />
       <div className="relative mt-10">
         <Input
@@ -133,6 +133,7 @@ const LoginForm: FC<LoginFormProps> = (props) => {
             },
           })}
           error={errors?.inputPassword && errors?.inputPassword.message}
+          className="min-h-[48px] w-full md:min-w-[360px]"
         />
         <Icon
           clickable
