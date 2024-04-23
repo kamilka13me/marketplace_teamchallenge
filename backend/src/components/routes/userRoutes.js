@@ -254,4 +254,59 @@ router.put('/', checkPermission('none'), userController.updateUser);
 
 router.put('/password', checkPermission('none'), userController.updatePassword);
 
+/**
+ * @swagger
+ * /users/recover-password:
+ *   post:
+ *     summary: Відновлення паролю користувача
+ *     description: Цей ендпойнт ініціює процес відновлення паролю, відправляючи лист із посиланням для підтвердження на електронну пошту користувача.
+ *     tags: [User]
+ *     requestBody:
+ *       description: Електронна адреса користувача для відновлення паролю
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: user@example.com
+ *     responses:
+ *       200:
+ *         description: Лист для відновлення паролю було успішно відправлено
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Лист для відновлення паролю відправлено на вашу електронну пошту."
+ *       404:
+ *         description: Користувач з вказаною електронною поштою не знайдений
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Користувач з такою електронною поштою не знайдений."
+ *       500:
+ *         description: Внутрішня помилка сервера
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Виникла помилка при відправленні електронного листа."
+ */
+router.post('/recover-password', userController.recoverPassword);
+
 export default router;
