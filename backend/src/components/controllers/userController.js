@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 
+import config from '../../config/config.js';
 import BrowserInfo from '../../models/BrowserInfo.js';
 import Role from '../../models/Role.js';
 import User from '../../models/User.js';
@@ -265,20 +267,64 @@ const userController = {
           .status(400)
           .json({ message: 'User not found with this email address.' });
       }
+      const confirmToken = generateConfirmToken(user._id);
 
       sendMail(user.email, 'recovery', confirmToken);
       res
         .status(200)
         .json({ message: 'The password recovery email was sent successfully.' });
-
-      const confirmToken = generateConfirmToken(user._id);
-
-      sendMail(user.email, 'recovery', confirmToken);
-      res.status(200).json({ message: 'email send succes.' });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
       res.status(500).json({ message: 'Error recovering password' });
+    }
+  },
+
+  recoverPasswordConfirm: async (req, res) => {
+    try {
+      const { confirmToken, newPassword } = req.body;
+
+      if (!confirmToken) {
+        return res.status(400).json({ message: 'Token is required' });
+      }
+      const decoded = jwt.verify(confirmToken, config.confirmSecretKey);
+
+      const hashedPassword = await hashPassword(newPassword);
+
+      const updatedUser = await User.findByIdAndUpdate(
+        decoded.id,
+        { isAccountConfirm: true, password: hashedPassword },
+        { new: true, runValidators: true },
+      ).populate('role');
+
+      if (!updatedUser) {
+        return res.status(404).json({ message: 'User not found.' });
+      }
+
+      const userCallback = {
+        _id: updatedUser._id,
+        username: updatedUser.username,
+        surname: updatedUser.surname,
+        email: updatedUser.email,
+        role: updatedUser.role.name,
+        dob: updatedUser.dob,
+        isAccountConfirm: updatedUser.isAccountConfirm,
+        phoneNumber: updatedUser.phoneNumber,
+        wishlist: updatedUser.wishlist,
+      };
+
+      res.status(200).json({
+        message: 'User verify successfully.',
+        user: userCallback,
+      });
+    } catch (error) {
+      if (error instanceof jwt.TokenExpiredError) {
+        res.status(419).json({ message: 'Token expired' });
+      } else {
+        // eslint-disable-next-line no-console
+        console.log(error);
+        res.status(500).json({ message: 'Unexpected error' });
+      }
     }
   },
 };
