@@ -10,7 +10,7 @@ import {
   getUserAuthData,
   userHasError,
 } from '@/enteties/User/model/selectors/getUserAuthData';
-import cancel from '@/shared/assets/icons/cancel-white.svg?react';
+import cancel from '@/shared/assets/icons/cancel.svg?react';
 import privateEye from '@/shared/assets/icons/private-eye-white.svg?react';
 import unPrivateEye from '@/shared/assets/icons/unprivate-eye-white.svg?react';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
@@ -494,6 +494,7 @@ const PersonalDataForms: FC = () => {
               Svg={cancel}
               width={24}
               height={24}
+              className="fill-main-white"
             />
           </VStack>
           <HStack align="center" className="mt-5 mx-3.5 mb-8 gap-3">

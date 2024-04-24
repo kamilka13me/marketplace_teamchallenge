@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { getUserAuthData } from '@/enteties/User';
 import allProducts from '@/shared/assets/icons/allProducts.svg?react';
-import cancelWhite from '@/shared/assets/icons/cancel-white.svg?react';
+import cancel from '@/shared/assets/icons/cancel.svg?react';
 import enBlack from '@/shared/assets/icons/en-black.svg?react';
 import logo from '@/shared/assets/icons/logo.svg?react';
 import person from '@/shared/assets/icons/person.svg?react';
@@ -147,9 +147,10 @@ const BurgerMenu: FC<Props> = (props) => {
                   setClose();
                   document.body.classList.remove('overflow-hidden');
                 }}
-                Svg={cancelWhite}
+                Svg={cancel}
                 width={24}
                 height={24}
+                className="fill-main-white"
               />
             </VStack>
             <VStack align="center" className="gap-[22px]">

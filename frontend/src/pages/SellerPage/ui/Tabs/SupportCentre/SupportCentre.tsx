@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { setSupportSeller } from '@/enteties/Seller/model/services/setSupportSeller';
-import cancel from '@/shared/assets/icons/cancel-white.svg?react';
+import cancel from '@/shared/assets/icons/cancel.svg?react';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { Icon } from '@/shared/ui/Icon';
 import { Input } from '@/shared/ui/Input';
@@ -243,6 +243,7 @@ const SupportCentre: FC = () => {
               Svg={cancel}
               width={24}
               height={24}
+              className="fill-main-white hover:transition hover:rotate-90 hover:duration-300 duration-300"
             />
           </VStack>
           <HStack align="center" className="max-w-[320px] mt-3 md:m-5 gap-3 md:gap-10">
