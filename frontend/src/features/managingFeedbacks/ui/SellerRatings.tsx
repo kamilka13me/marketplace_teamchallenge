@@ -40,14 +40,14 @@ const SellerRatings: FC<Props> = (props) => {
             <VStack gap="4">
               <Text
                 Tag="span"
-                text={totalRatingCountHelper(data.current).toString()}
+                text={totalRatingCountHelper(data?.current).toString()}
                 size="2xl"
                 color="white"
                 className="mb-2"
               />
               <Percentage
-                currentNum={totalRatingCountHelper(data.current)}
-                previousNum={totalRatingCountHelper(data.previous)}
+                currentNum={totalRatingCountHelper(data?.current)}
+                previousNum={totalRatingCountHelper(data?.previous)}
               />
             </VStack>
             <Text Tag="p" text="поставлених оцінок" size="sm" color="gray" />
@@ -64,21 +64,21 @@ const SellerRatings: FC<Props> = (props) => {
             <VStack gap="4">
               <Text
                 Tag="span"
-                text={calcAverage(data.current).toFixed(1).toString()}
+                text={calcAverage(data?.current).toFixed(1).toString()}
                 size="2xl"
                 color="white"
                 className="mb-1"
               />
               <Percentage
-                currentNum={calcAverage(data.current)}
-                previousNum={calcAverage(data.previous)}
+                currentNum={calcAverage(data?.current)}
+                previousNum={calcAverage(data?.previous)}
               />
             </VStack>
-            <Rating rating={Math.round(calcAverage(data.current))} />
+            <Rating rating={Math.round(calcAverage(data?.current))} />
           </div>
           <div className="w-[1px] h-[128px] bg-selected-dark rounded-lg" />
           <HStack>
-            {Object.entries(calcRatingInPercentage(data.current))
+            {Object.entries(calcRatingInPercentage(data?.current))
               ?.reverse()
               .map(([key, value]) => (
                 <VStack key={key} align="center" gap="2">

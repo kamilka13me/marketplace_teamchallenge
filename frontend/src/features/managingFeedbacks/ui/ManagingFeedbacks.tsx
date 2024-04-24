@@ -319,8 +319,8 @@ const ManagingFeedbacks: FC = () => {
 
       {/* COMMENTS */}
       <HStack gap="4">
-        {feedbacks.map((comment) => (
-          <div key={comment._id} className="rounded-2xl p-4 bg-dark-grey">
+        {feedbacks?.map((comment) => (
+          <div key={comment?._id} className="rounded-2xl p-4 bg-dark-grey">
             <Comment comment={comment} />
             <VStack gap="4" justify="between" className="w-full mt-6">
               <div className="w-full relative">
