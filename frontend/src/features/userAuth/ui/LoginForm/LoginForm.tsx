@@ -140,7 +140,7 @@ const LoginForm: FC<LoginFormProps> = (props) => {
           Svg={passShown ? privateEye : unPrivateEye}
           width={24}
           height={24}
-          className="absolute top-[12px] right-[12px]"
+          className="absolute top-[12px] right-[12px] fill-selected-dark"
         />
       </div>
       <div className="text-right">

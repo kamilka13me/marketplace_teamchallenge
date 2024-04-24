@@ -10,9 +10,9 @@ import {
   getUserAuthData,
   userHasError,
 } from '@/enteties/User/model/selectors/getUserAuthData';
-import cancel from '@/shared/assets/icons/cancel-white.svg?react';
-import privateEye from '@/shared/assets/icons/private-eye-white.svg?react';
-import unPrivateEye from '@/shared/assets/icons/unprivate-eye-white.svg?react';
+import cancel from '@/shared/assets/icons/cancel.svg?react';
+import privateEye from '@/shared/assets/icons/private-eye.svg?react';
+import unPrivateEye from '@/shared/assets/icons/unprivate-eye.svg?react';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Icon } from '@/shared/ui/Icon';
@@ -377,7 +377,7 @@ const PersonalDataForms: FC = () => {
                 Svg={passOldShown ? privateEye : unPrivateEye}
                 width={24}
                 height={24}
-                className="opacity-70 absolute top-[12px] right-[12px]"
+                className="opacity-70 absolute top-[12px] right-[12px] fill-main-white"
               />
             </div>
             <div className="relative mb-6 lg:mb-[34px]">
@@ -407,7 +407,7 @@ const PersonalDataForms: FC = () => {
                 Svg={passNewShown ? privateEye : unPrivateEye}
                 width={24}
                 height={24}
-                className="opacity-70 absolute top-[12px] right-[12px]"
+                className="opacity-70 absolute top-[12px] right-[12px] fill-main-white"
               />
             </div>
             <div className="relative">
@@ -440,7 +440,7 @@ const PersonalDataForms: FC = () => {
                 Svg={passConfirmShown ? privateEye : unPrivateEye}
                 width={24}
                 height={24}
-                className="opacity-70 absolute top-[12px] right-[12px]"
+                className="opacity-70 absolute top-[12px] right-[12px] fill-main-white"
               />
             </div>
           </form>
@@ -494,6 +494,7 @@ const PersonalDataForms: FC = () => {
               Svg={cancel}
               width={24}
               height={24}
+              className="fill-main-white"
             />
           </VStack>
           <HStack align="center" className="mt-5 mx-3.5 mb-8 gap-3">
