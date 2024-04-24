@@ -30,6 +30,15 @@ const productRoute = express.Router();
  *                 type: string
  *                 required: true
  *                 description: Product description
+ *               brand:
+ *                 type: string
+ *                 description: Product brand
+ *               condition:
+ *                 type: string
+ *                 description: Product condition
+ *               status:
+ *                 type: string
+ *                 description: Product status
  *               price:
  *                 type: number
  *                 required: true
@@ -40,6 +49,17 @@ const productRoute = express.Router();
  *                 required: true
  *                 format: int
  *                 description: Product price
+ *               specifications:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     specification:
+ *                       type: string
+ *                       example: "Processor"
+ *                     specificationDescription:
+ *                       type: string
+ *                       example: "Intel Core i7"
  *               discountStart:
  *                 type: string
  *                 format: date-time
