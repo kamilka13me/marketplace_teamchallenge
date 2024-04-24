@@ -20,7 +20,7 @@ const QuantityStats = ({ stats }: Props) => {
           <VStack gap="2">
             <Text Tag="p" size="2xl" text="500" color="white" className="font-semibold" />
             <VStack align="center" gap="1">
-              <Icon Svg={caretDown} width={16} height={16} />
+              <Icon Svg={caretDown} width={16} height={16} className="fill-green" />
               <Text Tag="span" size="sm" text="2.8%" className="!text-[#24a148]" />
             </VStack>
           </VStack>

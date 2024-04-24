@@ -21,6 +21,7 @@ import {
 } from '@/features/managingProducts/model/slice/sellerProductsSlice';
 import SellerProductStatusBadge from '@/features/managingProducts/ui/SellerProductStatusBadge';
 import edit from '@/shared/assets/icons/edit-2.svg?react';
+import plus from '@/shared/assets/icons/plus.svg?react';
 import sortArrows from '@/shared/assets/icons/sort-arrows.svg?react';
 import trashbin from '@/shared/assets/icons/trashbin.svg?react';
 import { getRouteProduct } from '@/shared/const/routes';
@@ -63,9 +64,7 @@ const ManagingProducts: FC = () => {
       dispatch(deleteProductsById(ids))
         .unwrap()
         .then(() => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          dispatch(fetchSellerProductsList({}));
+          dispatch(fetchSellerProductsList({ replace: true }));
         })
         .catch(() => {});
       setSelectedProductsIds([]);
@@ -73,30 +72,24 @@ const ManagingProducts: FC = () => {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     dispatch(initSellerProductsPage(searchParams));
   }, [dispatch, searchParams]);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     dispatch(fetchSellerProductsList({}));
   }, [dispatch, offset, sortBy, sortDirection]);
 
   const fetchNext = () => {
     setCurrentPage((prev) => prev + 1);
     setSelectedProductsIds([]);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
+
     dispatch(fetchNextSellerProductsPage());
   };
 
   const fetchPrev = () => {
     setCurrentPage((prev) => prev - 1);
     setSelectedProductsIds([]);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
+
     dispatch(fetchPrevSellerProductsPage());
   };
 
@@ -116,7 +109,8 @@ const ManagingProducts: FC = () => {
           >
             <Text Tag="span" text="Видалити вибране" size="md" color="white" />
           </Button>
-          <Button variant="primary">
+          <Button variant="primary" className="flex items-center gap-2 h-[38px]">
+            <Icon Svg={plus} width={12} height={12} />
             <Text Tag="span" text="Додати продукт" size="sm" />
           </Button>
         </VStack>
@@ -433,33 +427,15 @@ const ManagingProducts: FC = () => {
           </table>
         </div>
       </div>
-      <VStack justify="center" gap="4" className="w-full mt-10">
-        <Button
-          disabled={offset === 0}
-          variant="grey-outlined"
-          onClick={fetchPrev}
-          className={`px-3 py-[3.3px] disabled:invisible ${isLoading && 'pointer-events-none'}`}
-        >
-          <Text Tag="span" text="Попередня" size="sm" color="white" />
-        </Button>
-        <VStack gap="2">
-          <Pagination
-            dataLength={totalProducts}
-            itemsPerPage={limit}
-            currentPage={currentPage}
-            setPage={handleClick}
-          />
-        </VStack>
-        <Button
-          disabled={offset + limit >= totalProducts}
-          variant="grey-outlined"
-          type="button"
-          onClick={fetchNext}
-          className={`px-3 py-[3.3px] disabled:invisible ${isLoading && 'pointer-events-none'}`}
-        >
-          <Text Tag="span" text="Наступна" size="sm" color="white" />
-        </Button>
-      </VStack>
+      <Pagination
+        dataLength={totalProducts}
+        itemsPerPage={limit}
+        currentPage={currentPage}
+        setPage={handleClick}
+        offset={offset}
+        fetchPrev={fetchPrev}
+        fetchNext={fetchNext}
+      />
     </HStack>
   );
 };

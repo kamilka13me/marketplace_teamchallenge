@@ -60,3 +60,67 @@
     transition: all .2s ease-in;
 }
 
+/* CALENDAR */
+
+.rdrMonth {
+    width: 382px !important;
+    font-size: 14px;
+}
+
+.rdrDays {
+    gap: 6px 0;
+}
+
+.rdrCalendarWrapper {
+    background-color: #1D1D1D !important;
+}
+
+.rdrDayNumber span {
+    color: #8D8D8D !important;
+}
+
+.rdrDay:not(.rdrDayPassive) .rdrInRange ~ .rdrDayNumber span, .rdrDay:not(.rdrDayPassive) .rdrStartEdge ~ .rdrDayNumber span, .rdrDay:not(.rdrDayPassive) .rdrEndEdge ~ .rdrDayNumber span, .rdrDay:not(.rdrDayPassive) .rdrSelected ~ .rdrDayNumber span {
+    color: #0c0c0c !important;
+}
+
+.rdrDayDisabled {
+    background-color: #262525 !important;
+}
+
+.rdrDayToday .rdrDayNumber span:after {
+    background: none !important;
+}
+
+.rdrMonthAndYearPickers {
+    justify-content: start !important;
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+    font-family: "Manrope", sans-serif;
+    margin-left: 24px;
+}
+
+.rdrMonthAndYearWrapper {
+    height: 50px !important;
+}
+
+.rdrSelected {
+    background-color: #D9C01B !important;
+}
+
+.rdrSelected .span {
+    color: #1D1D1D !important;
+}
+
+.rdrMonthAndYearPickers select {
+    color: #FFFFFF !important;
+}
+
+.rdrMonthAndYearPickers select option {
+    width: 120px !important;
+    color: #1D1D1D !important;
+}
+
+.rdrMonthAndYearPickers {
+    margin-left: 0 !important;
+}

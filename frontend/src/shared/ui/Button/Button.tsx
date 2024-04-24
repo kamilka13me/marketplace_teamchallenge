@@ -12,7 +12,7 @@ const variantClasses: Record<VariantTypes, string> = {
   clear: '',
   primary:
     'bg-main py-2 px-4 text-main-dark rounded-lg hover:bg-secondary-yellow disabled:bg-disabled duration-200',
-  gray: '',
+  gray: 'bg-grey text-white py-2',
   gradient: 'bg-gradient-to-r from-[#F8DA2C] to-[#F16644] rounded-lg text-main-white',
   outlined:
     'outfit border-main border-[1px] px-4 py-[7px] rounded-lg font-normal text-[16px] text-main-dark duration-300 hover:border-main-white hover:text-white active:border-secondary active:text-secondary disabled:opacity-40',

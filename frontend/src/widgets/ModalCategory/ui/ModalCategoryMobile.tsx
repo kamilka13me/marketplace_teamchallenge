@@ -152,7 +152,7 @@ const ModalCategoryMobile: FC<Props> = ({ isOpen, setIsOpen }) => {
                 setCurrentSubSub(null);
               }}
             >
-              <Icon Svg={close} />
+              <Icon Svg={close} className="fill-selected-dark" />
             </Button>
           </VStack>
           <div className="h-[2px] bg-gradient-to-r from-0% from-[rgba(224,225,226,0)] via-50% via-[rgba(224,225,226,1)] to-100% to-[rgba(224,225,226,0)] my-[20px]" />

@@ -311,7 +311,7 @@ const Header: FC<Props> = () => {
               Svg={cancel}
               width={24}
               height={24}
-              className="hover:transition hover:rotate-90 hover:duration-300 duration-300"
+              className="fill-selected-dark hover:transition hover:rotate-90 hover:duration-300 duration-300"
             />
           </VStack>
           {currentForm === 0 && (
