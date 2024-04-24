@@ -111,3 +111,16 @@
 .rdrSelected .span {
     color: #1D1D1D !important;
 }
+
+.rdrMonthAndYearPickers select {
+    color: #FFFFFF !important;
+}
+
+.rdrMonthAndYearPickers select option {
+    width: 120px !important;
+    color: #1D1D1D !important;
+}
+
+.rdrMonthAndYearPickers {
+    margin-left: 0 !important;
+}

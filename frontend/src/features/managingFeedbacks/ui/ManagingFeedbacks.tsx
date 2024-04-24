@@ -8,7 +8,6 @@ import { getUserAuthData } from '@/enteties/User';
 import {
   getSellerFeedbacksPageLimit,
   getSellerFeedbacksPageOffset,
-  getSellerFeedbacksPageStartDate,
   getTotalSellerFeedbacks,
 } from '@/features/managingFeedbacks/model/selectors/feedbacksSelectors';
 import { fetchNextSellerFeedbacksPage } from '@/features/managingFeedbacks/model/services/fetchNextSellerFeedbacksPage';
@@ -99,7 +98,7 @@ const ManagingFeedbacks: FC = () => {
   const [isDisputeModalOpen, setIsDisputeModalOpen] = useState(false);
   const [state, setState] = useState<IRangeDate[]>([
     {
-      startDate: new Date(),
+      startDate: new Date(2024, 0, 1),
       endDate: new Date(),
       key: 'selection',
     },
@@ -109,17 +108,45 @@ const ManagingFeedbacks: FC = () => {
   const totalFeedbacks = useAppSelector(getTotalSellerFeedbacks);
   const user = useAppSelector(getUserAuthData);
   const offset = useAppSelector(getSellerFeedbacksPageOffset);
-  const startDate = useAppSelector(getSellerFeedbacksPageStartDate);
-  const endDate = useAppSelector(getSellerFeedbacksPageStartDate);
   const limit = useAppSelector(getSellerFeedbacksPageLimit);
   const dispatch = useAppDispatch();
 
+  const adjustDate = (date: Date, days: number) => {
+    date.setDate(date.getDate() + days);
+
+    return date;
+  };
+
   useEffect(() => {
-    const fetchProducts = async () => {
+    const endDate = adjustDate(new Date(state[0]?.endDate as unknown as Date), 2);
+
+    dispatch(
+      sellerFeedbackPageActions.setEndDate(
+        endDate.toISOString().slice(0, 10) as unknown as Date,
+      ),
+    );
+  }, [dispatch, state]);
+
+  useEffect(() => {
+    const startDate = adjustDate(new Date(state[0]?.startDate as unknown as Date), 1);
+
+    dispatch(
+      sellerFeedbackPageActions.setStartDate(
+        startDate.toISOString().slice(0, 10) as unknown as Date,
+      ),
+    );
+  }, [dispatch, state]);
+
+  useEffect(() => {
+    const fetchRatings = async () => {
       setRatingDataIsLoading(true);
       try {
+        const startDate = adjustDate(new Date(state[0]?.startDate as unknown as Date), 1); // Adjust start date
+
+        const endDate = adjustDate(new Date(state[0]?.endDate as unknown as Date), 2);
+
         const response = await $api.get<SellerRatingResponse>(
-          `${ApiRoutes.RATINGS}/?sellerId=${user?._id}&startDate=${startDate}&endDate=${endDate}`,
+          `${ApiRoutes.RATINGS}/?sellerId=${user?._id}&startDate=${startDate.toISOString().slice(0, 10)}&endDate=${endDate.toISOString().slice(0, 10)}`,
         );
 
         setRatingsData(response.data);
@@ -131,12 +158,12 @@ const ManagingFeedbacks: FC = () => {
       }
     };
 
-    fetchProducts();
-  }, [user, startDate, endDate, dispatch]);
+    fetchRatings();
+  }, [user, state, dispatch]);
 
   useEffect(() => {
     dispatch(fetchSellerFeedbacksList({}));
-  }, [dispatch, offset, startDate, endDate]);
+  }, [dispatch, offset, state]);
 
   const handleCurrentRange = (type: RangeSortType) => {
     setCurrentRange(type);
@@ -146,17 +173,6 @@ const ManagingFeedbacks: FC = () => {
     const { selection } = ranges;
 
     setState([selection as IRangeDate]);
-
-    dispatch(
-      sellerFeedbackPageActions.setStartDate(
-        state[0]?.startDate.toISOString().slice(0, 10) as unknown as Date,
-      ),
-    );
-    dispatch(
-      sellerFeedbackPageActions.setEndDate(
-        state[0]?.endDate.toISOString().slice(0, 10) as unknown as Date,
-      ),
-    );
   };
 
   const fetchNext = () => {
@@ -210,6 +226,22 @@ const ManagingFeedbacks: FC = () => {
                 endDate.setDate(endDate.getDate() + 1);
 
                 handleCurrentRange(button.type);
+
+                setState((prevState) => {
+                  const updatedState = prevState.map((rangeDate, index) => {
+                    if (index === 0) {
+                      return {
+                        ...rangeDate,
+                        startDate: button.clb(),
+                        endDate: new Date(),
+                      };
+                    }
+
+                    return rangeDate;
+                  });
+
+                  return updatedState;
+                });
                 dispatch(sellerFeedbackPageActions.setStartDate(button.clb()));
                 dispatch(sellerFeedbackPageActions.setEndDate(endDate));
               }}
@@ -248,7 +280,6 @@ const ManagingFeedbacks: FC = () => {
                   <DateRange
                     date={new Date()}
                     editableDateInputs={false}
-                    showMonthAndYearPickers={false}
                     showMonthArrow={false}
                     showPreview={false}
                     showDateDisplay={false}
@@ -261,7 +292,13 @@ const ManagingFeedbacks: FC = () => {
                       variant="grey-outlined"
                       className="text-main-white py-1 px-3 !rounded-full !border-light-grey"
                       onClick={() => {
-                        dispatch(sellerFeedbackPageActions.clearSortParams());
+                        setState([
+                          {
+                            startDate: new Date(2024, 0, 1),
+                            endDate: new Date(),
+                            key: 'selection',
+                          },
+                        ]);
                         setCurrentRange(null);
                       }}
                     >

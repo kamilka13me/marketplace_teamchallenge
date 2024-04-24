@@ -31,10 +31,10 @@ export const sellerFeedbackSlice = createSlice({
   }),
   reducers: {
     setStartDate: (state, action: PayloadAction<Date>) => {
-      state.startDate = action.payload.toISOString();
+      state.startDate = action.payload;
     },
     setEndDate: (state, action: PayloadAction<Date>) => {
-      state.endDate = action.payload.toISOString();
+      state.endDate = action.payload;
     },
     setOffset: (state, action: PayloadAction<number>) => {
       state.offset = action.payload;

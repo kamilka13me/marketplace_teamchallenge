@@ -9,6 +9,7 @@ import {
 import { SellerRatingResponse } from '@/features/managingFeedbacks/ui/ManagingFeedbacks';
 import star from '@/shared/assets/icons/star-2.svg?react';
 import { Icon } from '@/shared/ui/Icon';
+import Percentage from '@/shared/ui/Percentage/ui/Percentage';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
@@ -23,39 +24,61 @@ const SellerRatings: FC<Props> = (props) => {
   return (
     <VStack
       align="center"
-      justify="between"
-      className="w-full bg-dark-grey px-4 h-[158px] mb-5 rounded-2xl"
+      justify="start"
+      className="w-full gap-[44px] bg-dark-grey px-4 h-[158px] mb-5 rounded-2xl"
     >
       {!isLoading && (
         <>
           <div>
-            <Text Tag="h3" text="Кількість оцінок" size="md" color="white" />
-            <VStack>
+            <Text
+              Tag="h3"
+              text="Кількість оцінок"
+              size="md"
+              color="white"
+              className="mb-3"
+            />
+            <VStack gap="4">
               <Text
                 Tag="span"
-                text={totalRatingCountHelper(data).toString()}
+                text={totalRatingCountHelper(data.current).toString()}
                 size="2xl"
                 color="white"
+                className="mb-2"
+              />
+              <Percentage
+                currentNum={totalRatingCountHelper(data.current)}
+                previousNum={totalRatingCountHelper(data.previous)}
               />
             </VStack>
             <Text Tag="p" text="поставлених оцінок" size="sm" color="gray" />
           </div>
-
+          <div className="w-[1px] h-[128px] bg-selected-dark rounded-lg" />
           <div>
-            <Text Tag="h3" text="Рейтинг оцінок" size="md" color="white" />
-            <VStack>
+            <Text
+              Tag="h3"
+              text="Рейтинг оцінок"
+              size="md"
+              color="white"
+              className="mb-2"
+            />
+            <VStack gap="4">
               <Text
                 Tag="span"
-                text={calcAverage(data).toFixed(1).toString()}
+                text={calcAverage(data.current).toFixed(1).toString()}
                 size="2xl"
                 color="white"
+                className="mb-1"
+              />
+              <Percentage
+                currentNum={calcAverage(data.current)}
+                previousNum={calcAverage(data.previous)}
               />
             </VStack>
-            <Rating rating={Math.round(calcAverage(data))} />
+            <Rating rating={Math.round(calcAverage(data.current))} />
           </div>
-
+          <div className="w-[1px] h-[128px] bg-selected-dark rounded-lg" />
           <HStack>
-            {Object.entries(calcRatingInPercentage(data))
+            {Object.entries(calcRatingInPercentage(data.current))
               ?.reverse()
               .map(([key, value]) => (
                 <VStack key={key} align="center" gap="2">
