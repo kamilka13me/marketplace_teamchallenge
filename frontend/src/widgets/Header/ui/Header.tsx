@@ -74,6 +74,8 @@ const Header: FC<Props> = () => {
 
   const onToggleForm = (index: number) => {
     setCurrentForm(index);
+    dispatch(actionLogin.resetError());
+    dispatch(userActions.resetError());
   };
 
   const onOfficeBtnClick = (): void => {

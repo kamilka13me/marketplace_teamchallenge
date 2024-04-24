@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
+import { userActions } from '@/enteties/User';
 import { userHasError } from '@/enteties/User/model/selectors/getUserAuthData';
 import { setRecoverPasswordUser } from '@/enteties/User/model/services/setRecoverPasswordUser';
 import privateEye from '@/shared/assets/icons/private-eye.svg?react';
@@ -60,6 +61,7 @@ const RecoverPasswordForm: FC<ForgottenPasswordProps> = (props) => {
         if (value.meta.requestStatus !== 'rejected') {
           reset();
           navigate(getRouteMain());
+          dispatch(userActions.resetError());
         }
       });
     }
