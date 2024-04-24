@@ -11,6 +11,9 @@ const productController = {
       const {
         name,
         description,
+        brand,
+        condition,
+        status,
         price,
         category,
         quantity,
@@ -20,21 +23,40 @@ const productController = {
         discountEnd,
       } = req.body;
 
-      let { images } = req.body;
+      let { images, specifications } = req.body;
 
       images = images.map((name) => `/static/products/${name}`);
+
+      let parsedSpecifications;
+
+      try {
+        if (
+          !specifications.trim().startsWith('[') ||
+          !specifications.trim().endsWith(']')
+        ) {
+          specifications = `[${specifications}]`;
+        }
+
+        parsedSpecifications = JSON.parse(specifications);
+      } catch (error) {
+        return res.status(400).json({ error: 'Invalid request body in specifications' });
+      }
 
       const product = {
         name,
         description,
         price,
+        brand,
+        condition,
+        status,
         category,
         quantity,
         discount,
         images,
+        specifications: parsedSpecifications,
         sellerId: userId,
-        discount_start: new Date(discountStart),
-        discount_end: new Date(discountEnd),
+        discount_start: discountStart ? new Date(discountStart) : undefined,
+        discount_end: discountEnd ? new Date(discountEnd) : undefined,
       };
 
       const newProduct = new Product(product);
