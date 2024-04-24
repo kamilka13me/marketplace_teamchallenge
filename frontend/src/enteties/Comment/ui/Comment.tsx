@@ -62,7 +62,7 @@ const Comment: FC<Props> = (props) => {
               color="gray"
               className="whitespace-nowrap truncate"
             />
-            <Rating rating={comment.ratingId.rating} />
+            <Rating rating={comment?.ratingId?.rating} />
           </div>
         </VStack>
         <div>
