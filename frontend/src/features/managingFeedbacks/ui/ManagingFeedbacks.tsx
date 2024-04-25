@@ -146,7 +146,7 @@ const ManagingFeedbacks: FC = () => {
         const endDate = adjustDate(new Date(state[0]?.endDate as unknown as Date), 2);
 
         const response = await $api.get<SellerRatingResponse>(
-          `${ApiRoutes.RATINGS}/?sellerId=${user?._id}&startDate=${startDate.toISOString().slice(0, 10)}&endDate=${endDate.toISOString().slice(0, 10)}`,
+          `${ApiRoutes.RATINGS}?sellerId=${user?._id}&startDate=${startDate.toISOString().slice(0, 10)}&endDate=${endDate.toISOString().slice(0, 10)}`,
         );
 
         setRatingsData(response.data);
