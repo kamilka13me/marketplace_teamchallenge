@@ -12,7 +12,7 @@ type VariantTypes = 'clear' | 'personal';
 const variantClasses: Record<VariantTypes, string> = {
   clear: '',
   personal:
-    'outfit h-auto w-auto bg-transparent placeholder:white-transparent-70 text-[16px] text-white-transparent-70 font-normal border-[1px] border-white-transparent-70 focus:text-white-transparent-70 outline-none',
+    'outfit h-auto w-auto bg-transparent placeholder:text-white-transparent-70 text-[16px] text-white-transparent-70 font-normal border-[1px] border-white-transparent-70 focus:text-white-transparent-70 outline-none',
 };
 
 interface Props extends HTMLTextareaProps {

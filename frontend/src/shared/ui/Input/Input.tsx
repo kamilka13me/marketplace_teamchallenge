@@ -31,16 +31,17 @@ type InputTypes =
   | 'url'
   | 'week';
 
-type VariantTypes = 'basic' | 'search' | 'clear' | 'personal';
+type VariantTypes = 'basic' | 'search' | 'clear' | 'personal' | 'fill';
 
 const variantClasses: Record<VariantTypes, string> = {
   clear: '',
   basic:
-    'outfit h-auto w-auto pl-4 bg-transparent placeholder:main-white text-[16px] text-main-dark font-normal border-b-[1px] border-gray-900 focus:text-gray-900 outline-none',
+    'outfit h-auto w-auto pl-4 bg-transparent placeholder:text-disabled text-[16px] text-main-dark font-normal border-b-[1px] border-gray-900 focus:text-gray-900 outline-none',
   search:
-    'outfit h-auto w-auto pl-5 bg-dark-grey text-light-grey placeholder:main-white text-[14px] font-normal focus:text-light-grey outline-none rounded-l-lg',
+    'outfit h-auto w-auto pl-5 bg-dark-grey text-light-grey placeholder:text-light-grey text-[14px] font-normal focus:text-light-grey outline-none rounded-l-lg',
   personal:
-    'outfit h-auto w-auto pl-4 bg-transparent placeholder:white-transparent-70 text-[16px] text-white-transparent-70 font-normal border-b-[1px] border-white-transparent-70 focus:text-white-transparent-70 outline-none',
+    'outfit h-auto w-auto pl-4 bg-transparent placeholder:text-white-transparent-70 text-[16px] text-white-transparent-70 font-normal border-b-[1px] border-white-transparent-70 focus:text-white-transparent-70 outline-none',
+  fill: 'outfit h-auto w-auto pl-4 bg-selected-dark placeholder:text-disabled text-[14px] text-disabled font-normal border-none rounded-lg focus:text-disabled outline-none',
 };
 
 interface Props extends HTMLInputProps {

@@ -26,7 +26,7 @@ interface Props {
   renderContent: FC[];
 }
 
-const ProfileSidebar: FC<Props> = (props) => {
+const ProfileSidebarMobile: FC<Props> = (props) => {
   const { setTab, tab, tabs, renderContent } = props;
 
   const RenderContent = renderContent[tab];
@@ -36,7 +36,6 @@ const ProfileSidebar: FC<Props> = (props) => {
   const dispatch = useAppDispatch();
 
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
-  const [isOpen, setIsOpen] = useState(false);
 
   useLayoutEffect(() => {
     if (tab === 0) {
@@ -62,72 +61,74 @@ const ProfileSidebar: FC<Props> = (props) => {
         <HStack align="center" justify="between" className="gap-[6px] h-full w-full">
           <div className="relative w-full z-40">
             <Listbox value={selectedTab} onChange={setSelectedTab}>
-              <Listbox.Button
-                className="relative w-full rounded-lg bg-selected-dark pl-4 pr-[22px] py-3"
-                onClick={() => setIsOpen(!isOpen)}
-              >
-                {selectedTab && (
-                  <VStack align="center" gap="4">
-                    <div className="bg-main p-[7px] rounded-md">
-                      <Icon
-                        Svg={selectedTab?.icon}
-                        width={16}
-                        height={16}
-                        className="stroke-dark-grey"
-                      />
-                    </div>
-
-                    <Text
-                      className={`${selectedTab ? '!text-main-white' : '!text-disabled'} whitespace-normal`}
-                      Tag="p"
-                      text={selectedTab?.title}
-                      size="md"
-                    />
-                    <Icon
-                      Svg={arrow}
-                      className={`ml-auto fill-main-white ${isOpen ? 'rotate-90' : '-rotate-90'}`}
-                      width={30}
-                      height={30}
-                    />
-                  </VStack>
-                )}
-              </Listbox.Button>
-              <Transition
-                as={Fragment}
-                leave="transition ease-in duration-100"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
-                <Listbox.Options className="absolute mt-1 h-auto w-full overflow-auto rounded-md bg-selected-dark">
-                  {tabs.map((item, index) => (
-                    <Listbox.Option
-                      as={NavLink}
-                      to={item?.urlId}
-                      key={item?.id}
-                      value={item}
-                      onClick={() => setTab(index)}
-                      className="relative flex px-4 py-3"
-                    >
+              {({ open }) => (
+                <>
+                  <Listbox.Button className="relative w-full rounded-lg bg-selected-dark pl-4 pr-[22px] py-3">
+                    {selectedTab && (
                       <VStack align="center" gap="4">
-                        <div className="p-[7px]">
+                        <div className="bg-main p-[7px] rounded-md">
                           <Icon
-                            Svg={item?.icon}
+                            Svg={selectedTab?.icon}
                             width={16}
                             height={16}
-                            className={`${tab === index ? 'stroke-disabled' : 'stroke-dark-grey'}`}
+                            className="stroke-dark-grey"
                           />
                         </div>
+
                         <Text
-                          className={`${tab === index ? '!text-main-white' : '!text-disabled'} whitespace-normal`}
+                          className={`${selectedTab ? '!text-main-white' : '!text-disabled'} whitespace-normal`}
                           Tag="p"
-                          text={item?.title}
+                          text={selectedTab?.title}
                           size="md"
                         />
+                        <Icon
+                          Svg={arrow}
+                          className={`ml-auto fill-main-white ${open ? 'rotate-90' : '-rotate-90'}`}
+                          width={30}
+                          height={30}
+                        />
                       </VStack>
-                    </Listbox.Option>
-                  ))}
-                </Listbox.Options>
-              </Transition>
+                    )}
+                  </Listbox.Button>
+                  <Transition
+                    show={open}
+                    as={Fragment}
+                    leave="transition ease-in duration-100"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                  >
+                    <Listbox.Options className="absolute mt-1 h-auto w-full overflow-auto rounded-md bg-selected-dark">
+                      {tabs.map((item, index) => (
+                        <Listbox.Option
+                          as={NavLink}
+                          to={item?.urlId}
+                          key={item?.id}
+                          value={item}
+                          onClick={() => setTab(index)}
+                          className="relative flex px-4 py-3"
+                        >
+                          <VStack align="center" gap="4">
+                            <div className="p-[7px]">
+                              <Icon
+                                Svg={item?.icon}
+                                width={16}
+                                height={16}
+                                className={`${tab === index ? 'stroke-disabled' : 'stroke-dark-grey'}`}
+                              />
+                            </div>
+                            <Text
+                              className={`${tab === index ? '!text-main-white' : '!text-disabled'} whitespace-normal`}
+                              Tag="p"
+                              text={item?.title}
+                              size="md"
+                            />
+                          </VStack>
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </Transition>
+                </>
+              )}
             </Listbox>
           </div>
 
@@ -159,4 +160,4 @@ const ProfileSidebar: FC<Props> = (props) => {
   );
 };
 
-export default ProfileSidebar;
+export default ProfileSidebarMobile;
