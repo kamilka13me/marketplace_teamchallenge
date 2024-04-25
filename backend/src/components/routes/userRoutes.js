@@ -254,4 +254,142 @@ router.put('/', checkPermission('none'), userController.updateUser);
 
 router.put('/password', checkPermission('none'), userController.updatePassword);
 
+/**
+ * @swagger
+ * /users/recover-password:
+ *   post:
+ *     summary: Recovering a user's password
+ *     description: This endpoint initiates the password recovery process by sending an email with a confirmation link to the user's email.
+ *     tags: [User]
+ *     requestBody:
+ *       description: User email address for password recovery
+
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: user@example.com
+ *     responses:
+ *       200:
+ *         description: The password recovery email was sent successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "The password recovery email was sent successfully."
+ *       404:
+ *         description: User not found with this email address
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User not found with this email address."
+ *       500:
+ *         description: Error recovering password
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error recovering password."
+ */
+router.post('/recover-password', userController.recoverPassword);
+
+/**
+ * @swagger
+ * /users/recover-password-confirm:
+ *   post:
+ *     summary: Confirmation of password recovery
+ *     description: Confirmation of changing the user's password.
+ *     tags: [User]
+ *     requestBody:
+ *       description: Confirmation token and new password
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - confirmToken
+ *               - newPassword
+ *             properties:
+ *               confirmToken:
+ *                 type: string
+ *                 description: The token that was sent to the user to confirm the password change
+ *                 example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *               newPassword:
+ *                 type: string
+ *                 description: New user password
+ *                 example: "newSecurePassword123!"
+ *     responses:
+ *       200:
+ *         description: The user password has been successfully changed and the user has been verified
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User verify successfully."
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Incorrect request, missing token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Token is required"
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User not found."
+ *       419:
+ *         description: The confirmation token is out of date
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Token expired"
+ *       500:
+ *         description: Unexpected internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Unexpected error"
+ */
+router.post('/recover-password-confirm', userController.recoverPasswordConfirm);
+
 export default router;
