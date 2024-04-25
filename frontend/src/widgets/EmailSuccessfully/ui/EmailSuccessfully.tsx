@@ -12,12 +12,12 @@ const EmailSuccessfully = () => {
         <h1 className="flex justify-center text-[24px] md:text-[32px] mb-[32px] font-medium md:mb-[40px]">
           Вітаємо!
         </h1>
-        <p className="flex justify-center text-[16px] text-main-dark mb-[20px] md:text-[18px] ">
+        <p className="flex justify-center text-[16px] text-main-dark mb-[20px] md:text-[18px] font-normal">
           Ви успішно підтвердили свій профіль.
         </p>
         <Button
           variant="primary"
-          className=" py-4 w-full self-center md:self-start"
+          className=" py-4 w-full self-center md:self-start font-normal text-[18px]"
           onClick={() => {
             navigate(getRouteProfile('info'));
           }}
