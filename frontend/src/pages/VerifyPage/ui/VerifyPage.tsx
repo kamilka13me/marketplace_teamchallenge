@@ -7,6 +7,7 @@ import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { Container } from '@/shared/layouts/Container';
 import useAxios from '@/shared/lib/hooks/useAxios';
 import { HStack } from '@/shared/ui/Stack';
+import { EmailSuccessfully } from '@/widgets/EmailSuccessfully';
 
 interface ApiResponse {
   message: string;
@@ -16,7 +17,7 @@ interface ApiResponse {
 const VerifyPage: FC = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { data, error, isLoading } = useAxios<ApiResponse>(
+  const { error, isLoading } = useAxios<ApiResponse>(
     `${ApiRoutes.AUTHENTICATION}/confirm/${id}`,
   );
 
@@ -43,7 +44,7 @@ const VerifyPage: FC = () => {
   return (
     <Container className="h-full">
       <HStack align="center" justify="center" className="mt-20">
-        <div>{data?.message}</div>
+        <EmailSuccessfully />
       </HStack>
     </Container>
   );
