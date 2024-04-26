@@ -42,7 +42,7 @@ const DisputeFeedbackModal: FC<Props> = (props) => {
   return (
     <ModalWindow
       onCloseFunc={onCloseFunc}
-      className="p-6 bg-selected-dark rounded-2xl text-main-white max-w-[725px] w-full"
+      className="p-6 bg-selected-dark rounded-2xl text-main-white max-w-[343px] md:max-w-[725px] w-full"
     >
       <VStack justify="between" className="mb-8">
         <Text Tag="p" text="Оскаржити відгук" size="lg" color="white" />
@@ -97,9 +97,10 @@ const DisputeFeedbackModal: FC<Props> = (props) => {
         type="text"
         placeholder="Залиште додатковий коментар"
         variant="personal"
+        className="w-full"
       />
 
-      <VStack gap="6" className="mt-[38px]">
+      <div className="flex flex-col gap-6 mt-[38px] md:flex-row">
         <Button
           variant="gray"
           className="w-full bg-disabled rounded-lg h-[52px]"
@@ -110,7 +111,7 @@ const DisputeFeedbackModal: FC<Props> = (props) => {
         <Button variant="primary" className="w-full h-[52px]">
           Надіслати
         </Button>
-      </VStack>
+      </div>
     </ModalWindow>
   );
 };
