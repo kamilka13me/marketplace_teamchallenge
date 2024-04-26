@@ -28,6 +28,10 @@
     @apply group-hover:fill-secondary-yellow duration-300
 }
 
+.categorySvg svg path {
+    @apply group-hover:fill-dark-grey fill-main-white
+}
+
 .slick-dots {
     display: flex !important;
     gap: 8px !important;
