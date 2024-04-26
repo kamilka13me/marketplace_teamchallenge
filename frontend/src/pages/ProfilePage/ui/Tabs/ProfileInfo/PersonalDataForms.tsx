@@ -210,240 +210,238 @@ const PersonalDataForms: FC = () => {
     return true;
   };
 
-  const onPassOldVisibility = () => {
-    setPassOldShown(!passOldShown);
-  };
+  const renderInfoForm = () => (
+    <form className="w-full mb-6 lg:mb-0 lg:py-[42px] lg:px-12 lg:bg-selected-dark lg:rounded-2xl">
+      <Input
+        variant="personal"
+        autoComplete="off"
+        placeholder={t("Ім'я")}
+        type="text"
+        {...register('inputName', {
+          required: t("Це поле є обов'язковим"),
+          minLength: {
+            value: 3,
+            message: t("Ваше ім'я має бути не менше 3 символів"),
+          },
+          maxLength: {
+            value: 15,
+            message: t("Ваше ім'я має бути не більше 15 символів"),
+          },
+          pattern: {
+            value: /^[A-Za-zҐґЄєІіЇїА-Яа-я]+$/,
+            message: t("Ваше ім'я може включати тільки українські або англійські літери"),
+          },
+        })}
+        error={errors?.inputName && errors?.inputName.message}
+        className="min-h-[48px] w-full"
+      />
+      <Input
+        variant="personal"
+        autoComplete="off"
+        placeholder={t('Прізвище')}
+        type="text"
+        {...register('inputSurname', {
+          required: false,
+          minLength: {
+            value: 3,
+            message: t('Ваше прізвище має бути не менше 3 символів'),
+          },
+          maxLength: {
+            value: 25,
+            message: t('Ваше прізвище має бути не більше 25 символів'),
+          },
+          pattern: {
+            value: /^[A-Za-zҐґЄєІіЇїА-Яа-я]+$/,
+            message: t(
+              'Ваше прізвище може включати тільки українські або англійські літери',
+            ),
+          },
+        })}
+        error={errors?.inputSurname && errors?.inputSurname.message}
+        className="min-h-[48px] w-full mt-6 lg:mt-8"
+      />
+      <Input
+        variant="personal"
+        autoComplete="off"
+        placeholder={t('Дата народження')}
+        type="text"
+        {...register('inputDateBirth', {
+          required: false,
+          pattern: {
+            value: /^(0[1-9]|[12][0-9]|30|31)\.(0[1-9]|1[0-2])\.\d{4}$/,
+            message: t('Дата повинна містити цифри та бути по формату ХХ.ХХ.ХХХХ'),
+          },
+          validate: {
+            validateDate: (value) => validateDate(value),
+          },
+          onChange: addDots,
+        })}
+        error={errors?.inputDateBirth && errors?.inputDateBirth.message}
+        className="min-h-[48px] w-full mt-6 lg:mt-8"
+      />
+      <Input
+        variant="personal"
+        placeholder="Email"
+        type="text"
+        {...register('inputEmail', {
+          disabled: true,
+        })}
+        error={errors?.inputEmail && errors?.inputEmail.message}
+        className="min-h-[48px] w-full mt-6 lg:mt-8"
+      />
+      <HStack gap="1">
+        <Controller
+          name="inputPhone"
+          control={control}
+          rules={{
+            required: false,
+          }}
+          render={({ field }) => (
+            <PhoneInput
+              defaultCountry="ua"
+              defaultMask=".........."
+              placeholder={t('Телефон')}
+              value={field.value}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              name={field.name}
+              className="mt-6 lg:mt-8 border-b-[1px] border-white-transparent-70 w-full"
+              inputClassName="!outfit !min-h-[48px] !min-w-[100px] !pl-4 !bg-transparent !placeholder:white-transparent-70 !text-[16px] !text-white-transparent-70 !font-normal !border-none !focus:text-white-transparent-70 !outline-none"
+              countrySelectorStyleProps={{
+                buttonClassName: '!bg-transparent !min-h-[48px] !border-none',
+                dropdownStyleProps: {
+                  className: 'lg:!max-h-[84px] !bg-dark-grey !border-none',
+                  listItemClassName: 'focus:!bg-selected-dark hover:!bg-selected-dark',
+                  listItemCountryNameClassName: 'text-white-transparent-70',
+                  listItemStyle: {
+                    '--react-international-phone-selected-dropdown-item-background-color':
+                      '#1D1D1D',
+                  } as never,
+                },
+              }}
+            />
+          )}
+        />
+        {errors?.inputPhone && (
+          <p className="outfit font-normal text-[12px] text-error-red">
+            {errors?.inputPhone.message}
+          </p>
+        )}
+      </HStack>
+    </form>
+  );
 
-  const onPassNewVisibility = () => {
-    setPassNewShown(!passNewShown);
-  };
-
-  const onPassConfirmVisibility = () => {
-    setPassConfirmShown(!passConfirmShown);
-  };
+  const renderChangePasswordForm = () => (
+    <form className="w-full mb-6 lg:mb-0 lg:p-[42px] lg:bg-selected-dark lg:rounded-2xl">
+      <div className="relative mb-6 lg:mb-[34px] lg:min-w-[360px]">
+        <Input
+          variant="personal"
+          className="min-h-[48px] w-full"
+          placeholder={t('Старий пароль')}
+          type={passOldShown ? 'text' : 'password'}
+          {...register('inputOldPassword', {
+            required: false,
+            minLength: {
+              value: 9,
+              message: t('Ваш пароль має бути не менше 9 символів'),
+            },
+            pattern: {
+              value: /^(?=.*[A-Z])[A-Za-z0-9~`!@#$%^&*()_\-+={[}\]|\\:;"'<,>.?/]*$/,
+              message: t(
+                'Пароль має містити мінімум 9 символів, включаючи велику латинську літеру',
+              ),
+            },
+          })}
+          error={errors?.inputOldPassword && errors?.inputOldPassword.message}
+        />
+        <Icon
+          clickable
+          onClick={() => {
+            setPassOldShown(!passOldShown);
+          }}
+          Svg={passOldShown ? privateEye : unPrivateEye}
+          width={24}
+          height={24}
+          className="opacity-70 absolute top-[12px] right-[12px] fill-main-white"
+        />
+      </div>
+      <div className="relative mb-6 lg:mb-[34px]">
+        <Input
+          variant="personal"
+          className="min-h-[48px] w-full"
+          placeholder={t('Новий пароль')}
+          type={passNewShown ? 'text' : 'password'}
+          {...register('inputNewPassword', {
+            required: false,
+            minLength: {
+              value: 9,
+              message: t('Ваш пароль має бути не менше 9 символів'),
+            },
+            pattern: {
+              value: /^(?=.*[A-Z])[A-Za-z0-9~`!@#$%^&*()_\-+={[}\]|\\:;"'<,>.?/]*$/,
+              message: t(
+                'Пароль має містити мінімум 9 символів, включаючи велику латинську літеру',
+              ),
+            },
+          })}
+          error={errors?.inputNewPassword && errors?.inputNewPassword.message}
+        />
+        <Icon
+          clickable
+          onClick={() => {
+            setPassNewShown(!passNewShown);
+          }}
+          Svg={passNewShown ? privateEye : unPrivateEye}
+          width={24}
+          height={24}
+          className="opacity-70 absolute top-[12px] right-[12px] fill-main-white"
+        />
+      </div>
+      <div className="relative">
+        <Input
+          variant="personal"
+          className="min-h-[48px] w-full"
+          placeholder={t('Підтвердження пароля')}
+          type={passConfirmShown ? 'text' : 'password'}
+          {...register('inputConfirmationPassword', {
+            required: false,
+            minLength: {
+              value: 9,
+              message: t('Ваш пароль має бути не менше 9 символів'),
+            },
+            pattern: {
+              value: /^(?=.*[A-Z])[A-Za-z0-9~`!@#$%^&*()_\-+={[}\]|\\:;"'<,>.?/]*$/,
+              message: t(
+                'Пароль має містити мінімум 9 символів, включаючи велику латинську літеру',
+              ),
+            },
+          })}
+          error={
+            errors?.inputConfirmationPassword && errors?.inputConfirmationPassword.message
+          }
+        />
+        <Icon
+          clickable
+          onClick={() => {
+            setPassConfirmShown(!passConfirmShown);
+          }}
+          Svg={passConfirmShown ? privateEye : unPrivateEye}
+          width={24}
+          height={24}
+          className="opacity-70 absolute top-[12px] right-[12px] fill-main-white"
+        />
+      </div>
+    </form>
+  );
 
   return (
     <div className="w-full lg:bg-dark-grey lg:rounded-2xl lg:px-[38px] py-[24px] lg:py-[38px] lg:overflow-hidden relative z-10">
       <div className="hidden lg:block w-[370px] h-[370px] bg-main opacity-40 blur-[100px] rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -z-20" />
       <VStack className="flex-col lg:flex-row lg:gap-[48px] px-4 lg:px-0">
-        <form className="w-full mb-6 lg:mb-0 lg:py-[42px] lg:px-12 lg:bg-selected-dark lg:rounded-2xl">
-          <Input
-            variant="personal"
-            autoComplete="off"
-            placeholder={t("Ім'я")}
-            type="text"
-            {...register('inputName', {
-              required: t("Це поле є обов'язковим"),
-              minLength: {
-                value: 3,
-                message: t("Ваше ім'я має бути не менше 3 символів"),
-              },
-              maxLength: {
-                value: 15,
-                message: t("Ваше ім'я має бути не більше 15 символів"),
-              },
-              pattern: {
-                value: /^[A-Za-zҐґЄєІіЇїА-Яа-я]+$/,
-                message: t(
-                  "Ваше ім'я може включати тільки українські або англійські літери",
-                ),
-              },
-            })}
-            error={errors?.inputName && errors?.inputName.message}
-            className="min-h-[48px] w-full"
-          />
-          <Input
-            variant="personal"
-            autoComplete="off"
-            placeholder={t('Прізвище')}
-            type="text"
-            {...register('inputSurname', {
-              required: false,
-              minLength: {
-                value: 3,
-                message: t('Ваше прізвище має бути не менше 3 символів'),
-              },
-              maxLength: {
-                value: 25,
-                message: t('Ваше прізвище має бути не більше 25 символів'),
-              },
-              pattern: {
-                value: /^[A-Za-zҐґЄєІіЇїА-Яа-я]+$/,
-                message: t(
-                  'Ваше прізвище може включати тільки українські або англійські літери',
-                ),
-              },
-            })}
-            error={errors?.inputSurname && errors?.inputSurname.message}
-            className="min-h-[48px] w-full mt-6 lg:mt-8"
-          />
-          <Input
-            variant="personal"
-            autoComplete="off"
-            placeholder={t('Дата народження')}
-            type="text"
-            {...register('inputDateBirth', {
-              required: false,
-              pattern: {
-                value: /^(0[1-9]|[12][0-9]|30|31)\.(0[1-9]|1[0-2])\.\d{4}$/,
-                message: t('Дата повинна містити цифри та бути по формату ХХ.ХХ.ХХХХ'),
-              },
-              validate: {
-                validateDate: (value) => validateDate(value),
-              },
-              onChange: addDots,
-            })}
-            error={errors?.inputDateBirth && errors?.inputDateBirth.message}
-            className="min-h-[48px] w-full mt-6 lg:mt-8"
-          />
-          <Input
-            variant="personal"
-            placeholder="Email"
-            type="text"
-            {...register('inputEmail', {
-              disabled: true,
-            })}
-            error={errors?.inputEmail && errors?.inputEmail.message}
-            className="min-h-[48px] w-full mt-6 lg:mt-8"
-          />
-          <HStack gap="1">
-            <Controller
-              name="inputPhone"
-              control={control}
-              rules={{
-                required: false,
-              }}
-              render={({ field }) => (
-                <PhoneInput
-                  defaultCountry="ua"
-                  defaultMask=".........."
-                  placeholder={t('Телефон')}
-                  value={field.value}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  name={field.name}
-                  className="mt-6 lg:mt-8 border-b-[1px] border-white-transparent-70 w-full"
-                  inputClassName="!outfit !min-h-[48px] !min-w-[100px] !pl-4 !bg-transparent !placeholder:white-transparent-70 !text-[16px] !text-white-transparent-70 !font-normal !border-none !focus:text-white-transparent-70 !outline-none"
-                  countrySelectorStyleProps={{
-                    buttonClassName: '!bg-transparent !min-h-[48px] !border-none',
-                    dropdownStyleProps: {
-                      className: 'lg:!max-h-[84px] !bg-dark-grey !border-none',
-                      listItemClassName:
-                        'focus:!bg-selected-dark hover:!bg-selected-dark',
-                      listItemCountryNameClassName: 'text-white-transparent-70',
-                      listItemStyle: {
-                        '--react-international-phone-selected-dropdown-item-background-color':
-                          '#1D1D1D',
-                      } as never,
-                    },
-                  }}
-                />
-              )}
-            />
-            {errors?.inputPhone && (
-              <p className="outfit font-normal text-[12px] text-error-red">
-                {errors?.inputPhone.message}
-              </p>
-            )}
-          </HStack>
-        </form>
+        {renderInfoForm()}
 
         <HStack align="end" className="w-full lg:min-h-[452px]" justify="between">
-          <form className="w-full mb-6 lg:mb-0 lg:p-[42px] lg:bg-selected-dark lg:rounded-2xl">
-            <div className="relative mb-6 lg:mb-[34px] lg:min-w-[360px]">
-              <Input
-                variant="personal"
-                className="min-h-[48px] w-full"
-                placeholder={t('Старий пароль')}
-                type={passOldShown ? 'text' : 'password'}
-                {...register('inputOldPassword', {
-                  required: false,
-                  minLength: {
-                    value: 9,
-                    message: t('Ваш пароль має бути не менше 9 символів'),
-                  },
-                  pattern: {
-                    value: /^(?=.*[A-Z])[A-Za-z0-9~`!@#$%^&*()_\-+={[}\]|\\:;"'<,>.?/]*$/,
-                    message: t(
-                      'Пароль має містити мінімум 9 символів, включаючи велику латинську літеру',
-                    ),
-                  },
-                })}
-                error={errors?.inputOldPassword && errors?.inputOldPassword.message}
-              />
-              <Icon
-                clickable
-                onClick={onPassOldVisibility}
-                Svg={passOldShown ? privateEye : unPrivateEye}
-                width={24}
-                height={24}
-                className="opacity-70 absolute top-[12px] right-[12px] fill-main-white"
-              />
-            </div>
-            <div className="relative mb-6 lg:mb-[34px]">
-              <Input
-                variant="personal"
-                className="min-h-[48px] w-full"
-                placeholder={t('Новий пароль')}
-                type={passNewShown ? 'text' : 'password'}
-                {...register('inputNewPassword', {
-                  required: false,
-                  minLength: {
-                    value: 9,
-                    message: t('Ваш пароль має бути не менше 9 символів'),
-                  },
-                  pattern: {
-                    value: /^(?=.*[A-Z])[A-Za-z0-9~`!@#$%^&*()_\-+={[}\]|\\:;"'<,>.?/]*$/,
-                    message: t(
-                      'Пароль має містити мінімум 9 символів, включаючи велику латинську літеру',
-                    ),
-                  },
-                })}
-                error={errors?.inputNewPassword && errors?.inputNewPassword.message}
-              />
-              <Icon
-                clickable
-                onClick={onPassNewVisibility}
-                Svg={passNewShown ? privateEye : unPrivateEye}
-                width={24}
-                height={24}
-                className="opacity-70 absolute top-[12px] right-[12px] fill-main-white"
-              />
-            </div>
-            <div className="relative">
-              <Input
-                variant="personal"
-                className="min-h-[48px] w-full"
-                placeholder={t('Підтвердження пароля')}
-                type={passConfirmShown ? 'text' : 'password'}
-                {...register('inputConfirmationPassword', {
-                  required: false,
-                  minLength: {
-                    value: 9,
-                    message: t('Ваш пароль має бути не менше 9 символів'),
-                  },
-                  pattern: {
-                    value: /^(?=.*[A-Z])[A-Za-z0-9~`!@#$%^&*()_\-+={[}\]|\\:;"'<,>.?/]*$/,
-                    message: t(
-                      'Пароль має містити мінімум 9 символів, включаючи велику латинську літеру',
-                    ),
-                  },
-                })}
-                error={
-                  errors?.inputConfirmationPassword &&
-                  errors?.inputConfirmationPassword.message
-                }
-              />
-              <Icon
-                clickable
-                onClick={onPassConfirmVisibility}
-                Svg={passConfirmShown ? privateEye : unPrivateEye}
-                width={24}
-                height={24}
-                className="opacity-70 absolute top-[12px] right-[12px] fill-main-white"
-              />
-            </div>
-          </form>
+          {renderChangePasswordForm()}
 
           <div
             className={
