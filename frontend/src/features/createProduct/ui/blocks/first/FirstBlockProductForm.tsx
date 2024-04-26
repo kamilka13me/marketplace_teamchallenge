@@ -18,12 +18,6 @@ interface ICondition {
   title: string;
 }
 
-const conditions: ICondition[] = [
-  { title: 'Новий' },
-  { title: 'Вживаний' },
-  { title: 'Відновлений' },
-];
-
 const FirstBlockProductForm: FC = () => {
   const {
     register,
@@ -33,6 +27,12 @@ const FirstBlockProductForm: FC = () => {
   } = useFormContext();
   const { t } = useTranslation();
   const { data } = useAxios<Category[]>(ApiRoutes.CATEGORY);
+
+  const conditions: ICondition[] = [
+    { title: t('Новий') },
+    { title: t('Вживаний') },
+    { title: t('Відновлений') },
+  ];
 
   const [quantity, setQuantity] = useState<number>(0);
   const [currentSub, setCurrentSub] = useState<number | null>(null);
@@ -78,7 +78,7 @@ const FirstBlockProductForm: FC = () => {
                       <Text
                         className="!text-disabled"
                         Tag="p"
-                        text={field.value === '' ? t('Виберіть  категорію') : field.value}
+                        text={field.value === '' ? t('Виберіть категорію') : field.value}
                         size="sm"
                       />
                       <Icon
