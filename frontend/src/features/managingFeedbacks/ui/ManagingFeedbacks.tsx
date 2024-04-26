@@ -4,6 +4,7 @@ import { DateRange, RangeKeyDict } from 'react-date-range';
 
 import Comment from '../../../enteties/Comment/ui/Comment';
 
+import { Rating } from '@/enteties/Rating';
 import { getUserAuthData } from '@/enteties/User';
 import {
   getSellerFeedbacksPageLimit,
@@ -111,6 +112,8 @@ const ManagingFeedbacks: FC = () => {
   const limit = useAppSelector(getSellerFeedbacksPageLimit);
   const dispatch = useAppDispatch();
 
+  const isMobile = window.innerWidth < 768;
+
   const adjustDate = (date: Date, days: number) => {
     date.setDate(date.getDate() + days);
 
@@ -197,29 +200,32 @@ const ManagingFeedbacks: FC = () => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full mt-9 ">
       <VStack
         justify="between"
         align="center"
-        className="mb-5 px-4 py-2 bg-dark-grey rounded-2xl"
+        className="mb-5 pt-2 bg-dark-grey rounded-2xl md:px-4 md:py-2 "
       >
-        <VStack align="center" gap="1">
-          <Text Tag="p" text="Всі відгуки" size="md" color="white" />
+        {!isMobile && (
+          <VStack align="center" gap="1">
+            <Text Tag="p" text="Всі відгуки" size="md" color="white" />
 
-          <HStack
-            align="center"
-            justify="center"
-            className="w-8 h-8 bg-selected-dark rounded-lg"
-          >
-            <Text Tag="span" text={totalFeedbacks.toString()} size="sm" color="white" />
-          </HStack>
-        </VStack>
-        <VStack gap="2">
+            <HStack
+              align="center"
+              justify="center"
+              className="w-8 h-8 bg-selected-dark rounded-lg"
+            >
+              <Text Tag="span" text={totalFeedbacks.toString()} size="sm" color="white" />
+            </HStack>
+          </VStack>
+        )}
+
+        <VStack gap="2" className="items-center md:items-start">
           {buttonData.map((button) => (
             <Button
               key={button.type}
               variant="clear"
-              className={`px-2 py-[2px] rounded-lg ${currentRange === button.type ? 'bg-selected-dark' : ''}`}
+              className={`px-3 py-[7px] rounded-lg md:px-2 ${currentRange === button.type ? 'bg-selected-dark' : ''}`}
               onClick={() => {
                 const endDate = new Date();
 
@@ -249,23 +255,27 @@ const ManagingFeedbacks: FC = () => {
               <Text Tag="span" text={button.label} size="sm" color="white" />
             </Button>
           ))}
-          <div className="relative">
-            <VStack align="center" gap="4">
-              <div className="py-[2px]">
-                <Text
-                  Tag="span"
-                  text={`${state[0]?.startDate.toISOString().slice(0, 10) || ''} - ${state[0]?.endDate.toISOString().slice(0, 10) || ''}`}
-                  size="sm"
-                  color="white"
-                />
-              </div>
+          <div className="relative h-full">
+            <VStack align="center" gap="4" className="h-full">
+              {!isMobile && (
+                <div className="py-[7px]">
+                  <Text
+                    Tag="span"
+                    text={`${state[0]?.startDate.toISOString().slice(0, 10) || ''} - ${state[0]?.endDate.toISOString().slice(0, 10) || ''}`}
+                    size="sm"
+                    color="white"
+                  />
+                </div>
+              )}
               <Button
                 variant="clear"
+                className=" py-1 px-2 md:p-0"
                 onClick={() => setCalendarIsOpened((prev) => !prev)}
               >
-                <Icon width={18} height={18} Svg={calendar} className="fill-main-white" />
+                <Icon width={24} height={24} Svg={calendar} className="fill-main-white" />
               </Button>
             </VStack>
+
             {calendarIsOpened && (
               <div className="absolute top-10 right-0 z-20">
                 <div>
@@ -311,6 +321,19 @@ const ManagingFeedbacks: FC = () => {
           </div>
         </VStack>
       </VStack>
+      {isMobile && (
+        <VStack align="center" gap="1" className="mb-12">
+          <Text Tag="p" text="Всі відгуки" size="md" color="white" />
+
+          <HStack
+            align="center"
+            justify="center"
+            className="w-[22px] h-[22px] bg-selected-dark rounded-[4px] md:w-8 md:h-8 md:rounded-lg"
+          >
+            <Text Tag="span" text={totalFeedbacks.toString()} size="sm" color="white" />
+          </HStack>
+        </VStack>
+      )}
 
       <SellerRatings
         isLoading={ratingDataIsLoading}
@@ -319,10 +342,89 @@ const ManagingFeedbacks: FC = () => {
 
       {/* COMMENTS */}
       <HStack gap="4">
+        {/* delete this */}
+
+        <div className="w-full rounded-2xl bg-dark-grey md:p-4">
+          {/* Comment start */}
+          <div className="bg-dark-grey mb-8 md:mb-9">
+            <div className="flex flex-col gap-6 md:flex-row">
+              <VStack gap="4">
+                <HStack
+                  justify="center"
+                  align="center"
+                  className="w-[68px] h-[68px] bg-selected-dark rounded-lg"
+                >
+                  <Text
+                    Tag="span"
+                    text=""
+                    size="4xl"
+                    font="ibm-plex-sans"
+                    color="white"
+                  />
+                </HStack>
+                <div className="overflow-hidden w-[170px]">
+                  <Text Tag="p" text="Гордієнко Ірина" size="lg" color="white" />
+
+                  <Text
+                    Tag="p"
+                    text="Ноутбук Apple MacBook Air M1 8/256GB 2022"
+                    size="md"
+                    color="gray"
+                    className="whitespace-nowrap truncate"
+                  />
+                  <Rating rating={4} />
+                </div>
+              </VStack>
+              <div>
+                <Text Tag="p" text="02.04.2024" size="sm" color="gray" />
+                <Text
+                  Tag="p"
+                  text="Я дуже задоволена своїм новим ноутбуком Apple MacBook Air M1 2022. Його потужний процесор дозволяє швидко виконувати завдання, а роздільна здатність екрану забезпечує чудову якість зображення"
+                  size="md"
+                  color="white"
+                  className="mt-1 text-wrap"
+                />
+              </div>
+            </div>
+          </div>
+          {/* Comment end */}
+          <div className="flex flex-col justify-between gap-4 w-full md:flex-row">
+            <div className="w-full relative">
+              <Input
+                name="comment"
+                type="text"
+                variant="clear"
+                maxLength={250}
+                placeholder="Відповісти на відгук"
+                autoComplete="off"
+                className=" bg-selected-dark rounded-lg p-4 w-full placeholder:text-disabled focus:outline-none text-white"
+              />
+              <HStack
+                align="center"
+                justify="center"
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-[30px] h-[30px] rounded-lg bg-main cursor-pointer"
+              >
+                <Icon width={18} height={15} Svg={plane} className="fill-main-dark" />
+              </HStack>
+            </div>
+            <Button
+              variant="primary"
+              className="w-[319px] h-[52px]"
+              onClick={setDisputeModalOpenHandler}
+            >
+              Оскаржити відгук
+            </Button>
+          </div>
+          {isDisputeModalOpen && (
+            <DisputeFeedbackModal onCloseFunc={setDisputeModalOpenHandler} />
+          )}
+        </div>
+
+        {/* delete upper part */}
         {feedbacks?.map((comment) => (
-          <div key={comment?._id} className="rounded-2xl p-4 bg-dark-grey">
+          <div key={comment?._id} className="rounded-2xl bg-dark-grey md:p-4">
             <Comment comment={comment} />
-            <VStack gap="4" justify="between" className="w-full mt-6">
+            <div className="flex flex-col justify-between gap-4 w-full md:flex-row">
               <div className="w-full relative">
                 <Input
                   name="comment"
@@ -348,7 +450,7 @@ const ManagingFeedbacks: FC = () => {
               >
                 Оскаржити відгук
               </Button>
-            </VStack>
+            </div>
             {isDisputeModalOpen && (
               <DisputeFeedbackModal onCloseFunc={setDisputeModalOpenHandler} />
             )}
@@ -356,17 +458,19 @@ const ManagingFeedbacks: FC = () => {
         ))}
       </HStack>
 
-      <VStack justify="center" gap="2" className="mt-5">
-        <Pagination
-          dataLength={totalFeedbacks}
-          itemsPerPage={limit}
-          currentPage={currentPage}
-          setPage={handleClickPage}
-          offset={offset}
-          fetchNext={fetchNext}
-          fetchPrev={fetchPrev}
-        />
-      </VStack>
+      {feedbacks.length > 2 && (
+        <VStack justify="center" gap="2" className="my-12">
+          <Pagination
+            dataLength={totalFeedbacks}
+            itemsPerPage={limit}
+            currentPage={currentPage}
+            setPage={handleClickPage}
+            offset={offset}
+            fetchNext={fetchNext}
+            fetchPrev={fetchPrev}
+          />
+        </VStack>
+      )}
     </div>
   );
 };

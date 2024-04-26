@@ -24,8 +24,8 @@ const Comment: FC<Props> = (props) => {
   );
 
   return (
-    <div className="bg-dark-grey">
-      <VStack gap="6">
+    <div className="bg-dark-grey mb-8 md:mb-9">
+      <div className="flex flex-col gap-6 md:flex-row">
         <VStack gap="4">
           <HStack
             justify="center"
@@ -72,10 +72,10 @@ const Comment: FC<Props> = (props) => {
             text={comment?.comment}
             size="md"
             color="white"
-            className="mt-1"
+            className="mt-1 text-wrap"
           />
         </div>
-      </VStack>
+      </div>
     </div>
   );
 };
