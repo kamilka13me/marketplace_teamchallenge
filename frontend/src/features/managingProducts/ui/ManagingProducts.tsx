@@ -3,6 +3,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { countDiscount, deleteProductsById } from '@/enteties/Product';
+import { ProductForm } from '@/features/createProduct';
 import {
   getSellerProductsPageIsLoading,
   getSellerProductsPageLimit,
@@ -40,6 +41,8 @@ const ManagingProducts: FC = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
   const [searchParams] = useSearchParams();
 
   const dispatch = useAppDispatch();
@@ -72,6 +75,10 @@ const ManagingProducts: FC = () => {
   };
 
   useEffect(() => {
+    setIsFormOpen(false);
+  }, []);
+
+  useEffect(() => {
     dispatch(initSellerProductsPage(searchParams));
   }, [dispatch, searchParams]);
 
@@ -93,7 +100,9 @@ const ManagingProducts: FC = () => {
     dispatch(fetchPrevSellerProductsPage());
   };
 
-  return (
+  return isFormOpen ? (
+    <ProductForm />
+  ) : (
     <HStack className="w-full">
       <div className="w-full bg-dark-grey px-4 py-5 rounded-2xl">
         <VStack
@@ -109,7 +118,11 @@ const ManagingProducts: FC = () => {
           >
             <Text Tag="span" text="Видалити вибране" size="md" color="white" />
           </Button>
-          <Button variant="primary" className="flex items-center gap-2 h-[38px]">
+          <Button
+            variant="primary"
+            className="flex items-center gap-2 h-[38px]"
+            onClick={() => setIsFormOpen(true)}
+          >
             <Icon Svg={plus} width={12} height={12} />
             <Text Tag="span" text="Додати продукт" size="sm" />
           </Button>
@@ -253,7 +266,7 @@ const ManagingProducts: FC = () => {
               </tr>
             </thead>
             {isLoading ? (
-              <>Loading</>
+              <>...</>
             ) : (
               <tbody>
                 {products?.map((product) => {

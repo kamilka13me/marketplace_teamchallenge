@@ -24,79 +24,86 @@ const SellerRatings: FC<Props> = (props) => {
 
   const isMobile = window.innerWidth < 768;
 
-  const mainBody = () => (
-    <>
-      <div>
-        <Text
-          Tag="h3"
-          text="Кількість оцінок"
-          size="md"
-          color="white"
-          className="mb-2 md:mb-3"
-        />
-        <VStack gap="4">
+  const currentValues = calcRatingInPercentage(data?.current);
+  const totalValue = Object.values(currentValues).reduce((acc, curr) => acc + curr, 0);
+
+  const mainBody = () =>
+    !isLoading && (
+      <>
+        <div>
           <Text
-            Tag="span"
-            text={totalRatingCountHelper(data?.current).toString()}
-            size="2xl"
+            Tag="h3"
+            text="Кількість оцінок"
+            size="md"
             color="white"
-            className="mb-2"
+            className="mb-2 md:mb-3"
           />
-          <Percentage
-            currentNum={totalRatingCountHelper(data?.current)}
-            previousNum={totalRatingCountHelper(data?.previous)}
-          />
-        </VStack>
-        <Text Tag="p" text="поставлених оцінок" size="sm" color="gray" />
-      </div>
-      <Separator />
-      <div>
-        <Text Tag="h3" text="Рейтинг оцінок" size="md" color="white" className="mb-2" />
-        <VStack gap="4">
-          <Text
-            Tag="span"
-            text={calcAverage(data?.current).toFixed(1).toString()}
-            size="2xl"
-            color="white"
-            className="mb-1"
-          />
-          <Percentage
-            currentNum={calcAverage(data?.current)}
-            previousNum={calcAverage(data?.previous)}
-          />
-        </VStack>
-        <Rating rating={Math.round(calcAverage(data?.current))} />
-      </div>
-      <Separator />
-      <HStack>
-        {Object.entries(calcRatingInPercentage(data?.current))
-          ?.reverse()
-          .map(([key, value]) => (
-            <VStack key={key} align="center" gap="2">
-              <VStack gap="1" justify="center" align="center" className="w-[25px]">
-                <Icon width={12} height={12} Svg={star} className="fill-main" />
-                <Text Tag="p" text={key} size="md" color="white" />
-              </VStack>
-              <div className="w-[186px] h-1">
-                <div
-                  style={{
-                    width: `${value}%`,
-                  }}
-                  className="h-full bg-green rounded-lg"
+          <VStack gap="4">
+            <Text
+              Tag="span"
+              text={totalRatingCountHelper(data?.current).toString()}
+              size="2xl"
+              color="white"
+              className="mb-2"
+            />
+            <Percentage
+              currentNum={totalRatingCountHelper(data?.current)}
+              previousNum={totalRatingCountHelper(data?.previous)}
+            />
+          </VStack>
+          <Text Tag="p" text="поставлених оцінок" size="sm" color="gray" />
+        </div>
+        <Separator />
+        <div>
+          <Text Tag="h3" text="Рейтинг оцінок" size="md" color="white" className="mb-2" />
+          <VStack gap="4">
+            <Text
+              Tag="span"
+              text={calcAverage(data?.current).toFixed(1).toString()}
+              size="2xl"
+              color="white"
+              className="mb-1"
+            />
+            <Percentage
+              currentNum={calcAverage(data?.current)}
+              previousNum={calcAverage(data?.previous)}
+            />
+          </VStack>
+          <Rating rating={Math.round(calcAverage(data?.current))} />
+        </div>
+        <Separator />
+
+        <HStack>
+          {Object.entries(currentValues)
+            ?.reverse()
+            .map(([key, value]) => (
+              <VStack key={key} align="center" gap="2">
+                <VStack gap="1" justify="center" align="center" className="w-[25px]">
+                  <Icon width={12} height={12} Svg={star} className="fill-main" />
+                  <Text Tag="p" text={key} size="md" color="white" />
+                </VStack>
+                <div className="w-[186px] h-1">
+                  <div
+                    style={{
+                      // eslint-disable-next-line no-restricted-globals
+                      width: isNaN(totalValue) ? '0%' : `${(value / totalValue) * 100}%`,
+                    }}
+                    className="h-full bg-green rounded-lg"
+                  />
+                </div>
+                <Text
+                  Tag="p"
+                  text={data?.current?.[key]?.toString() ?? ''}
+                  size="md"
+                  color="white"
                 />
-              </div>
-              <Text
-                Tag="p"
-                text={data?.current?.[key]?.toString() ?? ''}
-                size="md"
-                color="white"
-              />
-            </VStack>
-          ))}
-      </HStack>
-      {isMobile && <Separator />}
-    </>
-  );
+              </VStack>
+            ))}
+        </HStack>
+
+        {isMobile && <Separator />}
+      </>
+    );
 
   return (
     <VStack
