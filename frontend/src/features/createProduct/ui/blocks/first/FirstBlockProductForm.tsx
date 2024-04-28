@@ -275,7 +275,7 @@ const FirstBlockProductForm: FC = () => {
 
       <div className="relative w-full">
         <Controller
-          name="selectCondition"
+          name="condition"
           control={control}
           defaultValue=""
           rules={{ required: true }}
@@ -348,7 +348,7 @@ const FirstBlockProductForm: FC = () => {
           autoComplete="off"
           placeholder={t('Введіть назву товару')}
           type="text"
-          {...register('inputName', {
+          {...register('name', {
             required: true,
             minLength: 16,
             onChange: onInputNameChange,
@@ -383,7 +383,7 @@ const FirstBlockProductForm: FC = () => {
             autoComplete="off"
             placeholder={t('Введіть назву')}
             type="text"
-            {...register('inputBrand')}
+            {...register('brand')}
           />
         </HStack>
       </VStack>

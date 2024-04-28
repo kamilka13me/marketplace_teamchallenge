@@ -2,6 +2,8 @@ import { FC, useLayoutEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
+import ProductForm from '../../../features/createProduct/ui/ProductForm';
+
 import { ManagingFeedbacks } from '@/features/managingFeedbacks';
 import ManagingProducts from '@/features/managingProducts/ui/ManagingProducts';
 import SellerDashboard from '@/pages/SellerPage/ui/Tabs/SellerDashboard/SellerDashboard';
@@ -104,6 +106,7 @@ const SellerPage: FC = () => {
 
           {currentTab === 0 && <SellerDashboard />}
           {currentTab === 1 && <ManagingProducts />}
+          {currentTab === 2 && <ProductForm />}
           {currentTab === 3 && <ManagingFeedbacks />}
           {currentTab === 4 && <SupportCentre />}
         </VStack>

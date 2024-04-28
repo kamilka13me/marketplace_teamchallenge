@@ -7,12 +7,13 @@ type HTMLTextareaProps = Omit<
   'name' | 'onChange' | 'onBlur' | 'placeholder' | 'value' | 'className'
 >;
 
-type VariantTypes = 'clear' | 'personal';
+type VariantTypes = 'clear' | 'personal' | 'fill';
 
 const variantClasses: Record<VariantTypes, string> = {
   clear: '',
   personal:
     'outfit h-auto w-auto bg-transparent placeholder:text-white-transparent-70 text-[16px] text-white-transparent-70 font-normal border-[1px] border-white-transparent-70 focus:text-white-transparent-70 outline-none',
+  fill: 'min-h-[80px] w-full bg-selected-dark resize-none',
 };
 
 interface Props extends HTMLTextareaProps {
