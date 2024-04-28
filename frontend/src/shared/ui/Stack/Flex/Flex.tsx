@@ -64,14 +64,14 @@ const Flex: FC<FlexProps> = (props) => {
     direction,
     align = 'start',
     justify = 'start',
-    wrap = 'wrap',
+    wrap = 'no-wrap',
     gap = '0',
     ...otherProps
   } = props;
 
   return (
     <div
-      className={`flex flex-nowrap
+      className={`flex 
         ${className} 
         ${directionClasses[direction]}
         ${alignClasses[align]}

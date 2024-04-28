@@ -4,7 +4,6 @@ import { DateRange, RangeKeyDict } from 'react-date-range';
 
 import Comment from '../../../enteties/Comment/ui/Comment';
 
-import { Rating } from '@/enteties/Rating';
 import { getUserAuthData } from '@/enteties/User';
 import {
   getSellerFeedbacksPageLimit,
@@ -342,85 +341,6 @@ const ManagingFeedbacks: FC = () => {
 
       {/* COMMENTS */}
       <HStack gap="4">
-        {/* delete this */}
-
-        <div className="w-full rounded-2xl bg-dark-grey md:p-4">
-          {/* Comment start */}
-          <div className="bg-dark-grey mb-8 md:mb-9">
-            <div className="flex flex-col gap-6 md:flex-row">
-              <VStack gap="4">
-                <HStack
-                  justify="center"
-                  align="center"
-                  className="w-[68px] h-[68px] bg-selected-dark rounded-lg"
-                >
-                  <Text
-                    Tag="span"
-                    text=""
-                    size="4xl"
-                    font="ibm-plex-sans"
-                    color="white"
-                  />
-                </HStack>
-                <div className="overflow-hidden w-[170px]">
-                  <Text Tag="p" text="Гордієнко Ірина" size="lg" color="white" />
-
-                  <Text
-                    Tag="p"
-                    text="Ноутбук Apple MacBook Air M1 8/256GB 2022"
-                    size="md"
-                    color="gray"
-                    className="whitespace-nowrap truncate"
-                  />
-                  <Rating rating={4} />
-                </div>
-              </VStack>
-              <div>
-                <Text Tag="p" text="02.04.2024" size="sm" color="gray" />
-                <Text
-                  Tag="p"
-                  text="Я дуже задоволена своїм новим ноутбуком Apple MacBook Air M1 2022. Його потужний процесор дозволяє швидко виконувати завдання, а роздільна здатність екрану забезпечує чудову якість зображення"
-                  size="md"
-                  color="white"
-                  className="mt-1 text-wrap"
-                />
-              </div>
-            </div>
-          </div>
-          {/* Comment end */}
-          <div className="flex flex-col justify-between gap-4 w-full md:flex-row">
-            <div className="w-full relative">
-              <Input
-                name="comment"
-                type="text"
-                variant="clear"
-                maxLength={250}
-                placeholder="Відповісти на відгук"
-                autoComplete="off"
-                className=" bg-selected-dark rounded-lg p-4 w-full placeholder:text-disabled focus:outline-none text-white"
-              />
-              <HStack
-                align="center"
-                justify="center"
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-[30px] h-[30px] rounded-lg bg-main cursor-pointer"
-              >
-                <Icon width={18} height={15} Svg={plane} className="fill-main-dark" />
-              </HStack>
-            </div>
-            <Button
-              variant="primary"
-              className="w-[319px] h-[52px]"
-              onClick={setDisputeModalOpenHandler}
-            >
-              Оскаржити відгук
-            </Button>
-          </div>
-          {isDisputeModalOpen && (
-            <DisputeFeedbackModal onCloseFunc={setDisputeModalOpenHandler} />
-          )}
-        </div>
-
-        {/* delete upper part */}
         {feedbacks?.map((comment) => (
           <div key={comment?._id} className="rounded-2xl bg-dark-grey md:p-4">
             <Comment comment={comment} />

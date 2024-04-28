@@ -2,8 +2,17 @@ export interface Product {
   _id: string;
   name: string;
   description: string;
+  brand: string;
+  condition: string;
+  status: string;
   price: number;
   discount: number | null;
+  specifications: {
+    specification: string;
+    specificationDescription: string;
+  }[];
+  discountStart: string;
+  discountEnd: string;
   category: string;
   quantity: number;
   views: number;

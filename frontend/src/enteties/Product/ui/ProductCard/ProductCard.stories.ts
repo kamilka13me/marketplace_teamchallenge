@@ -13,6 +13,12 @@ const mockProduct: Product = {
   views: 0,
   category: 'copy',
   quantity: 12,
+  discountStart: '12.12.2022',
+  specifications: [],
+  discountEnd: '12.12.2022',
+  condition: '',
+  brand: '',
+  status: '',
   images: [
     '/static/products/1fde076e-829c-4ca6-854b-6dec7deb9666.png',
     '/static/products/e246f064-db53-4d40-8ba4-762d0fdcd8b6.png',
