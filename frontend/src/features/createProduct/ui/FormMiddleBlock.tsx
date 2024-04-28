@@ -403,6 +403,7 @@ const FormMiddleBlock: FC = () => {
         ))}
       </div>
       <Button
+        disabled={fields.length === 15}
         variant="clear"
         className="text-main border-b-[1px] border-main mt-2"
         onClick={appendSpec}
