@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Product } from '@/enteties/Product';
 import FirstBlockProductForm from '@/features/createProduct/ui/blocks/first/FirstBlockProductForm';
 import FormMiddleBlock from '@/features/createProduct/ui/FormMiddleBlock';
-import ImageUpload, { InputData } from '@/features/managingFeedbacks/ui/ImageUpload';
+import ImageUpload, { InputData } from '@/features/createProduct/ui/ImageUpload';
 import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 
