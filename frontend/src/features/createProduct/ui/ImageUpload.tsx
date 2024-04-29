@@ -29,9 +29,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onInputsChange }) => {
 
   useEffect(() => {
     addInput();
-    addInput();
-    addInput();
-    addInput();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -99,7 +96,17 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onInputsChange }) => {
         const ctx = canvas.getContext('2d');
 
         if (!ctx) return;
-        if (rotationDegrees % 180 === 90) {
+
+        if (rotationDegrees === 0) {
+          canvas.width = img.height;
+          canvas.height = img.width;
+        } else if (rotationDegrees === 90) {
+          canvas.width = img.height;
+          canvas.height = img.width;
+        } else if (rotationDegrees === 180) {
+          canvas.width = img.height;
+          canvas.height = img.width;
+        } else if (rotationDegrees === 270) {
           canvas.width = img.height;
           canvas.height = img.width;
         } else {
@@ -109,7 +116,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onInputsChange }) => {
 
         ctx.translate(canvas.width / 2, canvas.height / 2);
         ctx.rotate((90 * Math.PI) / 180);
-        ctx.drawImage(img, -img.height / 2, -img.width / 2);
+        // ctx.drawImage(img, -img.height / 2, -img.width / 2);
+        ctx.drawImage(img, -canvas.height / 2, -canvas.width / 2);
 
         canvas.toBlob((blob) => {
           if (!blob) return;
@@ -153,6 +161,26 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onInputsChange }) => {
   useEffect(() => {
     onInputsChange(inputs);
   }, [inputs, onInputsChange]);
+
+  let additionalDivCount = 4 - inputs.length;
+
+  if (inputs.length > 4) {
+    additionalDivCount = 8 - inputs.length;
+  }
+
+  // sceleton gen
+  const additionalDivs = [];
+
+  if (additionalDivCount > 0) {
+    for (let i = 0; i < additionalDivCount; i += 1) {
+      additionalDivs.push(
+        <div
+          key={i}
+          className="provider w-[222px] h-[150px] bg-selected-dark rounded-2xl relative items-center justify-center"
+        />,
+      );
+    }
+  }
 
   return (
     <>
@@ -204,7 +232,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onInputsChange }) => {
                     style={{
                       width: '100%',
                       height: '100%',
-                      objectFit: 'cover',
+                      objectFit: 'contain',
                     }}
                     className="rounded-2xl"
                   />
@@ -242,6 +270,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onInputsChange }) => {
               )}
             </HStack>
           ))}
+          {/* clear */}
+          {additionalDivs}
         </VStack>
       </HStack>
       <div className="flex justify-start gap-4">
@@ -249,7 +279,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onInputsChange }) => {
           <Text
             Tag="p"
             size="sm"
-            text={`Завантажте ще ${inputs.length} фотографії`}
+            text={`Завантажте ще ${8 - inputs.length} фотографії`}
             className=" font-normal !text-main"
           />
         </Button>
