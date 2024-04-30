@@ -1,4 +1,4 @@
-import { FC, useLayoutEffect, useState } from 'react';
+import { FC, useEffect, useLayoutEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
@@ -72,6 +72,17 @@ const SellerPage: FC = () => {
   const { id } = useParams<{ id: string }>();
 
   const [currentTab, setCurrentTab] = useState(0);
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useLayoutEffect(() => {
     if (id === 'dashboard') {
@@ -101,22 +112,24 @@ const SellerPage: FC = () => {
       className="bg-main-dark min-h-[100vh_-_20%] pt-[44px] pb-[72px]"
     >
       <Container>
-        <VStack className="hidden lg:flex gap-12">
-          <ProfileSidebar tabs={tabs} tab={currentTab} setTab={setCurrentTabHandler} />
+        {windowWidth >= 1024 ? (
+          <VStack className="flex gap-12">
+            <ProfileSidebar tabs={tabs} tab={currentTab} setTab={setCurrentTabHandler} />
 
-          {currentTab === 0 && <SellerDashboard />}
-          {currentTab === 1 && <ManagingProducts />}
-          {currentTab === 2 && <ProductForm />}
-          {currentTab === 3 && <ManagingFeedbacks />}
-          {currentTab === 4 && <SupportCentre />}
-        </VStack>
-
-        <ProfileSidebarMobile
-          tabs={tabs}
-          tab={currentTab}
-          setTab={setCurrentTabHandler}
-          renderContent={components}
-        />
+            {currentTab === 0 && <SellerDashboard />}
+            {currentTab === 1 && <ManagingProducts />}
+            {currentTab === 2 && <ProductForm />}
+            {currentTab === 3 && <ManagingFeedbacks />}
+            {currentTab === 4 && <SupportCentre />}
+          </VStack>
+        ) : (
+          <ProfileSidebarMobile
+            tabs={tabs}
+            tab={currentTab}
+            setTab={setCurrentTabHandler}
+            renderContent={components}
+          />
+        )}
       </Container>
     </div>
   );
