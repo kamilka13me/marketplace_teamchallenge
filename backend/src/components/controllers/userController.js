@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 
 import config from '../../config/config.js';
 import BrowserInfo from '../../models/BrowserInfo.js';
+import PasswordRecoverTokens from '../../models/PasswordRecoveryToken.js';
 import Role from '../../models/Role.js';
 import User from '../../models/User.js';
 import sendMail from '../../services/nodemailer/nodemailer.js';
@@ -269,6 +270,12 @@ const userController = {
       }
       const confirmToken = generateConfirmToken(user._id);
 
+      const filter = { userId: user._id };
+      const update = { $set: { token: confirmToken } };
+      const options = { upsert: true };
+
+      await PasswordRecoverTokens.updateOne(filter, update, options);
+
       sendMail(user.email, 'recovery', confirmToken);
       res
         .status(200)
@@ -288,6 +295,15 @@ const userController = {
         return res.status(400).json({ message: 'Token is required' });
       }
       const decoded = jwt.verify(confirmToken, config.confirmSecretKey);
+
+      const BaseToken = PasswordRecoverTokens.findOne(
+        { userId: decoded.id },
+        { token: confirmToken },
+      );
+
+      if (!BaseToken) {
+        return res.status(419).json({ message: 'Token expired' });
+      }
 
       const hashedPassword = await hashPassword(newPassword);
 
@@ -313,7 +329,9 @@ const userController = {
         wishlist: updatedUser.wishlist,
       };
 
-      res.status(200).json({
+      await PasswordRecoverTokens.deleteOne(BaseToken);
+
+      return res.status(200).json({
         message: 'User verify successfully.',
         user: userCallback,
       });
