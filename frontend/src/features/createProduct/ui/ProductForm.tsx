@@ -15,8 +15,6 @@ interface FormProduct extends Product {
   selectSubSubCategory: string;
 }
 
-export type ApiProductSend = Omit<Product, '_id' | 'views' | 'created_at'>;
-
 const ProductForm: FC = () => {
   const methods = useForm<FormProduct>({
     defaultValues: {
@@ -54,8 +52,21 @@ const ProductForm: FC = () => {
     formData.append('price', String(data.price));
     formData.append('discount', String(data.discount));
     formData.append('specifications', JSON.stringify(data.specifications));
-    formData.append('discountStart', '2024-12-20');
-    formData.append('discountEnd', '2024-12-22');
+
+    const convertDate = (dateString: string): string => {
+      if (dateString === '') {
+        return '';
+      }
+      const parts = dateString.split('.');
+      const day = parts[0];
+      const month = parts[1];
+      const year = parts[2];
+
+      return `${year}-${month}-${day}`;
+    };
+
+    formData.append('discountStart', convertDate(data.discountStart));
+    formData.append('discountEnd', convertDate(data.discountEnd));
     formData.append('category', data.selectSubSubCategory);
     formData.append('quantity', String(data.quantity));
 

@@ -317,8 +317,8 @@ const ManagingProducts: FC = () => {
                         aria-label="Назва товару"
                       >
                         <VStack className="w-full" gap="2">
-                          <div className="relative w-[68px] h-[68px]">
-                            {product.discount && (
+                          <div className="relative flex justify-center items-center w-[68px] h-[68px]">
+                            {product.discount && product.discount !== 0 ? (
                               <div className="absolute right-0 top-0 bg-error-red rounded-2xl px-1">
                                 <Text
                                   Tag="span"
@@ -328,12 +328,15 @@ const ManagingProducts: FC = () => {
                                   className="leading-[0px]"
                                 />
                               </div>
+                            ) : (
+                              // eslint-disable-next-line react/jsx-no-useless-fragment
+                              <></>
                             )}
                             <Image
-                              width="100%"
-                              height="100%"
+                              width="68px"
+                              height="68px"
                               src={`${process.env.BASE_URL}${product?.images[0]}`}
-                              alt=""
+                              alt="product-card"
                             />
                           </div>
 
@@ -368,15 +371,12 @@ const ManagingProducts: FC = () => {
                               color="white"
                             />
                           </VStack>
-                          {product?.discount && (
+                          {product?.discount && product?.discount !== 0 ? (
                             <VStack gap="1" align="center" className="mt-1">
                               <Text
                                 size="sm"
                                 Tag="p"
-                                text={countDiscount(
-                                  product.price,
-                                  product.discount || 0,
-                                ).toString()}
+                                text={countDiscount(product.price, product.discount)}
                                 className=""
                                 color="gray"
                               />
@@ -388,6 +388,9 @@ const ManagingProducts: FC = () => {
                                 color="gray"
                               />
                             </VStack>
+                          ) : (
+                            // eslint-disable-next-line react/jsx-no-useless-fragment
+                            <></>
                           )}
                         </HStack>
                       </th>
@@ -397,13 +400,13 @@ const ManagingProducts: FC = () => {
                       >
                         <Text
                           Tag="p"
-                          text={product?.discount_start.slice(0, 10)}
+                          text={product?.discount_start?.slice(0, 10)}
                           size="sm"
                           color="white"
                         />
                         <Text
                           Tag="p"
-                          text={product?.discount_end.slice(0, 10)}
+                          text={product?.discount_end?.slice(0, 10)}
                           size="sm"
                           color="white"
                         />

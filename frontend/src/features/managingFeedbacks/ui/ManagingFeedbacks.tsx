@@ -124,7 +124,7 @@ const ManagingFeedbacks: FC = () => {
 
     dispatch(
       sellerFeedbackPageActions.setEndDate(
-        endDate.toISOString().slice(0, 10) as unknown as Date,
+        endDate.toISOString()?.slice(0, 10) as unknown as Date,
       ),
     );
   }, [dispatch, state]);
@@ -134,7 +134,7 @@ const ManagingFeedbacks: FC = () => {
 
     dispatch(
       sellerFeedbackPageActions.setStartDate(
-        startDate.toISOString().slice(0, 10) as unknown as Date,
+        startDate.toISOString()?.slice(0, 10) as unknown as Date,
       ),
     );
   }, [dispatch, state]);
@@ -148,7 +148,7 @@ const ManagingFeedbacks: FC = () => {
         const endDate = adjustDate(new Date(state[0]?.endDate as unknown as Date), 2);
 
         const response = await $api.get<SellerRatingResponse>(
-          `${ApiRoutes.RATINGS}?sellerId=${user?._id}&startDate=${startDate.toISOString().slice(0, 10)}&endDate=${endDate.toISOString().slice(0, 10)}`,
+          `${ApiRoutes.RATINGS}?sellerId=${user?._id}&startDate=${startDate.toISOString()?.slice(0, 10)}&endDate=${endDate.toISOString().slice(0, 10)}`,
         );
 
         setRatingsData(response.data);
@@ -260,7 +260,7 @@ const ManagingFeedbacks: FC = () => {
                 <div className="py-[7px]">
                   <Text
                     Tag="span"
-                    text={`${state[0]?.startDate.toISOString().slice(0, 10) || ''} - ${state[0]?.endDate.toISOString().slice(0, 10) || ''}`}
+                    text={`${state[0]?.startDate.toISOString()?.slice(0, 10) || ''} - ${state[0]?.endDate.toISOString().slice(0, 10) || ''}`}
                     size="sm"
                     color="white"
                   />
@@ -281,7 +281,7 @@ const ManagingFeedbacks: FC = () => {
                   <VStack className="p-6 bg-selected-dark border-b-[1px] border-disabled rounded-t-2xl">
                     <Text
                       Tag="span"
-                      text={`${state[0]?.startDate.toString().slice(0, 10) || ''} - ${state[0]?.endDate.toString().slice(0, 10) || ''}`}
+                      text={`${state[0]?.startDate.toString()?.slice(0, 10) || ''} - ${state[0]?.endDate.toString().slice(0, 10) || ''}`}
                       size="md"
                       color="gray"
                     />
