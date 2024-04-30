@@ -9,6 +9,7 @@ import { NotFoundPage } from '@/pages/NotFoundPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { RecoverPasswordPage } from '@/pages/RecoverPasswordPage';
 import { SellerPage } from '@/pages/SellerPage';
+import { SellerRegistrationPage } from '@/pages/SellerRegistrationPage';
 import { VerifyPage } from '@/pages/VerifyPage';
 import {
   AppRoutes,
@@ -20,6 +21,7 @@ import {
   getSellerProfile,
   getVerifyRoute,
   getRecoverPasswordRoute,
+  getSellerRegistration,
 } from '@/shared/const/routes';
 
 export type AppRoutesProps = RouteProps & {
@@ -51,6 +53,10 @@ export const RouteConfig: Record<AppRoutes, AppRoutesProps> = {
     authOnly: true,
     element: <SellerPage />,
     roles: [UserRoles.USER, UserRoles.SELLER, UserRoles.SUPER_ADMIN, UserRoles.ADMIN],
+  },
+  [AppRoutes.SELLER_REGISTRATION]: {
+    path: getSellerRegistration(),
+    element: <SellerRegistrationPage />,
   },
   [AppRoutes.VERIFY]: {
     path: getVerifyRoute(':id'),

@@ -1,12 +1,13 @@
 import { FC } from 'react';
 
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 import facebook from '@/shared/assets/icons/facebook.svg?react';
 import instagram from '@/shared/assets/icons/instagram.svg?react';
 import linkedin from '@/shared/assets/icons/linkedin.svg?react';
 import logo from '@/shared/assets/icons/logo.svg?react';
-import { getRouteMain } from '@/shared/const/routes';
+import { getRouteMain, getSellerRegistration } from '@/shared/const/routes';
 import { Container } from '@/shared/layouts/Container';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
@@ -88,6 +89,7 @@ interface Props {}
 
 const Footer: FC<Props> = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <footer className="bg-main-dark overflow-hidden relative">
@@ -115,6 +117,9 @@ const Footer: FC<Props> = () => {
               <Button
                 variant="primary"
                 className="w-[313px] h-[52px] mt-[26px] mb-10 lg:mb-[77px] text-[16px]"
+                onClick={() => {
+                  navigate(getSellerRegistration());
+                }}
               >
                 Стати продавцем
               </Button>
