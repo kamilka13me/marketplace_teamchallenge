@@ -155,24 +155,22 @@ const SupportCentre: FC = () => {
           />
 
           <VStack align="center" gap="6" className="mb-6">
-            <label
-              htmlFor="inputFile"
-              className="min-w-[123px] cursor-pointer font-normal text-center text-[16px] leading-[21px] text-white-transparent-70 p-[10px] border-[1px] border-white-transparent-70"
-            >
+            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+            <label className="min-w-[123px] cursor-pointer font-normal text-center text-[16px] leading-[21px] text-white-transparent-70 p-[10px] border-[1px] border-white-transparent-70">
               {t('Обрати файл')}
+              <input
+                type="file"
+                accept=".png,.jpg,.jpeg,.pdf,.doc,.docx"
+                multiple
+                className="hidden"
+                {...register('inputFile', {
+                  onChange: (e) => {
+                    handleFileChange(e);
+                  },
+                })}
+              />
             </label>
-            <input
-              id="inputFile"
-              type="file"
-              accept=".png,.jpg,.jpeg,.pdf,.doc,.docx"
-              multiple
-              className="hidden"
-              {...register('inputFile', {
-                onChange: (e) => {
-                  handleFileChange(e);
-                },
-              })}
-            />
+
             {errorMessage ? (
               <Text Tag="p" text={errorMessage} size="sm" className="!text-error-red" />
             ) : (
