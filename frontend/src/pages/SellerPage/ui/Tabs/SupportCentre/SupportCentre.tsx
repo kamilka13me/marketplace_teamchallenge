@@ -77,13 +77,17 @@ const SupportCentre: FC = () => {
   };
 
   const onSubmitSupport: SubmitHandler<FieldsSupportValues> = async (data) => {
-    await dispatch(
-      setSupportSeller({
-        topic: data.inputTopic,
-        question: data.textareaQuestion,
-        files: Array.from(data.inputFile),
-      }),
-    ).then((value) => {
+    const formData = new FormData();
+
+    formData.append('topic', data.inputTopic);
+    formData.append('content', data.textareaQuestion);
+
+    selectedFiles.forEach((file) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      formData.append('images', file);
+    });
+
+    await dispatch(setSupportSeller(formData)).then((value) => {
       if (value.meta.requestStatus !== 'rejected') {
         reset({
           inputTopic: '',
