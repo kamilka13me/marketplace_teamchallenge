@@ -1,9 +1,19 @@
 import mongoose, { isValidObjectId } from 'mongoose';
 
 import Product from '../../models/Product.js';
+import User from '../../models/User.js';
 import findChildCategories from '../../utils/findChildCategories.js';
 
 const sellerController = {
+  createSeller: async (req, res) => {
+    // const user = ({ email, username, surnname, password } = req.body);
+    // try {
+    //   const newUser = new User(...user  , role:"Seller");
+    //   await newUser.save();
+    // } catch (error) {
+    //   res.status(500).json({ message: 'internal server error' });
+    // }
+  },
   // get all products
   getAllProducts: async (req, res) => {
     try {
