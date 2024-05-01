@@ -6,7 +6,8 @@ type VariantTypes =
   | 'gradient'
   | 'gray'
   | 'outlined'
-  | 'grey-outlined';
+  | 'grey-outlined'
+  | 'border-bottom';
 
 const variantClasses: Record<VariantTypes, string> = {
   clear: '',
@@ -18,6 +19,7 @@ const variantClasses: Record<VariantTypes, string> = {
     'outfit border-main border-[1px] px-4 py-[7px] rounded-lg font-normal text-[16px] text-main-dark duration-300 hover:border-main-white hover:text-white active:border-secondary active:text-secondary disabled:opacity-40',
   'grey-outlined':
     'bg-transparent rounded-lg border-[1px] border-dark-grey hover:bg-dark-grey duration-100',
+  'border-bottom': 'text-main border-b-main border-b-[1px] px-[2px]',
 };
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {

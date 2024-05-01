@@ -25,7 +25,7 @@ interface quantityResult {
   color: TextColors;
 }
 
-const quantityCalc = (quantity: number): quantityResult => {
+export const quantityCalc = (quantity: number): quantityResult => {
   if (quantity > 5) {
     return {
       text: 'Є в наявності',
@@ -50,7 +50,7 @@ export const countDiscount = (value: number, percentage: number): string => {
     return '0';
   }
 
-  return (value - Math.round((value * percentage) / 100)).toFixed(2);
+  return (value - Math.round((value * percentage) / 100)).toFixed(0);
 };
 
 interface Props {

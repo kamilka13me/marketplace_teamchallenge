@@ -4,7 +4,14 @@ export type TextAlign = 'right' | 'left' | 'center';
 
 export type HeaderTagType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span';
 
-export type TextColors = 'primary' | 'gray' | 'orange' | 'red' | 'green' | 'white';
+export type TextColors =
+  | 'primary'
+  | 'gray'
+  | 'gray-light'
+  | 'orange'
+  | 'red'
+  | 'green'
+  | 'white';
 
 export type FontSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
 
@@ -13,6 +20,7 @@ export type TextFonts = 'ibm-plex-sans' | 'outfit';
 const TextColor: Record<TextColors, string> = {
   primary: 'text-main-dark',
   gray: 'text-grey',
+  'gray-light': 'text-disabled',
   orange: 'text-orange',
   red: 'text-error-red',
   green: 'text-green',

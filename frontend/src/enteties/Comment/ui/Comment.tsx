@@ -14,10 +14,11 @@ interface ApiResponse {
 }
 interface Props {
   comment: IComment;
+  alignItems?: 'horizontal' | 'vertical';
 }
 
 const Comment: FC<Props> = (props) => {
-  const { comment } = props;
+  const { comment, alignItems = 'vertical' } = props;
 
   const { data, isLoading } = useAxios<ApiResponse>(
     `${ApiRoutes.USER}/${comment.authorId}`,
@@ -25,7 +26,9 @@ const Comment: FC<Props> = (props) => {
 
   return (
     <div className="bg-dark-grey mb-8 md:mb-9">
-      <div className="flex flex-col gap-6 md:flex-row">
+      <div
+        className={`flex flex-col gap-6 ${alignItems === 'vertical' ? 'flex-col md:flex-row' : 'flex-col'}`}
+      >
         <VStack gap="4">
           <HStack
             justify="center"
@@ -57,7 +60,7 @@ const Comment: FC<Props> = (props) => {
             )}
             <Text
               Tag="p"
-              text={comment?.productId?.name}
+              text={comment?.productId?.name || ''}
               size="md"
               color="gray"
               className="whitespace-nowrap truncate"

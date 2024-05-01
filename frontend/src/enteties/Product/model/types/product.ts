@@ -12,6 +12,7 @@ export interface Product {
     specificationDescription: string;
   }[];
   discountStart: string;
+  sellerId: string;
   discountEnd: string;
   category: string;
   quantity: number;

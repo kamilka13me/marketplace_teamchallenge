@@ -5,7 +5,7 @@ export interface IComment {
   _id: string;
   authorId: string;
   sellerId: string;
-  productId: Product;
+  productId: Product | null;
   ratingId: IRating;
   parentId: null | IComment;
   comment: string;

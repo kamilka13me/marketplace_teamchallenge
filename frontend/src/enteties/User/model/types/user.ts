@@ -7,6 +7,7 @@ export interface User {
   role: string;
   dob?: string;
   phoneNumber?: string;
+  isAccountConfirm: boolean;
 }
 
 export interface UserWithWishlist extends User {
