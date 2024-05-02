@@ -89,14 +89,17 @@ const ProductForm: FC = () => {
   return (
     <div className="w-full">
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-end gap-5">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col items-end gap-12 mt-[42px] lg:gap-5 lg:mt-0"
+        >
           <FirstBlockProductForm />
           <FormMiddleBlock />
           <ImageUpload onInputsChange={handleInputsChange} />
           <input
             type="submit"
             value="Зберегти"
-            className="bg-main max-w-[320px] h-[52px] w-full rounded-lg mt-5"
+            className="bg-main max-w-[320px] h-[52px] w-full rounded-lg"
           />
         </form>
       </FormProvider>

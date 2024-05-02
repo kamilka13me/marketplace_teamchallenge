@@ -16,6 +16,7 @@ const FormMiddleBlock: FC = () => {
   const [hasDiscount, setHasDiscount] = useState(false);
   const [priceWithDiscount, setPriceWithDiscount] = useState(0);
   const [specificationLengths, setSpecificationLengths] = useState<number[]>([]);
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
 
   const {
     getValues,
@@ -37,6 +38,16 @@ const FormMiddleBlock: FC = () => {
   const appendSpec = () => {
     appendSpecification({ specification: '', specificationDescription: '' });
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     register('discountStart', {
@@ -80,10 +91,42 @@ const FormMiddleBlock: FC = () => {
     );
   };
 
+  const renderQuantity = () => {
+    return (
+      <div className="w-full">
+        <Text Tag="p" text="Кількість товару" size="md" color="white" />
+        <div className="w-full relative">
+          <Input
+            variant="fill"
+            placeholder="Введіть кількість товару"
+            type="number"
+            autoComplete="off"
+            {...register('quantity', {
+              required: true,
+              pattern: {
+                value: /^\d+$/,
+                message: t('Може містити тільки цифри'),
+              },
+            })}
+            className="min-h-[48px] w-full pr-12 mt-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          />
+          <Text
+            Tag="span"
+            text="од."
+            size="md"
+            color="white"
+            className="absolute top-[20px] right-4"
+          />
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <HStack className="w-full bg-dark-grey px-4 py-6 rounded-2xl">
+    <HStack className="w-full bg-dark-grey rounded-2xl lg:px-4 lg:py-6">
       {/* PRICE */}
-      <VStack gap="4" justify="between" className="w-full">
+      <HStack gap="4" justify="between" className="w-full lg:flex-row">
+        {windowWidth < 1024 && renderQuantity()}
         <div className="w-full">
           <Text Tag="p" text="Ціна товару" size="md" color="white" />
           <div className="w-full relative">
@@ -149,38 +192,13 @@ const FormMiddleBlock: FC = () => {
             />
           </VStack>
         </div>
-        <div className="w-full">
-          <Text Tag="p" text="Кількість товару" size="md" color="white" />
-          <div className="w-full relative">
-            <Input
-              variant="fill"
-              placeholder="Введіть кількість товару"
-              type="number"
-              autoComplete="off"
-              {...register('quantity', {
-                required: true,
-                pattern: {
-                  value: /^\d+$/,
-                  message: t('Може містити тільки цифри'),
-                },
-              })}
-              className="min-h-[48px] w-full pr-12 mt-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-            />
-            <Text
-              Tag="span"
-              text="од."
-              size="md"
-              color="white"
-              className="absolute top-[20px] right-4"
-            />
-          </div>
-        </div>
-      </VStack>
+        {windowWidth >= 1024 && renderQuantity()}
+      </HStack>
 
       {/* DISCOUNT */}
       {hasDiscount && (
         <HStack className="w-full">
-          <VStack gap="4" justify="between" className="w-full mt-5">
+          <HStack gap="4" justify="between" className="w-full lg:flex-row mt-4 lg:mt-5">
             <div className="w-full">
               <Text Tag="p" text="Відсоток знижки" size="md" color="white" />
               <div className="w-full mt-2 relative">
@@ -233,9 +251,9 @@ const FormMiddleBlock: FC = () => {
                 />
               </div>
             </div>
-          </VStack>
+          </HStack>
 
-          <VStack gap="4" justify="between" className="max-w-[467px] w-full mt-5">
+          <VStack gap="4" justify="between" className="max-w-[467px] w-full mt-4 lg:mt-5">
             <div className="w-full">
               <Text Tag="p" text="Дата початку" size="md" color="white" />
               <Input
@@ -312,7 +330,7 @@ const FormMiddleBlock: FC = () => {
       )}
 
       {/* DESCRIPTION */}
-      <div className="w-full mt-5">
+      <div className="w-full mt-4 lg:mt-5">
         <Text Tag="p" text="Опис товару" size="md" color="white" />
         <Textarea
           variant="fill"
@@ -324,7 +342,7 @@ const FormMiddleBlock: FC = () => {
               setDescriptionLetters(e.target.value.length);
             },
           })}
-          className="mt-2 pl-4 pt-2 rounded-lg text-main-white focus:outline-none"
+          className="mt-2 p-4 rounded-lg text-main-white focus:outline-none"
         />
         <VStack align="center" justify="between" className="w-full mt-2">
           <Text
@@ -342,12 +360,12 @@ const FormMiddleBlock: FC = () => {
         </VStack>
       </div>
 
-      <div className="w-full mt-5">
+      <div className="w-full mt-4 lg:mt-5">
         {fields.map((field, index) => (
-          <div key={field.id} className="w-full mt-5">
+          <div key={field.id} className="w-full lg:mt-5">
             {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
             <label>
-              <VStack justify="between" className="mb-2">
+              <HStack justify="between" className="mb-2 gap-2 lg:flex-row lg:gap-0">
                 <Text
                   Tag="p"
                   text="Назва характеристики товару"
@@ -358,11 +376,11 @@ const FormMiddleBlock: FC = () => {
                 <Button
                   variant="clear"
                   onClick={() => removeSpec(index)}
-                  className="text-disabled border-b-[1px] border-b-disabled"
+                  className="text-disabled text-sm border-b-[1px] border-b-disabled self-end"
                 >
                   Видалити поле
                 </Button>
-              </VStack>
+              </HStack>
               <Input
                 variant="fill"
                 placeholder="Введіть назву поля"
@@ -396,7 +414,7 @@ const FormMiddleBlock: FC = () => {
                 variant="fill"
                 placeholder="Опишіть товар"
                 {...register(`specifications.${index}.specificationDescription`)}
-                className="mt-2 pl-4 pt-2 rounded-lg text-main-white focus:outline-none"
+                className="mt-2 p-4 rounded-lg text-main-white focus:outline-none"
               />
             </div>
           </div>
