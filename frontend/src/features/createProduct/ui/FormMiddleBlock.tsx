@@ -160,7 +160,7 @@ const FormMiddleBlock: FC = () => {
                 type="checkbox"
                 className="peer relative appearance-none cursor-pointer w-6 h-6 border-[2px] border-light-grey rounded focus:outline-none"
                 onChange={(event) => {
-                  setValue('discount', '0');
+                  setValue('discount', '');
                   setValue('discountStart', '');
                   setValue('discountEnd', '');
                   setPriceWithDiscount(0);
@@ -363,51 +363,43 @@ const FormMiddleBlock: FC = () => {
       <div className="w-full mt-4 lg:mt-5">
         {fields.map((field, index) => (
           <div key={field.id} className="w-full lg:mt-5">
-            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-            <label>
-              <HStack justify="between" className="mb-2 gap-2 lg:flex-row lg:gap-0">
-                <Text
-                  Tag="p"
-                  text="Назва характеристики товару"
-                  size="md"
-                  color="white"
-                />
+            <HStack justify="between" className="mb-2 gap-2 lg:flex-row lg:gap-0">
+              <Text Tag="p" text="Назва характеристики товару" size="md" color="white" />
 
-                <Button
-                  variant="clear"
-                  onClick={() => removeSpec(index)}
-                  className="text-disabled text-sm border-b-[1px] border-b-disabled self-end"
-                >
-                  Видалити поле
-                </Button>
-              </HStack>
-              <Input
-                variant="fill"
-                placeholder="Введіть назву поля"
-                type="text"
-                maxLength={30}
-                {...register(`specifications.${index}.specification`, {
-                  required: true,
-                  minLength: 16,
-                })}
-                className="min-h-[48px] w-full"
-                onChange={(e) => updateSpecificationLength(index, e.target.value.length)}
+              <Button
+                variant="clear"
+                onClick={() => removeSpec(index)}
+                className="text-disabled text-sm border-b-[1px] border-b-disabled self-end"
+              >
+                Видалити поле
+              </Button>
+            </HStack>
+            <Input
+              variant="fill"
+              placeholder="Введіть назву поля"
+              type="text"
+              maxLength={30}
+              {...register(`specifications.${index}.specification`, {
+                required: true,
+                minLength: 16,
+              })}
+              className="min-h-[48px] w-full"
+              onChange={(e) => updateSpecificationLength(index, e.target.value.length)}
+            />
+            <VStack align="center" justify="between" className="w-full mt-2">
+              <Text
+                Tag="p"
+                text={t('Введіть щонайменше 16 символів')}
+                size="xs"
+                className="!text-light-grey"
               />
-              <VStack align="center" justify="between" className="w-full mt-2">
-                <Text
-                  Tag="p"
-                  text={t('Введіть щонайменше 16 символів')}
-                  size="xs"
-                  className="!text-light-grey"
-                />
-                <Text
-                  Tag="p"
-                  text={`${specificationLengths[index] || 0}/30`}
-                  size="xs"
-                  className="!text-light-grey"
-                />
-              </VStack>
-            </label>
+              <Text
+                Tag="p"
+                text={`${specificationLengths[index] || 0}/30`}
+                size="xs"
+                className="!text-light-grey"
+              />
+            </VStack>
             <div className="mt-3">
               <Text Tag="p" text="Опис характеристики товару" size="md" color="white" />
               <Textarea
