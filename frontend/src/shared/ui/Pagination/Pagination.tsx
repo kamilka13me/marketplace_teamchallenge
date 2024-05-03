@@ -117,7 +117,11 @@ const Pagination: FC<Props> = (props) => {
   };
 
   return (
-    <VStack gap="4" justify="center" className={`w-full mt-5 ${className}`}>
+    <VStack
+      gap="4"
+      justify="center"
+      className={`w-full my-6 lg:mt-5 lg:mb-0 ${className}`}
+    >
       <Button
         disabled={offset === 0}
         variant="grey-outlined"
