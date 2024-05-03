@@ -3,6 +3,7 @@ import React, { FC, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import GeneralBlockSellerForm from '@/features/userAuth/ui/SellerRegistrationForm/blocks/GeneralBlockSellerForm';
 import PrivateBlockSellerForm from '@/features/userAuth/ui/SellerRegistrationForm/blocks/PrivateBlockSellerForm';
 import privateEye from '@/shared/assets/icons/private-eye.svg?react';
 import unPrivateEye from '@/shared/assets/icons/unprivate-eye.svg?react';
@@ -30,6 +31,15 @@ export interface InputsSellerValues {
     phone: string;
   }[];
   descriptCompany: string;
+  generalName: string;
+  generalCommunication: {
+    messenger: string;
+    phone: string;
+  }[];
+  emailAdvice: boolean;
+  emailAdvertisement: boolean;
+  emailMessage: boolean;
+  conditions: boolean;
 }
 
 const SellerRegistrationForm: FC = () => {
@@ -51,6 +61,13 @@ const SellerRegistrationForm: FC = () => {
       tax: false,
       contacts: [{ phone: '', person: '' }],
       communication: [{ messenger: '', phone: '' }],
+      descriptCompany: '',
+      generalName: '',
+      generalCommunication: [{ messenger: '', phone: '' }],
+      emailAdvice: true,
+      emailAdvertisement: false,
+      emailMessage: false,
+      conditions: false,
     },
   });
 
@@ -145,6 +162,7 @@ const SellerRegistrationForm: FC = () => {
           {renderRegistrationData()}
 
           <PrivateBlockSellerForm />
+          <GeneralBlockSellerForm />
 
           <Input
             variant="clear"

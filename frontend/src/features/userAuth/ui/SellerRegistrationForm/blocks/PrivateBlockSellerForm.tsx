@@ -205,6 +205,7 @@ const PrivateBlockSellerForm: FC = () => {
                       className="border-b-[1px] border-gray-900 w-full"
                       inputClassName="!outfit !min-h-[48px] !min-w-[100px] !pl-4 !bg-transparent !placeholder:text-disabled !text-[16px] !text-main-dark !font-normal !border-none !focus:text-main-dark !outline-none"
                       countrySelectorStyleProps={{
+                        className: '!hidden',
                         buttonClassName: '!bg-transparent !min-h-[48px] !border-none',
                       }}
                     />
@@ -278,11 +279,7 @@ const PrivateBlockSellerForm: FC = () => {
                   defaultValue=""
                   rules={{ required: true }}
                   render={({ field }) => (
-                    <Listbox
-                      value={field.value}
-                      // onChange={(value) => field.onChange(value.title)}
-                      onChange={field.onChange}
-                    >
+                    <Listbox value={field.value} onChange={field.onChange}>
                       {({ open }) => (
                         <>
                           <Listbox.Button className="relative w-full rounded-t-lg border-b-[1px] border-gray-900 bg-transparent px-4 py-3">
@@ -297,7 +294,7 @@ const PrivateBlockSellerForm: FC = () => {
                                 text={
                                   field.value === '' ? t('Обрати зі списку') : field.value
                                 }
-                                size="sm"
+                                size="md"
                               />
                               <Icon
                                 Svg={arrow}
@@ -322,7 +319,7 @@ const PrivateBlockSellerForm: FC = () => {
                                 <Listbox.Option
                                   key={index}
                                   value={value}
-                                  className="relative flex px-4 py-3 outfit text-[14px] text-disabled font-normal leading-[24px] cursor-pointer hover:text-selected-dark hover:bg-disabled focus:text-selected-dark focus:bg-disabled"
+                                  className="relative flex px-4 py-3 outfit text-[16px] text-disabled font-normal leading-[24px] cursor-pointer hover:text-selected-dark hover:bg-disabled focus:text-selected-dark focus:bg-disabled"
                                 >
                                   {value}
                                 </Listbox.Option>
@@ -356,6 +353,7 @@ const PrivateBlockSellerForm: FC = () => {
                       className="border-b-[1px] border-gray-900 w-full"
                       inputClassName="!outfit !min-h-[48px] !min-w-[100px] !pl-4 !bg-transparent !placeholder:text-disabled !text-[16px] !text-main-dark !font-normal !border-none !focus:text-main-dark !outline-none"
                       countrySelectorStyleProps={{
+                        className: '!hidden',
                         buttonClassName: '!bg-transparent !min-h-[48px] !border-none',
                       }}
                     />
@@ -415,7 +413,7 @@ const PrivateBlockSellerForm: FC = () => {
         />
         <Input
           variant="basic"
-          placeholder={t('Юридична назва компанії')}
+          placeholder={t('Опишіть діяльність та досягнення')}
           type="text"
           autoComplete="off"
           className="min-h-[48px] w-full"
