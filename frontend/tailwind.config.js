@@ -30,6 +30,8 @@ export default {
         '4xl': ['32px', '40px'],
       },
       colors: {
+        'gradient-yellow': '#FFDE00',
+        'gradient-red': '#F35735',
         'white-transparent-70': 'rgba(255, 255, 255, 0.7)',
         'main-dark': '#0C0C0C',
         'selected-dark': '#1D1D1D',

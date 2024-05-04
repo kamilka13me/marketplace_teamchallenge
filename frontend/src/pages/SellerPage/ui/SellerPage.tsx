@@ -2,7 +2,9 @@ import { FC, useLayoutEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import ProductForm from '../../../features/createProduct/ui/ProductForm';
+// import ProductForm from '../../../features/createProduct/ui/ProductForm';
+
+import ProductSubscription from './Tabs/ProductSubscription/ProductSubscription';
 
 import { ManagingFeedbacks } from '@/features/managingFeedbacks';
 import ManagingProducts from '@/features/managingProducts/ui/ManagingProducts';
@@ -66,7 +68,7 @@ const components: FC[] = [
   ManagingProducts,
   ManagingFeedbacks,
   SupportCentre,
-]; // Сюди передати просто інші компоненти для відображення в мобільній версії, послідовність важлива
+];
 
 const SellerPage: FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -106,7 +108,8 @@ const SellerPage: FC = () => {
 
           {currentTab === 0 && <SellerDashboard />}
           {currentTab === 1 && <ManagingProducts />}
-          {currentTab === 2 && <ProductForm />}
+          {/* {currentTab === 2 && <ProductForm />} */}
+          {currentTab === 2 && <ProductSubscription />}
           {currentTab === 3 && <ManagingFeedbacks />}
           {currentTab === 4 && <SupportCentre />}
         </VStack>
