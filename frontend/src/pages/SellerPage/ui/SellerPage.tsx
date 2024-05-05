@@ -3,6 +3,7 @@ import { FC, useEffect, useLayoutEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import ProductForm from '../../../features/createProduct/ui/ProductForm';
+// import ProductSubscription from './Tabs/ProductSubscription/ProductSubscription';
 
 import { ManagingFeedbacks } from '@/features/managingFeedbacks';
 import ManagingProducts from '@/features/managingProducts/ui/ManagingProducts';
@@ -115,7 +116,6 @@ const SellerPage: FC = () => {
         {windowWidth >= 1024 ? (
           <VStack className="flex gap-12">
             <ProfileSidebar tabs={tabs} tab={currentTab} setTab={setCurrentTabHandler} />
-
             {currentTab === 0 && <SellerDashboard />}
             {currentTab === 1 && <ManagingProducts />}
             {currentTab === 2 && <ProductForm />}
