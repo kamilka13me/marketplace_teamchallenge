@@ -648,7 +648,7 @@ const ManagingProducts: FC = () => {
                       size="xs"
                       Tag="p"
                       text={`Термін акції ${product?.discount_start?.slice(0, 10)} - ${product?.discount_end?.slice(0, 10)}`}
-                      className="text-[8px]"
+                      className="!text-[8px]"
                       color="white"
                     />
                   )}
