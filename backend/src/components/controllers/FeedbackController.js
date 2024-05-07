@@ -129,7 +129,9 @@ const FeedbackController = {
   },
 
   getComments: async (req, res) => {
-    const { startDate, endDate, limit = 10, offset = 0, sellerId } = req.query;
+    const { startDate, endDate, limit = 10, offset = 0 } = req.query;
+    // const { userId: sellerId } = '1234567890abcdef12345679';
+    const { userId: sellerId } = req.body;
 
     if (!sellerId) {
       return res.status(400).json({ error: 'Seller ID is required' });

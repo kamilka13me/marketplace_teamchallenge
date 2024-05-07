@@ -26,21 +26,10 @@ interface RotateImageFileCallback {
 const ImageUpload: React.FC<ImageUploadProps> = ({ onInputsChange }) => {
   const [inputs, setInputs] = useState<InputData[]>([]);
   const [nextId, setNextId] = useState(1);
-  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
 
   useEffect(() => {
     addInput();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const handleFileChange =
@@ -187,102 +176,103 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onInputsChange }) => {
       additionalDivs.push(
         <div
           key={i}
-          className="provider w-[319px] h-[210px] bg-selected-dark rounded-2xl relative items-center justify-center lg:w-[222px] lg:h-[150px] "
+          className="provider w-[222px] h-[150px] bg-selected-dark rounded-2xl relative items-center justify-center"
         />,
       );
     }
   }
 
   return (
-    <HStack className="w-full gap-[10px] bg-dark-grey min-h-[158px] rounded-2xl lg:px-4 lg:py-6 ">
-      <VStack>
-        <Text Tag="p" size="lg" color="white" text="Завантажити фотографії" />
-      </VStack>
-      <HStack className="gap-4 lg:flex-row" wrap="wrap">
-        {inputs.map((input, index) => (
-          <HStack
-            key={input.id}
-            className="provider w-[319px] h-[210px] bg-selected-dark rounded-2xl relative items-center justify-center lg:w-[222px] lg:h-[150px] "
-            onMouseEnter={() => handleMouseEnter(input.id)}
-            onMouseLeave={() => handleMouseLeave(input.id)}
-          >
-            {!input.previewUrl && (
-              <HStack
-                className="absolute px-7 py-7 gap-[10px] w-full h-full"
-                justify="center"
-                align="center"
-              >
-                <img src={galeryAddIcon} alt="galery add icon" />
-                <Text
-                  Tag="p"
-                  size="sm"
-                  text="Завантажте фотографію розміром до 10 Мегабайт"
-                  color="gray"
-                  align="center"
-                  className="w-3/4 text-wrap lg:w-full "
-                />
-              </HStack>
-            )}
-            {/* eslint-disable jsx-a11y/label-has-associated-control */}
-            <label
-              htmlFor={`${input.id}`}
-              className=" cursor-pointer w-full h-full absolute"
+    <>
+      <HStack className="w-full gap-4 bg-dark-grey px-4 py-6 min-h-[158px] mb-5 rounded-2xl ">
+        <VStack className="mb-[6px]">
+          <Text Tag="p" size="lg" color="white" text="Завантажити фотографії" />
+        </VStack>
+        <VStack className="gap-4" wrap="wrap">
+          {inputs.map((input, index) => (
+            <HStack
+              key={input.id}
+              className="provider w-[222px] h-[150px] bg-selected-dark rounded-2xl relative items-center justify-center"
+              onMouseEnter={() => handleMouseEnter(input.id)}
+              onMouseLeave={() => handleMouseLeave(input.id)}
             >
-              <input
-                type="file"
-                id={`${input.id}`}
-                onChange={handleFileChange(input.id)}
-                className="hidden w-full h-full cursor-pointer bg-whiter"
-              />
-            </label>
-            {input.previewUrl && (
-              <>
-                <img
-                  src={input.previewUrl}
-                  alt="Preview"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                  }}
-                  className="rounded-2xl"
+              {!input.previewUrl && (
+                <HStack
+                  className="absolute px-7 py-7 gap-[10px] w-full h-full"
+                  justify="center"
+                  align="center"
+                >
+                  <img src={galeryAddIcon} alt="galery add icon" />
+                  <Text
+                    Tag="p"
+                    size="sm"
+                    text="Завантажте фотографію розміром до 10 Мегабайт"
+                    color="gray"
+                    align="center"
+                  />
+                </HStack>
+              )}
+              {/* eslint-disable jsx-a11y/label-has-associated-control */}
+              <label
+                htmlFor={`${input.id}`}
+                className=" cursor-pointer w-full h-full absolute"
+              >
+                <input
+                  type="file"
+                  id={`${input.id}`}
+                  onChange={handleFileChange(input.id)}
+                  className="hidden w-full h-full cursor-pointer bg-whiter"
                 />
-                {index === 0 && (
-                  <VStack className=" bg-secondary-yellow rounded-lg py-[2px] px-[10px] absolute bottom-[7px] left-[7px] ">
-                    Головна
-                  </VStack>
-                )}
-                {input.previewUrl && input.isHovering && (
-                  <>
-                    <div className="overlay absolute bg-black opacity-50 w-full h-full rounded-2xl" />
-                    <VStack
-                      className="absolute w-full h-full rounded-2xl gap-8"
-                      justify="center"
-                      align="center"
-                    >
-                      <Button
-                        variant="primary"
-                        onClick={() => rotateImage(input.id)}
-                        className="p-[10px] rounded-lg"
-                      >
-                        <img src={rotareIcon} alt="rotate icon" />
-                      </Button>
-                      <Button
-                        variant="primary"
-                        onClick={() => removeInput(input.id)}
-                        className="p-[10px] rounded-lg"
-                      >
-                        <img src={deleteIcon} alt="delete icon" />
-                      </Button>
+              </label>
+              {input.previewUrl && (
+                <>
+                  <img
+                    src={input.previewUrl}
+                    alt="Preview"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain',
+                    }}
+                    className="rounded-2xl"
+                  />
+                  {index === 0 && (
+                    <VStack className=" bg-secondary-yellow rounded-lg py-[2px] px-[10px] absolute bottom-[7px] left-[7px] ">
+                      Головна
                     </VStack>
-                  </>
-                )}
-              </>
-            )}
-          </HStack>
-        ))}
-        {/* clear */}
-        {windowWidth >= 1024 && additionalDivs}
+                  )}
+                  {input.previewUrl && input.isHovering && (
+                    <>
+                      <div className="overlay absolute bg-black opacity-50 w-full h-full rounded-2xl" />
+                      <VStack
+                        className="absolute w-full h-full rounded-2xl gap-8"
+                        justify="center"
+                        align="center"
+                      >
+                        <Button
+                          variant="primary"
+                          onClick={() => rotateImage(input.id)}
+                          className="p-[10px] rounded-lg"
+                        >
+                          <img src={rotareIcon} alt="rotate icon" />
+                        </Button>
+                        <Button
+                          variant="primary"
+                          onClick={() => removeInput(input.id)}
+                          className="p-[10px] rounded-lg"
+                        >
+                          <img src={deleteIcon} alt="delete icon" />
+                        </Button>
+                      </VStack>
+                    </>
+                  )}
+                </>
+              )}
+            </HStack>
+          ))}
+          {/* clear */}
+          {additionalDivs}
+        </VStack>
       </HStack>
       <div className="flex justify-start gap-4">
         <Button variant="clear" onClick={addInput} className="pb-1 border-b border-main ">
@@ -294,7 +284,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onInputsChange }) => {
           />
         </Button>
       </div>
-    </HStack>
+    </>
   );
 };
 

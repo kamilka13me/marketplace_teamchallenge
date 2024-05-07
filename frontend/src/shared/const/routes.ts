@@ -4,6 +4,7 @@ export enum AppRoutes {
   // PRODUCTS = 'products',
   PROFILE = 'profile',
   SELLER = 'seller',
+  SELLER_REGISTRATION = 'seller_registration',
   VERIFY = 'verify',
   RECOVER_PASSWORD = 'recover_password',
 
@@ -20,8 +21,10 @@ export const getServerErrorRoute = () => `/500`;
 
 export const getVerifyRoute = (id: string) => `/verify/${id}`;
 
-export const getRecoverPasswordRoute = (id: string) => `recovery/${id}`;
+export const getRecoverPasswordRoute = (id: string) => `/recovery/${id}`;
 
 export const getRouteProfile = (tab?: string) => `/profile/${tab}`;
 
 export const getSellerProfile = (tab?: string) => `/seller/${tab}`;
+
+export const getSellerRegistration = () => `/seller_registration`;

@@ -218,11 +218,6 @@ FeedbackRoute.post('/comments', idToReq(), FeedbackController.createComment);
  *        - bearerAuth: []
  *     parameters:
  *       - in: query
- *         name: sellerId
- *         schema:
- *           type: string
- *         description: The seller Id.
- *       - in: query
  *         name: startDate
  *         schema:
  *           type: string
@@ -271,6 +266,6 @@ FeedbackRoute.post('/comments', idToReq(), FeedbackController.createComment);
  *         description: Server error.
  */
 
-FeedbackRoute.get('/comments', FeedbackController.getComments);
+FeedbackRoute.get('/comments', idToReq(), FeedbackController.getComments);
 
 export default FeedbackRoute;

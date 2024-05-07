@@ -2,7 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { ThunkConfig } from '@/app/providers/StoreProvider/config/StateSchema';
 import { IComment } from '@/enteties/Comment';
-import { getUserAuthData } from '@/enteties/User';
 import {
   getSellerFeedbacksPageEndDate,
   getSellerFeedbacksPageLimit,
@@ -33,7 +32,6 @@ export const fetchSellerFeedbacksList = createAsyncThunk<
   const startDate = getSellerFeedbacksPageStartDate(getState());
   const endDate = getSellerFeedbacksPageEndDate(getState());
   const offset = getSellerFeedbacksPageOffset(getState());
-  const user = getUserAuthData(getState());
 
   try {
     addQueryParams({
@@ -42,7 +40,6 @@ export const fetchSellerFeedbacksList = createAsyncThunk<
     });
     const response = await $api.get<ApiResponse>(ApiRoutes.SELLER_FEEDBACKS, {
       params: {
-        sellerId: user?._id || '',
         offset,
         limit,
         startDate,

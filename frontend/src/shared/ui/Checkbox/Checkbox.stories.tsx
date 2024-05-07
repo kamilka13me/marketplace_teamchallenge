@@ -1,5 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 
+import svg from '../../assets/icons/checked-thin.svg?react';
+
 import { Checkbox } from '@/shared/ui/Checkbox';
 
 const meta = {
@@ -40,12 +42,6 @@ const meta = {
       type: 'function',
       description: 'Function when the element loses focus',
     },
-    variant: {
-      type: 'string',
-      description: 'Checkbox styling options',
-      options: ['basic'],
-      control: { type: 'select' },
-    },
     className: {
       type: 'string',
       description: 'Description of additional checkbox classes',
@@ -62,7 +58,7 @@ export const CheckboxBasic: Story = {
     label: 'Some label to checkbox',
     type: 'checkbox',
     name: 'Name checkbox',
-    variant: 'basic',
+    icon: svg,
     onChange: () => {},
   },
   name: 'Basic',

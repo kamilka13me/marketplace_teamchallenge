@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import { setNewUser } from '@/enteties/User';
 import { userHasError } from '@/enteties/User/model/selectors/getUserAuthData';
+import checked from '@/shared/assets/icons/checked.svg?react';
 import privateEye from '@/shared/assets/icons/private-eye.svg?react';
 import unPrivateEye from '@/shared/assets/icons/unprivate-eye.svg?react';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
@@ -163,7 +164,10 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
       <VStack align="center" className="gap-[4px]">
         <Checkbox
           type="checkbox"
-          variant="basic"
+          classNameLabel="text-light-grey text-[14px] has-[:checked]:text-main-dark hover:text-light-grey"
+          className="w-[18px] h-[18px] border-[3px] border-light-grey rounded-[3px] hover:border-main-dark checked:border-green checked:bg-green checked:hover:border-green focus:outline-none"
+          classNameIcon="ml-[2px]"
+          icon={checked}
           label={t('Ви надаєте згоду на')}
           {...register('personalTerms', {
             required: true,
