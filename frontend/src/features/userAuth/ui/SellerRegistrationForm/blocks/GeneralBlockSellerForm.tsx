@@ -54,14 +54,14 @@ const GeneralBlockSellerForm: FC = () => {
       <div className="w-full">
         {generalCommunFields.map((field, index) => (
           <HStack key={field.id} gap="4" className="w-full">
-            <VStack align="start" gap="5" className="w-full">
+            <HStack align="start" gap="5" className="w-full sm:flex-row">
               {/* MESSENGER LIST */}
               <div className="relative w-full">
                 <Controller
                   name={`generalCommunication.${index}.messenger`}
                   control={control}
                   defaultValue=""
-                  rules={{ required: true }}
+                  rules={{ required: false }}
                   render={({ field }) => (
                     <Listbox value={field.value} onChange={field.onChange}>
                       {({ open }) => (
@@ -149,7 +149,7 @@ const GeneralBlockSellerForm: FC = () => {
                   </p>
                 )}
               </HStack>
-            </VStack>
+            </HStack>
             <VStack align="center" justify="between" className="w-full">
               <Button
                 disabled={generalCommunFields.length === 3}
@@ -246,7 +246,7 @@ const GeneralBlockSellerForm: FC = () => {
         )}
       />
       <Controller
-        name="emailAdvertisement"
+        name="emailMessage"
         control={control}
         defaultValue={false}
         rules={{ required: false }}
@@ -277,34 +277,37 @@ const GeneralBlockSellerForm: FC = () => {
       />
 
       {/* USER AGREEMENT */}
-      <VStack align="center" className="gap-[4px]">
+      <VStack align="center" className="gap-3">
         <Checkbox
           type="checkbox"
-          classNameWrapper="gap-3"
           classNameLabel="text-selected-dark text-[14px] leading-[18px]"
-          className="border-2 border-disabled rounded-[3px] hover:border-dark-grey checked:border-dark-grey checked:hover:border-dark-grey focus:outline-none"
+          className="min-w-6 border-2 border-disabled rounded-[3px] hover:border-dark-grey checked:border-dark-grey checked:hover:border-dark-grey focus:outline-none"
           classNameIcon="w-4 ml-1"
           icon={checked}
-          label={t('Реєструючись, ви погоджуєтеся з умовами')}
           {...register('conditions', {
             required: true,
           })}
         />
-        <a
-          href="src/shared/assets/img/Error404vector.png" // test file, later to change to real document.
-          download="Processing-regulations"
-          className="outfit font-normal text-[14px] text-blue underline"
-        >
-          {t('Положення про обробку і захист персональних даних')}
-        </a>
-        <span className="text-selected-dark text-[14px] leading-[18px]">{t('та')}</span>
-        <a
-          href="src/shared/assets/img/Error404vector.png" // test file, later to change to real document.
-          download="User-agreement"
-          className="outfit font-normal text-[14px] text-blue underline"
-        >
-          {t('Угодою користувача')}
-        </a>
+        <div>
+          <span className="text-selected-dark text-[14px] leading-[18px]">
+            {t('Реєструючись, ви погоджуєтеся з умовами')}
+          </span>
+          <a
+            href="src/shared/assets/img/Error404vector.png" // test file, later to change to real document.
+            download="Processing-regulations"
+            className="outfit font-normal text-[14px] text-blue underline mx-1"
+          >
+            {t('Положення про обробку і захист персональних даних')}
+          </a>
+          <span className="text-selected-dark text-[14px] leading-[18px]">{t('та')}</span>
+          <a
+            href="src/shared/assets/img/Error404vector.png" // test file, later to change to real document.
+            download="User-agreement"
+            className="outfit font-normal text-[14px] text-blue underline mx-1"
+          >
+            {t('Угодою користувача')}
+          </a>
+        </div>
       </VStack>
     </HStack>
   );
@@ -335,6 +338,10 @@ const GeneralBlockSellerForm: FC = () => {
           classNameBlockWrap="w-full"
           {...register('generalName', {
             required: t("Це поле є обов'язковим"),
+            pattern: {
+              value: /^[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ"'-]*$/,
+              message: t('Введіть назву українською мовою'),
+            },
           })}
           error={errors?.generalName && errors?.generalName.message}
         />

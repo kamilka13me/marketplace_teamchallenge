@@ -2,13 +2,18 @@ import React, { FC, useState } from 'react';
 
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 import GeneralBlockSellerForm from '@/features/userAuth/ui/SellerRegistrationForm/blocks/GeneralBlockSellerForm';
 import PrivateBlockSellerForm from '@/features/userAuth/ui/SellerRegistrationForm/blocks/PrivateBlockSellerForm';
+import cancel from '@/shared/assets/icons/cancel.svg?react';
 import privateEye from '@/shared/assets/icons/private-eye.svg?react';
 import unPrivateEye from '@/shared/assets/icons/unprivate-eye.svg?react';
+import { getRouteMain } from '@/shared/const/routes';
+import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Input } from '@/shared/ui/Input';
+import { ModalWindow } from '@/shared/ui/ModalWindow';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
@@ -45,7 +50,10 @@ export interface InputsSellerValues {
 const SellerRegistrationForm: FC = () => {
   const { t } = useTranslation();
 
+  const [showModal, setShowModal] = useState(false);
   const [passShown, setPassShown] = useState(false);
+
+  const navigate = useNavigate();
 
   const methods = useForm<InputsSellerValues>({
     mode: 'all',
@@ -79,8 +87,9 @@ const SellerRegistrationForm: FC = () => {
   } = methods;
 
   const onSubmit: SubmitHandler<InputsSellerValues> = () => {
-    // console.log(data);
+    // console.log(data); // update logic when there will be a backend
     reset();
+    setShowModal(!showModal);
   };
 
   const onTogglePassVisibility = () => {
@@ -95,7 +104,7 @@ const SellerRegistrationForm: FC = () => {
         size="xl"
         className="leading-[26px] text-selected-dark"
       />
-      <VStack align="start" gap="5" className="w-full">
+      <HStack align="start" gap="5" className="w-full sm:flex-row">
         <Input
           variant="basic"
           placeholder="Email"
@@ -148,7 +157,7 @@ const SellerRegistrationForm: FC = () => {
             className="absolute top-[12px] right-[12px] fill-selected-dark"
           />
         </div>
-      </VStack>
+      </HStack>
     </HStack>
   );
 
@@ -170,10 +179,60 @@ const SellerRegistrationForm: FC = () => {
             name="btnInput"
             type="submit"
             disabled={!isValid}
-            className="outfit bg-main min-w-[360px] py-[4px] mt-6 rounded-lg font-normal text-[18px] leading-[40px] text-main-dark duration-300 hover:bg-secondary-yellow active:bg-main disabled:text-main-white disabled:bg-disabled"
+            className="outfit bg-main w-full sm:max-w-[360px] py-[4px] mt-6 rounded-lg font-normal text-[18px] leading-[40px] text-main-dark duration-300 hover:bg-secondary-yellow active:bg-main disabled:text-main-white disabled:bg-disabled"
           />
         </form>
       </FormProvider>
+
+      {showModal && (
+        <ModalWindow
+          onCloseFunc={() => {
+            setShowModal(!showModal);
+          }}
+          className="max-w-[440px] bg-main-white pt-2 pb-5 px-5 md:px-4 md:py-4 rounded-2xl animate-open-forms-modal"
+        >
+          <VStack align="center" justify="end">
+            <Icon
+              clickable
+              onClick={() => {
+                setShowModal(!showModal);
+              }}
+              Svg={cancel}
+              width={24}
+              height={24}
+              className="fill-selected-dark hover:transition hover:rotate-90 hover:duration-300 duration-300"
+            />
+          </VStack>
+          <HStack align="center" className="max-w-[320px] mt-3 md:m-5 gap-3 md:gap-10">
+            <Text
+              Tag="p"
+              text={t('Дякуємо за реєстрацію!')}
+              size="xl"
+              align="center"
+              className="text-selected-dark text-nowrap !text-md md:!text-xl"
+            />
+            <Text
+              Tag="p"
+              text={t(
+                'Очікуйте підтвердження реєстрації найближчим часом. Ми намагаємось обробити вашу заявку якомога швидше.',
+              )}
+              size="md"
+              align="center"
+              className="text-selected-dark !text-sm md:!text-md"
+            />
+            <Button
+              variant="primary"
+              className="w-full"
+              onClick={() => {
+                setShowModal(false);
+                navigate(getRouteMain());
+              }}
+            >
+              {t('На головну')}
+            </Button>
+          </HStack>
+        </ModalWindow>
+      )}
     </div>
   );
 };

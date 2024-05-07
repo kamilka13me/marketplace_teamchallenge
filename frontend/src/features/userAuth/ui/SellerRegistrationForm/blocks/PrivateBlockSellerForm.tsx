@@ -94,7 +94,7 @@ const PrivateBlockSellerForm: FC = () => {
         })}
         error={errors?.legalAddress && errors?.legalAddress.message}
       />
-      <VStack align="start" gap="5" className="w-full">
+      <HStack align="start" gap="5" className="w-full sm:flex-row">
         <Input
           variant="basic"
           placeholder={t('Місто, область')}
@@ -123,8 +123,8 @@ const PrivateBlockSellerForm: FC = () => {
           })}
           error={errors?.cityIndex && errors?.cityIndex.message}
         />
-      </VStack>
-      <VStack align="start" gap="5" className="w-full">
+      </HStack>
+      <HStack align="start" gap="5" className="w-full sm:flex-row">
         <Input
           variant="basic"
           placeholder={t('ЄДРПОУ')}
@@ -157,7 +157,7 @@ const PrivateBlockSellerForm: FC = () => {
           })}
           error={errors?.identificNumber && errors?.identificNumber.message}
         />
-      </VStack>
+      </HStack>
       <Checkbox
         type="checkbox"
         classNameWrapper="gap-3"
@@ -184,7 +184,7 @@ const PrivateBlockSellerForm: FC = () => {
       <div className="w-full">
         {contactFields.map((field, index) => (
           <HStack key={field.id} gap="4" className="w-full">
-            <VStack align="start" gap="5" className="w-full">
+            <HStack align="start" gap="5" className="w-full sm:flex-row">
               {/* PHONE NUMBER */}
               <HStack gap="1" className="w-full">
                 <Controller
@@ -234,7 +234,7 @@ const PrivateBlockSellerForm: FC = () => {
                   errors?.contacts?.[index]?.person?.message
                 }
               />
-            </VStack>
+            </HStack>
             <VStack align="center" justify="between" className="w-full">
               <Button
                 disabled={contactFields.length === 3}
@@ -270,14 +270,14 @@ const PrivateBlockSellerForm: FC = () => {
       <div className="w-full">
         {communicationFields.map((field, index) => (
           <HStack key={field.id} gap="4" className="w-full">
-            <VStack align="start" gap="5" className="w-full">
+            <HStack align="start" gap="5" className="w-full sm:flex-row">
               {/* MESSENGER LIST */}
               <div className="relative w-full">
                 <Controller
                   name={`communication.${index}.messenger`}
                   control={control}
                   defaultValue=""
-                  rules={{ required: true }}
+                  rules={{ required: false }}
                   render={({ field }) => (
                     <Listbox value={field.value} onChange={field.onChange}>
                       {({ open }) => (
@@ -365,7 +365,7 @@ const PrivateBlockSellerForm: FC = () => {
                   </p>
                 )}
               </HStack>
-            </VStack>
+            </HStack>
             <VStack align="center" justify="between" className="w-full">
               <Button
                 disabled={communicationFields.length === 3}
