@@ -49,3 +49,5 @@ export const initProductsPage = createAsyncThunk<
     dispatch(fetchProductsList({}));
   }
 });
+
+export default initProductsPage;
