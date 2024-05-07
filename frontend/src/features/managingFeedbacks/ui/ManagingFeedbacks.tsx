@@ -379,7 +379,7 @@ const ManagingFeedbacks: FC = () => {
       </HStack>
 
       {feedbacks.length > 2 && (
-        <VStack justify="center" gap="2" className="my-12">
+        <VStack justify="center" gap="2" className="my-6">
           <Pagination
             dataLength={totalFeedbacks}
             itemsPerPage={limit}

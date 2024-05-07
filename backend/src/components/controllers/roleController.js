@@ -21,6 +21,7 @@ const RoleController = {
       const rolesToCreate = [
         { name: 'notLoginUser', permissions: ['login', 'logout', 'createUser', 'none'] },
         { name: 'user', permissions: ['login', 'logout', 'createUser', 'none'] },
+        { name: 'seller', permissions: ['login', 'logout', 'createUser', 'none'] },
         {
           name: 'admin',
           permissions: [

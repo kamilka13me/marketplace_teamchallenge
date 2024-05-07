@@ -1,9 +1,101 @@
 import mongoose, { isValidObjectId } from 'mongoose';
 
+import BrowserInfo from '../../models/BrowserInfo.js';
 import Product from '../../models/Product.js';
+import Role from '../../models/Role.js';
+import User from '../../models/User.js';
+import sendMail from '../../services/nodemailer/nodemailer.js';
 import findChildCategories from '../../utils/findChildCategories.js';
+import hashPassword from '../../utils/hashPasswordUtils.js';
+import {
+  generateAccessToken,
+  generateConfirmToken,
+  generateRefreshToken,
+} from '../../utils/tokenUtils.js';
 
 const sellerController = {
+  createSeller: async (req, res) => {
+    try {
+      const { username, surname, email, password, info } = req.body;
+
+      if (!email || !password) {
+        return res.status(400).json({ error: 'All fields are required' });
+      }
+
+      const regex =
+        /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-zA-Z0-9~`!@#$%^&*()_\-+={[}\]|\\:;"'<,>.?/]).{9,}$/;
+
+      if (!regex.test(password)) {
+        return res.status(400).json({ error: 'invalid password' });
+      }
+
+      const role = await Role.findOne({ name: 'seller' });
+
+      const userData = {};
+
+      if (username) userData.username = username;
+      if (surname) userData.surname = surname;
+      if (email) userData.email = email;
+      if (password) {
+        const hashedPassword = await hashPassword(password);
+
+        userData.password = hashedPassword;
+      }
+
+      userData.role = role._id;
+
+      const newUser = new User(userData);
+      const savedUser = await newUser.save();
+      const user = savedUser.toObject();
+
+      // user callback
+      const userCallback = {
+        _id: user._id,
+        username: user.username || null,
+        surname: user.surname || null,
+        email: user.email,
+        role: 'seler',
+        dob: user.dob || null,
+        isAccountConfirm: user.isAccountConfirm,
+        isAccountActive: false,
+        phoneNumber: user.phoneNumber || null,
+        wishlist: user.wishlist,
+      };
+
+      const accessToken = generateAccessToken(user._id);
+
+      const newBrowserInfo = new BrowserInfo({
+        ...info,
+        userId: user._id,
+      });
+
+      newBrowserInfo.save();
+
+      const refreshToken = generateRefreshToken(user._id);
+
+      const confirmToken = generateConfirmToken(user._id);
+
+      sendMail(user.email, 'register', confirmToken);
+      // res.cookie('accessToken', accessToken, { httpOnly: false, secure: false });
+      // res.cookie('user', JSON.stringify(userCallback), {httpOnly: false,secure: false,});
+      res.setHeader('Authorization', `Bearer ${accessToken}`);
+      res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true });
+      res.status(201).json({
+        message: 'Seller created successfully',
+        seller: userCallback,
+        accessToken,
+      });
+    } catch (error) {
+      if (error.code === 11000) {
+        res.status(409).json({ message: 'user with this email allready exist' });
+      } else {
+        // eslint-disable-next-line no-console
+        console.log(error);
+        res.status(500).json({ message: error.message });
+      }
+    }
+  },
+
   // get all products
   getAllProducts: async (req, res) => {
     try {

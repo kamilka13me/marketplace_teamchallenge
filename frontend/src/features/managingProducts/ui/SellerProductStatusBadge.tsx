@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import infoCircle from '@/shared/assets/icons/info-circle.svg?react';
 import { Icon } from '@/shared/ui/Icon';
@@ -28,7 +28,19 @@ interface Props {
 const SellerProductStatusBadge: FC<Props> = (props) => {
   const [isSupTextVisible, setIsSupTextVisible] = useState(false);
 
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+
   const { status } = props;
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const currentStatus = productStatus[status];
   const currentStyle = productStatusStyle[status];
@@ -38,13 +50,13 @@ const SellerProductStatusBadge: FC<Props> = (props) => {
       justify="center"
       align="center"
       gap="2"
-      className={`py-1 w-[128px] !text-main-white rounded-lg text-center ${currentStyle}`}
+      className={`py-0.5 px-2.5 !text-main-white rounded-lg text-center lg:py-1 lg:w-[128px] ${currentStyle}`}
     >
       <Text
         Tag="span"
         text={currentStatus}
         size="sm"
-        className={`${status === 'blocked' && '!text-main-white'}`}
+        className={`${status === 'blocked' && '!text-main-white'} ${windowWidth < 1024 ? 'text-[8px] leading-[10px]' : ''}`}
       />
 
       {(status === 'blocked' || status === 'canceled') && (
@@ -59,8 +71,8 @@ const SellerProductStatusBadge: FC<Props> = (props) => {
         >
           <Icon
             Svg={infoCircle}
-            width={14}
-            height={14}
+            width={windowWidth >= 1024 ? 14 : 10}
+            height={windowWidth >= 1024 ? 14 : 10}
             className={`${status === 'blocked' ? '!stroke-white' : '!stroke-selected-dark'} cursor-pointer`}
           />
           <div
