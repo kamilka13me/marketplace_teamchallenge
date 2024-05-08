@@ -22,7 +22,7 @@ const FeedbackController = {
     }
   },
 
-  getRating: async (req, res) => {
+  getSellerRating: async (req, res) => {
     const { sellerId, startDate, endDate } = req.query;
 
     if (!sellerId) {
@@ -38,6 +38,70 @@ const FeedbackController = {
       {
         $match: {
           sellerId: sellerObjectId,
+          ...(start && { created_at: { $lte: end } }),
+        },
+      },
+      {
+        $group: {
+          _id: {
+            rating: '$rating',
+            period: {
+              $cond: {
+                if: { $gte: ['$created_at', start] },
+                then: 'current',
+                else: 'previous',
+              },
+            },
+          },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { '_id.rating': 1, '_id.period': 1 }, // Сортування за рейтингом та періодом
+      },
+    ];
+
+    try {
+      const results = await Rating.aggregate(pipeline);
+
+      const formattedResults = results.reduce((acc, { _id, count }) => {
+        // eslint-disable-next-line no-param-reassign
+        acc[_id.period] = acc[_id.period] || {};
+        // eslint-disable-next-line no-param-reassign
+        acc[_id.period][_id.rating] = count;
+
+        return acc;
+      }, {});
+
+      // Заповнення нулями для відсутніх рейтингів
+      const defaultRatings = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+      const current = { ...defaultRatings, ...formattedResults.current };
+      const previous = formattedResults.previous
+        ? { ...defaultRatings, ...formattedResults.previous }
+        : defaultRatings;
+
+      res.status(200).json({ current, previous });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  getProductRating: async (req, res) => {
+    const { productId, startDate, endDate } = req.query;
+
+    if (!productId) {
+      return res.status(400).json({ error: 'productId is required' });
+    }
+
+    const ProductObjectId = new mongoose.Types.ObjectId(productId);
+
+    const start = startDate ? new Date(startDate) : null;
+    const end = endDate ? new Date(endDate) : null;
+
+    const pipeline = [
+      {
+        $match: {
+          productId: ProductObjectId,
           ...(start && { created_at: { $lte: end } }),
         },
       },
@@ -138,6 +202,44 @@ const FeedbackController = {
     }
 
     const query = { sellerId };
+
+    if (startDate) {
+      query.created_at = { $gte: new Date(startDate) };
+    }
+
+    if (endDate) {
+      query.created_at = { ...query.created_at, $lte: new Date(endDate) };
+    }
+
+    try {
+      const comments = await Comment.find(query)
+        .populate('productId')
+        .populate('ratingId')
+        .sort({ created_at: -1 })
+        // eslint-disable-next-line radix
+        .skip(parseInt(offset))
+        // eslint-disable-next-line radix
+        .limit(parseInt(limit));
+
+      const totalCount = await Comment.countDocuments(query);
+
+      res.status(200).json({
+        totalComments: totalCount,
+        comments,
+      });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  getCommentsProducts: async (req, res) => {
+    const { startDate, endDate, limit = 10, offset = 0, productId } = req.query;
+
+    if (!productId) {
+      return res.status(400).json({ error: 'product Id is required' });
+    }
+
+    const query = { productId };
 
     if (startDate) {
       query.created_at = { $gte: new Date(startDate) };

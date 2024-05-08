@@ -5,6 +5,7 @@ import sellerController from '../controllers/sellerController.js';
 
 const sellerRoute = express.Router();
 
+sellerRoute.post('/', idToReq(), sellerController.createSeller);
 /**
  * @swagger
  * /seller:
@@ -77,5 +78,43 @@ const sellerRoute = express.Router();
  *         $ref: '#/components/responses/InternalServerError'
  */
 sellerRoute.get('/', idToReq(), sellerController.getAllProducts);
+
+/**
+ * @swagger
+ * /seller/contacts:
+ *   get:
+ *     summary: Get a list of seller contacts
+ *     description: Get a list contacts
+ *     security:
+ *       - bearerAuth: []
+ *     tags:
+ *       - Seller
+ *
+ *     parameters:
+ *       - in: query
+ *         name: sellerId
+ *         schema:
+ *           type: string
+ *         description: seller id.
+ *     responses:
+ *       200:
+ *         description: A list of contacts.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   telegram:
+ *                     type: string
+ *                     example: '379809808'
+ *                   viber:
+ *                     type: string
+ *                     example: '379809808'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
+sellerRoute.get('/contacts', idToReq(), sellerController.getContacts);
 
 export default sellerRoute;

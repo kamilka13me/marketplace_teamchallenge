@@ -162,6 +162,25 @@ const sellerController = {
       res.status(500).send(error.message);
     }
   },
+
+  // seller contacts
+  getContacts: async (req, res) => {
+    try {
+      const { sellerId } = req.query;
+
+      if (!sellerId) {
+        res.status(400).json({ message: 'seller id is required' });
+      }
+
+      const user = await User.findById(sellerId);
+
+      res.status(200).json([{ contacts: user.phoneNumber }]);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+      res.status(500).send(error.message);
+    }
+  },
 };
 
 export default sellerController;
