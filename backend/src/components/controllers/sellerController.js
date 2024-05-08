@@ -3,6 +3,7 @@ import mongoose, { isValidObjectId } from 'mongoose';
 import BrowserInfo from '../../models/BrowserInfo.js';
 import Product from '../../models/Product.js';
 import Role from '../../models/Role.js';
+import Seller from '../../models/SellerInfo.js';
 import User from '../../models/User.js';
 import sendMail from '../../services/nodemailer/nodemailer.js';
 import findChildCategories from '../../utils/findChildCategories.js';
@@ -16,7 +17,29 @@ import {
 const sellerController = {
   createSeller: async (req, res) => {
     try {
-      const { username, surname, email, password, info } = req.body;
+      const {
+        username,
+        surname,
+        email,
+        password,
+        info,
+        legalName,
+        legalAddress,
+        city,
+        cityIndex,
+        communication,
+        condition,
+        contacts,
+        descriptCompany,
+        emailAdvertisement,
+        emailAdvice,
+        emailMessage,
+        generalCommunication,
+        generalName,
+        idStateRegister,
+        identificNumber,
+        tax,
+      } = req.body;
 
       if (!email || !password) {
         return res.status(400).json({ error: 'All fields are required' });
@@ -61,6 +84,27 @@ const sellerController = {
         phoneNumber: user.phoneNumber || null,
         wishlist: user.wishlist,
       };
+      const newSellerInfo = new Seller({
+        sellerId: user.id,
+        legalName,
+        legalAddress,
+        city,
+        cityIndex,
+        communication,
+        condition,
+        contacts,
+        descriptCompany,
+        emailAdvertisement,
+        emailAdvice,
+        emailMessage,
+        generalCommunication,
+        generalName,
+        idStateRegister,
+        identificNumber,
+        tax,
+      });
+
+      await newSellerInfo.save();
 
       const accessToken = generateAccessToken(user._id);
 
