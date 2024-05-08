@@ -5,7 +5,7 @@ import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { PhoneInput } from 'react-international-phone';
 
-import { InputsSellerValues } from '@/features/userAuth/ui/SellerRegistrationForm/SellerRegistrationForm';
+import { Seller } from '@/enteties/Seller/model/types/seller';
 import arrow from '@/shared/assets/icons/arrow-right.svg?react';
 import checked from '@/shared/assets/icons/checked-thin.svg?react';
 import { Button } from '@/shared/ui/Button';
@@ -24,7 +24,7 @@ const PrivateBlockSellerForm: FC = () => {
     register,
     control,
     formState: { errors },
-  } = useFormContext<InputsSellerValues>();
+  } = useFormContext<Seller>();
 
   const {
     fields: contactFields,

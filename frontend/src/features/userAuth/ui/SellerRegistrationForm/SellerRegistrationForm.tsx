@@ -4,48 +4,21 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
+import { setNewSeller } from '@/enteties/Seller/model/services/setNewSeller';
+import { Seller } from '@/enteties/Seller/model/types/seller';
 import GeneralBlockSellerForm from '@/features/userAuth/ui/SellerRegistrationForm/blocks/GeneralBlockSellerForm';
 import PrivateBlockSellerForm from '@/features/userAuth/ui/SellerRegistrationForm/blocks/PrivateBlockSellerForm';
 import cancel from '@/shared/assets/icons/cancel.svg?react';
 import privateEye from '@/shared/assets/icons/private-eye.svg?react';
 import unPrivateEye from '@/shared/assets/icons/unprivate-eye.svg?react';
 import { getRouteMain } from '@/shared/const/routes';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Input } from '@/shared/ui/Input';
 import { ModalWindow } from '@/shared/ui/ModalWindow';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
-
-export interface InputsSellerValues {
-  email: string;
-  password: string;
-  legalName: string;
-  legalAddress: string;
-  city: string;
-  cityIndex: string;
-  idStateRegister: string;
-  identificNumber: string;
-  tax: boolean;
-  contacts: {
-    phone: string;
-    person: string;
-  }[];
-  communication: {
-    messenger: string;
-    phone: string;
-  }[];
-  descriptCompany: string;
-  generalName: string;
-  generalCommunication: {
-    messenger: string;
-    phone: string;
-  }[];
-  emailAdvice: boolean;
-  emailAdvertisement: boolean;
-  emailMessage: boolean;
-  conditions: boolean;
-}
 
 const SellerRegistrationForm: FC = () => {
   const { t } = useTranslation();
@@ -54,8 +27,9 @@ const SellerRegistrationForm: FC = () => {
   const [passShown, setPassShown] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const methods = useForm<InputsSellerValues>({
+  const methods = useForm<Seller>({
     mode: 'all',
     defaultValues: {
       email: '',
@@ -86,10 +60,36 @@ const SellerRegistrationForm: FC = () => {
     reset,
   } = methods;
 
-  const onSubmit: SubmitHandler<InputsSellerValues> = () => {
-    // console.log(data); // update logic when there will be a backend
-    reset();
-    setShowModal(!showModal);
+  const onSubmit: SubmitHandler<Seller> = async (data) => {
+    await dispatch(
+      setNewSeller({
+        username: data.generalName,
+        surname: '',
+        email: data.email,
+        password: data.password,
+        legalName: data.legalName,
+        legalAddress: data.legalAddress,
+        city: data.city,
+        cityIndex: data.cityIndex,
+        idStateRegister: data.idStateRegister,
+        identificNumber: data.identificNumber,
+        tax: data.tax,
+        contacts: data.contacts,
+        communication: data.communication,
+        descriptCompany: data.descriptCompany,
+        generalName: data.generalName,
+        generalCommunication: data.generalCommunication,
+        emailAdvice: data.emailAdvice,
+        emailAdvertisement: data.emailAdvertisement,
+        emailMessage: data.emailMessage,
+        conditions: data.conditions,
+      }),
+    ).then((value) => {
+      if (value.meta.requestStatus !== 'rejected') {
+        reset();
+        setShowModal(!showModal);
+      }
+    });
   };
 
   const onTogglePassVisibility = () => {

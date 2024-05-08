@@ -3,9 +3,41 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 
-interface ApiResponse {}
+interface ApiResponse extends newSellerDataProps {
+  info: object;
+}
 
-interface newSellerDataProps {}
+interface newSellerDataProps {
+  username: string;
+  surname: string;
+  email: string;
+  password: string;
+  legalName: string;
+  legalAddress: string;
+  city: string;
+  cityIndex: string;
+  idStateRegister: string;
+  identificNumber: string;
+  tax: boolean;
+  contacts: {
+    phone: string;
+    person: string;
+  }[];
+  communication: {
+    messenger: string;
+    phone: string;
+  }[];
+  descriptCompany: string;
+  generalName: string;
+  generalCommunication: {
+    messenger: string;
+    phone: string;
+  }[];
+  emailAdvice: boolean;
+  emailAdvertisement: boolean;
+  emailMessage: boolean;
+  conditions: boolean;
+}
 
 export const setNewSeller = createAsyncThunk<ApiResponse, newSellerDataProps>(
   'seller',
@@ -17,7 +49,7 @@ export const setNewSeller = createAsyncThunk<ApiResponse, newSellerDataProps>(
         ...newSellerData,
       });
 
-      if (response.status !== 200) {
+      if (response.status !== 201) {
         if (response.status === 400) {
           return rejectWithValue(`:: ${response.statusText} `);
         }
