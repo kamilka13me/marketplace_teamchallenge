@@ -3,6 +3,7 @@ import mongoose, { isValidObjectId } from 'mongoose';
 import BrowserInfo from '../../models/BrowserInfo.js';
 import Product from '../../models/Product.js';
 import Role from '../../models/Role.js';
+import Seller from '../../models/SellerInfo.js';
 import User from '../../models/User.js';
 import sendMail from '../../services/nodemailer/nodemailer.js';
 import findChildCategories from '../../utils/findChildCategories.js';
@@ -16,7 +17,29 @@ import {
 const sellerController = {
   createSeller: async (req, res) => {
     try {
-      const { username, surname, email, password, info } = req.body;
+      const {
+        username,
+        surname,
+        email,
+        password,
+        info,
+        legalName,
+        legalAddress,
+        city,
+        cityIndex,
+        communication,
+        condition,
+        contacts,
+        descriptCompany,
+        emailAdvertisement,
+        emailAdvice,
+        emailMessage,
+        generalCommunication,
+        generalName,
+        idStateRegister,
+        identificNumber,
+        tax,
+      } = req.body;
 
       if (!email || !password) {
         return res.status(400).json({ error: 'All fields are required' });
@@ -61,16 +84,38 @@ const sellerController = {
         phoneNumber: user.phoneNumber || null,
         wishlist: user.wishlist,
       };
+      const newSellerInfo = new Seller({
+        sellerId: user.id,
+        legalName,
+        legalAddress,
+        city,
+        cityIndex,
+        communication,
+        condition,
+        contacts,
+        descriptCompany,
+        emailAdvertisement,
+        emailAdvice,
+        emailMessage,
+        generalCommunication,
+        generalName,
+        idStateRegister,
+        identificNumber,
+        tax,
+      });
+
+      await newSellerInfo.save();
 
       const accessToken = generateAccessToken(user._id);
 
-      const newBrowserInfo = new BrowserInfo({
-        ...info,
-        userId: user._id,
-      });
+      if (info) {
+        const newBrowserInfo = new BrowserInfo({
+          ...info,
+          userId: user._id,
+        });
 
-      newBrowserInfo.save();
-
+        newBrowserInfo.save();
+      }
       const refreshToken = generateRefreshToken(user._id);
 
       const confirmToken = generateConfirmToken(user._id);
@@ -156,6 +201,25 @@ const sellerController = {
       const count = await Product.countDocuments({ sellerId: userId });
 
       res.status(200).json({ count, products });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+      res.status(500).send(error.message);
+    }
+  },
+
+  // seller contacts
+  getContacts: async (req, res) => {
+    try {
+      const { sellerId } = req.query;
+
+      if (!sellerId) {
+        res.status(400).json({ message: 'seller id is required' });
+      }
+
+      const seller = await Seller.findOne({ sellerId });
+
+      res.status(200).json([{ contacts: seller.communication }]);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
