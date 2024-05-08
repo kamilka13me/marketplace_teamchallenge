@@ -108,13 +108,14 @@ const sellerController = {
 
       const accessToken = generateAccessToken(user._id);
 
-      const newBrowserInfo = new BrowserInfo({
-        ...info,
-        userId: user._id,
-      });
+      if (info) {
+        const newBrowserInfo = new BrowserInfo({
+          ...info,
+          userId: user._id,
+        });
 
-      newBrowserInfo.save();
-
+        newBrowserInfo.save();
+      }
       const refreshToken = generateRefreshToken(user._id);
 
       const confirmToken = generateConfirmToken(user._id);
@@ -216,9 +217,9 @@ const sellerController = {
         res.status(400).json({ message: 'seller id is required' });
       }
 
-      const user = await User.findById(sellerId);
+      const seller = await Seller.findOne({ sellerId });
 
-      res.status(200).json([{ contacts: user.phoneNumber }]);
+      res.status(200).json([{ contacts: seller.communication }]);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
