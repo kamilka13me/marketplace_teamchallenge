@@ -6,6 +6,7 @@ import { Product } from '@/enteties/Product';
 import FirstBlockProductForm from '@/features/createProduct/ui/blocks/first/FirstBlockProductForm';
 import FormMiddleBlock from '@/features/createProduct/ui/FormMiddleBlock';
 import ImageUpload, { InputData } from '@/features/createProduct/ui/ImageUpload';
+import { ProductStatuses } from '@/features/managingProducts';
 import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 
@@ -34,6 +35,7 @@ const ProductForm: FC = () => {
   });
 
   const [inputs, setInputs] = useState<InputData[]>([]);
+  const [category, setCategory] = useState('');
 
   const handleInputsChange = (newInputs: InputData[]) => {
     setInputs(newInputs);
@@ -48,7 +50,7 @@ const ProductForm: FC = () => {
     formData.append('description', data.description);
     formData.append('brand', data.brand);
     formData.append('condition', data.condition);
-    formData.append('status', 'Available');
+    formData.append('status', 'under-consideration' as ProductStatuses);
     formData.append('price', String(data.price));
     formData.append('discount', String(data.discount));
     formData.append('specifications', JSON.stringify(data.specifications));
@@ -67,7 +69,7 @@ const ProductForm: FC = () => {
 
     formData.append('discountStart', convertDate(data.discountStart));
     formData.append('discountEnd', convertDate(data.discountEnd));
-    formData.append('category', data.selectSubSubCategory);
+    formData.append('category', category);
     formData.append('quantity', String(data.quantity));
 
     inputs.forEach((file) => {
@@ -86,11 +88,15 @@ const ProductForm: FC = () => {
     }
   };
 
+  const setCategoryHandler = (id: string) => {
+    setCategory(id);
+  };
+
   return (
     <div className="w-full">
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-end gap-5">
-          <FirstBlockProductForm />
+          <FirstBlockProductForm setCategory={setCategoryHandler} />
           <FormMiddleBlock />
           <ImageUpload onInputsChange={handleInputsChange} />
           <input

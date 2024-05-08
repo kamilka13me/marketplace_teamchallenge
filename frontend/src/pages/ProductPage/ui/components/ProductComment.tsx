@@ -1,0 +1,157 @@
+import React, { ChangeEvent, FC, useState } from 'react';
+
+import { Product } from '@/enteties/Product';
+import { $api } from '@/shared/api/api';
+import star from '@/shared/assets/icons/star-2.svg?react';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
+import { Button } from '@/shared/ui/Button';
+import { Icon } from '@/shared/ui/Icon';
+import { HStack, VStack } from '@/shared/ui/Stack';
+import { Text } from '@/shared/ui/Text';
+import { Textarea } from '@/shared/ui/Textarea';
+
+interface Props {
+  product: Product;
+  stars: number;
+  setStars: (i: number) => void;
+}
+
+const ProductComment: FC<Props> = (props) => {
+  const { stars, setStars, product } = props;
+
+  const [commentMessage] = useState('');
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const files = Array.from(e.target.files);
+      const maxSize = 10 * 1024 * 1024; // 10MB
+
+      const allowedTypes = [
+        'image/png',
+        'image/jpg',
+        'image/jpeg',
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      ];
+      const invalidTypeFiles = files.filter((file) => !allowedTypes.includes(file.type));
+      const invalidSizeFiles = files.filter((file) => file.size > maxSize);
+
+      if (invalidTypeFiles.length > 0) {
+        setErrorMessage('Недопустиме розширення файлу!');
+
+        return;
+      }
+
+      if (invalidSizeFiles.length > 0) {
+        setErrorMessage('Один або кілька файлів розміром більше 10 МБ!');
+
+        return;
+      }
+
+      const totalFilesCount = selectedFiles.length + files.length;
+
+      if (totalFilesCount > 2) {
+        setErrorMessage('Максимум 2 файлів!');
+
+        return;
+      }
+      setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
+      setErrorMessage('');
+    }
+  };
+
+  const sendFeedbackHandler = () => {
+    const formData = new FormData();
+
+    formData.append('sellerId', product.sellerId);
+    formData.append('productId', product._id);
+    formData.append('rating', (stars + 1).toString());
+    formData.append('comment', commentMessage);
+    formData.append('parentId', '');
+
+    selectedFiles.forEach((file) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      formData.append('images', file);
+    });
+
+    try {
+      $api.post(ApiRoutes.SELLER_FEEDBACKS, formData);
+    } catch (e: unknown) {
+      // eslint-disable-next-line no-console
+      console.log(e);
+    }
+  };
+
+  return (
+    <HStack gap="4" className="w-full mb-8">
+      <VStack gap="2" className="">
+        {Array(5)
+          .fill(null)
+          .map((_, i) => (
+            <Icon
+              key={i}
+              width={20}
+              height={20}
+              Svg={star}
+              onClick={() => setStars(i)}
+              className={`${i <= stars ? '!fill-main' : '!stroke-main'} duration-300 cursor-pointer !stroke-[2px] `}
+            />
+          ))}
+      </VStack>
+      <form className="w-full">
+        <Textarea
+          name="comment"
+          variant="clear"
+          placeholder="Напишіть коментар"
+          className="resize-y !h-[126px] w-full bg-transparent border-[2px] border-disabled p-2"
+        />
+
+        <VStack justify="end" className="w-full">
+          <HStack className=" mt-4">
+            <Text
+              Tag="span"
+              text="Файли з форматів: png, jpg, pdf, doc, docx"
+              size="sm"
+              color="gray-light"
+            />
+            <VStack gap="4" className="mt-2 w-full" justify="end">
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+              <label className="min-w-[123px] cursor-pointer font-normal text-center text-[16px] leading-[21px] text-white-transparent-70 p-[10px] border-[1px] border-white-transparent-70">
+                Обрати файл
+                <input
+                  type="file"
+                  accept=".png,.jpg,.jpeg,.pdf,.doc,.docx"
+                  multiple
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+              </label>
+              <Button
+                variant="primary"
+                className="w-[226px] h-[48px]"
+                onClick={sendFeedbackHandler}
+              >
+                Надіслати
+              </Button>
+            </VStack>
+            {errorMessage ? (
+              <Text Tag="p" text={errorMessage} size="sm" className="!text-error-red" />
+            ) : (
+              <Text
+                Tag="span"
+                text={`${selectedFiles.length > 0 ? `${selectedFiles.length} ${'з 2 файлів обрано'}` : 'файл не обрано'}`}
+                size="md"
+                className="!text-disabled"
+              />
+            )}
+          </HStack>
+        </VStack>
+      </form>
+    </HStack>
+  );
+};
+
+export default ProductComment;

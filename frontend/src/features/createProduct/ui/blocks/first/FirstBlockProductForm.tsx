@@ -18,7 +18,13 @@ interface ICondition {
   title: string;
 }
 
-const FirstBlockProductForm: FC = () => {
+interface Props {
+  setCategory: (id: string) => void;
+}
+
+const FirstBlockProductForm: FC<Props> = (props) => {
+  const { setCategory } = props;
+
   const {
     register,
     control,
@@ -64,6 +70,7 @@ const FirstBlockProductForm: FC = () => {
               value={field.value}
               onChange={(value) => {
                 field.onChange(value.name);
+                setCategory(value._id);
                 setValue('selectSubCategory', '');
                 setValue('selectSubSubCategory', '');
                 setCurrentSubSub(null);
@@ -138,6 +145,7 @@ const FirstBlockProductForm: FC = () => {
               value={field.value}
               onChange={(value) => {
                 field.onChange(value.name);
+                setCategory(value._id);
                 setValue('selectSubSubCategory', '');
               }}
               disabled={currentSub === null}
@@ -208,11 +216,13 @@ const FirstBlockProductForm: FC = () => {
           name="selectSubSubCategory"
           control={control}
           defaultValue=""
-          rules={{ required: true }}
           render={({ field }) => (
             <Listbox
               value={field.value}
-              onChange={(value) => field.onChange(value.name)}
+              onChange={(value) => {
+                field.onChange(value.name);
+                setCategory(value._id);
+              }}
               disabled={currentSubSub === null}
             >
               {({ open }) => (

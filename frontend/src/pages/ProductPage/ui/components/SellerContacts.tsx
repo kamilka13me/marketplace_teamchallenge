@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { Rating } from '@/enteties/Rating';
 import { getUserAuthData, User } from '@/enteties/User';
@@ -13,6 +13,20 @@ interface ApiResponse {
   user: User;
 }
 
+interface ApiCommentsResponse {
+  comments: Comment[];
+  totalComments: number;
+}
+
+// interface NumbersMap {
+//   [key: string]: number;
+// }
+
+// interface ApiRatingsResponse {
+//   previous: NumbersMap;
+//   current: NumbersMap;
+// }
+
 interface Props {
   sellerId: string;
 }
@@ -21,6 +35,14 @@ const SellerContacts: FC<Props> = ({ sellerId }) => {
   const user = useAppSelector(getUserAuthData);
 
   const { data, isLoading } = useAxios<ApiResponse>(`${ApiRoutes.USER}/${sellerId}`);
+
+  const { data: feedbacks, isLoading: loadingFeedbacks } = useAxios<ApiCommentsResponse>(
+    `${ApiRoutes.SELLER_FEEDBACKS}?sellerId=${sellerId}`,
+  );
+
+  // const { data: ratings, isLoading: loadingRatings } = useAxios<ApiRatingsResponse>(
+  //   `${ApiRoutes.RATINGS}?sellerId=${sellerId}`,
+  // );
 
   const [sellerContacts, setSellerContacts] = useState('');
   const [isContactsOpen, setIsContactsOpen] = useState(false);
@@ -31,14 +53,25 @@ const SellerContacts: FC<Props> = ({ sellerId }) => {
       setIsAlertOpen(true);
     } else if (!user.isAccountConfirm) {
       setIsAlertOpen(true);
-      setTimeout(() => {
-        setIsAlertOpen(false);
-      }, 3000);
     } else if (user.isAccountConfirm) {
       setIsContactsOpen(true);
       setSellerContacts('');
     }
   };
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if (isAlertOpen) {
+      timer = setTimeout(() => {
+        setIsAlertOpen(false);
+      }, 3000);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [isAlertOpen]);
 
   return (
     <VStack
@@ -59,21 +92,17 @@ const SellerContacts: FC<Props> = ({ sellerId }) => {
           )}
         </VStack>
         <VStack gap="5" align="center" className="mt-1">
-          <Rating rating={4} />
-          <Text
-            Tag="span"
-            text="36 оцінок"
-            size="xs"
-            color="gray-light"
-            className="mt-2"
-          />
-          <Text
-            Tag="span"
-            text="16 відгуків"
-            size="xs"
-            color="gray-light"
-            className="mt-2"
-          />
+          <Rating rating={5} />
+
+          {!loadingFeedbacks && (
+            <Text
+              Tag="span"
+              text={`${feedbacks?.totalComments || 0} відгуків`}
+              size="xs"
+              color="gray-light"
+              className="mt-2"
+            />
+          )}
         </VStack>
       </div>
       {isContactsOpen ? (
@@ -84,7 +113,7 @@ const SellerContacts: FC<Props> = ({ sellerId }) => {
             variant="outlined"
             onClick={getSellerContactsHandler}
             disabled={isAlertOpen}
-            className="text-main-white h-[52px] w-[226px] hover:bg-main hover:border-main hover:text-main-dark duration-300"
+            className="text-main-white h-[52px] w-[226px] hover:bg-main hover:!border-main hover:!text-main-dark duration-300"
           >
             Відкрити контакти
           </Button>

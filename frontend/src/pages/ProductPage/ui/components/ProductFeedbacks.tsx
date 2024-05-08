@@ -4,12 +4,12 @@ import { Comment, IComment } from '@/enteties/Comment';
 import { Product } from '@/enteties/Product';
 import { Rating } from '@/enteties/Rating';
 import { calcRatingInPercentage } from '@/features/managingFeedbacks/helpers/managingFeedbacksHelpers';
+import ProductComment from '@/pages/ProductPage/ui/components/ProductComment';
 import star from '@/shared/assets/icons/star-2.svg?react';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
-import { Textarea } from '@/shared/ui/Textarea';
 
 const current = {
   '1': 0,
@@ -53,21 +53,6 @@ const ProductFeedbacks: FC<Props> = (props) => {
   const currentValues = calcRatingInPercentage(current);
   const totalValue = Object.values(currentValues).reduce((acc, curr) => acc + curr, 0);
 
-  // const sendFeedbackHandler = () => {
-  //   try {
-  //     const res = $api.post(ApiRoutes.SELLER_FEEDBACKS, {
-  //       sellerId: product.sellerId,
-  //       productId: product._id,
-  //       rating: filledStars + 1,
-  //       comment: '',
-  //       images: [''],
-  //       parentId: null,
-  //     });
-  //   } catch (e) {
-  //
-  //   }
-  // };
-
   const handleStarClick = (index: number) => {
     setFilledStars(index);
   };
@@ -88,45 +73,11 @@ const ProductFeedbacks: FC<Props> = (props) => {
       </VStack>
 
       {isCommentOpen && (
-        <HStack gap="4" className="w-full mb-8">
-          <VStack gap="2" className="">
-            {Array(5)
-              .fill(null)
-              .map((_, i) => (
-                <Icon
-                  key={i}
-                  width={20}
-                  height={20}
-                  Svg={star}
-                  onClick={() => handleStarClick(i)}
-                  className={`${i <= filledStars ? '!fill-main' : '!stroke-main'} duration-300 cursor-pointer !stroke-[2px] `}
-                />
-              ))}
-          </VStack>
-          <form className="w-full">
-            <Textarea
-              name="comment"
-              variant="clear"
-              placeholder="Напишіть коментар"
-              className="resize-y !h-[126px] w-full bg-transparent border-[2px] border-disabled p-2"
-            />
-
-            <HStack className="w-full mt-4" align="end">
-              <Text
-                Tag="span"
-                text="Файли з форматів: png, jpg, pdf, doc, docx"
-                size="sm"
-                color="gray-light"
-              />
-              <VStack gap="4" className="mt-2 w-full" justify="end">
-                <Button variant="grey-outlined">Обрати файл</Button>
-                <Button variant="primary" className="w-[226px]">
-                  Надіслати {product._id}
-                </Button>
-              </VStack>
-            </HStack>
-          </form>
-        </HStack>
+        <ProductComment
+          product={product}
+          stars={filledStars}
+          setStars={handleStarClick}
+        />
       )}
 
       <VStack gap="8" className="mb-4">
@@ -140,7 +91,7 @@ const ProductFeedbacks: FC<Props> = (props) => {
             ?.reverse()
             .map(([key, value]) => (
               <VStack key={key} align="center" gap="2">
-                <VStack gap="1" justify="center" align="center" className="w-[25px]">
+                <VStack gap="1" justify="start" align="center" className="w-[25px]">
                   <Icon width={12} height={12} Svg={star} className="fill-main" />
                   <Text Tag="p" text={key} size="md" color="white" />
                 </VStack>
@@ -153,12 +104,7 @@ const ProductFeedbacks: FC<Props> = (props) => {
                     className="h-full bg-green rounded-lg"
                   />
                 </div>
-                {/* <Text */}
-                {/*    Tag="p" */}
-                {/*    text={data?.current?.[key]?.toString() ?? ''} */}
-                {/*    size="md" */}
-                {/*    color="white" */}
-                {/* /> */}
+                <Text Tag="p" text={[key]?.toString() ?? ''} size="md" color="white" />
               </VStack>
             ))}
         </HStack>

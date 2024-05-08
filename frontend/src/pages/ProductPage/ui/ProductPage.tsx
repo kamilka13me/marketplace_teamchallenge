@@ -1,18 +1,21 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
+import Slider from 'react-slick';
 
 import { Product } from '@/enteties/Product';
 import ProductDescription from '@/pages/ProductPage/ui/components/ProductDescription';
 import ProductFeedbacks from '@/pages/ProductPage/ui/components/ProductFeedbacks';
+import ProductFeedbacksTab from '@/pages/ProductPage/ui/components/ProductFeedbacksTab';
 import ProductSpecification from '@/pages/ProductPage/ui/components/ProductSpecification';
 import SellerContacts from '@/pages/ProductPage/ui/components/SellerContacts';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { Container } from '@/shared/layouts/Container';
 import useAxios from '@/shared/lib/hooks/useAxios';
 import { ReactHelmet } from '@/shared/SEO';
+import NextArrow from '@/shared/ui/Slider/NextArrow';
+import PrevArrow from '@/shared/ui/Slider/PrevArrow';
 import { HStack, VStack } from '@/shared/ui/Stack';
-import { Text } from '@/shared/ui/Text';
 
 interface Props {}
 
@@ -24,17 +27,48 @@ const ProductPage: FC<Props> = () => {
   const { id } = useParams<{ id: string }>();
 
   const [isProductFeedbacksOpen, setIsProductFeedbacksOpen] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
   const { data, isLoading } = useAxios<ApiResponse>(`${ApiRoutes.PRODUCTS}/${id}`);
 
-  // const settings = {
-  //   dots: true,
-  //   infinite: false,
-  //   speed: 500,
-  //   slidesToShow: 8,
-  //   slidesToScroll: 1,
-  //   draggable: true,
-  //   adaptiveHeight: true,
+  useEffect(() => {
+    // Update the current slide index whenever data changes
+    if (data && data.product) {
+      setCurrentSlide(0); // Reset to the first slide
+    }
+  }, [data]);
+
+  // Function to handle change in the small slider
+  // const handleSmallSliderChange = (index: number) => {
+  //   setCurrentSlide(index); // Update current slide state
+  //   bigSliderRef.current?.slickGoTo(index); // Go to the selected slide in the big slider
   // };
+
+  const settingsSmall = {
+    dots: false,
+    infinite: false,
+    arrows: false,
+    speed: 500,
+    slidesToShow: 7,
+    slidesToScroll: 1,
+    draggable: true,
+    adaptiveHeight: true,
+    initialSlide: currentSlide,
+    focusOnSelect: true,
+  };
+
+  const settingsBig = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    draggable: false,
+    adaptiveHeight: true,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+    afterChange: (index: number) => setCurrentSlide(index),
+  };
 
   const openProductFeedbacksHandler = () => {
     setIsProductFeedbacksOpen((prev) => !prev);
@@ -48,42 +82,39 @@ const ProductPage: FC<Props> = () => {
     <div className="bg-main-dark min-h-[70vh] py-4 lg:py-10">
       <ReactHelmet
         link={`/product/${id}`}
-        title={data?.product.name || id}
-        description="Product"
-        noIndex
+        title={data?.product.name || 'Peach market'}
+        description={data?.product.description || ''}
       />
       <Container>
         {isProductFeedbacksOpen ? (
-          <VStack gap="5">
-            <HStack gap="5" className="max-w-[424px] w-full">
-              <div className="w-full h-[336px] bg-dark-grey rounded-2xl" />
-              <ProductDescription
-                size="medium"
-                product={data?.product || ({} as Product)}
-              />
-            </HStack>
-            <HStack className="w-full rounded-2xl bg-dark-grey p-4">
-              <Text Tag="p" text="Всі відгуки" size="4xl" color="white" />
-            </HStack>
-          </VStack>
+          <ProductFeedbacksTab product={data?.product || ({} as Product)} />
         ) : (
           <>
             <VStack gap="5">
-              {/* SLIDERS */}
               <HStack gap="5" className="w-full max-w-[646px]">
                 <div className="h-[514px] bg-dark-grey max-w-[646px] w-full rounded-2xl">
-                  {/* <CustomSlider images={data?.product.images} /> */}
+                  <Slider {...settingsBig}>
+                    {data?.product.images.map((item) => (
+                      <img
+                        key={item} // Ensure each item has a unique key
+                        src={`${process.env.BASE_URL}${item}`}
+                        alt="slider-img"
+                        className="!w-[646px] !h-[514px] rounded-2xl bg-dark-grey !object-cover"
+                      />
+                    ))}
+                  </Slider>
                 </div>
-                <div className="h-[84px] bg-dark-grey w-full rounded-2xl">
-                  {/* <Slider {...settings}> */}
-                  {/*  {data?.product.images.map((item) => ( */}
-                  {/*    <img */}
-                  {/*      src={`${process.env.BASE_URL}${item}`} */}
-                  {/*      alt="slider-img" */}
-                  {/*      className="w-full h-full rounded-2xl object-cover" */}
-                  {/*    /> */}
-                  {/*  ))} */}
-                  {/* </Slider> */}
+                <div className="h-[84px] w-full ">
+                  <Slider {...settingsSmall}>
+                    {data?.product.images.map((item) => (
+                      <img
+                        key={item} // Ensure each item has a unique key
+                        src={`${process.env.BASE_URL}${item}`}
+                        alt="slider-img"
+                        className="!w-[82px] !h-[84px] rounded-2xl bg-dark-grey !object-cover"
+                      />
+                    ))}
+                  </Slider>
                 </div>
               </HStack>
 
