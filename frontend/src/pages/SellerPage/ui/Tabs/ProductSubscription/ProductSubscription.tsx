@@ -47,36 +47,42 @@ const ProductSubscription = () => {
           {plans.map((plan) => (
             <li
               key={plan.name}
-              className={`w-[274px] h-[406px] bg-selected-dark rounded-2xl p-[24px] relative ${activePlan === plan.name ? 'border-2 border-amber-500' : ''}`}
+              className={`${activePlan === plan.name ? 'bg-gradient-to-r from-[#F35735] to-secondary-yellow p-0.5 rounded-2xl' : ''}`}
             >
-              <img
-                src={Wave}
-                alt="Хвиля"
-                className="absolute left-[0px] top-[0px] rounded-2xl"
-              />
-              <p className="text-white text-[24px] relative">{plan.price}</p>
-              <h2 className="text-white mb-[127px] text-[32px] relative">{plan.name}</h2>
-              <div className="flex gap-[10px] mb-[10px]">
-                <Icon Svg={Subs} className="bg-selected-dark stroke-white" />
-                <p className="text-white ">100 оголошень</p>
-              </div>
-              <div className="flex gap-[10px] mb-[52px]">
-                <Icon Svg={Subs} className="stroke-secondary-yellow" />
-                <p className="text-white">Термін дії місяць</p>
-              </div>
-              <Button
-                variant={activePlan === plan.name ? 'gray' : 'primary'}
-                className="w-[226px] text-[18px] rounded-lg !text-main-dark"
-                onClick={() => handlePlanSelection(plan.name)}
-                disabled={activePlan === plan.name}
+              <div
+                className={`w-[274px] h-[406px] bg-selected-dark rounded-2xl p-[24px] relative `}
               >
-                {activePlan === plan.name ? 'Активний план' : 'Вибрити план'}
-              </Button>
+                <img
+                  src={Wave}
+                  alt="Хвиля"
+                  className="absolute left-[0px] top-[0px] rounded-2xl"
+                />
+                <p className="text-white text-[24px] relative">{plan.price}</p>
+                <h2 className="text-white mb-[127px] text-[32px] relative">
+                  {plan.name}
+                </h2>
+                <div className="flex gap-[10px] mb-[10px]">
+                  <Icon Svg={Subs} className="bg-selected-dark stroke-white" />
+                  <p className="text-white ">100 оголошень</p>
+                </div>
+                <div className="flex gap-[10px] mb-[52px]">
+                  <Icon Svg={Subs} className="stroke-secondary-yellow" />
+                  <p className="text-white">Термін дії місяць</p>
+                </div>
+                <Button
+                  variant={activePlan === plan.name ? 'gray' : 'primary'}
+                  className="w-[226px] text-[18px] rounded-lg !text-main-dark"
+                  onClick={() => handlePlanSelection(plan.name)}
+                  disabled={activePlan === plan.name}
+                >
+                  {activePlan === plan.name ? 'Активний план' : 'Вибрити план'}
+                </Button>
+              </div>
             </li>
           ))}
         </ul>
         <div className="flex gap-[8px] items-center">
-          <Icon Svg={Exclamation} />
+          <Icon Svg={Exclamation} className="fill-secondary-yellow" />
           <p className="text-white text-sm">Ви можете обрати тільки один тарифний план</p>
         </div>
       </div>

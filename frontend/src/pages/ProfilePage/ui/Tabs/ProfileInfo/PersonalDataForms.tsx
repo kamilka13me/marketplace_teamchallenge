@@ -20,6 +20,7 @@ import { Input } from '@/shared/ui/Input';
 import { ModalWindow } from '@/shared/ui/ModalWindow';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
+import { EmailConfirmation } from '@/widgets/EmailConfirmation';
 
 interface InputsInformationValues {
   inputName: string;
@@ -209,6 +210,8 @@ const PersonalDataForms: FC = () => {
 
     return true;
   };
+
+  const isAccountConfirmed = user && user.isAccountConfirm;
 
   const renderInfoForm = () => (
     <form className="w-full mb-6 lg:mb-0 lg:py-[42px] lg:px-12 lg:bg-selected-dark lg:rounded-2xl">
@@ -435,83 +438,86 @@ const PersonalDataForms: FC = () => {
   );
 
   return (
-    <div className="w-full lg:bg-dark-grey lg:rounded-2xl lg:px-[38px] py-[24px] lg:py-[38px] lg:overflow-hidden relative z-10">
-      <div className="hidden lg:block w-[370px] h-[370px] bg-main opacity-40 blur-[100px] rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -z-20" />
-      <VStack className="flex-col lg:flex-row lg:gap-[48px] px-4 lg:px-0">
-        {renderInfoForm()}
+    <HStack wrap="wrap">
+      {!isAccountConfirmed && <EmailConfirmation />}
+      <div className="w-full lg:bg-dark-grey lg:rounded-2xl lg:px-[38px] py-[24px] lg:py-[38px] lg:overflow-hidden relative z-10">
+        <div className="hidden lg:block w-[370px] h-[370px] bg-main opacity-40 blur-[100px] rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -z-20" />
+        <VStack className="flex-col lg:flex-row lg:gap-[48px] px-4 lg:px-0">
+          {renderInfoForm()}
 
-        <HStack align="end" className="w-full lg:min-h-[452px]" justify="between">
-          {renderChangePasswordForm()}
+          <HStack align="end" className="w-full lg:min-h-[452px]" justify="between">
+            {renderChangePasswordForm()}
 
-          <div
-            className={
-              showModal
-                ? 'hidden lg:block bg-dark-grey py-[21px] px-3 rounded-lg drop-shadow-custom-user-info relative animate-open-info-modal'
-                : 'hidden'
-            }
-          >
-            <Text
-              Tag="p"
-              text={
-                sendChangePassForm
-                  ? t('Ваш пароль успішно змінено')
-                  : t('Дані успішно змінено')
+            <div
+              className={
+                showModal
+                  ? 'hidden lg:block bg-dark-grey py-[21px] px-3 rounded-lg drop-shadow-custom-user-info relative animate-open-info-modal'
+                  : 'hidden'
               }
-              size="sm"
-              className="leading-[18px] text-white"
-            />
-            <div className="absolute bottom-0 right-[10px] transform -translate-x-0 translate-y-[8px] border-x-8 border-t-8 border-transparent border-t-dark-grey" />
-          </div>
+            >
+              <Text
+                Tag="p"
+                text={
+                  sendChangePassForm
+                    ? t('Ваш пароль успішно змінено')
+                    : t('Дані успішно змінено')
+                }
+                size="sm"
+                className="leading-[18px] text-white"
+              />
+              <div className="absolute bottom-0 right-[10px] transform -translate-x-0 translate-y-[8px] border-x-8 border-t-8 border-transparent border-t-dark-grey" />
+            </div>
 
-          <button
-            className="outfit bg-main w-full py-[15px] rounded-lg font-normal leading-[22px] text-[16px] text-main-dark duration-300 hover:bg-secondary-yellow active:bg-main disabled:opacity-40"
-            type="button"
-            disabled={!isValid}
-            onClick={() => {
-              handleSubmit(onHandlerSubmit)();
-            }}
-          >
-            {t('Зберегти')}
-          </button>
-        </HStack>
-      </VStack>
-
-      {showMobileModal && (
-        <ModalWindow
-          onCloseFunc={() => {
-            setShowMobileModal(!showMobileModal);
-          }}
-          className="min-w-[233px] bg-selected-dark px-3 py-4 rounded-2xl animate-open-forms-modal"
-        >
-          <VStack align="center" justify="end">
-            <Icon
-              clickable
+            <button
+              className="outfit bg-main w-full py-[15px] rounded-lg font-normal leading-[22px] text-[16px] text-main-dark duration-300 hover:bg-secondary-yellow active:bg-main disabled:opacity-40"
+              type="button"
+              disabled={!isValid}
               onClick={() => {
-                setShowMobileModal(!showMobileModal);
+                handleSubmit(onHandlerSubmit)();
               }}
-              Svg={cancel}
-              width={24}
-              height={24}
-              className="fill-main-white"
-            />
-          </VStack>
-          <HStack align="center" className="mt-5 mx-3.5 mb-8 gap-3">
-            <Text Tag="p" text="Вітаємо!" size="md" className="text-main-white" />
-            <Text
-              Tag="p"
-              text={
-                sendChangePassForm
-                  ? t('Ваш пароль успішно змінено')
-                  : t('Дані успішно змінено')
-              }
-              size="sm"
-              align="center"
-              className="text-main-white"
-            />
+            >
+              {t('Зберегти')}
+            </button>
           </HStack>
-        </ModalWindow>
-      )}
-    </div>
+        </VStack>
+
+        {showMobileModal && (
+          <ModalWindow
+            onCloseFunc={() => {
+              setShowMobileModal(!showMobileModal);
+            }}
+            className="min-w-[233px] bg-selected-dark px-3 py-4 rounded-2xl animate-open-forms-modal"
+          >
+            <VStack align="center" justify="end">
+              <Icon
+                clickable
+                onClick={() => {
+                  setShowMobileModal(!showMobileModal);
+                }}
+                Svg={cancel}
+                width={24}
+                height={24}
+                className="fill-main-white"
+              />
+            </VStack>
+            <HStack align="center" className="mt-5 mx-3.5 mb-8 gap-3">
+              <Text Tag="p" text="Вітаємо!" size="md" className="text-main-white" />
+              <Text
+                Tag="p"
+                text={
+                  sendChangePassForm
+                    ? t('Ваш пароль успішно змінено')
+                    : t('Дані успішно змінено')
+                }
+                size="sm"
+                align="center"
+                className="text-main-white"
+              />
+            </HStack>
+          </ModalWindow>
+        )}
+      </div>
+    </HStack>
   );
 };
 
