@@ -407,7 +407,7 @@ const PrivateBlockSellerForm: FC = () => {
       <HStack className="w-full">
         <Text
           Tag="p"
-          text={t('Дані компанії')}
+          text={t('Опис компанії')}
           size="xl"
           className="leading-[26px] text-selected-dark mb-5"
         />
