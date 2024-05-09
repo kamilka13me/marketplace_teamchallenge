@@ -47,7 +47,7 @@ const GeneralBlockSellerForm: FC = () => {
     <HStack gap="5" className="w-full">
       <Text
         Tag="p"
-        text={t('Інші методи зв’язку')}
+        text={t("Контакти для зв'язку з клієнтами")}
         size="xl"
         className="leading-[26px] text-selected-dark"
       />
