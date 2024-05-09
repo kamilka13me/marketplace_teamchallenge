@@ -40,38 +40,36 @@ const ProductSubscription = () => {
     <div>
       <div className="w-full lg:bg-dark-grey lg:rounded-2xl lg:px-[40px] py-[24px] lg:py-5 lg:overflow-hidden relative z-10 ">
         <div className="hidden lg:block w-[370px] h-[370px] bg-main opacity-40 blur-[100px] rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -z-20" />
-        <h1 className="text-white text-[24px] flex justify-center mb-[34px] font-semibold">
+        <h1 className="text-white text-[24px] flex justify-center mb-[34px] font-semibold flex-wrap">
           Виберіть тарифний план підписки, який підходить саме вам
         </h1>
-        <ul className="flex gap-[40px] mb-[40px]">
+        <ul className="flex flex-col flex-wrap gap-[40px] mb-[40px] md:flex-row">
           {plans.map((plan) => (
             <li
               key={plan.name}
               className={`${activePlan === plan.name ? 'bg-gradient-to-r from-[#F35735] to-secondary-yellow p-0.5 rounded-2xl' : ''}`}
             >
-              <div
-                className={`w-[274px] h-[406px] bg-selected-dark rounded-2xl p-[24px] relative `}
-              >
+              <div className="bg-selected-dark rounded-2xl p-[24px] relative">
                 <img
                   src={Wave}
                   alt="Хвиля"
-                  className="absolute left-[0px] top-[0px] rounded-2xl"
+                  className="md:absolute md:left-[0px] md:top-[0px] md:rounded-2xl sm:hidden"
                 />
                 <p className="text-white text-[24px] relative">{plan.price}</p>
-                <h2 className="text-white mb-[127px] text-[32px] relative">
+                <h2 className="text-white mb-[44px] md:mb-[127px] text-[32px] relative">
                   {plan.name}
                 </h2>
                 <div className="flex gap-[10px] mb-[10px]">
                   <Icon Svg={Subs} className="bg-selected-dark stroke-white" />
                   <p className="text-white ">100 оголошень</p>
                 </div>
-                <div className="flex gap-[10px] mb-[52px]">
+                <div className="flex gap-[10px] mb-[40px] md:mb-[52px]">
                   <Icon Svg={Subs} className="stroke-secondary-yellow" />
                   <p className="text-white">Термін дії місяць</p>
                 </div>
                 <Button
                   variant={activePlan === plan.name ? 'gray' : 'primary'}
-                  className="w-[226px] text-[18px] rounded-lg !text-main-dark"
+                  className="min-w-[272px] w-full md:max-w-[226px] md:min-w-[190px] text-[18px] rounded-lg !text-main-dark"
                   onClick={() => handlePlanSelection(plan.name)}
                   disabled={activePlan === plan.name}
                 >
