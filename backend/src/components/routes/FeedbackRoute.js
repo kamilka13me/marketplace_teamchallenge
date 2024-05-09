@@ -1,6 +1,7 @@
 import express from 'express';
 
 import idToReq from '../../middlewares/chechUserId.js';
+import { appendFileNamesToBody, upload } from '../../middlewares/uploadProducts.js';
 import FeedbackController from '../controllers/FeedbackController.js';
 
 const FeedbackRoute = express.Router();
@@ -200,7 +201,7 @@ FeedbackRoute.get('/product', FeedbackController.getProductRating);
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
@@ -276,7 +277,13 @@ FeedbackRoute.get('/product', FeedbackController.getProductRating);
  *           description: The creation date of the comment
  */
 
-FeedbackRoute.post('/comments', idToReq(), FeedbackController.createComment);
+FeedbackRoute.post(
+  '/comments',
+  upload.array('images'),
+  appendFileNamesToBody,
+  idToReq(),
+  FeedbackController.createComment,
+);
 
 /**
  * @swagger
