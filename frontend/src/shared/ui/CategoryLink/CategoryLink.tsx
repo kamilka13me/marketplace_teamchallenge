@@ -25,7 +25,7 @@ const CategoryLink: FC<Props> = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${process.env.BASE_URL}${category.image}`);
+        const response = await axios.get(`${category.image}`);
 
         setSvg(response.data);
       } catch (error) {

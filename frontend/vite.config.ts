@@ -10,7 +10,9 @@ export default defineConfig(({ command, mode }) => {
     define: {
       'process.env.BASE_URL': JSON.stringify(env.BASE_URL),
       'process.env.RECAPTCHA_API_SITE_KEY': JSON.stringify(env.RECAPTCHA_API_SITE_KEY),
-      'process.env.RECAPTCHA_API_SECRET_KEY': JSON.stringify(env.RECAPTCHA_API_SECRET_KEY),
+      'process.env.RECAPTCHA_API_SECRET_KEY': JSON.stringify(
+        env.RECAPTCHA_API_SECRET_KEY,
+      ),
     },
     plugins: [react(), svgr({ include: '**/*.svg?react' }), basicSsl()],
     resolve: {
@@ -20,6 +22,12 @@ export default defineConfig(({ command, mode }) => {
       port: 3000,
       host: '0.0.0.0',
       proxy: {
+        '/static': {
+          target: `${env.STATIC_URL}/static`,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/static/, ''),
+          secure: false,
+        },
         '/api': {
           target: `${env.BASE_URL}/api`,
           changeOrigin: true,

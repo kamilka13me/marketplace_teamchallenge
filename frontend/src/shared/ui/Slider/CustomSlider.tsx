@@ -34,7 +34,7 @@ const CustomSlider: FC<Props> = (props) => {
         // eslint-disable-next-line react/no-array-index-key
         <div key={i}>
           <img
-            src={`${process.env.BASE_URL}${item.image}`}
+            src={`${item.image}`}
             alt={item._id}
             className="w-full h-full rounded-2xl object-cover"
           />

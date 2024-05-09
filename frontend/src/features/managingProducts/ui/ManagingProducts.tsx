@@ -319,7 +319,7 @@ const ManagingProducts: FC = () => {
                           <Image
                             width="68px"
                             height="68px"
-                            src={`${process.env.BASE_URL}${product?.images[0]}`}
+                            src={`${product?.images[0]}`}
                             alt="product-card"
                           />
                         </div>
@@ -584,7 +584,7 @@ const ManagingProducts: FC = () => {
                   <Image
                     width="68px"
                     height="68px"
-                    src={`${process.env.BASE_URL}${product?.images[0]}`}
+                    src={`${product?.images[0]}`}
                     alt="product-card"
                   />
                 </div>
