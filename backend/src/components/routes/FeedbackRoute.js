@@ -1,6 +1,7 @@
 import express from 'express';
 
 import idToReq from '../../middlewares/chechUserId.js';
+import { appendFileNamesToBody, upload } from '../../middlewares/uploadProducts.js';
 import FeedbackController from '../controllers/FeedbackController.js';
 
 const FeedbackRoute = express.Router();
@@ -116,7 +117,7 @@ FeedbackRoute.post('/', idToReq(), FeedbackController.createRating);
  *         description: Server error
  */
 
-FeedbackRoute.get('/seller', idToReq(), FeedbackController.getSellerRating);
+FeedbackRoute.get('/seller', FeedbackController.getSellerRating);
 
 /**
  * @swagger
@@ -186,7 +187,7 @@ FeedbackRoute.get('/seller', idToReq(), FeedbackController.getSellerRating);
  *         description: Server error
  */
 
-FeedbackRoute.get('/product', idToReq(), FeedbackController.getProductRating);
+FeedbackRoute.get('/product', FeedbackController.getProductRating);
 
 /**
  * @swagger
@@ -200,7 +201,7 @@ FeedbackRoute.get('/product', idToReq(), FeedbackController.getProductRating);
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
@@ -276,7 +277,13 @@ FeedbackRoute.get('/product', idToReq(), FeedbackController.getProductRating);
  *           description: The creation date of the comment
  */
 
-FeedbackRoute.post('/comments', idToReq(), FeedbackController.createComment);
+FeedbackRoute.post(
+  '/comments',
+  upload.array('images'),
+  appendFileNamesToBody,
+  idToReq(),
+  FeedbackController.createComment,
+);
 
 /**
  * @swagger
@@ -288,6 +295,10 @@ FeedbackRoute.post('/comments', idToReq(), FeedbackController.createComment);
  *     security:
  *        - bearerAuth: []
  *     parameters:
+ *       - in: query
+ *         name: sellerId
+ *         schema:
+ *           type: string
  *       - in: query
  *         name: startDate
  *         schema:
@@ -337,7 +348,7 @@ FeedbackRoute.post('/comments', idToReq(), FeedbackController.createComment);
  *         description: Server error.
  */
 
-FeedbackRoute.get('/comments', idToReq(), FeedbackController.getComments);
+FeedbackRoute.get('/comments', FeedbackController.getComments);
 
 /**
  * @swagger

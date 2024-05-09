@@ -108,7 +108,7 @@ const ProductCard: FC<Props> = (props) => {
         <Link to={getRouteProduct(`${_id}`)}>
           <Image
             loadingFallback={<Skeleton width={281} height={252} />}
-            src={`${process.env.BASE_URL}${images[0]}`}
+            src={`${images[0]}`}
             alt="product-card-img"
             className={`${dashboard ? 'min-h-[118px] !min-w-[132px]' : 'h-[140px] !min-w-[156px]'} 
             lg:h-[252px] !max-w-[281px] w-full`}

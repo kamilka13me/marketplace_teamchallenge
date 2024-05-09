@@ -8,6 +8,49 @@ import userController from '../controllers/userController.js';
 const router = express.Router();
 
 /**
+ * @swagger
+ * /users/send-confirm-mail:
+ *   get:
+ *     summary: Send a confirmation email to the logged-in user.
+ *     description: This endpoint sends a confirmation email to the email address associated with the currently authenticated user.
+ *     tags: [User]
+ *     security:
+ *        - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Confirmation email sent successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "mail send successfully."
+ *       401:
+ *         description: Unauthorized. No user is currently logged in or token is invalid.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Unauthorized"
+ *       500:
+ *         description: An unexpected error occurred.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Unexpected error"
+ */
+router.get('/send-confirm-mail', idToReq(), userController.sendConfirmMail);
+
+/**
  * @openapi
  * /users/:
  *   post:
@@ -56,7 +99,7 @@ router.post('/', validateUser, userController.createUser);
  *     description: "Retrieve details of a user by their Id. \n\n premission: \"getUser\""
  *     tags: [User]
  *     security:
- *       - JWTAuth: []
+ *        - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id

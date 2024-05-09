@@ -219,7 +219,7 @@ const sellerController = {
 
       const seller = await Seller.findOne({ sellerId });
 
-      res.status(200).json([{ contacts: seller.communication }]);
+      res.status(200).json([{ contacts: seller.generalCommunication }]);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);

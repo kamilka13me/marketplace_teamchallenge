@@ -4,6 +4,10 @@
       "source": "/api/:path*",
       "destination": "https://alicesocial.pp.ua:3001/api/:path*"
     },
+    {
+      "source": "/static/:path*",
+      "destination": "https://alicesocial.pp.ua:3001/static/:path*"
+    },
     { "source": "/(.*)", "destination": "/" }
   ]
 }

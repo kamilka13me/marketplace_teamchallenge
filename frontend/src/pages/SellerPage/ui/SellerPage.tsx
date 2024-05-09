@@ -64,7 +64,7 @@ const tabs: ITab[] = [
 const components: FC[] = [
   SellerDashboard,
   ManagingProducts,
-  ManagingProducts,
+  ProductSubscription,
   ManagingFeedbacks,
   SupportCentre,
 ]; // Сюди передати просто інші компоненти для відображення в мобільній версії, послідовність важлива

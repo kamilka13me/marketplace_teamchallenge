@@ -21,54 +21,55 @@ export const data = {
 
 const CallsClickChart: FC = () => {
   return (
-    <div>
-      <HStack gap="6" className="pt-6 px-6 bg-dark-grey rounded-xl min-h-[610px]">
-        <Text
-          Tag="h3"
-          text="Натискання для виклику"
-          size="xl"
-          color="white"
-          align="center"
-          className="w-full"
+    <HStack
+      gap="6"
+      align="center"
+      className="pt-6 px-6 bg-dark-grey rounded-xl min-h-[528px] lg:min-h-[610px] lg:items-start w-full"
+    >
+      <Text
+        Tag="h3"
+        text="Натискання для виклику"
+        size="xl"
+        color="white"
+        align="center"
+        className="w-full"
+      />
+      <div className="w-[280px] h-[280px] border-grey border-[1px] rounded-xl relative">
+        <Doughnut
+          data={data}
+          options={{
+            responsive: true,
+            cutout: 100,
+          }}
         />
-        <div className="w-[280px] h-[280px] border-grey border-[1px] rounded-xl relative">
-          <Doughnut
-            data={data}
-            options={{
-              responsive: true,
-              cutout: 100,
-            }}
-          />
-          <HStack
-            gap="2"
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-          >
-            <Text Tag="p" text="750" size="2xl" color="white" />
-            <Text Tag="p" text="Січень" size="xs" color="gray" />
-          </HStack>
-        </div>
-        <HStack gap="6">
-          {Array(4)
-            .fill(null)
-            .map((item) => {
-              return (
-                // TODO: fix i
-                <VStack align="center" className="gap-[6px]" key={item}>
-                  <div className="bg-[#8A3FFC] w-2 h-2 rounded-full" />
-                  <Text
-                    Tag="span"
-                    text="300"
-                    size="lg"
-                    color="white"
-                    className="leading-[0px]"
-                  />
-                  <Text Tag="span" text="Товари Apple" size="sm" color="white" />
-                </VStack>
-              );
-            })}
+        <HStack
+          gap="2"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+        >
+          <Text Tag="p" text="750" size="2xl" color="white" />
+          <Text Tag="p" text="Січень" size="xs" color="gray" />
         </HStack>
+      </div>
+      <HStack gap="6" align="center" className="w-full lg:items-start">
+        {Array(4)
+          .fill(null)
+          .map((item) => {
+            return (
+              <VStack align="center" className="gap-[6px]" key={item}>
+                <div className="bg-[#8A3FFC] w-2 h-2 rounded-full" />
+                <Text
+                  Tag="span"
+                  text="300"
+                  size="lg"
+                  color="white"
+                  className="leading-[0px]"
+                />
+                <Text Tag="span" text="Товари Apple" size="sm" color="white" />
+              </VStack>
+            );
+          })}
       </HStack>
-    </div>
+    </HStack>
   );
 };
 

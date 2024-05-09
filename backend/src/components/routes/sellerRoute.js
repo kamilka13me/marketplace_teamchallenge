@@ -117,7 +117,7 @@ const sellerRoute = express.Router();
  *         description: Internal server error.
  */
 
-sellerRoute.post('/', idToReq(), sellerController.createSeller);
+sellerRoute.post('/', sellerController.createSeller);
 /**
  * @swagger
  * /seller:
