@@ -345,6 +345,25 @@ const userController = {
       }
     }
   },
+
+  sendConfirmMail: async (req, res) => {
+    try {
+      const { userId } = req.body;
+
+      const user = await User.findById(userId);
+      const confirmToken = generateConfirmToken(user._id);
+
+      sendMail(user.email, 'register', confirmToken);
+
+      return res.status(200).json({
+        message: 'mail send successfully.',
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+      res.status(500).json({ message: 'Unexpected error' });
+    }
+  },
 };
 
 export default userController;
