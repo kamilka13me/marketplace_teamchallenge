@@ -4,6 +4,12 @@ import { useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 
 import { Product } from '@/enteties/Product';
+import { calcAverage } from '@/features/managingFeedbacks/helpers/managingFeedbacksHelpers';
+import {
+  ApiFeedbackResponse,
+  ApiProductResponse,
+  RatingResponse,
+} from '@/pages/ProductPage/model/types';
 import ProductDescription from '@/pages/ProductPage/ui/components/ProductDescription';
 import ProductFeedbacks from '@/pages/ProductPage/ui/components/ProductFeedbacks';
 import ProductFeedbacksTab from '@/pages/ProductPage/ui/components/ProductFeedbacksTab';
@@ -19,30 +25,25 @@ import { HStack, VStack } from '@/shared/ui/Stack';
 
 interface Props {}
 
-interface ApiResponse {
-  product: Product;
-}
-
 const ProductPage: FC<Props> = () => {
   const { id } = useParams<{ id: string }>();
 
   const [isProductFeedbacksOpen, setIsProductFeedbacksOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const { data, isLoading } = useAxios<ApiResponse>(`${ApiRoutes.PRODUCTS}/${id}`);
+  const { data, isLoading } = useAxios<ApiProductResponse>(`${ApiRoutes.PRODUCTS}/${id}`);
+
+  const { data: productRating, isLoading: productRatingIsLoading } =
+    useAxios<RatingResponse>(`${ApiRoutes.PRODUCT_RATINGS}?productId=${id}`);
+
+  const { data: productFeedbacks, isLoading: productFeedbacksIsLoading } =
+    useAxios<ApiFeedbackResponse>(`${ApiRoutes.PRODUCT_COMMENTS}?productId=${id}`);
 
   useEffect(() => {
-    // Update the current slide index whenever data changes
     if (data && data.product) {
-      setCurrentSlide(0); // Reset to the first slide
+      setCurrentSlide(0);
     }
   }, [data]);
-
-  // Function to handle change in the small slider
-  // const handleSmallSliderChange = (index: number) => {
-  //   setCurrentSlide(index); // Update current slide state
-  //   bigSliderRef.current?.slickGoTo(index); // Go to the selected slide in the big slider
-  // };
 
   const settingsSmall = {
     dots: false,
@@ -87,7 +88,11 @@ const ProductPage: FC<Props> = () => {
       />
       <Container>
         {isProductFeedbacksOpen ? (
-          <ProductFeedbacksTab product={data?.product || ({} as Product)} />
+          <ProductFeedbacksTab
+            rating={productRating ? calcAverage(productRating.current) : 0}
+            feedbackLength={productFeedbacks?.totalComments || 0}
+            product={data?.product || ({} as Product)}
+          />
         ) : (
           <>
             <VStack gap="5">
@@ -120,17 +125,28 @@ const ProductPage: FC<Props> = () => {
 
               {/* DESCRIPTION */}
               <HStack gap="5">
-                <ProductDescription product={data?.product || ({} as Product)} />
+                {!productRatingIsLoading && !productFeedbacksIsLoading && (
+                  <ProductDescription
+                    rating={productRating ? calcAverage(productRating.current) : 0}
+                    feedbackLength={productFeedbacks?.totalComments || 0}
+                    product={data?.product || ({} as Product)}
+                  />
+                )}
+
                 <SellerContacts sellerId={data?.product.sellerId || ''} />
               </HStack>
             </VStack>
 
             <VStack gap="5" className="mt-5">
               <ProductSpecification product={data?.product || ({} as Product)} />
-              <ProductFeedbacks
-                product={data?.product || ({} as Product)}
-                openAllFeedbacksHandler={openProductFeedbacksHandler}
-              />
+              {!productFeedbacksIsLoading && !productRatingIsLoading && (
+                <ProductFeedbacks
+                  product={data?.product || ({} as Product)}
+                  feedbacks={productFeedbacks as ApiFeedbackResponse}
+                  rating={productRating as RatingResponse}
+                  openAllFeedbacksHandler={openProductFeedbacksHandler}
+                />
+              )}
             </VStack>
           </>
         )}

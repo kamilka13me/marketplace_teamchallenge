@@ -1,23 +1,56 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 import { countDiscount, Product } from '@/enteties/Product';
 import { quantityCalc } from '@/enteties/Product/ui/ProductCard/ProductCard';
 import { Rating } from '@/enteties/Rating';
+import { getUserAuthData, getUserWishlist, getWishlist } from '@/enteties/User';
+import { $api } from '@/shared/api/api';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
+import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
 interface Props {
   product: Product;
+  rating: number;
+  feedbackLength: number;
   size?: 'medium' | 'big';
 }
 
 const ProductDescription: FC<Props> = (props) => {
-  const { product, size = 'big' } = props;
+  const { product, rating, size = 'big', feedbackLength } = props;
+
+  const [buttonIsDisabled, setButtonIsDisabled] = useState(false);
+
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(getUserAuthData);
+
+  const { wishlist } = useAppSelector(getWishlist);
+
+  const handleWishClick = async () => {
+    try {
+      if (user) {
+        setButtonIsDisabled(true);
+
+        await $api.put(`${ApiRoutes.WISHLIST}/${product._id}`);
+
+        dispatch(getUserWishlist({ _id: user._id }));
+      }
+    } catch (error) {
+      // eslint-disable-next-line
+      console.error('Error in WishHeartClick:', error);
+    } finally {
+      setButtonIsDisabled(false);
+    }
+  };
 
   return (
     <HStack className="bg-dark-grey px-4 py-8 rounded-2xl max-w-[646px] h-[514px] w-full">
-      <div className="h-[80px] w-full overflow-hidden">
+      <div
+        className={`h-[80px] ${size === 'big' ? '!h-[80px]' : '!h-[52px]'} w-full overflow-hidden`}
+      >
         <Text
           Tag="h3"
           text={product?.name || ''}
@@ -28,9 +61,16 @@ const ProductDescription: FC<Props> = (props) => {
         />
       </div>
 
-      <div className="mt-2">
-        <Rating rating={4} />
-      </div>
+      <VStack gap="4" align="center" className="mt-2 h-5">
+        <Rating rating={rating} />
+        <Text
+          Tag="p"
+          text={`${feedbackLength || 0} відгуків`}
+          size="xs"
+          color="gray-light"
+          className="mt-2"
+        />
+      </VStack>
 
       {product?.condition && (
         <div className="bg-green px-2 rounded-lg mt-3 leading-[0px] py-[2px]">
@@ -44,14 +84,7 @@ const ProductDescription: FC<Props> = (props) => {
       </VStack>
 
       <div>
-        <Text
-          Tag="p"
-          text={
-            'Екран ноутбука 13.3" Retina (2560x1600) WQXGA глянсовий / Apple M1 / RAM 8 ГБ SSD 256 ГБ / Apple M1 Graphics / камера HD / Wi-Fi / Bluetooth / USB-C / без дисковода / macOS Big Sur / 1.29 кг / сірий'
-          }
-          size="md"
-          color="gray-light"
-        />
+        <Text Tag="p" text={product?.description} size="md" color="gray-light" />
       </div>
 
       <div className="mt-6">
@@ -73,7 +106,7 @@ const ProductDescription: FC<Props> = (props) => {
             className="mt-1"
           />
         </VStack>
-        {product?.discount && (
+        {product?.discount ? (
           <VStack gap="1" align="center" className="-mt-1">
             <Text
               size="sm"
@@ -85,6 +118,8 @@ const ProductDescription: FC<Props> = (props) => {
             />
             <Text font="ibm-plex-sans" size="sm" Tag="span" text="грн" color="gray" />
           </VStack>
+        ) : (
+          <div className="h-[30px]" />
         )}
         <Text
           Tag="p"
@@ -96,9 +131,11 @@ const ProductDescription: FC<Props> = (props) => {
       </div>
       <Button
         variant="primary"
-        className={` h-[52px] mt-6 ${size === 'medium' ? 'w-full' : 'w-[319px]'}`}
+        disabled={buttonIsDisabled}
+        onClick={() => handleWishClick()}
+        className={`${wishlist?.includes(product?._id) ? '!bg-disabled' : ''} h-[52px] mt-6 ${size === 'medium' ? 'w-full' : 'w-[319px]'}`}
       >
-        Додати в обране
+        {wishlist?.includes(product?._id) ? 'Прибрати з обраного' : 'Додати в обране'}
       </Button>
     </HStack>
   );

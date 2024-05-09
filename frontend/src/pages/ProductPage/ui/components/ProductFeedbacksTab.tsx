@@ -7,31 +7,14 @@ import { Button } from '@/shared/ui/Button';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
-// const comment: IComment = {
-//   _id: '6624ea33fa02a0f7fdc0c488',
-//   authorId: '660161581233bf9ce6cb00b8',
-//   sellerId: '660161581233bf9ce6cb00b8',
-//   productId: null,
-//   ratingId: {
-//     authorId: '660161581233bf9ce6cb00b8',
-//     sellerId: '660161581233bf9ce6cb00b8',
-//     productId: '661fa56efd0eda1f2b1b2ee2',
-//     rating: 3,
-//     created_at: '2024-04-21T10:28:03.818Z',
-//   },
-//   parentId: null,
-//   comment:
-//     'Я дуже задоволена своїм новим ноутбуком Apple MacBook Air M1 2022. Його потужний процесор дозволяє швидко виконувати завдання, а роздільна здатність екрану забезпечує чудову якість зображення',
-//   images: [],
-//   created_at: '2024-04-21T10:28:03.860Z',
-// };
-
 interface Props {
   product: Product;
+  feedbackLength: number;
+  rating: number;
 }
 
 const ProductFeedbacksTab: FC<Props> = (props) => {
-  const { product } = props;
+  const { product, rating, feedbackLength } = props;
 
   const [isCommentOpen, setIsCommentIsOpen] = useState(false);
   const [filledStars, setFilledStars] = useState(0);
@@ -54,7 +37,12 @@ const ProductFeedbacksTab: FC<Props> = (props) => {
               className="!w-[380px] !h-[315px] !object-cover"
             />
           </HStack>
-          <ProductDescription size="medium" product={product} />
+          <ProductDescription
+            feedbackLength={feedbackLength}
+            rating={rating}
+            size="medium"
+            product={product}
+          />
         </HStack>
         <HStack className="w-full rounded-2xl bg-dark-grey p-4">
           <VStack justify="between" align="center" className="w-full">

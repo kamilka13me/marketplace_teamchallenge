@@ -3,7 +3,11 @@ import { FC, useState } from 'react';
 import { Comment, IComment } from '@/enteties/Comment';
 import { Product } from '@/enteties/Product';
 import { Rating } from '@/enteties/Rating';
-import { calcRatingInPercentage } from '@/features/managingFeedbacks/helpers/managingFeedbacksHelpers';
+import {
+  calcAverage,
+  calcRatingInPercentage,
+} from '@/features/managingFeedbacks/helpers/managingFeedbacksHelpers';
+import { ApiFeedbackResponse, RatingResponse } from '@/pages/ProductPage/model/types';
 import ProductComment from '@/pages/ProductPage/ui/components/ProductComment';
 import star from '@/shared/assets/icons/star-2.svg?react';
 import { Button } from '@/shared/ui/Button';
@@ -11,46 +15,20 @@ import { Icon } from '@/shared/ui/Icon';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
-const current = {
-  '1': 0,
-  '2': 1,
-  '3': 3,
-  '4': 7,
-  '5': 10,
-};
-
-const comment: IComment = {
-  _id: '6624ea33fa02a0f7fdc0c488',
-  authorId: '660161581233bf9ce6cb00b8',
-  sellerId: '660161581233bf9ce6cb00b8',
-  productId: null,
-  ratingId: {
-    authorId: '660161581233bf9ce6cb00b8',
-    sellerId: '660161581233bf9ce6cb00b8',
-    productId: '661fa56efd0eda1f2b1b2ee2',
-    rating: 3,
-    created_at: '2024-04-21T10:28:03.818Z',
-  },
-  parentId: null,
-  comment:
-    'Я дуже задоволена своїм новим ноутбуком Apple MacBook Air M1 2022. Його потужний процесор дозволяє швидко виконувати завдання, а роздільна здатність екрану забезпечує чудову якість зображення',
-  images: [],
-  created_at: '2024-04-21T10:28:03.860Z',
-};
-
 interface Props {
   product: Product;
+  feedbacks: ApiFeedbackResponse;
+  rating: RatingResponse;
   openAllFeedbacksHandler: () => void;
 }
 
 const ProductFeedbacks: FC<Props> = (props) => {
-  const { openAllFeedbacksHandler, product } = props;
+  const { openAllFeedbacksHandler, product, feedbacks, rating } = props;
 
   const [isCommentOpen, setIsCommentIsOpen] = useState(false);
-
   const [filledStars, setFilledStars] = useState(0);
 
-  const currentValues = calcRatingInPercentage(current);
+  const currentValues = calcRatingInPercentage(rating?.current);
   const totalValue = Object.values(currentValues).reduce((acc, curr) => acc + curr, 0);
 
   const handleStarClick = (index: number) => {
@@ -82,10 +60,24 @@ const ProductFeedbacks: FC<Props> = (props) => {
 
       <VStack gap="8" className="mb-4">
         <HStack>
-          <Text Tag="p" text="4.0" size="4xl" color="white" />
-          <Rating rating={4} />
-          <Text Tag="p" text="16 відгуків" size="md" color="gray-light" />
+          <Text
+            Tag="p"
+            text={calcAverage(rating?.current).toFixed(1)}
+            size="4xl"
+            color="white"
+          />
+
+          <Rating rating={calcAverage(rating?.current)} />
+
+          <Text
+            Tag="p"
+            text={`${feedbacks.totalComments} відгуків`}
+            size="md"
+            color="gray-light"
+            className="mt-1"
+          />
         </HStack>
+
         <HStack>
           {Object.entries(currentValues)
             ?.reverse()
@@ -104,21 +96,37 @@ const ProductFeedbacks: FC<Props> = (props) => {
                     className="h-full bg-green rounded-lg"
                   />
                 </div>
-                <Text Tag="p" text={[key]?.toString() ?? ''} size="md" color="white" />
+                <Text
+                  Tag="p"
+                  text={rating.current?.[key]?.toString() ?? ''}
+                  size="md"
+                  color="white"
+                />
               </VStack>
             ))}
         </HStack>
       </VStack>
 
-      <Button
-        variant="clear"
-        className="self-end text-light-grey mb-4"
-        onClick={openAllFeedbacksHandler}
-      >
-        Показати всі відгуки
-      </Button>
-
-      <Comment alignItems="horizontal" comment={comment} />
+      {feedbacks.totalComments > 1 ? (
+        <>
+          <Button
+            variant="clear"
+            className="self-end text-light-grey mb-4"
+            onClick={openAllFeedbacksHandler}
+          >
+            Показати всі відгуки
+          </Button>
+          <Comment
+            alignItems="horizontal"
+            comment={
+              feedbacks.comments ? (feedbacks.comments[0] as IComment) : ({} as IComment)
+            }
+          />
+        </>
+      ) : (
+        // eslint-disable-next-line react/jsx-no-useless-fragment
+        <></>
+      )}
     </HStack>
   );
 };

@@ -21,7 +21,7 @@ const Comment: FC<Props> = (props) => {
   const { comment, alignItems = 'vertical' } = props;
 
   const { data, isLoading } = useAxios<ApiResponse>(
-    `${ApiRoutes.USER}/${comment.authorId}`,
+    `${ApiRoutes.USER}/${comment?.authorId || ''}`,
   );
 
   return (
@@ -69,7 +69,7 @@ const Comment: FC<Props> = (props) => {
           </div>
         </VStack>
         <div>
-          <Text Tag="p" text={comment?.created_at.slice(0, 10)} size="sm" color="gray" />
+          <Text Tag="p" text={comment?.created_at?.slice(0, 10)} size="sm" color="gray" />
           <Text
             Tag="p"
             text={comment?.comment}

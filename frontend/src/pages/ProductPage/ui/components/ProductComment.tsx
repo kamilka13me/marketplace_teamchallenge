@@ -1,9 +1,11 @@
 import React, { ChangeEvent, FC, useState } from 'react';
 
 import { Product } from '@/enteties/Product';
+import { getUserAuthData } from '@/enteties/User';
 import { $api } from '@/shared/api/api';
 import star from '@/shared/assets/icons/star-2.svg?react';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
+import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { HStack, VStack } from '@/shared/ui/Stack';
@@ -19,9 +21,10 @@ interface Props {
 const ProductComment: FC<Props> = (props) => {
   const { stars, setStars, product } = props;
 
-  const [commentMessage] = useState('');
+  const [commentMessage, setCommentMessage] = useState('');
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const user = useAppSelector(getUserAuthData);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -66,9 +69,10 @@ const ProductComment: FC<Props> = (props) => {
   const sendFeedbackHandler = () => {
     const formData = new FormData();
 
+    if (user) formData.append('authorId', user._id);
     formData.append('sellerId', product.sellerId);
     formData.append('productId', product._id);
-    formData.append('rating', (stars + 1).toString());
+    formData.append('ratingId', (stars + 1).toString());
     formData.append('comment', commentMessage);
     formData.append('parentId', '');
 
@@ -106,7 +110,8 @@ const ProductComment: FC<Props> = (props) => {
           name="comment"
           variant="clear"
           placeholder="Напишіть коментар"
-          className="resize-y !h-[126px] w-full bg-transparent border-[2px] border-disabled p-2"
+          onChange={(e) => setCommentMessage(e.currentTarget.value)}
+          className="resize-y !h-[126px] w-full bg-transparent border-[2px] border-disabled p-2 !text-disabled focus:outline-none"
         />
 
         <VStack justify="end" className="w-full">

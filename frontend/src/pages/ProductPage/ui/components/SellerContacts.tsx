@@ -2,6 +2,8 @@ import { FC, useEffect, useState } from 'react';
 
 import { Rating } from '@/enteties/Rating';
 import { getUserAuthData, User } from '@/enteties/User';
+import { calcAverage } from '@/features/managingFeedbacks/helpers/managingFeedbacksHelpers';
+import { RatingResponse } from '@/pages/ProductPage/model/types';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import useAxios from '@/shared/lib/hooks/useAxios';
@@ -13,20 +15,6 @@ interface ApiResponse {
   user: User;
 }
 
-interface ApiCommentsResponse {
-  comments: Comment[];
-  totalComments: number;
-}
-
-// interface NumbersMap {
-//   [key: string]: number;
-// }
-
-// interface ApiRatingsResponse {
-//   previous: NumbersMap;
-//   current: NumbersMap;
-// }
-
 interface Props {
   sellerId: string;
 }
@@ -36,13 +24,13 @@ const SellerContacts: FC<Props> = ({ sellerId }) => {
 
   const { data, isLoading } = useAxios<ApiResponse>(`${ApiRoutes.USER}/${sellerId}`);
 
-  const { data: feedbacks, isLoading: loadingFeedbacks } = useAxios<ApiCommentsResponse>(
-    `${ApiRoutes.SELLER_FEEDBACKS}?sellerId=${sellerId}`,
-  );
-
-  // const { data: ratings, isLoading: loadingRatings } = useAxios<ApiRatingsResponse>(
-  //   `${ApiRoutes.RATINGS}?sellerId=${sellerId}`,
+  // const { data: feedbacks, isLoading: loadingFeedbacks } = useAxios<ApiCommentsResponse>(
+  //   `${ApiRoutes.SELLER_FEEDBACKS}`,
   // );
+
+  const { data: ratings, isLoading: loadingRatings } = useAxios<RatingResponse>(
+    `${ApiRoutes.RATINGS}?sellerId=${sellerId}`,
+  );
 
   const [sellerContacts, setSellerContacts] = useState('');
   const [isContactsOpen, setIsContactsOpen] = useState(false);
@@ -92,17 +80,19 @@ const SellerContacts: FC<Props> = ({ sellerId }) => {
           )}
         </VStack>
         <VStack gap="5" align="center" className="mt-1">
-          <Rating rating={5} />
-
-          {!loadingFeedbacks && (
-            <Text
-              Tag="span"
-              text={`${feedbacks?.totalComments || 0} відгуків`}
-              size="xs"
-              color="gray-light"
-              className="mt-2"
-            />
+          {!loadingRatings && (
+            <Rating rating={ratings ? calcAverage(ratings.current) : 0} />
           )}
+
+          {/* {!loadingFeedbacks && ( */}
+          {/*  <Text */}
+          {/*    Tag="span" */}
+          {/*    text={`${feedbacks?.totalComments || 0} відгуків`} */}
+          {/*    size="xs" */}
+          {/*    color="gray-light" */}
+          {/*    className="mt-2" */}
+          {/*  /> */}
+          {/* )} */}
         </VStack>
       </div>
       {isContactsOpen ? (
