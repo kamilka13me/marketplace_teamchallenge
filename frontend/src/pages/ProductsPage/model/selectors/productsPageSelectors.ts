@@ -10,8 +10,6 @@ export const getProductsPageName = (state: StateSchema) => state.products.name;
 
 export const getProductsPageSortBy = (state: StateSchema) => state.products.sortBy;
 
-export const getProductsPageInited = (state: StateSchema) => state.products._inited;
-
 export const getProductsPageDiscount = (state: StateSchema) => state.products.discount;
 
 export const getProductsPageCategory = (state: StateSchema) => state.products.category;

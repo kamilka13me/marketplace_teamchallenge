@@ -14,7 +14,6 @@ import {
 } from '@/pages/ProductsPage/model/selectors/productsPageSelectors';
 import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
-import { addQueryParams } from '@/shared/lib/url/addQueryParams';
 
 interface ApiResponse {
   count: number;
@@ -29,7 +28,7 @@ export const fetchProductsList = createAsyncThunk<
   ApiResponse,
   FetchProductsListProps,
   ThunkConfig<string>
->('productsPage/fetchProductsList', async (props, thunkApi) => {
+>('productsPage/fetchProductsList', async (_, thunkApi) => {
   const { rejectWithValue, getState } = thunkApi;
 
   const limit = getProductsPageLimit(getState());
@@ -42,16 +41,6 @@ export const fetchProductsList = createAsyncThunk<
   const sortDirection = getProductsPageSortDirection(getState());
 
   try {
-    addQueryParams({
-      limit: limit.toString(),
-      offset: offset.toString(),
-      name,
-      category,
-      sortBy,
-      sortDirection,
-      discount,
-      quantity,
-    });
     const response = await $api.get<ApiResponse>(ApiRoutes.PRODUCTS, {
       params: {
         offset,

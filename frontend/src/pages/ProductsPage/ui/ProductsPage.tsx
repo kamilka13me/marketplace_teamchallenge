@@ -7,7 +7,6 @@ import { useSearchParams } from 'react-router-dom';
 import initProductsPage from '../model/services/initProductsPage';
 
 import { getProductsPageIsLoading } from '@/pages/ProductsPage/model/selectors/productsPageSelectors';
-// import { fetchNextProductsPage } from '@/pages/ProductsPage/model/services/fetchNextProductsPage';
 import { getProducts } from '@/pages/ProductsPage/model/slices/productsPageSlice';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
@@ -17,27 +16,24 @@ interface Props {}
 const ProductsPage: FC<Props> = () => {
   const dispatch = useAppDispatch();
 
-  const products = useAppSelector(getProducts.selectAll);
-  const isLoading = useAppSelector(getProductsPageIsLoading);
-
-  console.log('products', products);
-  console.log('isLoading', isLoading);
-
   const [searchParams] = useSearchParams();
   const category = searchParams.get('category');
 
-  console.log('searchParams', searchParams);
+  const products = useAppSelector(getProducts.selectAll);
+  const isLoading = useAppSelector(getProductsPageIsLoading);
 
   useEffect(() => {
     dispatch(initProductsPage(searchParams));
-  }, []);
+  }, [searchParams]);
 
-  // const onLoadNextPart = () => {
-  //   dispatch(fetchNextProductsPage());
-  // };
+  console.log('products', products);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="">
+    <div className="w-full border border-red-500">
       <span>ProductsPage {category}</span>
       <ul>
         {products.map((product) => (
