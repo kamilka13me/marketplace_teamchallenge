@@ -20,7 +20,7 @@ export const productsPageSlice = createSlice({
     entities: {},
     isLoading: false,
     error: undefined,
-    limit: 3,
+    limit: 12,
     offset: 0,
     name: '',
     sortBy: '',
