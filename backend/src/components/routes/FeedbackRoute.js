@@ -116,7 +116,7 @@ FeedbackRoute.post('/', idToReq(), FeedbackController.createRating);
  *         description: Server error
  */
 
-FeedbackRoute.get('/seller', idToReq(), FeedbackController.getSellerRating);
+FeedbackRoute.get('/seller', FeedbackController.getSellerRating);
 
 /**
  * @swagger
@@ -186,7 +186,7 @@ FeedbackRoute.get('/seller', idToReq(), FeedbackController.getSellerRating);
  *         description: Server error
  */
 
-FeedbackRoute.get('/product', idToReq(), FeedbackController.getProductRating);
+FeedbackRoute.get('/product', FeedbackController.getProductRating);
 
 /**
  * @swagger
@@ -337,7 +337,7 @@ FeedbackRoute.post('/comments', idToReq(), FeedbackController.createComment);
  *         description: Server error.
  */
 
-FeedbackRoute.get('/comments', idToReq(), FeedbackController.getComments);
+FeedbackRoute.get('/comments', FeedbackController.getComments);
 
 /**
  * @swagger
