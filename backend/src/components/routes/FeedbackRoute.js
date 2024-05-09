@@ -289,6 +289,10 @@ FeedbackRoute.post('/comments', idToReq(), FeedbackController.createComment);
  *        - bearerAuth: []
  *     parameters:
  *       - in: query
+ *         name: sellerId
+ *         schema:
+ *           type: string
+ *       - in: query
  *         name: startDate
  *         schema:
  *           type: string
