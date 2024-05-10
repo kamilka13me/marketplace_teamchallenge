@@ -43,17 +43,17 @@ const GeneralBlockPersonalForm: FC = () => {
   };
 
   const renderCommunicationMethods = () => (
-    <HStack gap="5" className="w-full">
+    <HStack className="w-full gap-6 lg:gap-5">
       <Text
         Tag="p"
         text={t("Контакти для зв'язку з клієнтами")}
         size="xl"
         className="leading-[26px] text-main-white"
       />
-      <HStack gap="5" className="w-full">
+      <HStack className="w-full gap-6 lg:gap-5">
         {generalCommunFields.map((field, index) => (
           <HStack key={field.id} gap="2" className="w-full">
-            <HStack align="start" gap="4" className="w-full sm:flex-row">
+            <HStack align="start" className="w-full sm:flex-row gap-3 lg:gap-4">
               {/* MESSENGER LIST */}
               <div className="relative w-full">
                 <Controller
@@ -174,16 +174,19 @@ const GeneralBlockPersonalForm: FC = () => {
   );
 
   return (
-    <HStack justify="start" className="w-full bg-dark-grey rounded-2xl px-4 py-6 gap-5">
+    <HStack
+      justify="start"
+      className="w-full bg-dark-grey rounded-2xl lg:px-4 lg:py-6 gap-6 lg:gap-5"
+    >
       <Text
         Tag="p"
         text={t('Інформація про компанію, доступна на сайті для всіх користувачів')}
         bold
         size="2xl"
-        className="leading-[30px] text-main-white"
+        className="leading-[30px] text-main-white text-wrap"
       />
 
-      <HStack gap="2" className="w-full">
+      <HStack className="w-full gap-1 lg:gap-2">
         <Text Tag="p" text={t('Назва компанії')} size="md" color="white" />
         <Input
           variant="fill"

@@ -57,14 +57,14 @@ const PersonalSellerForm: FC = () => {
   };
 
   const renderRegistrationData = () => (
-    <HStack className="w-full bg-dark-grey rounded-2xl px-4 py-6">
+    <HStack className="w-full bg-dark-grey rounded-2xl mt-6 lg:mt-0 lg:px-4 lg:py-6">
       <Text
         Tag="p"
         text={t('Ваші дані для входу в Маркетплейс')}
         size="xl"
-        className="leading-[26px] text-main-white mb-5"
+        className="leading-[26px] text-main-white mb-6 lg:mb-5 text-wrap"
       />
-      <HStack align="start" gap="5" className="w-full lg:flex-row mb-2">
+      <HStack align="start" className="w-full lg:flex-row gap-3 lg:gap-4 mb-2">
         <HStack gap="2" className="w-full">
           <Text Tag="p" text="Email" size="md" color="white" />
           <Input
@@ -121,7 +121,7 @@ const PersonalSellerForm: FC = () => {
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col justify-start gap-5"
+          className="flex flex-col justify-start gap-6 lg:gap-5 mb-6 lg:mb-0"
         >
           {renderRegistrationData()}
 

@@ -60,17 +60,17 @@ const ContactBlockPersonalForm: FC = () => {
   };
 
   const renderContacts = () => (
-    <HStack gap="5" className="w-full">
+    <HStack className="w-full gap-6 lg:gap-5">
       <Text
         Tag="p"
         text={t('Контакти')}
         size="xl"
         className="leading-[26px] text-main-white"
       />
-      <HStack gap="5" className="w-full">
+      <HStack className="w-full gap-6 lg:gap-5">
         {contactFields.map((field, index) => (
           <HStack key={field.id} gap="2" className="w-full">
-            <HStack align="start" gap="4" className="w-full lg:flex-row">
+            <HStack align="start" className="w-full lg:flex-row gap-3 lg:gap-4">
               {/* PHONE NUMBER */}
               <HStack gap="1" className="w-full">
                 <Controller
@@ -80,7 +80,7 @@ const ContactBlockPersonalForm: FC = () => {
                     required: t("Це поле є обов'язковим"),
                   }}
                   render={({ field }) => (
-                    <HStack gap="2" className="w-full">
+                    <HStack className="w-full gap-1 lg:gap-2">
                       <Text Tag="p" text={t('Teлефон')} size="md" color="white" />
                       <PhoneInput
                         defaultCountry="ua"
@@ -108,7 +108,7 @@ const ContactBlockPersonalForm: FC = () => {
               </HStack>
 
               {/* CONTACT PERSON */}
-              <HStack gap="2" className="w-full">
+              <HStack className="w-full gap-1 lg:gap-2">
                 <Text Tag="p" text={t('Контактна особа')} size="md" color="white" />
                 <VStack align="center" gap="4" justify="start" className="w-full">
                   <Input
@@ -154,17 +154,17 @@ const ContactBlockPersonalForm: FC = () => {
   );
 
   const renderCommunicationMethods = () => (
-    <HStack gap="5" className="w-full">
+    <HStack className="w-full gap-6 lg:gap-5">
       <Text
         Tag="p"
         text={t('Інші методи зв’язку')}
         size="xl"
         className="leading-[26px] text-main-white"
       />
-      <HStack gap="5" className="w-full">
+      <HStack className="w-full gap-6 lg:gap-5">
         {communicationFields.map((field, index) => (
           <HStack key={field.id} gap="2" className="w-full">
-            <HStack align="start" gap="4" className="w-full sm:flex-row">
+            <HStack align="start" className="w-full sm:flex-row gap-3 lg:gap-4">
               {/* MESSENGER LIST */}
               <div className="relative w-full">
                 <Controller
@@ -285,7 +285,10 @@ const ContactBlockPersonalForm: FC = () => {
   );
 
   return (
-    <HStack justify="start" className="w-full bg-dark-grey rounded-2xl px-4 py-6 gap-9">
+    <HStack
+      justify="start"
+      className="w-full bg-dark-grey rounded-2xl lg:px-4 lg:py-6 gap-9"
+    >
       {renderContacts()}
       {renderCommunicationMethods()}
     </HStack>
