@@ -27,3 +27,9 @@ export interface Seller {
   emailMessage: boolean;
   conditions: boolean;
 }
+
+export interface SellerSchema {
+  isLoading?: boolean;
+  error?: string;
+  sellerData?: Seller;
+}
