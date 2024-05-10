@@ -110,7 +110,7 @@ const ChangePassBlockSellerForm: FC<ChangePassFormProps> = (props) => {
             placeholder={t('Старий пароль')}
             type={passOldShown ? 'text' : 'password'}
             {...register('oldPassword', {
-              required: true,
+              required: t("Це поле є обов'язковим"),
               minLength: {
                 value: 9,
                 message: t('Ваш пароль має бути не менше 9 символів'),
@@ -142,7 +142,7 @@ const ChangePassBlockSellerForm: FC<ChangePassFormProps> = (props) => {
             placeholder={t('Новий пароль')}
             type={passNewShown ? 'text' : 'password'}
             {...register('newPassword', {
-              required: true,
+              required: t("Це поле є обов'язковим"),
               minLength: {
                 value: 9,
                 message: t('Ваш пароль має бути не менше 9 символів'),
@@ -174,7 +174,7 @@ const ChangePassBlockSellerForm: FC<ChangePassFormProps> = (props) => {
             placeholder={t('Підтвердження пароля')}
             type={passConfirmShown ? 'text' : 'password'}
             {...register('confirmationPassword', {
-              required: true,
+              required: t("Це поле є обов'язковим"),
               minLength: {
                 value: 9,
                 message: t('Ваш пароль має бути не менше 9 символів'),
