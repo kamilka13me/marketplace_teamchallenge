@@ -52,7 +52,7 @@ const authController = {
         username: user.username || null,
         surname: user.surname || null,
         email: user.email,
-        role: 'user',
+        role: user.role.name,
         dob: user.dob || null,
         isAccountConfirm: user.isAccountConfirm,
         phoneNumber: user.phoneNumber || null,

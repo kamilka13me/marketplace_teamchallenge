@@ -1,6 +1,7 @@
 import { RouteProps } from 'react-router-dom';
 
 import { UserRoles } from '@/enteties/User/model/types/userRoles';
+import { AdminPage } from '@/pages/AdminPage';
 import { MainPage } from '@/pages/MainPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 // import { ProductPage } from '@/pages/ProductPage';
@@ -17,13 +18,13 @@ import {
   getRouteMain,
   // getRouteProducts,
   // getRouteProduct,
-  // getRouteProducts,
+  getRouteProducts,
   getRouteProfile,
   getSellerProfile,
   getVerifyRoute,
   getRecoverPasswordRoute,
   getSellerRegistration,
-  getRouteProducts,
+  getAdminProfile,
 } from '@/shared/const/routes';
 
 export type AppRoutesProps = RouteProps & {
@@ -54,6 +55,12 @@ export const RouteConfig: Record<AppRoutes, AppRoutesProps> = {
     path: getSellerProfile(':id'),
     authOnly: true,
     element: <SellerPage />,
+    roles: [UserRoles.USER, UserRoles.SELLER, UserRoles.SUPER_ADMIN, UserRoles.ADMIN],
+  },
+  [AppRoutes.ADMIN]: {
+    path: getAdminProfile(':id'),
+    authOnly: true,
+    element: <AdminPage />,
     roles: [UserRoles.USER, UserRoles.SELLER, UserRoles.SUPER_ADMIN, UserRoles.ADMIN],
   },
   [AppRoutes.SELLER_REGISTRATION]: {

@@ -56,9 +56,9 @@ const ProfileSidebarMobile: FC<Props> = (props) => {
   }, [tab, tabs]);
 
   return (
-    <div className="lg:hidden flex flex-col justify-between px-3 py-5 rounded-2xl bg-dark-grey w-full min-h-[568px] whitespace-nowrap">
+    <div className="lg:hidden flex flex-col justify-between px-3 py-5 rounded-2xl bg-dark-grey w-full min-h-[568px]">
       <div>
-        <HStack align="center" justify="between" className="gap-[6px] h-full w-full">
+        <HStack align="center" justify="between" className="gap-[6px]">
           <div className="relative w-full z-40">
             <Listbox value={selectedTab} onChange={setSelectedTab}>
               {({ open }) => (

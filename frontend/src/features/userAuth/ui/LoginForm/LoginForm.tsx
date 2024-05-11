@@ -8,7 +8,11 @@ import { loginHasError } from '@/features/userAuth';
 import { getUserByCredentials } from '@/features/userAuth/model/services/getUserByCredentials';
 import privateEye from '@/shared/assets/icons/private-eye.svg?react';
 import unPrivateEye from '@/shared/assets/icons/unprivate-eye.svg?react';
-import { getRouteProfile } from '@/shared/const/routes';
+import {
+  getAdminProfile,
+  getRouteProfile,
+  getSellerProfile,
+} from '@/shared/const/routes';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
@@ -59,7 +63,17 @@ const LoginForm: FC<LoginFormProps> = (props) => {
         if (onCloseModal) {
           onCloseModal();
         }
-        navigate(getRouteProfile('info'));
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        const { role } = value.payload.user;
+
+        if (role === 'user') {
+          navigate(getRouteProfile('info'));
+        } else if (role === 'seller') {
+          navigate(getSellerProfile('dashboard'));
+        } else if (role === 'admin') {
+          navigate(getAdminProfile('users'));
+        }
       }
     });
   };

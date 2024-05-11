@@ -17,7 +17,12 @@ import logo from '@/shared/assets/icons/logo.svg?react';
 import person from '@/shared/assets/icons/person.svg?react';
 import search from '@/shared/assets/icons/search.svg?react';
 import ua from '@/shared/assets/icons/ua.svg?react';
-import { getRouteMain, getRouteProfile } from '@/shared/const/routes';
+import {
+  getAdminProfile,
+  getRouteMain,
+  getRouteProfile,
+  getSellerProfile,
+} from '@/shared/const/routes';
 import { Container } from '@/shared/layouts/Container';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
@@ -79,8 +84,12 @@ const Header: FC<Props> = () => {
   };
 
   const onOfficeBtnClick = (): void => {
-    if (user) {
+    if (user?.role === 'user') {
       navigate(getRouteProfile('info'));
+    } else if (user?.role === 'seller') {
+      navigate(getSellerProfile('dashboard'));
+    } else if (user?.role === 'admin') {
+      navigate(getAdminProfile('users'));
     } else {
       setShowModal(!showModal);
     }
