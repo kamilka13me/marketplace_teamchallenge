@@ -7,6 +7,7 @@ import { NotFoundPage } from '@/pages/NotFoundPage';
 // import { ProductPage } from '@/pages/ProductPage';
 // import { ProductsPage } from '@/pages/ProductsPage';
 // import { ProductsPage } from '@/pages/ProductsPage';
+import { ProductsPage } from '@/pages/ProductsPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { RecoverPasswordPage } from '@/pages/RecoverPasswordPage';
 import { SellerPage } from '@/pages/SellerPage';
@@ -17,7 +18,7 @@ import {
   getRouteMain,
   // getRouteProducts,
   // getRouteProduct,
-  // getRouteProducts,
+  getRouteProducts,
   getRouteProfile,
   getSellerProfile,
   getVerifyRoute,
@@ -40,10 +41,10 @@ export const RouteConfig: Record<AppRoutes, AppRoutesProps> = {
   //   path: getRouteProduct(':id'),
   //   element: <ProductPage />,
   // },
-  // [AppRoutes.PRODUCTS]: {
-  //   path: getRouteProducts(),
-  //   element: <ProductsPage />,
-  // },
+  [AppRoutes.PRODUCTS]: {
+    path: getRouteProducts(),
+    element: <ProductsPage />,
+  },
   [AppRoutes.PROFILE]: {
     path: getRouteProfile(':id'),
     authOnly: true,

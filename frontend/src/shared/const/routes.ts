@@ -1,7 +1,7 @@
 export enum AppRoutes {
   MAIN = 'main',
   // PRODUCT = 'product',
-  // PRODUCTS = 'products',
+  PRODUCTS = 'products',
   PROFILE = 'profile',
   SELLER = 'seller',
   ADMIN = 'admin',

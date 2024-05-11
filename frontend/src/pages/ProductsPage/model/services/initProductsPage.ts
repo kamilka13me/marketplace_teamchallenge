@@ -1,7 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { ThunkConfig } from '@/app/providers/StoreProvider/config/StateSchema';
-import { getProductsPageInited } from '@/pages/ProductsPage/model/selectors/productsPageSelectors';
 import { fetchProductsList } from '@/pages/ProductsPage/model/services/getProductsList';
 import { productsPageActions } from '@/pages/ProductsPage/model/slices/productsPageSlice';
 
@@ -10,42 +9,26 @@ export const initProductsPage = createAsyncThunk<
   URLSearchParams,
   ThunkConfig<string>
 >('productsPage/initProductsPage', async (searchParams, thunkApi) => {
-  const { getState, dispatch } = thunkApi;
-  const inited = getProductsPageInited(getState());
+  const { dispatch } = thunkApi;
 
-  if (!inited) {
-    const nameFromUrl = searchParams.get('name');
-    const categoryFromUrl = searchParams.get('category');
-    const sortByFromUrl = searchParams.get('sortBy');
-    const sortDirectionFromUrl = searchParams.get('sortDirection') as '1' | '-1';
-    const discountFromUrl = searchParams.get('discount');
-    const quantityFromUrl = searchParams.get('quantity');
+  const nameFromUrl = searchParams.get('name');
+  const categoryFromUrl = searchParams.get('category');
+  const sortByFromUrl = searchParams.get('sortBy');
+  const sortDirectionFromUrl = searchParams.get('sortDirection') as '1' | '-1';
+  const discountFromUrl = searchParams.get('discount');
+  const quantityFromUrl = searchParams.get('quantity');
+  const offsetFromUrl = searchParams.get('offset');
 
-    if (nameFromUrl) {
-      dispatch(productsPageActions.setName(nameFromUrl));
-    }
+  if (nameFromUrl) dispatch(productsPageActions.setName(nameFromUrl));
+  if (discountFromUrl) dispatch(productsPageActions.setDiscount(discountFromUrl));
+  if (categoryFromUrl) dispatch(productsPageActions.setCategory(categoryFromUrl));
+  if (quantityFromUrl) dispatch(productsPageActions.setQuantity(quantityFromUrl));
+  if (sortDirectionFromUrl)
+    dispatch(productsPageActions.setSortDirection(sortDirectionFromUrl));
+  if (sortByFromUrl) dispatch(productsPageActions.setSortBy(sortByFromUrl));
+  if (offsetFromUrl) dispatch(productsPageActions.setOffset(Number(offsetFromUrl)));
 
-    if (discountFromUrl) {
-      dispatch(productsPageActions.setDiscount(discountFromUrl));
-    }
-
-    if (categoryFromUrl) {
-      dispatch(productsPageActions.setCategory(categoryFromUrl));
-    }
-
-    if (quantityFromUrl) {
-      dispatch(productsPageActions.setQuantity(quantityFromUrl));
-    }
-
-    if (sortDirectionFromUrl) {
-      dispatch(productsPageActions.setSortDirection(sortDirectionFromUrl));
-    }
-
-    if (sortByFromUrl) {
-      dispatch(productsPageActions.setSortBy(sortByFromUrl));
-    }
-
-    dispatch(productsPageActions.initState());
-    dispatch(fetchProductsList({}));
-  }
+  dispatch(fetchProductsList({}));
 });
+
+export default initProductsPage;

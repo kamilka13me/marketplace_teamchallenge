@@ -20,19 +20,15 @@ export const productsPageSlice = createSlice({
     entities: {},
     isLoading: false,
     error: undefined,
-
-    // pagination
-    limit: 3,
+    limit: 12,
     offset: 0,
-
     name: '',
     sortBy: '',
     discount: '0',
     category: '',
     quantity: '1',
     sortDirection: '1',
-
-    _inited: false,
+    count: 0,
   }),
   reducers: {
     setName: (state, action: PayloadAction<string>) => {
@@ -63,29 +59,21 @@ export const productsPageSlice = createSlice({
       state.category = '';
       state.quantity = '1';
       state.sortDirection = '1';
-    },
-    initState: (state) => {
-      state._inited = true;
+      state.offset = 0;
+      state.count = 0;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProductsList.pending, (state, action) => {
+      .addCase(fetchProductsList.pending, (state) => {
         state.error = undefined;
         state.isLoading = true;
-
-        if (action.meta.arg.replace) {
-          productsAdapter.removeAll(state);
-        }
+        productsAdapter.removeAll(state);
       })
       .addCase(fetchProductsList.fulfilled, (state, action) => {
         state.isLoading = false;
-
-        if (action.meta.arg.replace) {
-          productsAdapter.setAll(state, action.payload.products);
-        } else {
-          productsAdapter.addMany(state, action.payload.products);
-        }
+        productsAdapter.setAll(state, action.payload.products);
+        state.count = action.payload.count;
       })
       .addCase(fetchProductsList.rejected, (state, action) => {
         state.isLoading = false;
