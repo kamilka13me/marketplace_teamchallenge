@@ -152,31 +152,17 @@ const FeedbackController = {
 
   createComment: async (req, res) => {
     const { userId, parentId, sellerId, productId, comment, images } = req.body;
-    let { rating } = req.body;
 
     if (!userId || !comment) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
-    if (!rating) {
-      rating = 0;
-    }
 
     try {
-      // First create a rating
-      const newRating = new Rating({
-        authorId: userId,
-        sellerId, // Optional
-        productId, // Optional
-        rating,
-      });
-
-      const savedRating = await newRating.save();
       // Then create a comment with the new ratingId
       const newComment = new Comment({
         authorId: userId,
         sellerId, // Optional
         productId, // Optional
-        ratingId: savedRating._id,
         parentId: parentId || null,
         comment,
         images,
@@ -193,13 +179,13 @@ const FeedbackController = {
   },
 
   getComments: async (req, res) => {
-    const { startDate, endDate, limit = 10, offset = 0, sellerId } = req.query;
+    const { startDate, endDate, limit, offset = 0, sellerId } = req.query;
 
     if (!sellerId) {
       return res.status(400).json({ error: 'Seller ID is required' });
     }
 
-    const query = { sellerId };
+    const query = { sellerId, parentId: null };
 
     if (startDate) {
       query.created_at = { $gte: new Date(startDate) };
@@ -212,18 +198,34 @@ const FeedbackController = {
     try {
       const comments = await Comment.find(query)
         .populate('productId')
-        .populate('ratingId')
         .sort({ created_at: -1 })
-        // eslint-disable-next-line radix
-        .skip(parseInt(offset))
-        // eslint-disable-next-line radix
-        .limit(parseInt(limit));
+        .skip(parseInt(offset, 10))
+        .limit(parseInt(limit, 10));
+
+      const commentsWithRatingsAndReplies = await Promise.all(
+        comments.map(async (comment) => {
+          const rating = await Rating.findOne({
+            sellerId: comment.sellerId,
+            authorId: comment.authorId,
+            productId: comment.productId,
+          });
+
+          // Fetch replies for the current comment
+          const replies = await Comment.find({ parentId: comment._id });
+
+          return {
+            ...comment.toObject(), // Include all existing fields of the comment
+            rating: rating ? rating.toObject() : null, // Include the rating if it exists
+            replies: replies.map((reply) => reply.toObject()), // Convert each reply document to an object
+          };
+        }),
+      );
 
       const totalCount = await Comment.countDocuments(query);
 
       res.status(200).json({
         totalComments: totalCount,
-        comments,
+        comments: commentsWithRatingsAndReplies,
       });
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -231,13 +233,13 @@ const FeedbackController = {
   },
 
   getCommentsProducts: async (req, res) => {
-    const { startDate, endDate, limit = 10, offset = 0, productId } = req.query;
+    const { startDate, endDate, limit, offset = 0, productId } = req.query;
 
     if (!productId) {
-      return res.status(400).json({ error: 'product Id is required' });
+      return res.status(400).json({ error: 'Seller ID is required' });
     }
 
-    const query = { productId };
+    const query = { productId, parentId: null };
 
     if (startDate) {
       query.created_at = { $gte: new Date(startDate) };
@@ -250,18 +252,34 @@ const FeedbackController = {
     try {
       const comments = await Comment.find(query)
         .populate('productId')
-        .populate('ratingId')
         .sort({ created_at: -1 })
-        // eslint-disable-next-line radix
-        .skip(parseInt(offset))
-        // eslint-disable-next-line radix
-        .limit(parseInt(limit));
+        .skip(parseInt(offset, 10))
+        .limit(parseInt(limit, 10));
+
+      const commentsWithRatingsAndReplies = await Promise.all(
+        comments.map(async (comment) => {
+          const rating = await Rating.findOne({
+            sellerId: comment.sellerId,
+            authorId: comment.authorId,
+            productId: comment.productId,
+          });
+
+          // Fetch replies for the current comment
+          const replies = await Comment.find({ parentId: comment._id });
+
+          return {
+            ...comment.toObject(), // Include all existing fields of the comment
+            rating: rating ? rating.toObject() : null, // Include the rating if it exists
+            replies: replies.map((reply) => reply.toObject()), // Convert each reply document to an object
+          };
+        }),
+      );
 
       const totalCount = await Comment.countDocuments(query);
 
       res.status(200).json({
         totalComments: totalCount,
-        comments,
+        comments: commentsWithRatingsAndReplies,
       });
     } catch (error) {
       res.status(500).json({ error: error.message });
