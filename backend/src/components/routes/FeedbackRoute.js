@@ -1,7 +1,7 @@
 import express from 'express';
 
 import idToReq from '../../middlewares/chechUserId.js';
-import { appendFileNamesToBody, upload } from '../../middlewares/uploadProducts.js';
+import { appendFileNamesToBody, upload } from '../../middlewares/uploadComments.js';
 import FeedbackController from '../controllers/FeedbackController.js';
 
 const FeedbackRoute = express.Router();
@@ -222,7 +222,7 @@ FeedbackRoute.get('/product', FeedbackController.getProductRating);
  *               images:
  *                 type: array
  *                 items:
- *                   type: string
+ *                   type: file
  *                 description: A list of image URLs associated with the comment (optional).
  *               parentId:
  *                 type: string
