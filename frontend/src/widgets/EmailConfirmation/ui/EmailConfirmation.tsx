@@ -1,10 +1,16 @@
+import { useState } from 'react';
+
 import { $api } from '@/shared/api/api';
 import Exclamation from '@/shared/assets/icons/exclamation.svg?react';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { Icon } from '@/shared/ui/Icon';
 
 const EmailConfirmation = () => {
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+
   const handlerEmail = async () => {
+    setButtonDisabled(true);
+
     try {
       const response = await $api.get(`${ApiRoutes.USER}/send-confirm-mail`);
 
@@ -12,6 +18,10 @@ const EmailConfirmation = () => {
     } catch (err) {
       /* eslint-disable no-console */
       console.log(err);
+    } finally {
+      setTimeout(() => {
+        setButtonDisabled(false);
+      }, 60000);
     }
   };
 
@@ -27,7 +37,12 @@ const EmailConfirmation = () => {
         </p>
         <p>
           Надіслати повторно підтвердження на e-mail?{' '}
-          <button type="button" onClick={handlerEmail} className="text-[#D9C01B]">
+          <button
+            type="button"
+            onClick={handlerEmail}
+            className="text-[#D9C01B]"
+            disabled={buttonDisabled}
+          >
             Відправити
           </button>
         </p>
