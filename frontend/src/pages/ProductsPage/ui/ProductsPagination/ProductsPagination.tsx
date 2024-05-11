@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { FC } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
@@ -12,6 +11,7 @@ interface Props {}
 
 const ProductsPagination: FC<Props> = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+
   const productsCount = useAppSelector(getProductsCount);
   const productsLimit = useAppSelector((state) => state.products.limit);
   const offset = useAppSelector((state) => state.products.offset);
