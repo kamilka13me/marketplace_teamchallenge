@@ -6,9 +6,17 @@ import { useSearchParams } from 'react-router-dom';
 
 import initProductsPage from '../model/services/initProductsPage';
 
+import ProductsPagination from './ProductsPagination/ProductsPagination';
+
 import { ProductCard } from '@/enteties/Product';
-import { getProductsPageIsLoading } from '@/pages/ProductsPage/model/selectors/productsPageSelectors';
-import { getProducts } from '@/pages/ProductsPage/model/slices/productsPageSlice';
+import {
+  getProductsCount,
+  getProductsPageIsLoading,
+} from '@/pages/ProductsPage/model/selectors/productsPageSelectors';
+import {
+  getProducts,
+  productsPageActions,
+} from '@/pages/ProductsPage/model/slices/productsPageSlice';
 import { Container } from '@/shared/layouts/Container';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
@@ -24,12 +32,19 @@ const ProductsPage: FC<Props> = () => {
 
   const products = useAppSelector(getProducts.selectAll);
   const isLoading = useAppSelector(getProductsPageIsLoading);
+  const productsCount = useAppSelector(getProductsCount);
+  const productsState = useAppSelector((state) => state.products);
+
+  console.log('productsState', productsState);
+  console.log('products', products);
 
   useEffect(() => {
     dispatch(initProductsPage(searchParams));
-  }, [searchParams]);
 
-  console.log('products', products);
+    return () => {
+      dispatch(productsPageActions.clearSortParams());
+    };
+  }, [searchParams]);
 
   if (isLoading) {
     return (
@@ -61,7 +76,7 @@ const ProductsPage: FC<Props> = () => {
 
           <div className="w-full flex flex-col gap-5">
             <div className="topRow w-full flex items-center justify-between">
-              <span>Знайдено {products.length} результатів пошуку</span>
+              <span>Знайдено {productsCount} результатів пошуку</span>
 
               <span className="flex items-center gap-1">
                 <span>Сортувати за:</span>
@@ -81,44 +96,7 @@ const ProductsPage: FC<Props> = () => {
               ))}
             </div>
 
-            <div className="pagination w-full flex justify-center gap-4">
-              <button
-                type="button"
-                className="border-black border-[1px] h-8 px-2 flex justify-center items-center rounded-lg"
-                onClick={() => {}}
-              >
-                Попередня
-              </button>
-
-              <div className="flex gap-1">
-                <button
-                  type="button"
-                  className="border-grey border-[1px] h-8 w-8 flex justify-center items-center rounded-lg"
-                >
-                  1
-                </button>
-                <button
-                  type="button"
-                  className="border-grey border-[1px] h-8 w-8 flex justify-center items-center rounded-lg"
-                >
-                  2
-                </button>
-                <button
-                  type="button"
-                  className="border-grey border-[1px] h-8 w-8 flex justify-center items-center rounded-lg"
-                >
-                  3
-                </button>
-              </div>
-
-              <button
-                type="button"
-                className="border-black border-[1px] h-8 px-2 flex justify-center items-center rounded-lg"
-                onClick={() => {}}
-              >
-                Наступна
-              </button>
-            </div>
+            <ProductsPagination />
           </div>
         </div>
       </Container>

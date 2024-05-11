@@ -28,6 +28,7 @@ export const productsPageSlice = createSlice({
     category: '',
     quantity: '1',
     sortDirection: '1',
+    count: 0,
   }),
   reducers: {
     setName: (state, action: PayloadAction<string>) => {
@@ -58,6 +59,8 @@ export const productsPageSlice = createSlice({
       state.category = '';
       state.quantity = '1';
       state.sortDirection = '1';
+      state.offset = 0;
+      state.count = 0;
     },
   },
   extraReducers: (builder) => {
@@ -70,6 +73,7 @@ export const productsPageSlice = createSlice({
       .addCase(fetchProductsList.fulfilled, (state, action) => {
         state.isLoading = false;
         productsAdapter.setAll(state, action.payload.products);
+        state.count = action.payload.count;
       })
       .addCase(fetchProductsList.rejected, (state, action) => {
         state.isLoading = false;

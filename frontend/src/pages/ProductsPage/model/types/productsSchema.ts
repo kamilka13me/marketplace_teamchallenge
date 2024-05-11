@@ -13,4 +13,5 @@ export interface ProductsPageSchema extends EntityState<Product, string> {
   sortDirection: '1' | '-1';
   discount: string;
   quantity: string;
+  count: number;
 }
