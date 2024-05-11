@@ -3,6 +3,7 @@ import { FC, Suspense, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { AppRouter } from '@/app/providers/router';
+import { getSellerProfileInfo } from '@/enteties/Seller/model/services/getSellerProfileInfo';
 import {
   getIsInitedAuthData,
   getUserAuthData,
@@ -31,6 +32,7 @@ const App: FC = () => {
     }
     if (inited && user) {
       dispatch(getUserWishlist({ _id: user._id }));
+      dispatch(getSellerProfileInfo({ sellerId: user._id }));
     }
   }, [dispatch, inited, user]);
 
