@@ -7,6 +7,7 @@ import ProductSubscription from './Tabs/ProductSubscription/ProductSubscription'
 
 import { ManagingFeedbacks } from '@/features/managingFeedbacks';
 import ManagingProducts from '@/features/managingProducts/ui/ManagingProducts';
+import PersonalSellerForm from '@/pages/SellerPage/ui/Tabs/ProfileInfo/PersonalSellerForm';
 import SellerDashboard from '@/pages/SellerPage/ui/Tabs/SellerDashboard/SellerDashboard';
 import SupportCentre from '@/pages/SellerPage/ui/Tabs/SupportCentre/SupportCentre';
 import dashboard from '@/shared/assets/icons/dashboard.svg?react';
@@ -67,7 +68,8 @@ const components: FC[] = [
   ProductSubscription,
   ManagingFeedbacks,
   SupportCentre,
-]; // Сюди передати просто інші компоненти для відображення в мобільній версії, послідовність важлива
+  PersonalSellerForm,
+];
 
 const SellerPage: FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -118,10 +120,10 @@ const SellerPage: FC = () => {
             <ProfileSidebar tabs={tabs} tab={currentTab} setTab={setCurrentTabHandler} />
             {currentTab === 0 && <SellerDashboard />}
             {currentTab === 1 && <ManagingProducts />}
-            {/* {currentTab === 2 && <ProductForm />} */}
             {currentTab === 2 && <ProductSubscription />}
             {currentTab === 3 && <ManagingFeedbacks />}
             {currentTab === 4 && <SupportCentre />}
+            {currentTab === 5 && <PersonalSellerForm />}
           </VStack>
         ) : (
           <ProfileSidebarMobile
