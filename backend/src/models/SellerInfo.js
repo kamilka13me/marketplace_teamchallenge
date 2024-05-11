@@ -83,15 +83,21 @@
 
 import mongoose from 'mongoose';
 
-const contactSchema = new mongoose.Schema({
-  messenger: { type: String, required: false },
-  phone: { type: String, required: false },
-});
+const contactSchema = new mongoose.Schema(
+  {
+    messenger: { type: String, required: false },
+    phone: { type: String, required: false },
+  },
+  { _id: false },
+);
 
-const contactDetailsSchema = new mongoose.Schema({
-  phone: { type: String, required: false },
-  person: { type: String, required: false },
-});
+const contactDetailsSchema = new mongoose.Schema(
+  {
+    phone: { type: String, required: false },
+    person: { type: String, required: false },
+  },
+  { _id: false },
+);
 
 const sellerSchema = new mongoose.Schema({
   sellerId: {

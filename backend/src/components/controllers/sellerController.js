@@ -241,6 +241,51 @@ const sellerController = {
       res.status(500).send(error.message);
     }
   },
+  updateSellerInfo: async (req, res) => {
+    const { userId } = req.body;
+    const fieldsToUpdate = [
+      'info',
+      'legalName',
+      'legalAddress',
+      'city',
+      'cityIndex',
+      'communication',
+      'condition',
+      'contacts',
+      'descriptCompany',
+      'emailAdvertisement',
+      'emailAdvice',
+      'emailMessage',
+      'generalCommunication',
+      'generalName',
+      'idStateRegister',
+      'identificNumber',
+      'tax',
+    ];
+
+    try {
+      const filter = { sellerId: userId };
+
+      const update = {
+        $set: fieldsToUpdate.reduce((acc, key) => {
+          if (req.body[key] !== undefined) {
+            return { ...acc, [key]: req.body[key] }; // створюємо новий об'єкт замість зміни існуючого
+          }
+
+          return acc;
+        }, {}),
+      };
+
+      const options = { new: true };
+      const updatedSeller = await Seller.findOneAndUpdate(filter, update, options);
+
+      res.status(201).send(updatedSeller);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+      res.status(500).send(error.message);
+    }
+  },
 };
 
 export default sellerController;
