@@ -228,5 +228,118 @@ sellerRoute.get('/', idToReq(), sellerController.getAllProducts);
  *         $ref: '#/components/responses/InternalServerError'
  */
 sellerRoute.get('/contacts', idToReq(), sellerController.getContacts);
+/**
+ * @swagger
+ * /seller/info:
+ *   get:
+ *     summary: Get a list of seller contacts
+ *     description: Get a list contacts
+ *     security:
+ *       - bearerAuth: []
+ *     tags:
+ *       - Seller
+ *
+ *     parameters:
+ *       - in: query
+ *         name: sellerId
+ *         schema:
+ *           type: string
+ *         description: seller id.
+ *     responses:
+ *       200:
+ *         description: Seller updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Seller updated successfully"
+ *                 seller:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "663e25c749d8ef9959fb0ab4"
+ *                     sellerId:
+ *                       type: string
+ *                       example: "663e25c749d8ef9959fb0ab2"
+ *                     legalName:
+ *                       type: string
+ *                       example: "Example Inc."
+ *                     legalAddress:
+ *                       type: string
+ *                       example: "123 Example St."
+ *                     city:
+ *                       type: string
+ *                       example: "Example City"
+ *                     cityIndex:
+ *                       type: string
+ *                       example: "12345"
+ *                     communication:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           messenger:
+ *                             type: string
+ *                             example: "Whatsapp"
+ *                           phone:
+ *                             type: string
+ *                             example: "+1234567890"
+ *                     condition:
+ *                       type: boolean
+ *                       example: true
+ *                     contacts:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           phone:
+ *                             type: string
+ *                             example: "+1234567890"
+ *                           person:
+ *                             type: string
+ *                             example: "John Doe"
+ *                     descriptCompany:
+ *                       type: string
+ *                       example: "This is a description of the company."
+ *                     emailAdvertisement:
+ *                       type: boolean
+ *                       example: true
+ *                     emailAdvice:
+ *                       type: boolean
+ *                       example: true
+ *                     emailMessage:
+ *                       type: boolean
+ *                       example: true
+ *                     generalCommunication:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           messenger:
+ *                             type: string
+ *                             example: "Telegram"
+ *                           phone:
+ *                             type: string
+ *                             example: "+1234567890"
+ *                     generalName:
+ *                       type: string
+ *                       example: "General Store"
+ *                     idStateRegister:
+ *                       type: string
+ *                       example: "123456789"
+ *                     identificNumber:
+ *                       type: string
+ *                       example: "987654321"
+ *                     tax:
+ *                       type: boolean
+ *                       example: true
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
+sellerRoute.get('/info', sellerController.getSellerInfo);
 
 export default sellerRoute;
