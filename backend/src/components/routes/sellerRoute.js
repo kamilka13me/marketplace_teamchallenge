@@ -341,5 +341,107 @@ sellerRoute.get('/contacts', idToReq(), sellerController.getContacts);
  *         $ref: '#/components/responses/InternalServerError'
  */
 sellerRoute.get('/info', sellerController.getSellerInfo);
+/**
+ * @swagger
+ * /seller/updateSellerInfo:
+ *   post:
+ *     summary: Updates seller information based on the provided userId
+ *     description: This endpoint updates existing seller information. It updates only the fields provided in the request body for the identified seller.
+ *     security:
+ *       - bearerAuth: []
+ *     tags:
+ *       - Seller
+ *
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               legalName:
+ *                 type: string
+ *                 description: Legal name of the seller or company
+ *               legalAddress:
+ *                 type: string
+ *                 description: Legal address of the seller or company
+ *               city:
+ *                 type: string
+ *                 description: City where the seller or company is located
+ *               cityIndex:
+ *                 type: string
+ *                 description: Postal code of the city
+ *               communication:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     messenger:
+ *                       type: string
+ *                     phone:
+ *                       type: string
+ *               condition:
+ *                 type: boolean
+ *                 description: Terms and conditions related information
+ *               contacts:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     phone:
+ *                       type: string
+ *                     person:
+ *                       type: string
+ *               descriptCompany:
+ *                 type: string
+ *                 description: Description of the company
+ *               emailAdvertisement:
+ *                 type: boolean
+ *                 description: Option for receiving advertisements via email
+ *               emailAdvice:
+ *                 type: boolean
+ *                 description: Option for receiving advice via email
+ *               emailMessage:
+ *                 type: boolean
+ *                 description: Option for receiving messages via email
+ *               generalCommunication:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     messenger:
+ *                       type: string
+ *                     phone:
+ *                       type: string
+ *               generalName:
+ *                 type: string
+ *                 description: General name, potentially a nickname or a sub-brand
+ *               idStateRegister:
+ *                 type: string
+ *                 description: Registration ID in the state register
+ *               identificNumber:
+ *                 type: string
+ *                 description: Identification number of the seller or company
+ *               tax:
+ *                 type: boolean
+ *                 description: Tax status or tax option indicator
+ *     responses:
+ *       201:
+ *         description: Seller information updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "success"
+ *                 data:
+ *                   $ref: '#/components/schemas/Seller'
+ *       500:
+ *         description: Bad request, data provided cannot be processed
+ */
+
+sellerRoute.post('/updateSellerInfo', idToReq(), sellerController.updateSellerInfo);
 
 export default sellerRoute;
