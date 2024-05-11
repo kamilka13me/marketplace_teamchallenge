@@ -8,15 +8,13 @@ const FeedbackController = {
     const { userId, sellerId, productId, rating } = req.body;
 
     try {
-      const newRating = new Rating({
-        authorId: userId,
-        sellerId,
-        productId,
-        rating,
-      });
+      const options = { new: true, upsert: true };
+      const filter = { authorId: userId, sellerId, productId };
+      const update = { $set: { rating } };
 
-      await newRating.save();
-      res.status(201).send(newRating);
+      const updatedRating = await Rating.findOneAndUpdate(filter, update, options);
+
+      res.status(201).send(updatedRating);
     } catch (error) {
       res.status(400).send(error.message);
     }
