@@ -205,7 +205,6 @@ FeedbackRoute.get('/product', FeedbackController.getProductRating);
  *           schema:
  *             type: object
  *             required:
- *               - rating
  *               - comment
  *             properties:
  *               sellerId:

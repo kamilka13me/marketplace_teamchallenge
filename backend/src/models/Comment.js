@@ -14,10 +14,6 @@ const commentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product',
   },
-  ratingId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Rating',
-  },
   parentId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Comment',
