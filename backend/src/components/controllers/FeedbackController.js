@@ -151,8 +151,10 @@ const FeedbackController = {
   },
 
   createComment: async (req, res) => {
-    const { userId, parentId, sellerId, productId, comment, images } = req.body;
+    const { userId, parentId, sellerId, productId, comment } = req.body;
+    let { images } = req.body;
 
+    images = images.map((name) => `/static/comments/${name}`);
     if (!userId || !comment) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
