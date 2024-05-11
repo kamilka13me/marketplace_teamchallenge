@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { getSellerProfileInfo } from '@/enteties/Seller/model/services/getSellerProfileInfo';
 import { setNewSeller } from '@/enteties/Seller/model/services/setNewSeller';
 import { Seller, SellerSchema } from '@/enteties/Seller/model/types/seller';
 import { setPasswordUser } from '@/enteties/User';
-// import { setInformationUser } from '@/enteties/User/model/services/setInformationUser';
 
 const initialState: SellerSchema = {
   isLoading: true,
@@ -22,6 +22,10 @@ export const sellerSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(getSellerProfileInfo.pending, (state) => {
+        state.error = undefined;
+        state.isLoading = true;
+      })
       .addCase(setNewSeller.pending, (state) => {
         state.error = undefined;
         state.isLoading = true;
@@ -34,6 +38,10 @@ export const sellerSlice = createSlice({
         state.error = undefined;
         state.isLoading = true;
       })
+      .addCase(getSellerProfileInfo.fulfilled, (state) => {
+        state.isLoading = false;
+        state.error = undefined;
+      })
       .addCase(setNewSeller.fulfilled, (state) => {
         state.isLoading = false;
         state.error = undefined;
@@ -45,6 +53,10 @@ export const sellerSlice = createSlice({
       .addCase(setPasswordUser.fulfilled, (state) => {
         state.isLoading = false;
         state.error = undefined;
+      })
+      .addCase(getSellerProfileInfo.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
       })
       .addCase(setNewSeller.rejected, (state, action) => {
         state.isLoading = false;

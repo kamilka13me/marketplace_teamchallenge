@@ -3,14 +3,17 @@ import React, { FC, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import { getSellerInfo } from '@/enteties/Seller/model/selectors/sellerInfoSelectors';
 import { sellerInfoActions } from '@/enteties/Seller/model/slice/sellerSlice';
 import { Seller } from '@/enteties/Seller/model/types/seller';
+import { getUserAuthData } from '@/enteties/User';
 import ChangePassBlockSellerForm from '@/pages/SellerPage/ui/Tabs/ProfileInfo/blocks/ChangePassBlockSellerForm';
 import ContactBlockPersonalForm from '@/pages/SellerPage/ui/Tabs/ProfileInfo/blocks/ContactBlockPersonalForm';
 import GeneralBlockPersonalForm from '@/pages/SellerPage/ui/Tabs/ProfileInfo/blocks/GeneralBlockPersonalForm';
 import cancel from '@/shared/assets/icons/cancel.svg?react';
 import unPrivateEye from '@/shared/assets/icons/unprivate-eye.svg?react';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
+import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Input } from '@/shared/ui/Input';
@@ -19,6 +22,9 @@ import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
 const PersonalSellerForm: FC = () => {
+  const user = useAppSelector(getUserAuthData);
+  const sellerInfo = useAppSelector(getSellerInfo);
+
   const { t } = useTranslation();
 
   const [showChangePass, setShowChangePass] = useState(false);
@@ -28,13 +34,12 @@ const PersonalSellerForm: FC = () => {
   const methods = useForm<Seller>({
     mode: 'all',
     defaultValues: {
-      email: 'alma.lawson@example.com',
+      email: user?.email,
       password: 'HardcorePassword',
-      contacts: [{ phone: '+38 (050) 550 50 50', person: 'Іванов О.С.' }],
-      communication: [{ messenger: 'Telegram', phone: '+38 (050) 550 50 50' }],
-      descriptCompany: '',
-      generalName: 'Авокадо',
-      generalCommunication: [{ messenger: 'Viber', phone: '+38 (055) 555 55 66' }],
+      contacts: sellerInfo?.contacts,
+      communication: sellerInfo?.communication,
+      generalName: sellerInfo?.generalName,
+      generalCommunication: sellerInfo?.generalCommunication,
     },
   });
 

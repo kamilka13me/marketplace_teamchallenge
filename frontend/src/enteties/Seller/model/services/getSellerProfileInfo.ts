@@ -5,21 +5,21 @@ import { Seller } from '@/enteties/Seller/model/types/seller';
 import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 
-interface ApiResponse {
-  sellerInfo: Seller;
+interface ApiResponse extends Seller {}
+
+interface Props {
+  sellerId: string;
 }
 
-interface SellerProfileInfoProps {}
-
-export const getSellerProfileInfo = createAsyncThunk<ApiResponse, SellerProfileInfoProps>(
+export const getSellerProfileInfo = createAsyncThunk<ApiResponse, Props>(
   'seller/info',
-  async (sellerProfileInfo, thunkApi) => {
+  async ({ sellerId }, thunkApi) => {
     const { dispatch, rejectWithValue } = thunkApi;
 
     try {
-      const response = await $api.get<ApiResponse>(ApiRoutes.USER, {
-        ...sellerProfileInfo,
-      });
+      const response = await $api.get<ApiResponse>(
+        `${ApiRoutes.SELLER_INFO}?sellerId=${sellerId}`,
+      );
 
       if (response.status !== 200) {
         if (response.status === 400) {
@@ -29,9 +29,7 @@ export const getSellerProfileInfo = createAsyncThunk<ApiResponse, SellerProfileI
         return rejectWithValue(`:: ${response.statusText} `);
       }
 
-      const { sellerInfo } = response.data;
-
-      dispatch(sellerInfoActions.setSellerData(sellerInfo));
+      dispatch(sellerInfoActions.setSellerData(response.data));
 
       return response.data;
     } catch (e: unknown) {
