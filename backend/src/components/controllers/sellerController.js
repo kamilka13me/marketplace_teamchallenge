@@ -84,8 +84,9 @@ const sellerController = {
         phoneNumber: user.phoneNumber || null,
         wishlist: user.wishlist,
       };
+
       const newSellerInfo = new Seller({
-        sellerId: user.id,
+        sellerId: user._id,
         legalName,
         legalAddress,
         city,
@@ -220,6 +221,20 @@ const sellerController = {
       const seller = await Seller.findOne({ sellerId });
 
       res.status(200).json([{ contacts: seller.generalCommunication }]);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+      res.status(500).send(error.message);
+    }
+  },
+
+  getSellerInfo: async (req, res) => {
+    const { sellerId } = req.query;
+
+    try {
+      const seller = await Seller.findOne({ sellerId });
+
+      res.status(200).json(seller);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
