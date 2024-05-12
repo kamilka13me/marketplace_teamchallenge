@@ -4,6 +4,7 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { getSellerInfo } from '@/enteties/Seller/model/selectors/sellerInfoSelectors';
+import { setSellerInfo } from '@/enteties/Seller/model/services/setSellerInfo';
 import { sellerInfoActions } from '@/enteties/Seller/model/slice/sellerSlice';
 import { Seller } from '@/enteties/Seller/model/types/seller';
 import { getUserAuthData } from '@/enteties/User';
@@ -47,13 +48,20 @@ const PersonalSellerForm: FC = () => {
     handleSubmit,
     register,
     formState: { isValid },
-    reset,
   } = methods;
 
-  const onSubmit: SubmitHandler<Seller> = () => {
-    // console.log(data);
-    reset();
-    setShowModal(!showModal);
+  const onSubmit: SubmitHandler<Seller> = async (data) => {
+    await dispatch(
+      setSellerInfo({
+        contacts: data.contacts,
+        communication: data.communication,
+        generalCommunication: data.generalCommunication,
+      }),
+    ).then((value) => {
+      if (value.meta.requestStatus !== 'rejected') {
+        setShowModal(!showModal);
+      }
+    });
   };
 
   const onHandlePassForm = () => {
@@ -121,6 +129,33 @@ const PersonalSellerForm: FC = () => {
     </HStack>
   );
 
+  const renderModalData = () => (
+    <>
+      <VStack align="center" justify="end">
+        <Icon
+          clickable
+          onClick={() => {
+            setShowModal(!showModal);
+          }}
+          Svg={cancel}
+          width={24}
+          height={24}
+          className="fill-main-white hover:transition hover:rotate-90 hover:duration-300 duration-300"
+        />
+      </VStack>
+      <HStack align="center" className="mt-5 mx-3.5 mb-8 gap-3">
+        <Text Tag="p" text="Вітаємо!" size="md" className="text-main-white" />
+        <Text
+          Tag="p"
+          text={t('Дані успішно змінено')}
+          size="sm"
+          align="center"
+          className="text-main-white"
+        />
+      </HStack>
+    </>
+  );
+
   return (
     <div className="w-full">
       <FormProvider {...methods}>
@@ -140,7 +175,7 @@ const PersonalSellerForm: FC = () => {
             type="submit"
             disabled={!isValid}
             classNameBlockWrap="items-end"
-            className="outfit bg-main w-full lg:max-w-[360px] py-[4px] rounded-lg font-normal text-[18px] leading-[40px] text-main-dark duration-300 hover:bg-secondary-yellow active:bg-main disabled:text-main-white disabled:bg-disabled"
+            className="cursor-pointer outfit bg-main w-full lg:max-w-[360px] py-[4px] rounded-lg font-normal text-[18px] leading-[40px] text-main-dark duration-300 hover:bg-secondary-yellow active:bg-main disabled:cursor-default disabled:text-main-white disabled:bg-disabled"
           />
         </form>
       </FormProvider>
@@ -161,28 +196,7 @@ const PersonalSellerForm: FC = () => {
           }}
           className="min-w-[233px] bg-selected-dark px-3 py-4 rounded-2xl animate-open-forms-modal"
         >
-          <VStack align="center" justify="end">
-            <Icon
-              clickable
-              onClick={() => {
-                setShowModal(!showModal);
-              }}
-              Svg={cancel}
-              width={24}
-              height={24}
-              className="fill-main-white hover:transition hover:rotate-90 hover:duration-300 duration-300"
-            />
-          </VStack>
-          <HStack align="center" className="mt-5 mx-3.5 mb-8 gap-3">
-            <Text Tag="p" text="Вітаємо!" size="md" className="text-main-white" />
-            <Text
-              Tag="p"
-              text={t('Дані успішно змінено')}
-              size="sm"
-              align="center"
-              className="text-main-white"
-            />
-          </HStack>
+          {renderModalData()}
         </ModalWindow>
       )}
     </div>
