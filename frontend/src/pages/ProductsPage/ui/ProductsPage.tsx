@@ -20,6 +20,7 @@ import { Container } from '@/shared/layouts/Container';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { ReactHelmet } from '@/shared/SEO';
+import { Text } from '@/shared/ui/Text';
 import { Sidebar } from '@/widgets/Sidebar';
 
 interface Props {}
@@ -71,7 +72,12 @@ const ProductsPage: FC<Props> = () => {
 
           <div className="w-full flex flex-col gap-5">
             <div className="topRow w-full flex items-center justify-between">
-              <span className="text-lg">Знайдено {productsCount} результатів пошуку</span>
+              <Text
+                Tag="span"
+                text={`Знайдено ${productsCount} результатів пошуку`}
+                size="lg"
+                color="primary"
+              />
               <ProductsSortSelector />
             </div>
 

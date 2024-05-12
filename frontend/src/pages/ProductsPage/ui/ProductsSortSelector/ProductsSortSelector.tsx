@@ -2,6 +2,10 @@ import { FC } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
+import arrowDown from '@/shared/assets/icons/arrow_down.svg?react';
+import { Icon } from '@/shared/ui/Icon';
+import { Text } from '@/shared/ui/Text';
+
 interface Props {}
 
 const ProductsSortSelector: FC<Props> = () => {
@@ -24,10 +28,16 @@ const ProductsSortSelector: FC<Props> = () => {
   };
 
   return (
-    <span className="flex items-center gap-1">
-      <span className="font-semibold text-lg">Сортувати за:</span>
+    <span className="flex relative items-center gap-2">
+      <Text
+        Tag="span"
+        text="Сортувати за:"
+        size="lg"
+        color="primary"
+        className="font-semibold"
+      />
       <select
-        className="focus:outline-none"
+        className="focus:outline-none appearance-none pl-2 pr-7 text-base font-normal"
         id="cars"
         name="cars"
         defaultValue={defaultSort}
@@ -39,6 +49,11 @@ const ProductsSortSelector: FC<Props> = () => {
         <option value="price 1">Зростаням ціни</option>
         <option value="price -1">Зменшеням ціни</option>
       </select>
+      <Icon
+        aria-hidden="true"
+        Svg={arrowDown}
+        className="h-4 w-4 duration-75 absolute pointer-events-none right-0 top-3.5"
+      />
     </span>
   );
 };
