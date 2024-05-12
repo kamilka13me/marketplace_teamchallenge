@@ -150,7 +150,7 @@ const Comment: FC<Props> = (props) => {
       )}
 
       {repliesOpen && (
-        <div className="ml-10">
+        <div className="lg:ml-10">
           {comment?.replies?.map((repl) => (
             <CommentReply key={repl?._id} comment={repl} />
           ))}
@@ -187,7 +187,7 @@ const Comment: FC<Props> = (props) => {
             </div>
             <Button
               variant="primary"
-              className="w-[319px] h-[52px]"
+              className="w-full lg:w-[319px] h-[52px]"
               onClick={setDisputeModalOpenHandler}
             >
               Оскаржити відгук
@@ -219,7 +219,7 @@ const CommentReply: FC<ReplyProps> = (props) => {
         <HStack
           justify="center"
           align="center"
-          className="!w-[68px] !h-[68px] bg-selected-dark rounded-lg"
+          className="w-full max-w-[68px] !h-[68px] bg-selected-dark rounded-lg"
         >
           {isLoading ? (
             <Text Tag="span" text="" size="4xl" font="ibm-plex-sans" color="white" />
