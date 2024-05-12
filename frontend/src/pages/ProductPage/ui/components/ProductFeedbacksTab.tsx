@@ -92,7 +92,9 @@ const ProductFeedbacksTab: FC<Props> = (props) => {
           <HStack gap="4" className="h-[1000px] overflow-auto w-full lg:gap-0">
             {feedbacks?.comments.map((item, idx) => (
               <>
-                {idx !== 0 && <Separator className="bg-selected-dark h-0.5" />}
+                {idx !== 0 && (
+                  <Separator className="bg-selected-dark h-0.5 lg:w-full lg:h-0.5" />
+                )}
                 <Comment
                   key={item._id}
                   sellerId={product?.sellerId}
