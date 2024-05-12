@@ -148,7 +148,7 @@ const productController = {
         .skip(offset)
         .limit(limit);
 
-      const count = await Product.countDocuments();
+      const count = await Product.countDocuments(query);
 
       res.status(200).json({ count, products });
     } catch (error) {
