@@ -41,7 +41,7 @@ const ProductFeedbacks: FC<Props> = (props) => {
 
   return (
     <HStack className=" bg-dark-grey max-w-[646px] w-full rounded-2xl p-4">
-      <VStack justify="between" align="center" className="w-full mb-8">
+      <VStack justify="between" align="center" className="w-full mb-12 lg:mb-8">
         <Text Tag="h4" text="Відгуки" size="4xl" color="white" font="ibm-plex-sans" />
         {user && (
           <Button
@@ -64,7 +64,7 @@ const ProductFeedbacks: FC<Props> = (props) => {
         />
       )}
 
-      <VStack gap="8" className="mb-4">
+      <HStack gap="8" className="mb-8 lg:flex-row lg:mb-4 ">
         <HStack>
           <Text
             Tag="p"
@@ -111,7 +111,7 @@ const ProductFeedbacks: FC<Props> = (props) => {
               </VStack>
             ))}
         </HStack>
-      </VStack>
+      </HStack>
 
       {feedbacks.totalComments > 0 ? (
         <>

@@ -18,24 +18,26 @@ const ProductSpecification: FC<Props> = (props) => {
   return (
     <HStack gap="8" className=" bg-dark-grey max-w-[646px] w-full rounded-2xl p-4">
       <Text Tag="h4" text="Опис товару" size="4xl" color="white" font="ibm-plex-sans" />
-      {product?.specifications.map((spec, i) => (
-        <Disclosure key={i}>
-          {({ open }) => (
-            <>
-              <Disclosure.Button className="flex w-full justify-between rounded-lg bg-purple-100">
-                <Text Tag="span" text={spec.specification} size="xl" color="white" />
-                <Icon
-                  Svg={arrowRight}
-                  className={`${open ? '-rotate-90' : 'rotate-90'} !fill-main-white duration-300`}
-                />
-              </Disclosure.Button>
-              <Disclosure.Panel className="text-grey text-md">
-                {spec.specificationDescription}
-              </Disclosure.Panel>
-            </>
-          )}
-        </Disclosure>
-      ))}
+      <HStack gap="4" className="w-full">
+        {product?.specifications.map((spec, i) => (
+          <Disclosure key={i}>
+            {({ open }) => (
+              <>
+                <Disclosure.Button className="flex w-full justify-between rounded-lg bg-purple-100">
+                  <Text Tag="span" text={spec.specification} size="xl" color="white" />
+                  <Icon
+                    Svg={arrowRight}
+                    className={`${open ? '-rotate-90' : 'rotate-90'} w-9 h-9 !fill-main-white duration-300 lg:w-6 lg:h-6`}
+                  />
+                </Disclosure.Button>
+                <Disclosure.Panel className="text-grey text-md">
+                  {spec.specificationDescription}
+                </Disclosure.Panel>
+              </>
+            )}
+          </Disclosure>
+        ))}
+      </HStack>
     </HStack>
   );
 };

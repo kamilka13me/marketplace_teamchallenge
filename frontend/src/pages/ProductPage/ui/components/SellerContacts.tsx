@@ -8,7 +8,7 @@ import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import useAxios from '@/shared/lib/hooks/useAxios';
 import { Button } from '@/shared/ui/Button';
-import { VStack } from '@/shared/ui/Stack';
+import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
 interface ApiResponse {
@@ -62,10 +62,10 @@ const SellerContacts: FC<Props> = ({ sellerId }) => {
   }, [isAlertOpen]);
 
   return (
-    <VStack
+    <HStack
       justify="between"
-      align="center"
-      className="bg-dark-grey w-full h-[84px] p-4 rounded-2xl"
+      gap="4"
+      className="bg-dark-grey w-full p-4 rounded-2xl lg:flex-row lg:items-center lg:h-[84px] lg:gap-0"
     >
       <div>
         <VStack gap="4" align="center">
@@ -98,12 +98,12 @@ const SellerContacts: FC<Props> = ({ sellerId }) => {
       {isContactsOpen ? (
         <div>{sellerContacts}</div>
       ) : (
-        <div className="relative">
+        <div className="relative w-full lg:w-auto">
           <Button
             variant="outlined"
             onClick={getSellerContactsHandler}
             disabled={isAlertOpen}
-            className="text-main-white h-[52px] w-[226px] hover:bg-main hover:!border-main hover:!text-main-dark duration-300"
+            className="text-main-white h-[52px] w-full lg:w-[226px] hover:bg-main hover:!border-main hover:!text-main-dark duration-300"
           >
             Відкрити контакти
           </Button>
@@ -119,7 +119,7 @@ const SellerContacts: FC<Props> = ({ sellerId }) => {
           )}
         </div>
       )}
-    </VStack>
+    </HStack>
   );
 };
 
