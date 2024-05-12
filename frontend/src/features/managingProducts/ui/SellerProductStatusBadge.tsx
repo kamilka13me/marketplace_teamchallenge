@@ -5,7 +5,7 @@ import { Icon } from '@/shared/ui/Icon';
 import { VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
-type Statuses = 'published' | 'canceled' | 'under-consideration' | 'blocked';
+export type Statuses = 'published' | 'canceled' | 'under-consideration' | 'blocked';
 
 const productStatus: Record<Statuses, string> = {
   published: 'Опубліковано',

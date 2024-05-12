@@ -18,6 +18,7 @@ const mockProduct: Product = {
   discountEnd: '12.12.2022',
   condition: '',
   brand: '',
+  sellerId: '',
   status: '',
   images: [
     '/static/products/1fde076e-829c-4ca6-854b-6dec7deb9666.png',

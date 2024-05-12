@@ -6,6 +6,7 @@ import MobileProductController from './MobileProductController';
 
 import { countDiscount, deleteProductsById } from '@/enteties/Product';
 import { ProductForm } from '@/features/createProduct';
+import { ProductStatuses } from '@/features/managingProducts';
 import {
   getSellerProductsPageIsLoading,
   getSellerProductsPageLimit,
@@ -340,7 +341,7 @@ const ManagingProducts: FC = () => {
                     </th>
                     <th className="!font-normal px-[10px] text-left ">
                       <HStack>
-                        {product?.discount && product?.discount !== 0 && (
+                        {product?.discount && product?.discount !== 0 ? (
                           <VStack gap="1" align="center" className="mt-1">
                             <Text
                               size="md"
@@ -356,12 +357,15 @@ const ManagingProducts: FC = () => {
                               color="white"
                             />
                           </VStack>
+                        ) : (
+                          // eslint-disable-next-line react/jsx-no-useless-fragment
+                          <></>
                         )}
                         <VStack gap="1" align="center">
                           <Text
                             size={`${product?.discount && product?.discount !== 0 ? 'sm' : 'md'}`}
                             Tag="p"
-                            text={product?.price.toString()}
+                            text={product?.price.toString() || ''}
                             className={`${product?.discount && product?.discount !== 0 && 'line-through'}`}
                             color={`${product?.discount && product?.discount !== 0 ? 'gray' : 'white'}`}
                           />
@@ -395,12 +399,7 @@ const ManagingProducts: FC = () => {
                           />
                         </>
                       ) : (
-                        <Text
-                          Tag="p"
-                          text="Відсутній"
-                          size="md"
-                          className="text-[#c6c6c6]"
-                        />
+                        <Text Tag="p" text="Відсутній" size="md" color="gray-light" />
                       )}
                     </th>
                     {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -415,7 +414,9 @@ const ManagingProducts: FC = () => {
                     </th>
                     {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                     <th className="!font-normal px-[10px] text-left">
-                      <SellerProductStatusBadge status="blocked" />
+                      <SellerProductStatusBadge
+                        status={product?.status as ProductStatuses}
+                      />
                     </th>
                     <th aria-label="Дії" className="px-[10px] text-left">
                       <VStack gap="2">

@@ -5,9 +5,10 @@ export interface IComment {
   _id: string;
   authorId: string;
   sellerId: string;
-  productId: Product;
-  ratingId: IRating;
+  productId: Product | null;
+  rating: IRating;
   parentId: null | IComment;
+  replies: IComment[];
   comment: string;
   images: string[];
   created_at: string;

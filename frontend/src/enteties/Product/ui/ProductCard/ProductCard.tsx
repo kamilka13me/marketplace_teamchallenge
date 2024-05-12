@@ -25,7 +25,7 @@ interface quantityResult {
   color: TextColors;
 }
 
-const quantityCalc = (quantity: number): quantityResult => {
+export const quantityCalc = (quantity: number): quantityResult => {
   if (quantity > 5) {
     return {
       text: 'Є в наявності',
@@ -47,10 +47,10 @@ const quantityCalc = (quantity: number): quantityResult => {
 
 export const countDiscount = (value: number, percentage: number): string => {
   if (percentage === 100) {
-    return '0';
+    return '';
   }
 
-  return (value - Math.round((value * percentage) / 100)).toFixed(2);
+  return (value - Math.round((value * percentage) / 100)).toFixed(0);
 };
 
 interface Props {
@@ -122,13 +122,13 @@ const ProductCard: FC<Props> = (props) => {
 
       <div className="mt-2">
         {/* Name */}
-        <div className="lg:h-[44px]">
+        <div className="h-[44px] overflow-hidden">
           <Link to={getRouteProduct(`${_id}`)}>
             <Text
               Tag="span"
               text={name}
               size="xs"
-              className={`${dark && 'text-main-white'} lg:text-md text-wrap`}
+              className={`${dark && 'text-main-white'} lg:text-md text-wrap text-ellipsis`}
             />
           </Link>
         </div>

@@ -17,6 +17,7 @@ const mockProduct: Product = {
   specifications: [],
   discountEnd: '12.12.2022',
   condition: '',
+  sellerId: '',
   brand: '',
   status: '',
   images: [

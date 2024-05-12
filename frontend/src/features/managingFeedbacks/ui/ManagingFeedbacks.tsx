@@ -17,17 +17,14 @@ import {
   getSellerFeedbacks,
   sellerFeedbackPageActions,
 } from '@/features/managingFeedbacks/model/slice/commentsSlice';
-import DisputeFeedbackModal from '@/features/managingFeedbacks/ui/DisputeFeedbackModal';
 import SellerRatings from '@/features/managingFeedbacks/ui/SellerRatings';
 import { $api } from '@/shared/api/api';
 import calendar from '@/shared/assets/icons/calendar.svg?react';
-import plane from '@/shared/assets/icons/plane.svg?react';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
-import { Input } from '@/shared/ui/Input';
 import Pagination from '@/shared/ui/Pagination/Pagination';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
@@ -95,7 +92,7 @@ const ManagingFeedbacks: FC = () => {
   const [ratingsData, setRatingsData] = useState<SellerRatingResponse | null>(null);
   const [ratingDataIsLoading, setRatingDataIsLoading] = useState(true);
   const [calendarIsOpened, setCalendarIsOpened] = useState(false);
-  const [isDisputeModalOpen, setIsDisputeModalOpen] = useState(false);
+
   const [state, setState] = useState<IRangeDate[]>([
     {
       startDate: new Date(2024, 0, 1),
@@ -192,10 +189,6 @@ const ManagingFeedbacks: FC = () => {
   const handleClickPage = (pageNumber: number) => {
     setCurrentPage(pageNumber);
     dispatch(sellerFeedbackPageActions.setOffset((pageNumber - 1) * limit));
-  };
-
-  const setDisputeModalOpenHandler = () => {
-    setIsDisputeModalOpen((prev) => !prev);
   };
 
   return (
@@ -342,39 +335,7 @@ const ManagingFeedbacks: FC = () => {
       {/* COMMENTS */}
       <HStack gap="4">
         {feedbacks?.map((comment) => (
-          <div key={comment?._id} className="rounded-2xl bg-dark-grey md:p-4">
-            <Comment comment={comment} />
-            <div className="flex flex-col justify-between gap-4 w-full md:flex-row">
-              <div className="w-full relative">
-                <Input
-                  name="comment"
-                  type="text"
-                  variant="clear"
-                  maxLength={250}
-                  placeholder="Відповісти на відгук"
-                  autoComplete="off"
-                  className=" bg-selected-dark rounded-lg p-4 w-full placeholder:text-disabled focus:outline-none text-white"
-                />
-                <HStack
-                  align="center"
-                  justify="center"
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-[30px] h-[30px] rounded-lg bg-main cursor-pointer"
-                >
-                  <Icon width={18} height={15} Svg={plane} className="fill-main-dark" />
-                </HStack>
-              </div>
-              <Button
-                variant="primary"
-                className="w-[319px] h-[52px]"
-                onClick={setDisputeModalOpenHandler}
-              >
-                Оскаржити відгук
-              </Button>
-            </div>
-            {isDisputeModalOpen && (
-              <DisputeFeedbackModal onCloseFunc={setDisputeModalOpenHandler} />
-            )}
-          </div>
+          <Comment key={comment?._id} sellerId={user?._id || ''} comment={comment} />
         ))}
       </HStack>
 
