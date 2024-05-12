@@ -89,7 +89,7 @@ const ProductFeedbacksTab: FC<Props> = (props) => {
             )}
           </div>
 
-          <HStack gap="4" className="h-[1000px] overflow-auto w-full lg:gap-0">
+          <HStack gap="4" className="w-full h-full overflow-auto lg:gap-0 lg:h-[1000px]">
             {feedbacks?.comments.map((item, idx) => (
               <>
                 {idx !== 0 && (
