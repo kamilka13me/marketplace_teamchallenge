@@ -29,6 +29,10 @@ const Pagination: FC<Props> = (props) => {
     isProducts,
   } = props;
 
+  const selectedBtnColor = isProducts
+    ? '!bg-secondary-yellow border-none'
+    : '!bg-selected-dark';
+
   const renderPages = (
     pages: number,
     curentPage: number,
@@ -47,7 +51,7 @@ const Pagination: FC<Props> = (props) => {
                 <Button
                   variant="grey-outlined"
                   onClick={() => setPage(i + 1)}
-                  className={`${currentPage === i + 1 ? '!bg-selected-dark' : ''} ${currentPage === i + 1 && isProducts && '!bg-secondary-yellow border-none'} ${isProducts && 'hover:bg-secondary-yellow border-disabled'} w-8 h-8 flex items-center justify-center rounded-md cursor-pointer`}
+                  className={`${currentPage === i + 1 && selectedBtnColor} ${isProducts && 'hover:bg-secondary-yellow border-disabled'} w-8 h-8 flex items-center justify-center rounded-md cursor-pointer`}
                 >
                   <Text
                     Tag="span"
@@ -80,7 +84,7 @@ const Pagination: FC<Props> = (props) => {
             <Button
               variant="grey-outlined"
               onClick={() => setPage(1)}
-              className={`${currentPage === 1 ? '!bg-selected-dark' : ''} ${currentPage === 1 && isProducts && '!bg-secondary-yellow border-none'} ${isProducts && 'hover:bg-secondary-yellow border-disabled'}  w-8 h-8 flex items-center justify-center rounded-md cursor-pointer`}
+              className={`${currentPage === 1 && selectedBtnColor} ${isProducts && 'hover:bg-secondary-yellow border-disabled'}  w-8 h-8 flex items-center justify-center rounded-md cursor-pointer`}
             >
               <Text
                 Tag="span"
@@ -97,7 +101,7 @@ const Pagination: FC<Props> = (props) => {
             <Button
               variant="grey-outlined"
               onClick={() => setPage(page)}
-              className={`${currentPage === page ? '!bg-selected-dark' : ''} ${currentPage === page && isProducts && '!bg-secondary-yellow border-none'} ${isProducts && 'hover:bg-secondary-yellow border-disabled'}  w-8 h-8 flex items-center justify-center rounded-md cursor-pointer`}
+              className={`${currentPage === page && selectedBtnColor} ${isProducts && 'hover:bg-secondary-yellow border-disabled'}  w-8 h-8 flex items-center justify-center rounded-md cursor-pointer`}
             >
               <Text
                 Tag="span"
@@ -123,7 +127,7 @@ const Pagination: FC<Props> = (props) => {
             <Button
               variant="grey-outlined"
               onClick={() => setPage(pages)}
-              className={`${currentPage === pages ? '!bg-selected-dark' : ''} ${currentPage === pages && isProducts && '!bg-secondary-yellow border-none'} ${isProducts && 'hover:bg-secondary-yellow border-disabled'}  w-8 h-8 flex items-center justify-center rounded-md cursor-pointer`}
+              className={`${currentPage === pages && selectedBtnColor} ${isProducts && 'hover:bg-secondary-yellow border-disabled'}  w-8 h-8 flex items-center justify-center rounded-md cursor-pointer`}
             >
               <Text
                 Tag="span"
