@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { getSellerProfileInfo } from '@/enteties/Seller/model/services/getSellerProfileInfo';
 import { setNewSeller } from '@/enteties/Seller/model/services/setNewSeller';
+import { setSellerInfo } from '@/enteties/Seller/model/services/setSellerInfo';
 import { Seller, SellerSchema } from '@/enteties/Seller/model/types/seller';
 import { setPasswordUser } from '@/enteties/User';
 
@@ -30,10 +31,10 @@ export const sellerSlice = createSlice({
         state.error = undefined;
         state.isLoading = true;
       })
-      // .addCase(setInformationUser.pending, (state) => {
-      //   state.error = undefined;
-      //   state.isLoading = true;
-      // })
+      .addCase(setSellerInfo.pending, (state) => {
+        state.error = undefined;
+        state.isLoading = true;
+      })
       .addCase(setPasswordUser.pending, (state) => {
         state.error = undefined;
         state.isLoading = true;
@@ -46,10 +47,10 @@ export const sellerSlice = createSlice({
         state.isLoading = false;
         state.error = undefined;
       })
-      // .addCase(setInformationUser.fulfilled, (state) => {
-      //   state.isLoading = false;
-      //   state.error = undefined;
-      // })
+      .addCase(setSellerInfo.fulfilled, (state) => {
+        state.isLoading = false;
+        state.error = undefined;
+      })
       .addCase(setPasswordUser.fulfilled, (state) => {
         state.isLoading = false;
         state.error = undefined;
@@ -62,10 +63,10 @@ export const sellerSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload as string;
       })
-      // .addCase(setInformationUser.rejected, (state, action) => {
-      //   state.isLoading = false;
-      //   state.error = action.payload as string;
-      // })
+      .addCase(setSellerInfo.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
       .addCase(setPasswordUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
