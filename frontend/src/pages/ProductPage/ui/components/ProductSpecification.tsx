@@ -26,7 +26,7 @@ const ProductSpecification: FC<Props> = (props) => {
                 <Text Tag="span" text={spec.specification} size="xl" color="white" />
                 <Icon
                   Svg={arrowRight}
-                  className={`${open ? 'rotate-90' : '-rotate-90'} !fill-main-white duration-300`}
+                  className={`${open ? '-rotate-90' : 'rotate-90'} !fill-main-white duration-300`}
                 />
               </Disclosure.Button>
               <Disclosure.Panel className="text-grey text-md">

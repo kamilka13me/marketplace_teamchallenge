@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { Rating } from '@/enteties/Rating';
 import { getUserAuthData, User } from '@/enteties/User';
 import { calcAverage } from '@/features/managingFeedbacks/helpers/managingFeedbacksHelpers';
-import { RatingResponse } from '@/pages/ProductPage/model/types';
+import { ApiFeedbackResponse, RatingResponse } from '@/pages/ProductPage/model/types';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import useAxios from '@/shared/lib/hooks/useAxios';
@@ -24,9 +24,9 @@ const SellerContacts: FC<Props> = ({ sellerId }) => {
 
   const { data, isLoading } = useAxios<ApiResponse>(`${ApiRoutes.USER}/${sellerId}`);
 
-  // const { data: feedbacks, isLoading: loadingFeedbacks } = useAxios<ApiCommentsResponse>(
-  //   `${ApiRoutes.SELLER_FEEDBACKS}`,
-  // );
+  const { data: feedbacks, isLoading: loadingFeedbacks } = useAxios<ApiFeedbackResponse>(
+    `${ApiRoutes.SELLER_FEEDBACKS}?sellerId=${sellerId}`,
+  );
 
   const { data: ratings, isLoading: loadingRatings } = useAxios<RatingResponse>(
     `${ApiRoutes.RATINGS}?sellerId=${sellerId}`,
@@ -84,15 +84,15 @@ const SellerContacts: FC<Props> = ({ sellerId }) => {
             <Rating rating={ratings ? calcAverage(ratings.current) : 0} />
           )}
 
-          {/* {!loadingFeedbacks && ( */}
-          {/*  <Text */}
-          {/*    Tag="span" */}
-          {/*    text={`${feedbacks?.totalComments || 0} відгуків`} */}
-          {/*    size="xs" */}
-          {/*    color="gray-light" */}
-          {/*    className="mt-2" */}
-          {/*  /> */}
-          {/* )} */}
+          {!loadingFeedbacks && (
+            <Text
+              Tag="span"
+              text={`${feedbacks?.totalComments || 0} відгуків`}
+              size="xs"
+              color="gray-light"
+              className="mt-2"
+            />
+          )}
         </VStack>
       </div>
       {isContactsOpen ? (

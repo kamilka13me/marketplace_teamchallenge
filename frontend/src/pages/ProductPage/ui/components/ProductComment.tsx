@@ -1,11 +1,9 @@
 import React, { ChangeEvent, FC, useState } from 'react';
 
 import { Product } from '@/enteties/Product';
-import { getUserAuthData } from '@/enteties/User';
 import { $api } from '@/shared/api/api';
 import star from '@/shared/assets/icons/star-2.svg?react';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
-import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { HStack, VStack } from '@/shared/ui/Stack';
@@ -24,21 +22,13 @@ const ProductComment: FC<Props> = (props) => {
   const [commentMessage, setCommentMessage] = useState('');
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const user = useAppSelector(getUserAuthData);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const files = Array.from(e.target.files);
       const maxSize = 10 * 1024 * 1024; // 10MB
 
-      const allowedTypes = [
-        'image/png',
-        'image/jpg',
-        'image/jpeg',
-        'application/pdf',
-        'application/msword',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      ];
+      const allowedTypes = ['image/png', 'image/jpg', 'image/jpeg'];
       const invalidTypeFiles = files.filter((file) => !allowedTypes.includes(file.type));
       const invalidSizeFiles = files.filter((file) => file.size > maxSize);
 
@@ -69,12 +59,9 @@ const ProductComment: FC<Props> = (props) => {
   const sendFeedbackHandler = () => {
     const formData = new FormData();
 
-    if (user) formData.append('authorId', user._id);
     formData.append('sellerId', product.sellerId);
     formData.append('productId', product._id);
-    formData.append('ratingId', (stars + 1).toString());
     formData.append('comment', commentMessage);
-    formData.append('parentId', '');
 
     selectedFiles.forEach((file) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -83,10 +70,20 @@ const ProductComment: FC<Props> = (props) => {
 
     try {
       $api.post(ApiRoutes.SELLER_FEEDBACKS, formData);
+
+      $api.post(ApiRoutes.FEEDBACK, {
+        sellerId: product.sellerId,
+        productId: product._id,
+        rating: (stars + 1).toString(),
+      });
     } catch (e: unknown) {
       // eslint-disable-next-line no-console
       console.log(e);
     }
+  };
+
+  const removeFile = (index: number) => {
+    setSelectedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
   return (
@@ -105,7 +102,12 @@ const ProductComment: FC<Props> = (props) => {
             />
           ))}
       </VStack>
-      <form className="w-full">
+      <form
+        className="w-full"
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
+      >
         <Textarea
           name="comment"
           variant="clear"
@@ -114,11 +116,28 @@ const ProductComment: FC<Props> = (props) => {
           className="resize-y !h-[126px] w-full bg-transparent border-[2px] border-disabled p-2 !text-disabled focus:outline-none"
         />
 
-        <VStack justify="end" className="w-full">
+        <VStack justify="between" className="w-full">
+          <VStack>
+            <div>
+              {selectedFiles.map((file, index) => (
+                <div key={index} className="flex items-center mt-2">
+                  <Text Tag="span" text={file.name} size="sm" color="gray" />
+                  <Button
+                    variant="clear"
+                    onClick={() => removeFile(index)}
+                    className="ml-2 text-red-500"
+                  >
+                    Remove
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </VStack>
+
           <HStack className=" mt-4">
             <Text
               Tag="span"
-              text="Файли з форматів: png, jpg, pdf, doc, docx"
+              text="Файли з форматів: png, jpg, jpeg"
               size="sm"
               color="gray-light"
             />

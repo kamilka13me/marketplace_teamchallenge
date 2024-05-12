@@ -1,6 +1,8 @@
 import { FC, useState } from 'react';
 
+import Comment from '@/enteties/Comment/ui/Comment';
 import { Product } from '@/enteties/Product';
+import { ApiFeedbackResponse } from '@/pages/ProductPage/model/types';
 import ProductComment from '@/pages/ProductPage/ui/components/ProductComment';
 import ProductDescription from '@/pages/ProductPage/ui/components/ProductDescription';
 import { Button } from '@/shared/ui/Button';
@@ -9,15 +11,16 @@ import { Text } from '@/shared/ui/Text';
 
 interface Props {
   product: Product;
-  feedbackLength: number;
+  feedbacks: ApiFeedbackResponse;
   rating: number;
 }
 
 const ProductFeedbacksTab: FC<Props> = (props) => {
-  const { product, rating, feedbackLength } = props;
+  const { product, rating, feedbacks } = props;
 
   const [isCommentOpen, setIsCommentIsOpen] = useState(false);
   const [filledStars, setFilledStars] = useState(0);
+
   const handleStarClick = (index: number) => {
     setFilledStars(index);
   };
@@ -38,7 +41,7 @@ const ProductFeedbacksTab: FC<Props> = (props) => {
             />
           </HStack>
           <ProductDescription
-            feedbackLength={feedbackLength}
+            feedbackLength={feedbacks?.totalComments || 0}
             rating={rating}
             size="medium"
             product={product}
@@ -46,7 +49,12 @@ const ProductFeedbacksTab: FC<Props> = (props) => {
         </HStack>
         <HStack className="w-full rounded-2xl bg-dark-grey p-4">
           <VStack justify="between" align="center" className="w-full">
-            <Text Tag="p" text="Всі відгуки" size="4xl" color="white" />
+            <Text
+              Tag="p"
+              text={`Всі відгуки ${feedbacks?.totalComments || 0}`}
+              size="4xl"
+              color="white"
+            />
             <Button
               variant="border-bottom"
               className={`${isCommentOpen ? '!border-b-disabled !text-disabled' : ''} duration-300 text-sm`}
@@ -67,13 +75,16 @@ const ProductFeedbacksTab: FC<Props> = (props) => {
             )}
           </div>
 
-          {/* <div className="h-[1000px] overflow-auto w-full"> */}
-          {/*  {Array(10) */}
-          {/*    .fill(5) */}
-          {/*    .map((item) => ( */}
-          {/*      <Comment alignItems="horizontal" comment={comment} /> */}
-          {/*    ))} */}
-          {/* </div> */}
+          <div className="h-[1000px] overflow-auto w-full">
+            {feedbacks?.comments.map((item) => (
+              <Comment
+                key={item._id}
+                sellerId={product?.sellerId}
+                comment={item}
+                alignItems="horizontal"
+              />
+            ))}
+          </div>
         </HStack>
       </VStack>
     </HStack>

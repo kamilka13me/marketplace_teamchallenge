@@ -3,6 +3,7 @@ import { FC, useState } from 'react';
 import { Comment, IComment } from '@/enteties/Comment';
 import { Product } from '@/enteties/Product';
 import { Rating } from '@/enteties/Rating';
+import { getUserAuthData } from '@/enteties/User';
 import {
   calcAverage,
   calcRatingInPercentage,
@@ -10,6 +11,7 @@ import {
 import { ApiFeedbackResponse, RatingResponse } from '@/pages/ProductPage/model/types';
 import ProductComment from '@/pages/ProductPage/ui/components/ProductComment';
 import star from '@/shared/assets/icons/star-2.svg?react';
+import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { HStack, VStack } from '@/shared/ui/Stack';
@@ -28,6 +30,8 @@ const ProductFeedbacks: FC<Props> = (props) => {
   const [isCommentOpen, setIsCommentIsOpen] = useState(false);
   const [filledStars, setFilledStars] = useState(0);
 
+  const user = useAppSelector(getUserAuthData);
+
   const currentValues = calcRatingInPercentage(rating?.current);
   const totalValue = Object.values(currentValues).reduce((acc, curr) => acc + curr, 0);
 
@@ -39,15 +43,17 @@ const ProductFeedbacks: FC<Props> = (props) => {
     <HStack className=" bg-dark-grey max-w-[646px] w-full rounded-2xl p-4">
       <VStack justify="between" align="center" className="w-full mb-8">
         <Text Tag="h4" text="Відгуки" size="4xl" color="white" font="ibm-plex-sans" />
-        <Button
-          variant="border-bottom"
-          className={`${isCommentOpen ? '!border-b-disabled !text-disabled' : ''} duration-300 text-sm`}
-          onClick={() => {
-            setIsCommentIsOpen((prev) => !prev);
-          }}
-        >
-          {isCommentOpen ? 'Відмінити' : 'Залишити відгук'}
-        </Button>
+        {user && (
+          <Button
+            variant="border-bottom"
+            className={`${isCommentOpen ? '!border-b-disabled !text-disabled' : ''} duration-300 text-sm`}
+            onClick={() => {
+              setIsCommentIsOpen((prev) => !prev);
+            }}
+          >
+            {isCommentOpen ? 'Відмінити' : 'Залишити відгук'}
+          </Button>
+        )}
       </VStack>
 
       {isCommentOpen && (
@@ -107,7 +113,7 @@ const ProductFeedbacks: FC<Props> = (props) => {
         </HStack>
       </VStack>
 
-      {feedbacks.totalComments > 1 ? (
+      {feedbacks.totalComments > 0 ? (
         <>
           <Button
             variant="clear"
@@ -118,6 +124,7 @@ const ProductFeedbacks: FC<Props> = (props) => {
           </Button>
           <Comment
             alignItems="horizontal"
+            sellerId={product?.sellerId}
             comment={
               feedbacks.comments ? (feedbacks.comments[0] as IComment) : ({} as IComment)
             }

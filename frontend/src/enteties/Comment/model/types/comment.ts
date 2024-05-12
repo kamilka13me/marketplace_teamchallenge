@@ -6,8 +6,9 @@ export interface IComment {
   authorId: string;
   sellerId: string;
   productId: Product | null;
-  ratingId: IRating;
+  rating: IRating;
   parentId: null | IComment;
+  replies: IComment[];
   comment: string;
   images: string[];
   created_at: string;

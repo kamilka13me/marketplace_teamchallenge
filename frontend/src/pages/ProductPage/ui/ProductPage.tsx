@@ -88,11 +88,13 @@ const ProductPage: FC<Props> = () => {
       />
       <Container>
         {isProductFeedbacksOpen ? (
-          <ProductFeedbacksTab
-            rating={productRating ? calcAverage(productRating.current) : 0}
-            feedbackLength={productFeedbacks?.totalComments || 0}
-            product={data?.product || ({} as Product)}
-          />
+          !productFeedbacksIsLoading && (
+            <ProductFeedbacksTab
+              rating={productRating ? calcAverage(productRating.current) : 0}
+              feedbacks={productFeedbacks || ({} as ApiFeedbackResponse)}
+              product={data?.product || ({} as Product)}
+            />
+          )
         ) : (
           <>
             <VStack gap="5">
