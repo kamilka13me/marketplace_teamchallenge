@@ -21,7 +21,7 @@ import useAxios from '@/shared/lib/hooks/useAxios';
 import { ReactHelmet } from '@/shared/SEO';
 import NextArrow from '@/shared/ui/Slider/NextArrow';
 import PrevArrow from '@/shared/ui/Slider/PrevArrow';
-import { HStack, VStack } from '@/shared/ui/Stack';
+import { HStack } from '@/shared/ui/Stack';
 
 interface Props {}
 
@@ -30,6 +30,17 @@ const ProductPage: FC<Props> = () => {
 
   const [isProductFeedbacksOpen, setIsProductFeedbacksOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const { data, isLoading } = useAxios<ApiProductResponse>(`${ApiRoutes.PRODUCTS}/${id}`);
 
@@ -97,36 +108,38 @@ const ProductPage: FC<Props> = () => {
           )
         ) : (
           <>
-            <VStack gap="5">
-              <HStack gap="5" className="w-full max-w-[646px]">
-                <div className="h-[514px] bg-dark-grey max-w-[646px] w-full rounded-2xl">
+            <HStack gap="4" className="lg:gap-5 lg:flex-row">
+              <HStack gap="5" className="w-full max-w-[343px] lg:max-w-[646px]">
+                <div className="h-[272px] max-w-[343px] bg-dark-grey  w-full rounded-2xl lg:h-[514px] lg:max-w-[646px]">
                   <Slider {...settingsBig}>
                     {data?.product.images.map((item) => (
                       <img
                         key={item} // Ensure each item has a unique key
                         src={`${process.env.BASE_URL}${item}`}
                         alt="slider-img"
-                        className="!w-[646px] !h-[514px] rounded-2xl bg-dark-grey !object-cover"
+                        className="!w-[343px] !h-[272px] lg:!w-[646px] lg:!h-[514px] rounded-2xl bg-dark-grey !object-cover"
                       />
                     ))}
                   </Slider>
                 </div>
-                <div className="h-[84px] w-full ">
-                  <Slider {...settingsSmall}>
-                    {data?.product.images.map((item) => (
-                      <img
-                        key={item} // Ensure each item has a unique key
-                        src={`${process.env.BASE_URL}${item}`}
-                        alt="slider-img"
-                        className="!w-[82px] !h-[84px] rounded-2xl bg-dark-grey !object-cover"
-                      />
-                    ))}
-                  </Slider>
-                </div>
+                {windowWidth >= 1024 && (
+                  <div className="h-[84px] w-full hidden">
+                    <Slider {...settingsSmall}>
+                      {data?.product.images.map((item) => (
+                        <img
+                          key={item} // Ensure each item has a unique key
+                          src={`${process.env.BASE_URL}${item}`}
+                          alt="slider-img"
+                          className="!w-[82px] !h-[84px] rounded-2xl bg-dark-grey !object-cover"
+                        />
+                      ))}
+                    </Slider>
+                  </div>
+                )}
               </HStack>
 
               {/* DESCRIPTION */}
-              <HStack gap="5">
+              <HStack gap="4" className="lg:gap-5 w-full">
                 {!productRatingIsLoading && !productFeedbacksIsLoading && (
                   <ProductDescription
                     rating={productRating ? calcAverage(productRating.current) : 0}
@@ -137,9 +150,9 @@ const ProductPage: FC<Props> = () => {
 
                 <SellerContacts sellerId={data?.product.sellerId || ''} />
               </HStack>
-            </VStack>
+            </HStack>
 
-            <VStack gap="5" className="mt-5">
+            <HStack gap="4" className="mt-4 lg:flex-row lg:mt-5 lg:gap-5">
               <ProductSpecification product={data?.product || ({} as Product)} />
               {!productFeedbacksIsLoading && !productRatingIsLoading && (
                 <ProductFeedbacks
@@ -149,7 +162,7 @@ const ProductPage: FC<Props> = () => {
                   openAllFeedbacksHandler={openProductFeedbacksHandler}
                 />
               )}
-            </VStack>
+            </HStack>
           </>
         )}
       </Container>

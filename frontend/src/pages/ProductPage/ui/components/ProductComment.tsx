@@ -1,7 +1,8 @@
-import React, { ChangeEvent, FC, useState } from 'react';
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 
 import { Product } from '@/enteties/Product';
 import { $api } from '@/shared/api/api';
+import attachment from '@/shared/assets/icons/attachmentVert.svg?react';
 import star from '@/shared/assets/icons/star-2.svg?react';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { Button } from '@/shared/ui/Button';
@@ -22,6 +23,17 @@ const ProductComment: FC<Props> = (props) => {
   const [commentMessage, setCommentMessage] = useState('');
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -113,10 +125,10 @@ const ProductComment: FC<Props> = (props) => {
           variant="clear"
           placeholder="Напишіть коментар"
           onChange={(e) => setCommentMessage(e.currentTarget.value)}
-          className="resize-y !h-[126px] w-full bg-transparent border-[2px] border-disabled p-2 !text-disabled focus:outline-none"
+          className="resize-y !h-[126px] w-full bg-selected-dark border-disabled p-2 !text-disabled focus:outline-none placeholder:text-grey lg:border-[2px] lg:bg-transparent"
         />
 
-        <VStack justify="between" className="w-full">
+        <HStack justify="between" className="w-full">
           <VStack>
             <div>
               {selectedFiles.map((file, index) => (
@@ -134,17 +146,17 @@ const ProductComment: FC<Props> = (props) => {
             </div>
           </VStack>
 
-          <HStack className=" mt-4">
+          <HStack className=" mt-4 w-full">
             <Text
               Tag="span"
               text="Файли з форматів: png, jpg, jpeg"
               size="sm"
               color="gray-light"
             />
-            <VStack gap="4" className="mt-2 w-full" justify="end">
+            <VStack gap="4" className="mt-2 w-full lg:justify-end">
               {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-              <label className="min-w-[123px] cursor-pointer font-normal text-center text-[16px] leading-[21px] text-white-transparent-70 p-[10px] border-[1px] border-white-transparent-70">
-                Обрати файл
+              <label className=" cursor-pointer font-normal text-center text-[16px] leading-[21px] text-white-transparent-70 p-[10px] border-[1px] border-white-transparent-70 rounded-[4px] lg:min-w-[123px] lg:rounded-none">
+                {windowWidth >= 1024 ? 'Обрати файл' : <Icon Svg={attachment} />}
                 <input
                   type="file"
                   accept=".png,.jpg,.jpeg,.pdf,.doc,.docx"
@@ -155,7 +167,7 @@ const ProductComment: FC<Props> = (props) => {
               </label>
               <Button
                 variant="primary"
-                className="w-[226px] h-[48px]"
+                className=" h-[48px] w-full lg:w-[226px]"
                 onClick={sendFeedbackHandler}
               >
                 Надіслати
@@ -172,7 +184,7 @@ const ProductComment: FC<Props> = (props) => {
               />
             )}
           </HStack>
-        </VStack>
+        </HStack>
       </form>
     </HStack>
   );

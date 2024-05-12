@@ -47,16 +47,16 @@ const ProductDescription: FC<Props> = (props) => {
   };
 
   return (
-    <HStack className="bg-dark-grey px-4 py-8 rounded-2xl max-w-[646px] h-[514px] w-full">
+    <HStack className="bg-dark-grey p-4 rounded-2xl min-w-[343px] max-w-[646px] w-full lg:py-8 lg:h-[514px]">
       <div
-        className={`h-[80px] ${size === 'big' ? '!h-[80px]' : '!h-[52px]'} w-full overflow-hidden`}
+        className={`${size === 'big' ? 'max-h-[80px]' : 'max-h-[52px]'} h-full w-full overflow-hidden`}
       >
         <Text
           Tag="h3"
           text={product?.name || ''}
           size="4xl"
           font="ibm-plex-sans"
-          className={`text-ellipsis ${size === 'medium' ? '!text-xl !leading-[26px]' : ''}`}
+          className={`text-ellipsis ${size === 'medium' ? '!text-xl !leading-[26px]' : ''} max-w-[310px] lg:max-w-full`}
           color="white"
         />
       </div>
@@ -73,7 +73,7 @@ const ProductDescription: FC<Props> = (props) => {
       </VStack>
 
       {product?.condition && (
-        <div className="bg-green px-2 rounded-lg mt-3 leading-[0px] py-[2px]">
+        <div className="bg-green px-2 rounded-lg mt-2.5 leading-[0px] py-[2px] lg:mt-3">
           <Text Tag="span" text={product?.condition || ''} size="xs" color="white" />
         </div>
       )}
@@ -83,9 +83,7 @@ const ProductDescription: FC<Props> = (props) => {
         <Text Tag="span" text={product?.brand || 'Відсутній'} size="lg" color="white" />
       </VStack>
 
-      <div>
-        <Text Tag="p" text={product?.description} size="md" color="gray-light" />
-      </div>
+      <Text Tag="p" text={product?.description} size="md" color="gray-light" />
 
       <div className="mt-6">
         <VStack gap="1" align="center" className="">
@@ -109,14 +107,14 @@ const ProductDescription: FC<Props> = (props) => {
         {product?.discount ? (
           <VStack gap="1" align="center" className="-mt-1">
             <Text
-              size="sm"
+              size="md"
               font="ibm-plex-sans"
               Tag="p"
               text={product?.price.toFixed(0).toString() || ''}
               className="line-through font-semibold lg:text-lg"
               color="gray"
             />
-            <Text font="ibm-plex-sans" size="sm" Tag="span" text="грн" color="gray" />
+            <Text font="ibm-plex-sans" size="md" Tag="span" text="грн" color="gray" />
           </VStack>
         ) : (
           <div className="h-[30px]" />
@@ -133,7 +131,7 @@ const ProductDescription: FC<Props> = (props) => {
         variant="primary"
         disabled={buttonIsDisabled}
         onClick={() => handleWishClick()}
-        className={`${wishlist?.includes(product?._id) ? '!bg-disabled' : ''} h-[52px] mt-6 ${size === 'medium' ? 'w-full' : 'w-[319px]'}`}
+        className={`${wishlist?.includes(product?._id) ? '!bg-disabled' : ''} h-[52px] mt-6 w-full ${size === 'big' && 'w-[319px]'}`}
       >
         {wishlist?.includes(product?._id) ? 'Прибрати з обраного' : 'Додати в обране'}
       </Button>
