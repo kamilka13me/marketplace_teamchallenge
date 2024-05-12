@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 import { Button } from '@/shared/ui/Button';
 import { VStack } from '@/shared/ui/Stack';
@@ -13,6 +13,7 @@ interface Props {
   fetchNext: () => void;
   fetchPrev: () => void;
   className?: string;
+  isProducts?: boolean;
 }
 
 const Pagination: FC<Props> = (props) => {
@@ -25,6 +26,7 @@ const Pagination: FC<Props> = (props) => {
     fetchPrev,
     fetchNext,
     className,
+    isProducts,
   } = props;
 
   const renderPages = (
@@ -45,9 +47,14 @@ const Pagination: FC<Props> = (props) => {
                 <Button
                   variant="grey-outlined"
                   onClick={() => setPage(i + 1)}
-                  className={`${currentPage === i + 1 ? '!bg-selected-dark' : ''} w-8 h-8 flex items-center justify-center rounded-md cursor-pointer`}
+                  className={`${currentPage === i + 1 ? '!bg-selected-dark' : ''} ${currentPage === i + 1 && isProducts && '!bg-secondary-yellow border-none'} ${isProducts && 'hover:bg-secondary-yellow border-disabled'} w-8 h-8 flex items-center justify-center rounded-md cursor-pointer`}
                 >
-                  <Text Tag="span" text={(i + 1).toString()} size="sm" color="white" />
+                  <Text
+                    Tag="span"
+                    text={(i + 1).toString()}
+                    size="sm"
+                    color={isProducts ? 'primary' : 'white'}
+                  />
                 </Button>
               </li>
             ))}
@@ -73,9 +80,14 @@ const Pagination: FC<Props> = (props) => {
             <Button
               variant="grey-outlined"
               onClick={() => setPage(1)}
-              className={`${currentPage === 1 ? '!bg-selected-dark' : ''} w-8 h-8 flex items-center justify-center rounded-md cursor-pointer`}
+              className={`${currentPage === 1 ? '!bg-selected-dark' : ''} ${currentPage === 1 && isProducts && '!bg-secondary-yellow border-none'} ${isProducts && 'hover:bg-secondary-yellow border-disabled'}  w-8 h-8 flex items-center justify-center rounded-md cursor-pointer`}
             >
-              <Text Tag="span" text="1" size="sm" color="white" />
+              <Text
+                Tag="span"
+                text="1"
+                size="sm"
+                color={isProducts ? 'primary' : 'white'}
+              />
             </Button>
           </li>
         )}
@@ -85,9 +97,14 @@ const Pagination: FC<Props> = (props) => {
             <Button
               variant="grey-outlined"
               onClick={() => setPage(page)}
-              className={`${currentPage === page ? '!bg-selected-dark' : ''} w-8 h-8 flex items-center justify-center rounded-md cursor-pointer`}
+              className={`${currentPage === page ? '!bg-selected-dark' : ''} ${currentPage === page && isProducts && '!bg-secondary-yellow border-none'} ${isProducts && 'hover:bg-secondary-yellow border-disabled'}  w-8 h-8 flex items-center justify-center rounded-md cursor-pointer`}
             >
-              <Text Tag="span" text={page.toString()} size="sm" color="white" />
+              <Text
+                Tag="span"
+                text={page.toString()}
+                size="sm"
+                color={isProducts ? 'primary' : 'white'}
+              />
             </Button>
           </li>
         ))}
@@ -106,9 +123,14 @@ const Pagination: FC<Props> = (props) => {
             <Button
               variant="grey-outlined"
               onClick={() => setPage(pages)}
-              className={`${currentPage === pages ? '!bg-selected-dark' : ''} w-8 h-8 flex items-center justify-center rounded-md cursor-pointer`}
+              className={`${currentPage === pages ? '!bg-selected-dark' : ''} ${currentPage === pages && isProducts && '!bg-secondary-yellow border-none'} ${isProducts && 'hover:bg-secondary-yellow border-disabled'}  w-8 h-8 flex items-center justify-center rounded-md cursor-pointer`}
             >
-              <Text Tag="span" text={pages.toString()} size="sm" color="white" />
+              <Text
+                Tag="span"
+                text={pages.toString()}
+                size="sm"
+                color={isProducts ? 'primary' : 'white'}
+              />
             </Button>
           </li>
         )}
@@ -126,9 +148,14 @@ const Pagination: FC<Props> = (props) => {
         disabled={offset === 0}
         variant="grey-outlined"
         onClick={fetchPrev}
-        className="px-3 py-[3.3px] disabled:invisible"
+        className={`px-3 py-[3.3px] disabled:invisible ${isProducts && 'hover:bg-secondary-yellow'}`}
       >
-        <Text Tag="span" text="Попередня" size="sm" color="white" />
+        <Text
+          Tag="span"
+          text="Попередня"
+          size="sm"
+          color={isProducts ? 'primary' : 'white'}
+        />
       </Button>
       <VStack gap="2">
         {renderPages(Math.ceil(dataLength / itemsPerPage), currentPage, setPage)}
@@ -138,9 +165,14 @@ const Pagination: FC<Props> = (props) => {
         variant="grey-outlined"
         type="button"
         onClick={fetchNext}
-        className="px-3 py-[3.3px] disabled:invisible"
+        className={`px-3 py-[3.3px] disabled:invisible ${isProducts && 'hover:bg-secondary-yellow'}`}
       >
-        <Text Tag="span" text="Наступна" size="sm" color="white" />
+        <Text
+          Tag="span"
+          text="Наступна"
+          size="sm"
+          color={isProducts ? 'primary' : 'white'}
+        />
       </Button>
     </VStack>
   );
