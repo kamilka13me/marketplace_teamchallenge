@@ -4,9 +4,7 @@ import { UserRoles } from '@/enteties/User/model/types/userRoles';
 import { AdminPage } from '@/pages/AdminPage';
 import { MainPage } from '@/pages/MainPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
-// import { ProductPage } from '@/pages/ProductPage';
-// import { ProductsPage } from '@/pages/ProductsPage';
-// import { ProductsPage } from '@/pages/ProductsPage';
+import { ProductPage } from '@/pages/ProductPage';
 import { ProductsPage } from '@/pages/ProductsPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { RecoverPasswordPage } from '@/pages/RecoverPasswordPage';
@@ -16,8 +14,6 @@ import { VerifyPage } from '@/pages/VerifyPage';
 import {
   AppRoutes,
   getRouteMain,
-  // getRouteProducts,
-  // getRouteProduct,
   getRouteProducts,
   getRouteProfile,
   getSellerProfile,
@@ -25,6 +21,7 @@ import {
   getRecoverPasswordRoute,
   getSellerRegistration,
   getAdminProfile,
+  getRouteProduct,
 } from '@/shared/const/routes';
 
 export type AppRoutesProps = RouteProps & {
@@ -37,10 +34,10 @@ export const RouteConfig: Record<AppRoutes, AppRoutesProps> = {
     path: getRouteMain(),
     element: <MainPage />,
   },
-  // [AppRoutes.PRODUCT]: {
-  //   path: getRouteProduct(':id'),
-  //   element: <ProductPage />,
-  // },
+  [AppRoutes.PRODUCT]: {
+    path: getRouteProduct(':id'),
+    element: <ProductPage />,
+  },
   [AppRoutes.PRODUCTS]: {
     path: getRouteProducts(),
     element: <ProductsPage />,

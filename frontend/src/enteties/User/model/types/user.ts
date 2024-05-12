@@ -2,7 +2,6 @@ export interface User {
   _id: string;
   username: string;
   surname: string;
-  isAccountConfirm: boolean;
   email: string;
   role: string;
   dob?: string;
