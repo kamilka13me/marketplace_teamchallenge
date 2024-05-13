@@ -97,21 +97,17 @@ const productController = {
   // get all products
   getAllProducts: async (req, res) => {
     try {
-      const {
-        limit = 10,
-        offset = 0,
-        name,
-        category,
-        discount = 0,
-        quantity = 1,
-      } = req.query;
-      let { sortBy, sortDirection } = req.query;
+      const { name, category, discount = 0, quantity = 1 } = req.query;
+      let { sortBy, sortDirection = 1, limit = 10, offset = 0 } = req.query;
 
-      // Building a filter object based on name and category
+      limit = parseInt(limit, 10);
+      offset = parseInt(offset, 10);
+      sortDirection = parseInt(sortDirection, 10) || 1;
+
       const query = {};
 
       if (name) {
-        query.name = { $regex: name, $options: 'i' }; // Search by name
+        query.name = { $regex: name, $options: 'i' };
       }
       if (category) {
         if (mongoose.Types.ObjectId.isValid(category)) {
@@ -124,7 +120,6 @@ const productController = {
           query.category = category;
         }
       }
-
       // eslint-disable-next-line eqeqeq
       if (discount != 0) {
         query.discount = { $gt: discount - 1 };
@@ -133,24 +128,77 @@ const productController = {
       if (quantity != 0) {
         query.quantity = { $gt: quantity - 1 };
       }
+      if (sortBy === 'TotalPrice') {
+        const aggregationPipeline = [
+          { $match: query },
+          {
+            $addFields: {
+              totalCount: {
+                $cond: {
+                  if: { $and: [{ $gt: ['$discount', 0] }, { $lte: ['$discount', 100] }] },
+                  then: {
+                    $multiply: [
+                      '$price',
+                      { $subtract: [1, { $divide: ['$discount', 100] }] },
+                    ],
+                  },
+                  else: '$price',
+                },
+              },
+            },
+          },
+          { $sort: { totalCount: parseInt(sortDirection, 10) || 1 } },
+          { $skip: offset },
+          { $limit: limit },
+        ];
 
-      // Create a sorting object
-      const sortObject = {};
+        const products = await Product.aggregate(aggregationPipeline);
+        const count = await Product.countDocuments(query);
 
-      sortBy = sortBy || '_id';
-      sortDirection = parseInt(sortDirection, 10) || 1;
+        return res.status(200).json({ count, products });
+      }
+      if (sortBy === 'rating') {
+        const aggregationPipeline = [
+          { $match: query },
+          {
+            $lookup: {
+              from: 'ratings',
+              localField: '_id',
+              foreignField: 'productId',
+              as: 'ratings',
+            },
+          },
+          {
+            $addFields: {
+              averageRating: { $avg: '$ratings.rating' },
+            },
+          },
+          { $sort: { [sortBy === 'rating' ? 'averageRating' : sortBy]: sortDirection } },
+          { $skip: offset },
+          { $limit: limit },
+        ];
 
-      sortObject[sortBy] = sortDirection;
+        const products = await Product.aggregate(aggregationPipeline);
+        const count = await Product.countDocuments(query);
 
-      // Retrieving products from the database
-      const products = await Product.find(query)
-        .sort(sortObject)
-        .skip(offset)
-        .limit(limit);
+        res.status(200).json({ count, products });
+      } else {
+        // Creating a sort object
+        const sortObject = {};
 
-      const count = await Product.countDocuments(query);
+        sortBy = sortBy || '_id';
+        sortDirection = parseInt(sortDirection, 10) || 1;
+        sortObject[sortBy] = sortDirection;
 
-      res.status(200).json({ count, products });
+        const products = await Product.find(query)
+          .sort(sortObject)
+          .skip(offset)
+          .limit(limit);
+
+        const count = await Product.countDocuments(query);
+
+        return res.status(200).json({ count, products });
+      }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);

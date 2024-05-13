@@ -192,7 +192,7 @@ productRoute.get('/:id', viewsCounter(), productController.getOneProduct);
  *         schema:
  *           type: string
  *           default: '_id'
- *         description: Field to sort by.
+ *         description: Field to sort by. can be any field from the product model as well as  ```TotalPrice``` and ```rating```
  *       - in: query
  *         name: sortDirection
  *         schema:
