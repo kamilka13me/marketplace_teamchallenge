@@ -5,6 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 import initProductsPage from '../model/services/initProductsPage';
 
 import ProductsPagination from './components/ProductsPagination';
+import ProductsSidebar from './components/ProductsSidebar';
 import ProductsSortSelector from './components/ProductsSortSelector';
 
 import { ProductCard } from '@/enteties/Product';
@@ -21,7 +22,6 @@ import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { ReactHelmet } from '@/shared/SEO';
 import { Text } from '@/shared/ui/Text';
-import { Sidebar } from '@/widgets/Sidebar';
 
 interface Props {}
 
@@ -64,9 +64,9 @@ const ProductsPage: FC<Props> = () => {
 
       <Container className="container">
         <div className="contentBox flex gap-6">
-          <div className="sidebar hidden lg:block max-w-[300px] w-full pt-11">
+          <div className="sidebarRow hidden lg:block max-w-[300px] w-full pt-14">
             <div className="siderbarBox w-full">
-              <Sidebar />
+              <ProductsSidebar />
             </div>
           </div>
 
