@@ -1,7 +1,9 @@
-import React, { ChangeEvent, FC, FormEventHandler, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+
+import HeaderSearchInput from './components/HeaderSearchInput';
 
 import { getUserAuthData, getWishlist, userActions } from '@/enteties/User';
 import { actionLogin } from '@/features/userAuth';
@@ -15,7 +17,6 @@ import en from '@/shared/assets/icons/en.svg?react';
 import like from '@/shared/assets/icons/like.svg?react';
 import logo from '@/shared/assets/icons/logo.svg?react';
 import person from '@/shared/assets/icons/person.svg?react';
-import search from '@/shared/assets/icons/search.svg?react';
 import ua from '@/shared/assets/icons/ua.svg?react';
 import {
   getAdminProfile,
@@ -28,7 +29,6 @@ import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
-import { Input } from '@/shared/ui/Input';
 import { Link } from '@/shared/ui/Link';
 import { ModalWindow } from '@/shared/ui/ModalWindow';
 import { HStack, VStack } from '@/shared/ui/Stack';
@@ -44,7 +44,6 @@ const Header: FC<Props> = () => {
   const burgerButtonRef = useRef<HTMLButtonElement>(null);
 
   const [showModalCategory, setShowModalCategory] = useState(false);
-  const [inputData, setInputData] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
   const [currentForm, setCurrentForm] = useState<number>(0);
   const [showBurgerMenu, setShowBurgerMenu] = useState(false);
@@ -56,18 +55,6 @@ const Header: FC<Props> = () => {
 
   const onAllProductsClick = (): void => {
     setShowModalCategory((prevState) => !prevState);
-  };
-
-  const onSubmitSearch: FormEventHandler<HTMLFormElement> = (
-    e: ChangeEvent<HTMLFormElement>,
-  ) => {
-    e.preventDefault();
-
-    setInputData('');
-  };
-
-  const onChangeInput = (e: ChangeEvent<HTMLInputElement>): void => {
-    setInputData(e.target.value);
   };
 
   const onHandleClickPortal = (): void => {
@@ -154,32 +141,8 @@ const Header: FC<Props> = () => {
                   {t('Всі товари')}
                 </VStack>
               </Button>
-              <form
-                onSubmit={onSubmitSearch}
-                className="flex flex-nowrap items-center w-full lg:w-auto hover:drop-shadow-custom-primary duration-300"
-                autoComplete="off"
-              >
-                <Input
-                  name="searchInput"
-                  type="text"
-                  variant="search"
-                  value={inputData}
-                  placeholder={t('Я шукаю')}
-                  onChange={onChangeInput}
-                  className="min-h-[38px] w-full lg:min-w-[395px] xl:min-w-[443px]"
-                  classNameBlockWrap="w-full"
-                />
-                <Button
-                  variant="primary"
-                  className="rounded-l-none !px-[14px] py-[9px]"
-                  type="submit"
-                  onClick={() => {
-                    setInputData('');
-                  }}
-                >
-                  <Icon Svg={search} width={20} height={20} />
-                </Button>
-              </form>
+
+              <HeaderSearchInput />
 
               <VStack
                 gap="1"
