@@ -4,8 +4,8 @@ import { useSearchParams } from 'react-router-dom';
 
 import initProductsPage from '../model/services/initProductsPage';
 
-import ProductsPagination from './ProductsPagination/ProductsPagination';
-import ProductsSortSelector from './ProductsSortSelector/ProductsSortSelector';
+import ProductsPagination from './components/ProductsPagination';
+import ProductsSortSelector from './components/ProductsSortSelector';
 
 import { ProductCard } from '@/enteties/Product';
 import {
