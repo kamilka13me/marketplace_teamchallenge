@@ -339,7 +339,7 @@ const GeneralBlockSellerForm: FC = () => {
           {...register('generalName', {
             required: t("Це поле є обов'язковим"),
             pattern: {
-              value: /^[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ"'-]*$/,
+              value: /^[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ\s".'-]*$/,
               message: t('Введіть назву українською мовою'),
             },
           })}
