@@ -11,7 +11,12 @@ import enBlack from '@/shared/assets/icons/en-black.svg?react';
 import logo from '@/shared/assets/icons/logo.svg?react';
 import person from '@/shared/assets/icons/person.svg?react';
 import uaBlack from '@/shared/assets/icons/ua-black.svg?react';
-import { getRouteMain, getRouteProfile } from '@/shared/const/routes';
+import {
+  getAdminProfile,
+  getRouteMain,
+  getRouteProfile,
+  getSellerProfile,
+} from '@/shared/const/routes';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
@@ -51,7 +56,13 @@ const BurgerMenu: FC<Props> = (props) => {
   };
 
   const onEmailClick = (): void => {
-    navigate(getRouteProfile('info'));
+    if (user?.role === 'user') {
+      navigate(getRouteProfile('info'));
+    } else if (user?.role === 'seller') {
+      navigate(getSellerProfile('dashboard'));
+    } else if (user?.role === 'admin') {
+      navigate(getAdminProfile('users'));
+    }
     setClose();
     document.body.classList.remove('overflow-hidden');
   };
