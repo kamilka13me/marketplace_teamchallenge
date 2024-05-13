@@ -46,8 +46,9 @@ const ProductsSortSelector: FC<Props> = () => {
         <option value="nosort" disabled hidden>
           Обрати опцію
         </option>
-        <option value="price 1">Зростаням ціни</option>
-        <option value="price -1">Зменшеням ціни</option>
+        <option value="rating -1">Рейтингом</option>
+        <option value="TotalPrice 1">Зростаням ціни</option>
+        <option value="TotalPrice -1">Зменшеням ціни</option>
       </select>
       <Icon
         aria-hidden="true"
