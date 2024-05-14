@@ -4,8 +4,9 @@ import { useSearchParams } from 'react-router-dom';
 
 import initProductsPage from '../model/services/initProductsPage';
 
-import ProductsPagination from './ProductsPagination/ProductsPagination';
-import ProductsSortSelector from './ProductsSortSelector/ProductsSortSelector';
+import ProductsPagination from './components/ProductsPagination';
+import ProductsSidebar from './components/ProductsSidebar';
+import ProductsSortSelector from './components/ProductsSortSelector';
 
 import { ProductCard } from '@/enteties/Product';
 import {
@@ -20,7 +21,7 @@ import { Container } from '@/shared/layouts/Container';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { ReactHelmet } from '@/shared/SEO';
-import { Sidebar } from '@/widgets/Sidebar';
+import { Text } from '@/shared/ui/Text';
 
 interface Props {}
 
@@ -63,15 +64,20 @@ const ProductsPage: FC<Props> = () => {
 
       <Container className="container">
         <div className="contentBox flex gap-6">
-          <div className="sidebar hidden lg:block max-w-[300px] w-full pt-11">
+          <div className="sidebarRow hidden lg:block max-w-[300px] w-full pt-14">
             <div className="siderbarBox w-full">
-              <Sidebar />
+              <ProductsSidebar />
             </div>
           </div>
 
           <div className="w-full flex flex-col gap-5">
             <div className="topRow w-full flex items-center justify-between">
-              <span className="text-lg">Знайдено {productsCount} результатів пошуку</span>
+              <Text
+                Tag="span"
+                text={`Знайдено ${productsCount} результатів пошуку`}
+                size="lg"
+                color="primary"
+              />
               <ProductsSortSelector />
             </div>
 

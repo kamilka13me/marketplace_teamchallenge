@@ -15,7 +15,7 @@ const ProductsPagination: FC<Props> = () => {
   const productsCount = useAppSelector(getProductsCount);
   const productsLimit = useAppSelector((state) => state.products.limit);
   const offset = useAppSelector((state) => state.products.offset);
-  const currentPage = offset + 1;
+  const currentPage = offset / productsLimit + 1;
 
   const handleClickPage = (pageNumber: number) => {
     searchParams.set('offset', String(productsLimit * (pageNumber - 1)));
@@ -41,7 +41,7 @@ const ProductsPagination: FC<Props> = () => {
       offset={offset}
       fetchNext={fetchNext}
       fetchPrev={fetchPrev}
-      className="text-black"
+      isProducts
     />
   );
 };
