@@ -228,6 +228,10 @@ const PrivateBlockSellerForm: FC = () => {
                 classNameBlockWrap="w-full"
                 {...register(`contacts.${index}.person`, {
                   required: t("Це поле є обов'язковим"),
+                  pattern: {
+                    value: /^[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ\s".'-]*$/,
+                    message: t('Введіть контактну особу українською мовою'),
+                  },
                 })}
                 error={
                   errors?.contacts?.[index]?.person &&
