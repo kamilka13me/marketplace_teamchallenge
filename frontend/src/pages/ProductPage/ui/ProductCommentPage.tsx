@@ -46,7 +46,7 @@ const ProductCommentPage: FC = () => {
     triggerRef,
     wrapperRef,
     callback: () => {
-      if (!isFetching && data.comments.length <= 10) {
+      if (!isFetching && offset * 10 <= data.totalComments) {
         setOffset((prevState) => prevState + 1);
       }
     },
