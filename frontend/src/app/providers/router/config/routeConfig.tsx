@@ -4,7 +4,7 @@ import { UserRoles } from '@/enteties/User/model/types/userRoles';
 import { AdminPage } from '@/pages/AdminPage';
 import { MainPage } from '@/pages/MainPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
-import { ProductPage } from '@/pages/ProductPage';
+import { ProductCommentPage, ProductPage } from '@/pages/ProductPage';
 import { ProductsPage } from '@/pages/ProductsPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { RecoverPasswordPage } from '@/pages/RecoverPasswordPage';
@@ -22,6 +22,7 @@ import {
   getSellerRegistration,
   getAdminProfile,
   getRouteProduct,
+  getRouteProductComments,
 } from '@/shared/const/routes';
 
 export type AppRoutesProps = RouteProps & {
@@ -37,6 +38,10 @@ export const RouteConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.PRODUCT]: {
     path: getRouteProduct(':id'),
     element: <ProductPage />,
+  },
+  [AppRoutes.PRODUCT_COMMENTS]: {
+    path: getRouteProductComments(':id'),
+    element: <ProductCommentPage />,
   },
   [AppRoutes.PRODUCTS]: {
     path: getRouteProducts(),

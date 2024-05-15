@@ -93,13 +93,13 @@ const MainPage: FC = () => {
             isLoading={promotionsProduct.isLoading}
             title="Акційні пропозиції"
             products={promotionsProduct.data?.products}
-            setSearchParams={popularProductsSearchParamsHandler}
+            setSearchParams={promotionsProductsSearchParamsHandler}
           />
           <ProductSectionLayout
             isLoading={popularProduct.isLoading}
             title="Популярні товари"
             products={popularProduct.data?.products}
-            setSearchParams={promotionsProductsSearchParamsHandler}
+            setSearchParams={popularProductsSearchParamsHandler}
           />
         </HStack>
         <div className="lg:hidden">

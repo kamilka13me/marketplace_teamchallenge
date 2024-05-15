@@ -1,5 +1,8 @@
 import React, { ErrorInfo, ReactNode, Suspense } from 'react';
 
+import { VStack } from '@/shared/ui/Stack';
+import { Text } from '@/shared/ui/Text';
+
 interface ErrorBoundaryProps {
   children: ReactNode;
 }
@@ -31,7 +34,13 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 
     if (hasError) {
       // You can render any custom fallback UI
-      return <Suspense fallback="">Some Error</Suspense>;
+      return (
+        <Suspense fallback="">
+          <VStack justify="center" className="mt-5">
+            <Text Tag="h1" text="Щось пішло не так :(" size="4xl" />
+          </VStack>
+        </Suspense>
+      );
     }
 
     return children;

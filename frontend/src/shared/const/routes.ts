@@ -1,6 +1,7 @@
 export enum AppRoutes {
   MAIN = 'main',
   PRODUCT = 'product',
+  PRODUCT_COMMENTS = 'product/comments',
   PRODUCTS = 'products',
   PROFILE = 'profile',
   SELLER = 'seller',
@@ -15,6 +16,8 @@ export enum AppRoutes {
 export const getRouteMain = () => '/';
 
 export const getRouteProduct = (id: string) => `/product/${id}`;
+
+export const getRouteProductComments = (id: string) => `/product/comments/${id}`;
 
 export const getRouteProducts = () => `/products`;
 

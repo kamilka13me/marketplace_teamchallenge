@@ -6,6 +6,7 @@ export enum ApiRoutes {
   CONTROL_PANEL = '/control-panel',
   FEEDBACK = '/feedback',
   SELLER_PRODUCTS = '/seller',
+  SELLER_CONTACTS = '/seller/contacts',
   SELLER_INFO = '/seller/info',
   SELLER_FEEDBACKS = '/feedback/comments',
   PRODUCT_RATINGS = '/feedback/product',

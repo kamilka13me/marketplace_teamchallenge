@@ -187,7 +187,7 @@ const ProductCard: FC<Props> = (props) => {
         >
           <Icon
             Svg={heart}
-            className={`${wishlist?.includes(_id) ? 'fill-secondary-yellow' : '!stroke-2 !stroke-main-dark'}  ${heartIsDisabled && 'opacity-40'}`}
+            className={`${wishlist?.includes(_id) ? 'fill-secondary-yellow' : `!stroke-2 ${dark ? '!stroke-secondary-yellow' : '!stroke-main-dark'}`}  ${heartIsDisabled && 'opacity-40'}`}
           />
         </Button>
       </HStack>

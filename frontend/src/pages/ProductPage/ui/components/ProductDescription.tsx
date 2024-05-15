@@ -86,23 +86,44 @@ const ProductDescription: FC<Props> = (props) => {
       <Text Tag="p" text={product?.description} size="md" color="gray-light" />
 
       <div className="mt-6">
-        <VStack gap="1" align="center" className="">
-          <Text
-            size="4xl"
-            font="ibm-plex-sans"
-            Tag="p"
-            text={countDiscount(product?.price, product?.discount || 0).toString()}
-            color="white"
-            className=""
-          />
-          <Text
-            size="2xl"
-            font="ibm-plex-sans"
-            Tag="span"
-            text="грн"
-            color="white"
-            className="mt-1"
-          />
+        <VStack gap="4" align="center">
+          <VStack gap="1" align="center" className="">
+            <Text
+              size="4xl"
+              font="ibm-plex-sans"
+              Tag="p"
+              text={countDiscount(product?.price, product?.discount || 0).toString()}
+              color="white"
+              className=""
+            />
+            <Text
+              size="2xl"
+              font="ibm-plex-sans"
+              Tag="span"
+              text="грн"
+              color="white"
+              className="mt-1"
+            />
+          </VStack>
+
+          {product?.discount ? (
+            <HStack
+              justify="center"
+              align="center"
+              className="rounded-lg bg-error-red px-1 h-[20px]"
+            >
+              <Text
+                Tag="span"
+                text={`- ${product?.discount}%`}
+                size="xs"
+                color="white"
+                className="!leading-[0px]"
+              />
+            </HStack>
+          ) : (
+            // eslint-disable-next-line react/jsx-no-useless-fragment
+            <></>
+          )}
         </VStack>
         {product?.discount ? (
           <VStack gap="1" align="center" className="-mt-1">
@@ -131,7 +152,7 @@ const ProductDescription: FC<Props> = (props) => {
         variant="primary"
         disabled={buttonIsDisabled}
         onClick={() => handleWishClick()}
-        className={`${wishlist?.includes(product?._id) ? '!bg-disabled' : ''} h-[52px] mt-6 w-full ${size === 'big' && 'w-[319px]'}`}
+        className={`${wishlist?.includes(product?._id) ? '!bg-disabled' : ''} h-[52px] mt-6 w-full lg:max-w-[319px] ${size === 'big' && 'w-[319px]'}`}
       >
         {wishlist?.includes(product?._id) ? 'Прибрати з обраного' : 'Додати в обране'}
       </Button>

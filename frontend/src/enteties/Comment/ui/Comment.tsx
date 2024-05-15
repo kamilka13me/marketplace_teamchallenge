@@ -24,10 +24,11 @@ interface Props {
   comment: IComment;
   alignItems?: 'horizontal' | 'vertical';
   sellerId: string;
+  refetch?: () => void;
 }
 
 const Comment: FC<Props> = (props) => {
-  const { comment, sellerId, alignItems = 'vertical' } = props;
+  const { comment, sellerId, alignItems = 'vertical', refetch } = props;
   const [answerMessage, setAnswerMessage] = useState('');
 
   const [repliesOpen, setRepliesOpen] = useState(false);
@@ -53,6 +54,11 @@ const Comment: FC<Props> = (props) => {
     } catch (e: unknown) {
       // eslint-disable-next-line no-console
       console.log(e);
+    } finally {
+      setAnswerMessage('');
+      if (refetch) {
+        refetch();
+      }
     }
   };
 
@@ -76,7 +82,7 @@ const Comment: FC<Props> = (props) => {
             ) : (
               <Text
                 Tag="span"
-                text={`${data?.user?.username[0] || ''}${(data?.user.surname && data?.user?.surname[0]) || ''}`}
+                text={`${data?.user?.username[0] || ''}${(data?.user?.surname && data?.user?.surname[0]) || ''}`}
                 size="4xl"
                 font="ibm-plex-sans"
                 color="white"
@@ -117,8 +123,8 @@ const Comment: FC<Props> = (props) => {
       </div>
 
       <VStack gap="2" className="mt-4">
-        {comment.images && comment.images.length > 0 ? (
-          comment.images.map((img, index) => {
+        {comment?.images && comment?.images.length > 0 ? (
+          comment?.images?.map((img, index) => {
             return (
               <div
                 key={index}
@@ -165,6 +171,7 @@ const Comment: FC<Props> = (props) => {
                 name="comment"
                 type="text"
                 variant="clear"
+                value={answerMessage}
                 maxLength={250}
                 placeholder="Відповісти на відгук"
                 onChange={(e) => setAnswerMessage(e.currentTarget.value)}

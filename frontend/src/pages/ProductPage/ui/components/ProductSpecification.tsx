@@ -16,7 +16,7 @@ const ProductSpecification: FC<Props> = (props) => {
   const { product } = props;
 
   return (
-    <HStack gap="8" className=" bg-dark-grey max-w-[646px] w-full rounded-2xl p-4">
+    <HStack gap="8" className=" bg-dark-grey h-full w-full lg:w-[646px] rounded-2xl p-4">
       <Text Tag="h4" text="Опис товару" size="4xl" color="white" font="ibm-plex-sans" />
       <HStack gap="4" className="w-full">
         {product?.specifications.map((spec, i) => (
