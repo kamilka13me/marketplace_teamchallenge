@@ -28,6 +28,11 @@ export interface Seller {
   conditions: boolean;
 }
 
+export interface SellerContact {
+  messenger: string;
+  phone: string;
+}
+
 export interface SellerSchema {
   isLoading?: boolean;
   error?: string;

@@ -1,9 +1,11 @@
 import { FC, useEffect, useState } from 'react';
 
 import { Rating } from '@/enteties/Rating';
+import { SellerContact } from '@/enteties/Seller/model/types/seller';
 import { getUserAuthData, User } from '@/enteties/User';
 import { calcAverage } from '@/features/managingFeedbacks/helpers/managingFeedbacksHelpers';
 import { ApiFeedbackResponse, RatingResponse } from '@/pages/ProductPage/model/types';
+import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import useAxios from '@/shared/lib/hooks/useAxios';
@@ -13,6 +15,9 @@ import { Text } from '@/shared/ui/Text';
 
 interface ApiResponse {
   user: User;
+}
+interface SellerResponse {
+  contacts: SellerContact[];
 }
 
 interface Props {
@@ -32,9 +37,10 @@ const SellerContacts: FC<Props> = ({ sellerId }) => {
     `${ApiRoutes.RATINGS}?sellerId=${sellerId}`,
   );
 
-  const [sellerContacts, setSellerContacts] = useState('');
   const [isContactsOpen, setIsContactsOpen] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [sellerContacts, setSellerContacts] = useState<SellerContact[]>([]);
+  const [sellerContactsIsLoading, setSellerContactsIsLoading] = useState(false);
 
   const getSellerContactsHandler = () => {
     if (!user) {
@@ -42,8 +48,21 @@ const SellerContacts: FC<Props> = ({ sellerId }) => {
     } else if (!user.isAccountConfirm) {
       setIsAlertOpen(true);
     } else if (user.isAccountConfirm) {
-      setIsContactsOpen(true);
-      setSellerContacts('');
+      setSellerContactsIsLoading(true);
+
+      try {
+        $api
+          .get<SellerResponse[]>(`${ApiRoutes.SELLER_CONTACTS}?sellerId=${sellerId}`)
+          .then((res) => {
+            setSellerContacts(res.data[0]?.contacts || ({} as SellerContact[]));
+          });
+      } catch (error) {
+        // eslint-disable-next-line
+        console.error('Error: ', error);
+      } finally {
+        setIsContactsOpen(true);
+        setSellerContactsIsLoading(false);
+      }
     }
   };
 
@@ -95,8 +114,19 @@ const SellerContacts: FC<Props> = ({ sellerId }) => {
           )}
         </VStack>
       </div>
-      {isContactsOpen ? (
-        <div>{sellerContacts}</div>
+      {isContactsOpen && !sellerContactsIsLoading ? (
+        <div>
+          {sellerContacts?.map((contact, index) => (
+            <div key={index}>
+              <Text
+                Tag="p"
+                text={`${contact?.messenger}: ${contact?.phone}`}
+                size="md"
+                color="white"
+              />
+            </div>
+          ))}
+        </div>
       ) : (
         <div className="relative w-full lg:w-auto">
           <Button

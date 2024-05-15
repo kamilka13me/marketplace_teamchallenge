@@ -14,12 +14,14 @@ import { Text } from '@/shared/ui/Text';
 interface Props {
   title: string;
   products: Product[];
+  dark?: boolean;
   isLoading: boolean;
   setSearchParams: () => void;
+  className?: string;
 }
 
 const ProductSectionLayout: FC<Props> = (props) => {
-  const { title, products, isLoading, setSearchParams } = props;
+  const { title, products, isLoading, setSearchParams, dark = false, className } = props;
 
   function renderLoadingSkeletons() {
     return (
@@ -31,12 +33,20 @@ const ProductSectionLayout: FC<Props> = (props) => {
   }
 
   return (
-    <div className="w-full">
-      <Text size="xl" Tag="h2" text={title} bold className="lg:text-3xl mb-4 lg:mb-6" />
+    <div className={`${className} w-full`}>
+      <Text
+        size="xl"
+        Tag="h2"
+        text={title}
+        bold
+        className={`${dark && '!text-main-white'} lg:text-3xl mb-4 lg:mb-6`}
+      />
       <div className="grid grid-cols-2 md:grid-cols-4 gap-[7px] ">
         {isLoading
           ? renderLoadingSkeletons()
-          : products?.map((prod) => <ProductCard key={prod._id} product={prod} />)}
+          : products?.map((prod) => (
+              <ProductCard dark={dark} key={prod._id} product={prod} />
+            ))}
       </div>
       <VStack justify="end" align="center" className="w-full mt-6 lg:mt-8 relative ">
         <Link
@@ -44,10 +54,15 @@ const ProductSectionLayout: FC<Props> = (props) => {
           className="group relative flex items-center"
           onClick={setSearchParams}
         >
-          <Text Tag="span" text="Дивитись більше" size="md" className="lg:text-2xl" />
+          <Text
+            Tag="span"
+            text="Дивитись більше"
+            size="md"
+            className={`${dark && '!text-main-white'} lg:text-2xl`}
+          />
           <Icon
             Svg={arrowRight}
-            className="w-[20px] h-[20px] xl:w-[20px] xl:h-[20px] fill-black"
+            className={`w-[20px] h-[20px] xl:w-[20px] xl:h-[20px] fill-black ml-1 mt-1 ${dark && '!fill-main-white'}`}
           />
         </Link>
       </VStack>

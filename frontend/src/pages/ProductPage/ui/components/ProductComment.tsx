@@ -15,10 +15,11 @@ interface Props {
   product: Product;
   stars: number;
   setStars: (i: number) => void;
+  refetchFeedbacks?: () => void;
 }
 
 const ProductComment: FC<Props> = (props) => {
-  const { stars, setStars, product } = props;
+  const { stars, setStars, product, refetchFeedbacks } = props;
 
   const [commentMessage, setCommentMessage] = useState('');
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -33,7 +34,7 @@ const ProductComment: FC<Props> = (props) => {
     window.addEventListener('resize', handleResize);
 
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [windowWidth]);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -68,7 +69,7 @@ const ProductComment: FC<Props> = (props) => {
     }
   };
 
-  const sendFeedbackHandler = () => {
+  const sendFeedbackHandler = async () => {
     const formData = new FormData();
 
     formData.append('sellerId', product.sellerId);
@@ -81,9 +82,9 @@ const ProductComment: FC<Props> = (props) => {
     });
 
     try {
-      $api.post(ApiRoutes.SELLER_FEEDBACKS, formData);
+      await $api.post(ApiRoutes.SELLER_FEEDBACKS, formData);
 
-      $api.post(ApiRoutes.FEEDBACK, {
+      await $api.post(ApiRoutes.FEEDBACK, {
         sellerId: product.sellerId,
         productId: product._id,
         rating: (stars + 1).toString(),
@@ -91,6 +92,13 @@ const ProductComment: FC<Props> = (props) => {
     } catch (e: unknown) {
       // eslint-disable-next-line no-console
       console.log(e);
+    } finally {
+      setCommentMessage('');
+      setStars(0);
+
+      if (refetchFeedbacks) {
+        await refetchFeedbacks();
+      }
     }
   };
 
@@ -124,29 +132,29 @@ const ProductComment: FC<Props> = (props) => {
           name="comment"
           variant="clear"
           placeholder="Напишіть коментар"
+          minLength={10}
+          value={commentMessage}
           onChange={(e) => setCommentMessage(e.currentTarget.value)}
           className="resize-y !h-[126px] w-full bg-selected-dark border-disabled p-2 !text-disabled focus:outline-none placeholder:text-grey lg:border-[2px] lg:bg-transparent"
         />
 
-        <HStack justify="between" className="w-full">
-          <VStack>
-            <div>
-              {selectedFiles.map((file, index) => (
-                <div key={index} className="flex items-center mt-2">
-                  <Text Tag="span" text={file.name} size="sm" color="gray" />
-                  <Button
-                    variant="clear"
-                    onClick={() => removeFile(index)}
-                    className="ml-2 text-red-500"
-                  >
-                    Remove
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </VStack>
+        <HStack justify="between" className="lg:flex-row w-full">
+          <div className="w-full">
+            {selectedFiles.map((file, index) => (
+              <div key={index} className="flex items-center mt-2">
+                <Text Tag="span" text={file.name} size="sm" color="gray" />
+                <Button
+                  variant="clear"
+                  onClick={() => removeFile(index)}
+                  className="ml-2 text-red-500"
+                >
+                  Видалити
+                </Button>
+              </div>
+            ))}
+          </div>
 
-          <HStack className=" mt-4 w-full">
+          <HStack gap="1" align="start" className=" mt-4 w-full">
             <Text
               Tag="span"
               text="Файли з форматів: png, jpg, jpeg"
@@ -155,8 +163,15 @@ const ProductComment: FC<Props> = (props) => {
             />
             <VStack gap="4" className="mt-2 w-full lg:justify-end">
               {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-              <label className=" cursor-pointer font-normal text-center text-[16px] leading-[21px] text-white-transparent-70 p-[10px] border-[1px] border-white-transparent-70 rounded-[4px] lg:min-w-[123px] lg:rounded-none">
-                {windowWidth >= 1024 ? 'Обрати файл' : <Icon Svg={attachment} />}
+              <label className="cursor-pointer p-[10px] border-[1px] border-disabled rounded-[4px] lg:min-w-[123px] lg:rounded-none">
+                <Text
+                  Tag="span"
+                  text="Обрати файл"
+                  size="md"
+                  color="gray-light"
+                  className="hidden lg:block"
+                />
+                <Icon Svg={attachment} className="lg:hidden" />
                 <input
                   type="file"
                   accept=".png,.jpg,.jpeg,.pdf,.doc,.docx"
