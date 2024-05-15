@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 
-import { DateRange, RangeKeyDict } from 'react-date-range';
+import { RangeKeyDict } from 'react-date-range';
 
 import Comment from '../../../enteties/Comment/ui/Comment';
 
@@ -24,15 +24,17 @@ import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
+import CustomCalendar from '@/shared/ui/CustomCalendar/ui/CustomCalendar';
 import { Icon } from '@/shared/ui/Icon';
 import Pagination from '@/shared/ui/Pagination/Pagination';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
+import DateSortWidget, { buttonData } from '@/widgets/DateSortWidget/ui/DateSortWidget';
 
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 
-type RangeSortType = 'day' | 'week' | 'month' | 'year' | 'range';
+export type RangeSortType = 'day' | 'week' | 'month' | 'year' | 'range';
 
 export interface SellerRatingResponse {
   current: NumbersMap;
@@ -43,59 +45,27 @@ interface NumbersMap {
   [key: string]: number;
 }
 
-const buttonData: { type: RangeSortType; label: string; clb: () => Date }[] = [
-  {
-    type: 'day',
-    label: 'день',
-    clb: () => {
-      return new Date();
-    },
-  },
-  {
-    type: 'week',
-    label: 'тиждень',
-    clb: () => {
-      const date = new Date();
-
-      return new Date(date.getTime() - 7 * 24 * 60 * 60 * 1000);
-    },
-  },
-  {
-    type: 'month',
-    label: 'місяць',
-    clb: () => {
-      const date = new Date();
-
-      return new Date(date.getFullYear(), date.getMonth() - 1, 1);
-    },
-  },
-  {
-    type: 'year',
-    label: 'рік',
-    clb: () => {
-      const date = new Date();
-
-      return new Date(date.getFullYear() - 1, 0, 1);
-    },
-  },
-];
-
 interface IRangeDate {
   startDate: Date;
   endDate: Date;
   key: string;
 }
 
+const adjustDate = (date: Date, days: number) => {
+  date.setDate(date.getDate() + days);
+
+  return date;
+};
+
 const ManagingFeedbacks: FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentRange, setCurrentRange] = useState<RangeSortType | null>(null);
   const [ratingsData, setRatingsData] = useState<SellerRatingResponse | null>(null);
   const [ratingDataIsLoading, setRatingDataIsLoading] = useState(true);
   const [calendarIsOpened, setCalendarIsOpened] = useState(false);
 
   const [state, setState] = useState<IRangeDate[]>([
     {
-      startDate: new Date(2024, 0, 1),
+      startDate: new Date(),
       endDate: new Date(),
       key: 'selection',
     },
@@ -109,12 +79,6 @@ const ManagingFeedbacks: FC = () => {
   const dispatch = useAppDispatch();
 
   const isMobile = window.innerWidth < 768;
-
-  const adjustDate = (date: Date, days: number) => {
-    date.setDate(date.getDate() + days);
-
-    return date;
-  };
 
   useEffect(() => {
     const endDate = adjustDate(new Date(state[0]?.endDate as unknown as Date), 2);
@@ -140,7 +104,7 @@ const ManagingFeedbacks: FC = () => {
     const fetchRatings = async () => {
       setRatingDataIsLoading(true);
       try {
-        const startDate = adjustDate(new Date(state[0]?.startDate as unknown as Date), 1); // Adjust start date
+        const startDate = adjustDate(new Date(state[0]?.startDate as unknown as Date), 1);
 
         const endDate = adjustDate(new Date(state[0]?.endDate as unknown as Date), 2);
 
@@ -163,10 +127,6 @@ const ManagingFeedbacks: FC = () => {
   useEffect(() => {
     dispatch(fetchSellerFeedbacksList({}));
   }, [dispatch, offset, state]);
-
-  const handleCurrentRange = (type: RangeSortType) => {
-    setCurrentRange(type);
-  };
 
   const handleOnChange = (ranges: RangeKeyDict) => {
     const { selection } = ranges;
@@ -213,40 +173,35 @@ const ManagingFeedbacks: FC = () => {
         )}
 
         <VStack gap="2" className="items-center md:items-start">
-          {buttonData.map((button) => (
-            <Button
-              key={button.type}
-              variant="clear"
-              className={`px-3 py-[7px] rounded-lg md:px-2 ${currentRange === button.type ? 'bg-selected-dark' : ''}`}
-              onClick={() => {
-                const endDate = new Date();
+          <DateSortWidget
+            onSelectRange={(type: RangeSortType) => {
+              const endDate = new Date();
 
-                endDate.setDate(endDate.getDate() + 1);
+              endDate.setDate(endDate.getDate() + 1);
+              setState((prevState) => {
+                const updatedState = prevState.map((rangeDate, index) => {
+                  if (index === 0) {
+                    return {
+                      ...rangeDate,
+                      startDate:
+                        buttonData.find((btn) => btn.type === type)?.clb() || new Date(),
+                      endDate: new Date(),
+                    };
+                  }
 
-                handleCurrentRange(button.type);
-
-                setState((prevState) => {
-                  const updatedState = prevState.map((rangeDate, index) => {
-                    if (index === 0) {
-                      return {
-                        ...rangeDate,
-                        startDate: button.clb(),
-                        endDate: new Date(),
-                      };
-                    }
-
-                    return rangeDate;
-                  });
-
-                  return updatedState;
+                  return rangeDate;
                 });
-                dispatch(sellerFeedbackPageActions.setStartDate(button.clb()));
-                dispatch(sellerFeedbackPageActions.setEndDate(endDate));
-              }}
-            >
-              <Text Tag="span" text={button.label} size="sm" color="white" />
-            </Button>
-          ))}
+
+                return updatedState;
+              });
+              dispatch(
+                sellerFeedbackPageActions.setStartDate(
+                  buttonData.find((btn) => btn.type === type)?.clb() || new Date(),
+                ),
+              );
+              dispatch(sellerFeedbackPageActions.setEndDate(endDate));
+            }}
+          />
           <div className="relative h-full">
             <VStack align="center" gap="4" className="h-full">
               {!isMobile && (
@@ -268,48 +223,12 @@ const ManagingFeedbacks: FC = () => {
               </Button>
             </VStack>
 
-            {calendarIsOpened && (
-              <div className="absolute top-10 right-0 z-20">
-                <div>
-                  <VStack className="p-6 bg-selected-dark border-b-[1px] border-disabled rounded-t-2xl">
-                    <Text
-                      Tag="span"
-                      text={`${state[0]?.startDate.toString()?.slice(0, 10) || ''} - ${state[0]?.endDate.toString().slice(0, 10) || ''}`}
-                      size="md"
-                      color="gray"
-                    />
-                  </VStack>
-                  <DateRange
-                    date={new Date()}
-                    editableDateInputs={false}
-                    showMonthArrow={false}
-                    showPreview={false}
-                    showDateDisplay={false}
-                    ranges={state}
-                    onChange={handleOnChange}
-                    rangeColors={['#D9C01B']}
-                  />
-                  <VStack className="p-6 bg-selected-dark border-t-[1px] border-disabled rounded-b-2xl">
-                    <Button
-                      variant="grey-outlined"
-                      className="text-main-white py-1 px-3 !rounded-full !border-light-grey"
-                      onClick={() => {
-                        setState([
-                          {
-                            startDate: new Date(2024, 0, 1),
-                            endDate: new Date(),
-                            key: 'selection',
-                          },
-                        ]);
-                        setCurrentRange(null);
-                      }}
-                    >
-                      Reset
-                    </Button>
-                  </VStack>
-                </div>
-              </div>
-            )}
+            <CustomCalendar
+              calendarIsOpened={calendarIsOpened}
+              dates={state}
+              setDates={setState}
+              handleOnChange={handleOnChange}
+            />
           </div>
         </VStack>
       </VStack>
@@ -339,19 +258,17 @@ const ManagingFeedbacks: FC = () => {
         ))}
       </HStack>
 
-      {feedbacks.length > 2 && (
-        <VStack justify="center" gap="2" className="my-6">
-          <Pagination
-            dataLength={totalFeedbacks}
-            itemsPerPage={limit}
-            currentPage={currentPage}
-            setPage={handleClickPage}
-            offset={offset}
-            fetchNext={fetchNext}
-            fetchPrev={fetchPrev}
-          />
-        </VStack>
-      )}
+      <VStack justify="center" gap="2" className="my-6">
+        <Pagination
+          dataLength={totalFeedbacks}
+          itemsPerPage={limit}
+          currentPage={currentPage}
+          setPage={handleClickPage}
+          offset={offset}
+          fetchNext={fetchNext}
+          fetchPrev={fetchPrev}
+        />
+      </VStack>
     </div>
   );
 };
