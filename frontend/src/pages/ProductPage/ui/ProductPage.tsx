@@ -5,7 +5,6 @@ import Slider from 'react-slick';
 
 import { Product, ProductSectionLayout } from '@/enteties/Product';
 import { calcAverage } from '@/features/managingFeedbacks/helpers/managingFeedbacksHelpers';
-import { useGetCommentsQuery } from '@/pages/ProductPage/model/services/commentsApi';
 import {
   ApiFeedbackResponse,
   ApiProductResponse,
@@ -35,16 +34,17 @@ const ProductPage: FC<Props> = () => {
 
   const [, setCurrentSlide] = useState(0);
 
+  const [triggerRefetchSellerInfo, setTriggerRefetchSellerInfo] = useState(false);
+
   const promotionsProduct = useGetPromotionsProductsQuery({});
 
   const dispatch = useAppDispatch();
 
   const { data, isLoading } = useAxios<ApiProductResponse>(`${ApiRoutes.PRODUCTS}/${id}`);
 
-  const { data: comments, refetch: refetchComments } = useGetCommentsQuery({
-    offset: 0,
-    productId: id,
-  });
+  const { data: comments, refetch: refetchComments } = useAxios<ApiFeedbackResponse>(
+    `${ApiRoutes.PRODUCT_COMMENTS}?productId=${id}&limit=1&offset=${0}`,
+  );
 
   const {
     data: productRating,
@@ -55,6 +55,7 @@ const ProductPage: FC<Props> = () => {
   const refetchDataHandler = () => {
     refetchRating();
     refetchComments();
+    setTriggerRefetchSellerInfo((prev) => !prev);
   };
 
   useEffect(() => {
@@ -152,11 +153,14 @@ const ProductPage: FC<Props> = () => {
           <HStack gap="4" className="lg:gap-5 w-full max-w-[646px]">
             <ProductDescription
               rating={productRating ? calcAverage(productRating.current) : 0}
-              feedbackLength={comments?.totalComments}
+              feedbackLength={comments?.totalComments || 0}
               product={data?.product || ({} as Product)}
             />
 
-            <SellerContacts sellerId={data?.product.sellerId || ''} />
+            <SellerContacts
+              sellerId={data?.product.sellerId || ''}
+              triggerRefetchSellerInfo={triggerRefetchSellerInfo}
+            />
           </HStack>
         </HStack>
         <HStack

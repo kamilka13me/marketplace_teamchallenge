@@ -21,7 +21,6 @@ export const commentsApi = rtkApi.injectEndpoints({
 
         currentCache.comments.push(...uniqueComments);
       },
-      // Refetch when the page arg changes
       forceRefetch({ currentArg, previousArg }) {
         return currentArg !== previousArg;
       },

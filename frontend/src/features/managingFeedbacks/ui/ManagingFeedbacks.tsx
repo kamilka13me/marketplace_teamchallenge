@@ -124,8 +124,13 @@ const ManagingFeedbacks: FC = () => {
     fetchRatings();
   }, [user, state, dispatch]);
 
-  useEffect(() => {
+  const refetchSellerFeedbacksHandler = () => {
     dispatch(fetchSellerFeedbacksList({}));
+  };
+
+  useEffect(() => {
+    refetchSellerFeedbacksHandler();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, offset, state]);
 
   const handleOnChange = (ranges: RangeKeyDict) => {
@@ -254,7 +259,12 @@ const ManagingFeedbacks: FC = () => {
       {/* COMMENTS */}
       <HStack gap="4">
         {feedbacks?.map((comment) => (
-          <Comment key={comment?._id} sellerId={user?._id || ''} comment={comment} />
+          <Comment
+            refetch={refetchSellerFeedbacksHandler}
+            key={comment?._id}
+            sellerId={user?._id || ''}
+            comment={comment}
+          />
         ))}
       </HStack>
 
