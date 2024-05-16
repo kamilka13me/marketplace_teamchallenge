@@ -179,6 +179,9 @@ const ProductCommentPage: FC = () => {
                     )}
 
                     <Comment
+                      refetch={() => {
+                        dispatch(productCommentsActions.resetState());
+                      }}
                       sellerId={product?.product?.sellerId as string}
                       comment={item}
                       alignItems="horizontal"
