@@ -5,6 +5,7 @@ import { UserSchema } from '@/enteties/User';
 import { SellerFeedbackPageSchema } from '@/features/managingFeedbacks/model/types/sellerFeedbackSchema';
 import { SellerProductsPageSchema } from '@/features/managingProducts';
 import { LoginSchema } from '@/features/userAuth';
+import { ProductsCommentsSchema } from '@/pages/ProductPage/model/types';
 import { ProductsPageSchema } from '@/pages/ProductsPage';
 import { rtkApi } from '@/shared/api/rtkApi';
 
@@ -15,6 +16,7 @@ export interface StateSchema {
   products: ProductsPageSchema;
   sellerProducts: SellerProductsPageSchema;
   sellerFeedbacks: SellerFeedbackPageSchema;
+  productComments: ProductsCommentsSchema;
 
   [rtkApi.reducerPath]: ReturnType<typeof rtkApi.reducer>;
 }

@@ -7,6 +7,7 @@ import { userReducer } from '@/enteties/User';
 import { sellerFeedbackPageReducer } from '@/features/managingFeedbacks';
 import { sellerProductsPageReducer } from '@/features/managingProducts';
 import { loginReducer } from '@/features/userAuth';
+import { productCommentsReducer } from '@/pages/ProductPage';
 import { productsPageReducer } from '@/pages/ProductsPage';
 import { rtkApi } from '@/shared/api/rtkApi';
 
@@ -18,6 +19,7 @@ export function createReduxStore(initialState?: StateSchema) {
     products: productsPageReducer,
     sellerProducts: sellerProductsPageReducer,
     sellerFeedbacks: sellerFeedbackPageReducer,
+    productComments: productCommentsReducer,
 
     [rtkApi.reducerPath]: rtkApi.reducer,
   };
