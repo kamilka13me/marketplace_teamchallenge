@@ -60,7 +60,7 @@ const ProductCommentPage: FC = () => {
     `${ApiRoutes.PRODUCTS}/${id}`,
   );
 
-  const { data: productRating } = useAxios<RatingResponse>(
+  const { data: productRating, refetch: productRatingRefetch } = useAxios<RatingResponse>(
     `${ApiRoutes.PRODUCT_RATINGS}?productId=${id}`,
   );
 
@@ -75,6 +75,11 @@ const ProductCommentPage: FC = () => {
       }
     },
   });
+
+  const refetchInfo = () => {
+    productRatingRefetch();
+    dispatch(productCommentsActions.resetState());
+  };
 
   useLayoutEffect(() => {
     dispatch(productCommentsActions.resetState());
@@ -160,6 +165,7 @@ const ProductCommentPage: FC = () => {
               <div className="mt-4 w-full">
                 {isCommentOpen && (
                   <ProductComment
+                    refetchFeedbacks={refetchInfo}
                     stars={filledStars}
                     setStars={handleStarClick}
                     product={product?.product || ({} as Product)}
