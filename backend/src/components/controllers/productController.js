@@ -97,8 +97,17 @@ const productController = {
   // get all products
   getAllProducts: async (req, res) => {
     try {
-      const { name, category, discount = 0, quantity = 1 } = req.query;
-      let { sortBy, sortDirection = 1, limit = 10, offset = 0 } = req.query;
+      const {
+        name,
+        category,
+        discount = 0,
+        quantity = 1,
+        minPrice,
+        maxPrice,
+        minRating,
+        sortBy,
+      } = req.query;
+      let { sortDirection = 1, limit = 10, offset = 0 } = req.query;
 
       limit = parseInt(limit, 10);
       offset = parseInt(offset, 10);
@@ -120,88 +129,97 @@ const productController = {
           query.category = category;
         }
       }
-      // eslint-disable-next-line eqeqeq
-      if (discount != 0) {
+      if (discount !== 0) {
         query.discount = { $gt: discount - 1 };
       }
-      // eslint-disable-next-line eqeqeq
-      if (quantity != 0) {
+      if (quantity !== 0) {
         query.quantity = { $gt: quantity - 1 };
       }
-      if (sortBy === 'TotalPrice') {
-        const aggregationPipeline = [
-          { $match: query },
-          {
-            $addFields: {
-              totalCount: {
-                $cond: {
-                  if: { $and: [{ $gt: ['$discount', 0] }, { $lte: ['$discount', 100] }] },
-                  then: {
-                    $multiply: [
-                      '$price',
-                      { $subtract: [1, { $divide: ['$discount', 100] }] },
-                    ],
-                  },
-                  else: '$price',
+
+      const aggregationPipeline = [
+        { $match: query },
+        {
+          $addFields: {
+            TotalPrice: {
+              $cond: {
+                if: { $and: [{ $gt: ['$discount', 0] }, { $lte: ['$discount', 100] }] },
+                then: {
+                  $multiply: [
+                    '$price',
+                    { $subtract: [1, { $divide: ['$discount', 100] }] },
+                  ],
                 },
+                else: '$price',
               },
             },
           },
-          { $sort: { totalCount: parseInt(sortDirection, 10) || 1 } },
-          { $skip: offset },
-          { $limit: limit },
-        ];
+        },
+        {
+          $lookup: {
+            from: 'ratings',
+            localField: '_id',
+            foreignField: 'productId',
+            as: 'ratings',
+          },
+        },
+        {
+          $addFields: {
+            averageRating: { $avg: '$ratings.rating' },
+          },
+        },
+        {
+          $project: {
+            ratings: 0, // Remove the ratings field from the final result
+          },
+        },
+      ];
 
-        const products = await Product.aggregate(aggregationPipeline);
-        const count = await Product.countDocuments(query);
+      if (minPrice !== undefined || maxPrice !== undefined) {
+        const priceFilter = {};
 
-        return res.status(200).json({ count, products });
+        if (minPrice !== undefined) priceFilter.$gte = parseFloat(minPrice);
+        if (maxPrice !== undefined) priceFilter.$lte = parseFloat(maxPrice);
+        aggregationPipeline.push({ $match: { TotalPrice: priceFilter } });
       }
-      if (sortBy === 'rating') {
-        const aggregationPipeline = [
-          { $match: query },
-          {
-            $lookup: {
-              from: 'ratings',
-              localField: '_id',
-              foreignField: 'productId',
-              as: 'ratings',
-            },
-          },
-          {
-            $addFields: {
-              averageRating: { $avg: '$ratings.rating' },
-            },
-          },
-          { $sort: { [sortBy === 'rating' ? 'averageRating' : sortBy]: sortDirection } },
-          { $skip: offset },
-          { $limit: limit },
-        ];
 
-        const products = await Product.aggregate(aggregationPipeline);
-        const count = await Product.countDocuments(query);
+      if (minRating !== undefined) {
+        aggregationPipeline.push({
+          $match: { averageRating: { $gte: parseFloat(minRating) } },
+        });
+      }
 
-        res.status(200).json({ count, products });
+      if (sortBy === 'TotalPrice' || sortBy === 'rating') {
+        aggregationPipeline.push({
+          $sort: {
+            [sortBy === 'rating' ? 'averageRating' : 'TotalPrice']: sortDirection,
+          },
+        });
       } else {
-        // Creating a sort object
         const sortObject = {};
 
-        sortBy = sortBy || '_id';
-        sortDirection = parseInt(sortDirection, 10) || 1;
-        sortObject[sortBy] = sortDirection;
-
-        const products = await Product.find(query)
-          .sort(sortObject)
-          .skip(offset)
-          .limit(limit);
-
-        const count = await Product.countDocuments(query);
-
-        return res.status(200).json({ count, products });
+        sortObject[sortBy || '_id'] = sortDirection;
+        aggregationPipeline.push({ $sort: sortObject });
       }
+
+      aggregationPipeline.push({ $skip: offset });
+      aggregationPipeline.push({ $limit: limit });
+
+      const products = await Product.aggregate(aggregationPipeline);
+
+      // Copy the pipeline to count the number of documents
+      const countPipeline = [...aggregationPipeline];
+
+      countPipeline.pop(); // // Remove the limit stage
+      countPipeline.pop(); // Remove the skip stage
+      countPipeline.push({ $count: 'count' });
+
+      const countResult = await Product.aggregate(countPipeline);
+      const count = countResult.length > 0 ? countResult[0].count : 0;
+
+      return res.status(200).json({ count, products });
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(error);
+      console.error(error);
       res.status(500).send(error.message);
     }
   },

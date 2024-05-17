@@ -27,7 +27,7 @@ import User from '../models/User.js';
  * @param {Function} next - The next middleware or route handler to be executed after this middleware completes its execution.
  */
 
-const viewsCounter = () => {
+const openedCounter = () => {
   return async (req, res, next) => {
     try {
       const { id } = req.params; // Product ID
@@ -39,30 +39,34 @@ const viewsCounter = () => {
         const user = await User.findById(decoded.id).populate('role');
 
         if (!user) {
-          return res.status(401).json({ message: 'Access denied. User not found.' });
+          // return res.status(401).json({ message: 'Access denied. User not found.' });
+          next();
         }
 
         // Check if the user has already viewed the product
         if (!user.views.includes(id)) {
-          await Product.findByIdAndUpdate(id, { $inc: { views: 1 } }); // Increase views only if the user has not viewed the product before
+          await Product.findByIdAndUpdate(id, { $inc: { opened: 1 } }); // Increase views only if the user has not viewed the product before
           user.views.push(id);
           await user.save();
         }
       }
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {
-        return res.status(401).send('Token expired');
+        // return res.status(401).send('Token expired');
+        next();
       }
       if (error instanceof jwt.JsonWebTokenError) {
-        return res.status(401).send('Invalid accessToken');
+        // return res.status(401).send('Invalid accessToken');
+        next();
       }
       // eslint-disable-next-line no-console
       console.error(error);
 
-      return res.status(500).send('Internal Server Error');
+      // return res.status(500).send('Internal Server Error');
+      next();
     }
     next();
   };
 };
 
-export default viewsCounter;
+export default openedCounter;
