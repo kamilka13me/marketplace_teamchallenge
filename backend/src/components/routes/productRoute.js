@@ -186,7 +186,7 @@ productRoute.get('/:id', openedCounter(), productController.getOneProduct);
  *         name: category
  *         schema:
  *           type: string
- *         description: Filter by product category or product Id.
+ *         description: Filter by product category or category ID.
  *       - in: query
  *         name: sortBy
  *         schema:
@@ -205,13 +205,13 @@ productRoute.get('/:id', openedCounter(), productController.getOneProduct);
  *         schema:
  *           type: integer
  *           default: 0
- *         description: Discount filter. If 0, off.
+ *         description: Discount filter. If 0, the discount filter is off.
  *       - in: query
  *         name: quantity
  *         schema:
  *           type: integer
  *           default: 1
- *         description: Quantity filter. If 0, off.
+ *         description: Quantity filter. If 0, the quantity filter is off.
  *       - in: query
  *         name: minPrice
  *         schema:
@@ -227,17 +227,38 @@ productRoute.get('/:id', openedCounter(), productController.getOneProduct);
  *         schema:
  *           type: number
  *           enum: [0, 1, 2, 3, 4, 5]
- *         description: Minimum rating filter. Can be 0, 1, 2, 3, 4, or 5.
+ *         description: Minimum rating filter.
+ *       - in: query
+ *         name: sellerId
+ *         schema:
+ *           type: string
+ *         description: Filter by seller ID.
  *     responses:
  *       200:
  *         description: A list of products.
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Product'
- *       '500':
+ *               type: object
+ *               properties:
+ *                 count:
+ *                   type: integer
+ *                   description: Total number of products.
+ *                 products:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Product'
+ *       400:
+ *         description: Invalid seller ID.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Invalid sellerId
+ *       500:
  *         $ref: '#/components/responses/InternalServerError'
  */
 

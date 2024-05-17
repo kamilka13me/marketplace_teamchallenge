@@ -105,6 +105,7 @@ const productController = {
         minPrice,
         maxPrice,
         minRating,
+        sellerId,
         sortBy,
       } = req.query;
       let { sortDirection = 1, limit = 10, offset = 0 } = req.query;
@@ -134,6 +135,13 @@ const productController = {
       }
       if (quantity !== 0) {
         query.quantity = { $gt: quantity - 1 };
+      }
+      if (sellerId) {
+        if (mongoose.Types.ObjectId.isValid(sellerId)) {
+          query.sellerId = new mongoose.Types.ObjectId(sellerId);
+        } else {
+          return res.status(400).json({ message: 'Invalid sellerId' });
+        }
       }
 
       const aggregationPipeline = [
@@ -169,7 +177,7 @@ const productController = {
         },
         {
           $project: {
-            ratings: 0, // Remove the ratings field from the final result
+            ratings: 0, // Remove the ratings field from the final results
           },
         },
       ];
@@ -188,6 +196,10 @@ const productController = {
         });
       }
 
+      const sortObject = {};
+
+      sortObject[sortBy || '_id'] = sortDirection;
+
       if (sortBy === 'TotalPrice' || sortBy === 'rating') {
         aggregationPipeline.push({
           $sort: {
@@ -195,9 +207,6 @@ const productController = {
           },
         });
       } else {
-        const sortObject = {};
-
-        sortObject[sortBy || '_id'] = sortDirection;
         aggregationPipeline.push({ $sort: sortObject });
       }
 
@@ -209,7 +218,7 @@ const productController = {
       // Copy the pipeline to count the number of documents
       const countPipeline = [...aggregationPipeline];
 
-      countPipeline.pop(); // // Remove the limit stage
+      countPipeline.pop(); // Remove the limit stage
       countPipeline.pop(); // Remove the skip stage
       countPipeline.push({ $count: 'count' });
 
