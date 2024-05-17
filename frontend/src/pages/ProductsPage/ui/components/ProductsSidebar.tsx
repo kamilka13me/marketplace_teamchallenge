@@ -3,6 +3,7 @@
 import { FC, useState } from 'react';
 
 import { Disclosure } from '@headlessui/react';
+import { useSearchParams } from 'react-router-dom';
 
 import { Category } from '@/enteties/Category';
 import arrowDown from '@/shared/assets/icons/arrow_down.svg?react';
@@ -15,16 +16,37 @@ import { Text } from '@/shared/ui/Text';
 interface Props {}
 
 const ProductsSidebar: FC<Props> = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { data: categoryData, isLoading: categoryIsLoading } = useAxios<Category[]>(
     ApiRoutes.CATEGORY,
   );
 
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState<Category | null>(null);
+  const [price, setPrice] = useState<{ min: string; max: string }>({
+    min: searchParams.get('minPrice') || '0',
+    max: searchParams.get('maxPrice') || '99999',
+  });
+  const [rating, setRating] = useState<string | null>(searchParams.get('rating') || null);
 
-  console.log(categoryData);
-  console.log(selectedCategory);
-  console.log(selectedSubcategory);
+  const handleApplyFilters = () => {
+    if (selectedCategory) searchParams.set('category', String(selectedCategory?._id));
+    if (selectedSubcategory)
+      searchParams.set('category', String(selectedSubcategory?._id));
+    if (price.min !== '0' || price.max !== '99999') {
+      searchParams.set('minPrice', String(price.min));
+      searchParams.set('maxPrice', String(price.max));
+    }
+    if (rating) searchParams.set('rating', String(rating));
+
+    setSearchParams(searchParams);
+  };
+
+  const clearSearchParams = () => {
+    const params = new URLSearchParams();
+
+    setSearchParams(params);
+  };
 
   return (
     <aside className="w-full flex flex-col gap-3">
@@ -233,17 +255,34 @@ const ProductsSidebar: FC<Props> = () => {
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                  No.
-                  <Disclosure.Button className="w-full flex content-center justify-center">
-                    <Text
-                      Tag="span"
-                      text="Показати менше"
-                      size="xs"
-                      color="primary"
-                      className="mt-2 underline underline-offset-8"
-                      bold
+                  <div className="flex gap-1 items-center content-center">
+                    <Text Tag="span" text="від" size="sm" color="primary" />
+                    <input
+                      name="minPrice"
+                      type="number"
+                      value={price.min}
+                      min={0}
+                      max={999999}
+                      maxLength={6}
+                      onChange={(e) => setPrice({ ...price, min: e.target.value })}
+                      autoComplete="off"
+                      className="rounded-lg p-2 w-full border-gray-300 border-[1px] focus:outline-none text-selected-dark"
                     />
-                  </Disclosure.Button>
+                    <Text Tag="span" text="—" size="sm" color="primary" />
+                    <Text Tag="span" text="до" size="sm" color="primary" />
+                    <input
+                      name="maxPrice"
+                      type="number"
+                      value={price.max}
+                      min={0}
+                      max={999999}
+                      maxLength={6}
+                      onChange={(e) => setPrice({ ...price, max: e.target.value })}
+                      autoComplete="off"
+                      className="rounded-lg p-2 w-full border-gray-300 border-[1px] focus:outline-none text-selected-dark"
+                    />
+                    <Text Tag="span" text="₴" size="sm" color="primary" />
+                  </div>
                 </Disclosure.Panel>
               </>
             )}
@@ -268,17 +307,72 @@ const ProductsSidebar: FC<Props> = () => {
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                  No.
-                  <Disclosure.Button className="w-full flex content-center justify-center">
-                    <Text
-                      Tag="span"
-                      text="Показати менше"
-                      size="xs"
-                      color="primary"
-                      className="mt-2 underline underline-offset-8"
-                      bold
-                    />
-                  </Disclosure.Button>
+                  <div className="flex flex-col gap-1">
+                    <div className="flex gap-1 items-center content-center">
+                      <input
+                        type="radio"
+                        id="5"
+                        name="rating"
+                        value="5"
+                        checked={rating === '5'}
+                        onChange={() => setRating('5')}
+                        className="cursor-pointer"
+                      />
+                      <Text Tag="span" text="5" size="xs" color="primary" />
+                    </div>
+
+                    <div className="flex gap-1 items-center content-center">
+                      <input
+                        type="radio"
+                        id="4"
+                        name="rating"
+                        value="4"
+                        checked={rating === '4'}
+                        onChange={() => setRating('4')}
+                        className="cursor-pointer"
+                      />
+                      <Text Tag="span" text="від 4" size="xs" color="primary" />
+                    </div>
+
+                    <div className="flex gap-1 items-center content-center">
+                      <input
+                        type="radio"
+                        id="3"
+                        name="rating"
+                        value="3"
+                        checked={rating === '3'}
+                        onChange={() => setRating('3')}
+                        className="cursor-pointer"
+                      />
+                      <Text Tag="span" text="від 3" size="xs" color="primary" />
+                    </div>
+
+                    <div className="flex gap-1 items-center content-center">
+                      <input
+                        type="radio"
+                        id="2"
+                        name="rating"
+                        value="2"
+                        checked={rating === '2'}
+                        onChange={() => setRating('2')}
+                        className="cursor-pointer"
+                      />
+                      <Text Tag="span" text="від 2" size="xs" color="primary" />
+                    </div>
+
+                    <div className="flex gap-1 items-center content-center">
+                      <input
+                        type="radio"
+                        id="1"
+                        name="rating"
+                        value="1"
+                        checked={rating === '1'}
+                        onChange={() => setRating('1')}
+                        className="cursor-pointer"
+                      />
+                      <Text Tag="span" text="від 1" size="xs" color="primary" />
+                    </div>
+                  </div>
                 </Disclosure.Panel>
               </>
             )}
@@ -292,14 +386,14 @@ const ProductsSidebar: FC<Props> = () => {
         variant="primary"
         aria-haspopup
         className="hidden lg:block all-products-button py-[5px] w-full bg-secondary-yellow"
-        onClick={() => console.log('Застосувати')}
+        onClick={handleApplyFilters}
       >
         <Text Tag="span" text="Застосувати" size="lg" color="primary" />
       </Button>
       <button
         type="button"
         className="w-full flex content-center justify-center"
-        onClick={() => console.log('Відмінити')}
+        onClick={clearSearchParams}
       >
         <Text
           Tag="span"
