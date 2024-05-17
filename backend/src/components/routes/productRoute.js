@@ -1,8 +1,8 @@
 import express from 'express';
 
 import idToReq from '../../middlewares/chechUserId.js';
+import openedCounter from '../../middlewares/openedCounter.js';
 import { appendFileNamesToBody, upload } from '../../middlewares/uploadProducts.js';
-import viewsCounter from '../../middlewares/viewsCounter.js';
 import productController from '../controllers/productController.js';
 
 const productRoute = express.Router();
@@ -154,13 +154,13 @@ productRoute.post(
  *         $ref: '#/components/responses/InternalServerError'
  */
 
-productRoute.get('/:id', viewsCounter(), productController.getOneProduct);
+productRoute.get('/:id', openedCounter(), productController.getOneProduct);
 
 /**
  * @swagger
  * /products:
  *   get:
- *     summary: Get a list of All products
+ *     summary: Get a list of all products
  *     description: Get a list of all products according to filters and sorting.
  *     tags:
  *       - Products
@@ -192,7 +192,7 @@ productRoute.get('/:id', viewsCounter(), productController.getOneProduct);
  *         schema:
  *           type: string
  *           default: '_id'
- *         description: Field to sort by. can be any field from the product model as well as  ```TotalPrice``` and ```rating```
+ *         description: Field to sort by. Can be any field from the product model as well as `TotalPrice` and `rating`.
  *       - in: query
  *         name: sortDirection
  *         schema:
@@ -205,13 +205,29 @@ productRoute.get('/:id', viewsCounter(), productController.getOneProduct);
  *         schema:
  *           type: integer
  *           default: 0
- *         description: discount filter. if 0 off.
+ *         description: Discount filter. If 0, off.
  *       - in: query
  *         name: quantity
  *         schema:
  *           type: integer
  *           default: 1
- *         description: quantity filter. if 0 off.
+ *         description: Quantity filter. If 0, off.
+ *       - in: query
+ *         name: minPrice
+ *         schema:
+ *           type: number
+ *         description: Minimum price filter.
+ *       - in: query
+ *         name: maxPrice
+ *         schema:
+ *           type: number
+ *         description: Maximum price filter.
+ *       - in: query
+ *         name: minRating
+ *         schema:
+ *           type: number
+ *           enum: [0, 1, 2, 3, 4, 5]
+ *         description: Minimum rating filter. Can be 0, 1, 2, 3, 4, or 5.
  *     responses:
  *       200:
  *         description: A list of products.

@@ -97,6 +97,12 @@ const userSchema = new mongoose.Schema({
       ref: 'Product',
     },
   ],
+  opened: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product',
+    },
+  ],
   wishlist: [
     {
       type: mongoose.Schema.Types.ObjectId,
