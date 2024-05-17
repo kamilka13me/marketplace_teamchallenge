@@ -118,9 +118,67 @@ const sellerRoute = express.Router();
  */
 
 sellerRoute.post('/', sellerController.createSeller);
+
 /**
  * @swagger
  * /seller:
+ *   get:
+ *     summary: Get all users with role "seller"
+ *     description: Retrieve a list of all users who have the role "seller".
+ *     tags:
+ *       - Seller
+ *     responses:
+ *       200:
+ *         description: An array of users information.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 users:
+ *                   type: array
+ *                   description: Array of user objects.
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         description: User ID.
+ *                         example: "66425e06cba57aa563ffd39c"
+ *                       username:
+ *                         type: string
+ *                         description: company name.
+ *                         example: "companyName"
+ *                       email:
+ *                         type: string
+ *                         description: User's email address.
+ *                         example: "example@gmail.com"
+ *                       role:
+ *                         type: string
+ *                         description: User's role.
+ *                         example: "seller"
+ *                       isAccountConfirm:
+ *                         type: boolean
+ *                         description: Indicates whether the user's account is confirmed or not.
+ *                         example: true
+ *       404:
+ *         description: Role "seller" not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Role "seller" not found.
+ *       500:
+ *         $ref: '#/components/responses/InternalServerError'
+ */
+
+sellerRoute.get('/', sellerController.getSellers);
+/**
+ * @swagger
+ * /seller/products:
  *   get:
  *     summary: Get a list of seller All products
  *     description: Get a list of all products according to filters and sorting.
@@ -189,7 +247,7 @@ sellerRoute.post('/', sellerController.createSeller);
  *       '500':
  *         $ref: '#/components/responses/InternalServerError'
  */
-sellerRoute.get('/', idToReq(), sellerController.getAllProducts);
+sellerRoute.get('/products', idToReq(), sellerController.getAllProducts);
 
 /**
  * @swagger

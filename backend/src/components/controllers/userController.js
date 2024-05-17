@@ -108,7 +108,7 @@ const userController = {
       }
 
       // find in db by id
-      const user = await User.findById(userId);
+      const user = await User.findById(userId).populate('role');
 
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
@@ -120,7 +120,7 @@ const userController = {
         username: user.username || null,
         surname: user.surname || null,
         email: user.email,
-        role: 'user',
+        role: user.role.name,
         dob: user.dob || null,
         isAccountConfirm: user.isAccountConfirm,
         phoneNumber: user.phoneNumber || null,
