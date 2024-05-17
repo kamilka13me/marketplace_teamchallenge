@@ -6,6 +6,9 @@ export default {
   },
   theme: {
     extend: {
+      screens: {
+        custom: { min: '1024px', max: '1297px' },
+      },
       fontFamily: {
         'ibm-plex-sans': ['IBM Plex Sans', 'system-ui', 'sans-serif'],
         outfit: ['Outfit', 'system-ui', 'sans-serif'],
