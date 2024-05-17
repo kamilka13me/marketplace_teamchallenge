@@ -442,7 +442,7 @@ const PersonalDataForms: FC = () => {
       {!isAccountConfirmed && <EmailConfirmation />}
       <div className="w-full lg:bg-dark-grey lg:rounded-2xl lg:px-[38px] py-[24px] lg:py-[38px] lg:overflow-hidden relative z-10">
         <div className="hidden lg:block w-[370px] h-[370px] bg-main opacity-40 blur-[100px] rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -z-20" />
-        <VStack className="flex-col lg:flex-row lg:gap-[48px] px-4 lg:px-0">
+        <VStack className="flex-col lg:flex-row lg:gap-[48px] px-4 lg:px-0 custom:flex-col custom:gap-4">
           {renderInfoForm()}
 
           <HStack align="end" className="w-full lg:min-h-[452px]" justify="between">
