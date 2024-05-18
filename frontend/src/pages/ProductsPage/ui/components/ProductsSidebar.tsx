@@ -6,6 +6,7 @@ import { Disclosure } from '@headlessui/react';
 import { useSearchParams } from 'react-router-dom';
 
 import { Category } from '@/enteties/Category';
+import { Rating } from '@/enteties/Rating';
 import { User } from '@/enteties/User';
 import arrowDown from '@/shared/assets/icons/arrow_down.svg?react';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
@@ -371,70 +372,27 @@ const ProductsSidebar: FC<Props> = () => {
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
                   <div className="flex flex-col gap-1">
-                    <div className="flex gap-1 items-center content-center">
-                      <input
-                        type="radio"
-                        id="5"
-                        name="rating"
-                        value="5"
-                        checked={minRating === '5'}
-                        onChange={() => setMinRating('5')}
-                        className="cursor-pointer"
-                      />
-                      <Text Tag="span" text="5" size="xs" color="primary" />
-                    </div>
-
-                    <div className="flex gap-1 items-center content-center">
-                      <input
-                        type="radio"
-                        id="4"
-                        name="rating"
-                        value="4"
-                        checked={minRating === '4'}
-                        onChange={() => setMinRating('4')}
-                        className="cursor-pointer"
-                      />
-                      <Text Tag="span" text="від 4" size="xs" color="primary" />
-                    </div>
-
-                    <div className="flex gap-1 items-center content-center">
-                      <input
-                        type="radio"
-                        id="3"
-                        name="rating"
-                        value="3"
-                        checked={minRating === '3'}
-                        onChange={() => setMinRating('3')}
-                        className="cursor-pointer"
-                      />
-                      <Text Tag="span" text="від 3" size="xs" color="primary" />
-                    </div>
-
-                    <div className="flex gap-1 items-center content-center">
-                      <input
-                        type="radio"
-                        id="2"
-                        name="rating"
-                        value="2"
-                        checked={minRating === '2'}
-                        onChange={() => setMinRating('2')}
-                        className="cursor-pointer"
-                      />
-                      <Text Tag="span" text="від 2" size="xs" color="primary" />
-                    </div>
-
-                    <div className="flex gap-1 items-center content-center">
-                      <input
-                        type="radio"
-                        id="1"
-                        name="rating"
-                        value="1"
-                        checked={minRating === '1'}
-                        onChange={() => setMinRating('1')}
-                        className="cursor-pointer"
-                      />
-                      <Text Tag="span" text="від 1" size="xs" color="primary" />
-                    </div>
+                    {[5, 4, 3, 2, 1].map((number) => (
+                      <div className="flex gap-2 items-center" key={number}>
+                        <input
+                          type="radio"
+                          id={String(number)}
+                          name="rating"
+                          value={String(number)}
+                          checked={minRating === String(number)}
+                          onChange={() => setMinRating(String(number))}
+                          className="cursor-pointer mt-[7px]"
+                        />
+                        <Text
+                          Tag="span"
+                          text={number === 5 ? '5' : `від   ${String(number)}`}
+                          size="xs"
+                          color="primary"
+                          className="mt-[8px]"
+                        />
+                        <Rating rating={number} isProducts />
+                      </div>
+                    ))}
                   </div>
                 </Disclosure.Panel>
               </>

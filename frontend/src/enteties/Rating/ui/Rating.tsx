@@ -6,10 +6,14 @@ import { VStack } from '@/shared/ui/Stack';
 
 interface Props {
   rating: number;
+  isProducts?: boolean;
 }
 
 const Rating: FC<Props> = (props) => {
-  const { rating } = props;
+  const { rating, isProducts } = props;
+
+  const active = isProducts ? 'fill-secondary-yellow' : 'fill-main';
+  const noActive = isProducts ? 'fill-disabled' : 'stroke-main';
 
   return (
     <VStack gap="1" className="mt-1">
@@ -21,7 +25,7 @@ const Rating: FC<Props> = (props) => {
             width={15}
             height={15}
             Svg={star}
-            className={`${i + 1 <= rating ? 'fill-main' : 'stroke-main'}`}
+            className={i + 1 <= rating ? active : noActive}
           />
         ))}
     </VStack>
