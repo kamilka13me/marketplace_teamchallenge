@@ -23,6 +23,9 @@ const ProductsSidebar: FC<Props> = () => {
 
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState<Category | null>(null);
+  const [selectedSubSubcategory, setSelectedSubSubcategory] = useState<Category | null>(
+    null,
+  );
   const [price, setPrice] = useState<{ min: string; max: string }>({
     min: searchParams.get('minPrice') || '0',
     max: searchParams.get('maxPrice') || '99999',
@@ -33,6 +36,9 @@ const ProductsSidebar: FC<Props> = () => {
     if (selectedCategory) searchParams.set('category', String(selectedCategory?._id));
     if (selectedSubcategory)
       searchParams.set('category', String(selectedSubcategory?._id));
+    if (selectedSubSubcategory)
+      searchParams.set('category', String(selectedSubSubcategory?._id));
+
     if (price.min !== '0' || price.max !== '99999') {
       searchParams.set('minPrice', String(price.min));
       searchParams.set('maxPrice', String(price.max));
@@ -185,7 +191,30 @@ const ProductsSidebar: FC<Props> = () => {
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                  No.
+                  <ul className="flex flex-col gap-2">
+                    {!selectedSubcategory && <span>Виберіть підкатегорію</span>}
+                    {selectedSubcategory?.subcategories.length === 0 && (
+                      <span>Немає розділів</span>
+                    )}
+                    {selectedSubcategory &&
+                      selectedSubcategory.subcategories.map((item) => (
+                        <li key={item._id}>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedSubSubcategory(item)}
+                          >
+                            <Text
+                              Tag="span"
+                              text={item.name}
+                              size="sm"
+                              color="primary"
+                              className={`${item._id === selectedSubSubcategory?._id && 'font-bold'}`}
+                            />
+                          </button>
+                        </li>
+                      ))}
+                  </ul>
+
                   <Disclosure.Button className="w-full flex content-center justify-center">
                     <Text
                       Tag="span"
