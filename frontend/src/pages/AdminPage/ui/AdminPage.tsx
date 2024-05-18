@@ -2,6 +2,8 @@ import { FC, useLayoutEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
+import ManagingOffers from './Tabs/ManagingOffers/ManagingOffers';
+
 import analytics from '@/shared/assets/icons/analytics.svg?react';
 import content from '@/shared/assets/icons/content.svg?react';
 import finances from '@/shared/assets/icons/finances.svg?react';
@@ -120,7 +122,7 @@ const AdminPage: FC = () => {
           <ProfileSidebar tabs={tabs} tab={currentTab} setTab={setCurrentTabHandler} />
           {/* {currentTab === 0 && <ManagingUsers />} */}
           {/* {currentTab === 1 && <ManagingSellers />} */}
-          {/* {currentTab === 2 && <ManagingOffers />} */}
+          {currentTab === 2 && <ManagingOffers />}
           {/* {currentTab === 3 && <ManagingFeedbacks />} */}
           {/* {currentTab === 4 && <ManagingContent />} */}
           {/* {currentTab === 5 && <Analytics />} */}
