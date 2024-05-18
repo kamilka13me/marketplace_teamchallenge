@@ -34,7 +34,7 @@ const ProductsSidebar: FC<Props> = () => {
   const [selectedSeller, setSelectedSeller] = useState<User | null>(null);
   const [price, setPrice] = useState<{ min: string; max: string }>({
     min: searchParams.get('minPrice') || '0',
-    max: searchParams.get('maxPrice') || '99999',
+    max: searchParams.get('maxPrice') || '999999',
   });
   const [minRating, setMinRating] = useState<string | null>(
     searchParams.get('minRating') || null,
@@ -49,7 +49,7 @@ const ProductsSidebar: FC<Props> = () => {
 
     if (selectedSeller) searchParams.set('sellerId', String(selectedSeller?._id));
 
-    if (price.min !== '0' || price.max !== '99999') {
+    if (price.min !== '0' || price.max !== '999999') {
       searchParams.set('minPrice', String(price.min));
       searchParams.set('maxPrice', String(price.max));
     }
@@ -317,7 +317,7 @@ const ProductsSidebar: FC<Props> = () => {
                     className={`h-4 w-4 duration-75 absolute pointer-events-none right-0 top-3.5 ${open ? 'rotate-180 transform' : ''}`}
                   />
                 </Disclosure.Button>
-                <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
+                <Disclosure.Panel className="px-3 pb-2 pt-4 text-sm text-gray-500">
                   <div className="flex gap-1 items-center content-center">
                     <Text Tag="span" text="від" size="sm" color="primary" />
                     <input
@@ -329,7 +329,7 @@ const ProductsSidebar: FC<Props> = () => {
                       maxLength={6}
                       onChange={(e) => setPrice({ ...price, min: e.target.value })}
                       autoComplete="off"
-                      className="rounded-lg p-2 w-full border-gray-300 border-[1px] focus:outline-none text-selected-dark"
+                      className="rounded-lg p-2 w-[78px] border-gray-300 border-[1px] focus:outline-none text-selected-dark"
                     />
                     <Text Tag="span" text="—" size="sm" color="primary" />
                     <Text Tag="span" text="до" size="sm" color="primary" />
@@ -342,7 +342,7 @@ const ProductsSidebar: FC<Props> = () => {
                       maxLength={6}
                       onChange={(e) => setPrice({ ...price, max: e.target.value })}
                       autoComplete="off"
-                      className="rounded-lg p-2 w-full border-gray-300 border-[1px] focus:outline-none text-selected-dark"
+                      className="rounded-lg p-2 w-[81px] border-gray-300 border-[1px] focus:outline-none text-selected-dark"
                     />
                     <Text Tag="span" text="₴" size="sm" color="primary" />
                   </div>

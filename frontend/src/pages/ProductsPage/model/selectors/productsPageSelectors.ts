@@ -26,3 +26,7 @@ export const getProductsCount = (state: StateSchema) => state.products.count;
 export const getProductsPageSellerId = (state: StateSchema) => state.products.sellerId;
 
 export const getProductsPageMinRating = (state: StateSchema) => state.products.minRating;
+
+export const getProductsPageMinPrice = (state: StateSchema) => state.products.minPrice;
+
+export const getProductsPageMaxPrice = (state: StateSchema) => state.products.maxPrice;

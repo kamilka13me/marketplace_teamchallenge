@@ -6,6 +6,8 @@ import {
   getProductsPageCategory,
   getProductsPageDiscount,
   getProductsPageLimit,
+  getProductsPageMaxPrice,
+  getProductsPageMinPrice,
   getProductsPageMinRating,
   getProductsPageName,
   getProductsPageOffset,
@@ -43,6 +45,8 @@ export const fetchProductsList = createAsyncThunk<
   const sortDirection = getProductsPageSortDirection(getState());
   const sellerId = getProductsPageSellerId(getState());
   const minRating = getProductsPageMinRating(getState());
+  const minPrice = getProductsPageMinPrice(getState());
+  const maxPrice = getProductsPageMaxPrice(getState());
 
   try {
     const response = await $api.get<ApiResponse>(ApiRoutes.PRODUCTS, {
@@ -57,6 +61,8 @@ export const fetchProductsList = createAsyncThunk<
         discount,
         sellerId,
         minRating,
+        minPrice,
+        maxPrice,
       },
     });
 

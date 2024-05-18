@@ -20,6 +20,8 @@ export const initProductsPage = createAsyncThunk<
   const offsetFromUrl = searchParams.get('offset');
   const sellerIdFromUrl = searchParams.get('sellerId');
   const minRatingFromUrl = searchParams.get('minRating');
+  const minPriceFromUrl = searchParams.get('minPrice');
+  const maxPriceFromUrl = searchParams.get('maxPrice');
 
   if (nameFromUrl) dispatch(productsPageActions.setName(nameFromUrl));
   if (discountFromUrl) dispatch(productsPageActions.setDiscount(discountFromUrl));
@@ -32,6 +34,8 @@ export const initProductsPage = createAsyncThunk<
   if (sellerIdFromUrl) dispatch(productsPageActions.setSellerId(sellerIdFromUrl));
   if (minRatingFromUrl)
     dispatch(productsPageActions.setMinRating(Number(minRatingFromUrl)));
+  if (minPriceFromUrl) dispatch(productsPageActions.setMinPrice(Number(minPriceFromUrl)));
+  if (maxPriceFromUrl) dispatch(productsPageActions.setMaxPrice(Number(maxPriceFromUrl)));
 
   dispatch(fetchProductsList({}));
 });

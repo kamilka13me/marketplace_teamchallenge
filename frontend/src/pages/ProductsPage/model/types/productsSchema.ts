@@ -16,4 +16,6 @@ export interface ProductsPageSchema extends EntityState<Product, string> {
   count: number;
   sellerId: string;
   minRating: number | null;
+  minPrice: number | null;
+  maxPrice: number | null;
 }
