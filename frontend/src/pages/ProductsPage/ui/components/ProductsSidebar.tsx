@@ -6,6 +6,7 @@ import { Disclosure } from '@headlessui/react';
 import { useSearchParams } from 'react-router-dom';
 
 import { Category } from '@/enteties/Category';
+import { User } from '@/enteties/User';
 import arrowDown from '@/shared/assets/icons/arrow_down.svg?react';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import useAxios from '@/shared/lib/hooks/useAxios';
@@ -21,16 +22,23 @@ const ProductsSidebar: FC<Props> = () => {
     ApiRoutes.CATEGORY,
   );
 
+  const { data: sellerData, isLoading: sellerIsLoading } = useAxios<{ users: User[] }>(
+    ApiRoutes.SELLER_PRODUCTS,
+  );
+
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState<Category | null>(null);
   const [selectedSubSubcategory, setSelectedSubSubcategory] = useState<Category | null>(
     null,
   );
+  const [selectedSeller, setSelectedSeller] = useState<User | null>(null);
   const [price, setPrice] = useState<{ min: string; max: string }>({
     min: searchParams.get('minPrice') || '0',
     max: searchParams.get('maxPrice') || '99999',
   });
-  const [rating, setRating] = useState<string | null>(searchParams.get('rating') || null);
+  const [minRating, setMinRating] = useState<string | null>(
+    searchParams.get('minRating') || null,
+  );
 
   const handleApplyFilters = () => {
     if (selectedCategory) searchParams.set('category', String(selectedCategory?._id));
@@ -39,19 +47,26 @@ const ProductsSidebar: FC<Props> = () => {
     if (selectedSubSubcategory)
       searchParams.set('category', String(selectedSubSubcategory?._id));
 
+    if (selectedSeller) searchParams.set('sellerId', String(selectedSeller?._id));
+
     if (price.min !== '0' || price.max !== '99999') {
       searchParams.set('minPrice', String(price.min));
       searchParams.set('maxPrice', String(price.max));
     }
-    if (rating) searchParams.set('rating', String(rating));
+    if (minRating) searchParams.set('minRating', String(minRating));
 
     setSearchParams(searchParams);
   };
 
   const clearSearchParams = () => {
-    const params = new URLSearchParams();
+    setSelectedCategory(null);
+    setSelectedSubcategory(null);
+    setSelectedSubSubcategory(null);
+    setSelectedSeller(null);
+    setPrice({ min: '0', max: '99999' });
+    setMinRating(null);
 
-    setSearchParams(params);
+    setSearchParams(new URLSearchParams());
   };
 
   return (
@@ -249,7 +264,26 @@ const ProductsSidebar: FC<Props> = () => {
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                  No.
+                  <ul className="flex flex-col gap-2">
+                    {sellerIsLoading && (
+                      <span className="text-center">Завантаження...</span>
+                    )}
+                    {sellerData &&
+                      sellerData.users.slice(0, 11).map((item) => (
+                        <li key={item._id}>
+                          <button type="button" onClick={() => setSelectedSeller(item)}>
+                            <Text
+                              Tag="span"
+                              text={item.username}
+                              size="sm"
+                              color="primary"
+                              className={`${item._id === selectedSeller?._id && 'font-bold'}`}
+                            />
+                          </button>
+                        </li>
+                      ))}
+                  </ul>
+
                   <Disclosure.Button className="w-full flex content-center justify-center">
                     <Text
                       Tag="span"
@@ -343,8 +377,8 @@ const ProductsSidebar: FC<Props> = () => {
                         id="5"
                         name="rating"
                         value="5"
-                        checked={rating === '5'}
-                        onChange={() => setRating('5')}
+                        checked={minRating === '5'}
+                        onChange={() => setMinRating('5')}
                         className="cursor-pointer"
                       />
                       <Text Tag="span" text="5" size="xs" color="primary" />
@@ -356,8 +390,8 @@ const ProductsSidebar: FC<Props> = () => {
                         id="4"
                         name="rating"
                         value="4"
-                        checked={rating === '4'}
-                        onChange={() => setRating('4')}
+                        checked={minRating === '4'}
+                        onChange={() => setMinRating('4')}
                         className="cursor-pointer"
                       />
                       <Text Tag="span" text="від 4" size="xs" color="primary" />
@@ -369,8 +403,8 @@ const ProductsSidebar: FC<Props> = () => {
                         id="3"
                         name="rating"
                         value="3"
-                        checked={rating === '3'}
-                        onChange={() => setRating('3')}
+                        checked={minRating === '3'}
+                        onChange={() => setMinRating('3')}
                         className="cursor-pointer"
                       />
                       <Text Tag="span" text="від 3" size="xs" color="primary" />
@@ -382,8 +416,8 @@ const ProductsSidebar: FC<Props> = () => {
                         id="2"
                         name="rating"
                         value="2"
-                        checked={rating === '2'}
-                        onChange={() => setRating('2')}
+                        checked={minRating === '2'}
+                        onChange={() => setMinRating('2')}
                         className="cursor-pointer"
                       />
                       <Text Tag="span" text="від 2" size="xs" color="primary" />
@@ -395,8 +429,8 @@ const ProductsSidebar: FC<Props> = () => {
                         id="1"
                         name="rating"
                         value="1"
-                        checked={rating === '1'}
-                        onChange={() => setRating('1')}
+                        checked={minRating === '1'}
+                        onChange={() => setMinRating('1')}
                         className="cursor-pointer"
                       />
                       <Text Tag="span" text="від 1" size="xs" color="primary" />

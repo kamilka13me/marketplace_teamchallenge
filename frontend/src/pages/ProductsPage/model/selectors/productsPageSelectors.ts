@@ -22,3 +22,7 @@ export const getProductsPageSortDirection = (state: StateSchema) =>
   state.products.sortDirection;
 
 export const getProductsCount = (state: StateSchema) => state.products.count;
+
+export const getProductsPageSellerId = (state: StateSchema) => state.products.sellerId;
+
+export const getProductsPageMinRating = (state: StateSchema) => state.products.minRating;

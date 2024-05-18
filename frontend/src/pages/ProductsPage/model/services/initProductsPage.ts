@@ -18,6 +18,8 @@ export const initProductsPage = createAsyncThunk<
   const discountFromUrl = searchParams.get('discount');
   const quantityFromUrl = searchParams.get('quantity');
   const offsetFromUrl = searchParams.get('offset');
+  const sellerIdFromUrl = searchParams.get('sellerId');
+  const minRatingFromUrl = searchParams.get('minRating');
 
   if (nameFromUrl) dispatch(productsPageActions.setName(nameFromUrl));
   if (discountFromUrl) dispatch(productsPageActions.setDiscount(discountFromUrl));
@@ -27,6 +29,9 @@ export const initProductsPage = createAsyncThunk<
     dispatch(productsPageActions.setSortDirection(sortDirectionFromUrl));
   if (sortByFromUrl) dispatch(productsPageActions.setSortBy(sortByFromUrl));
   if (offsetFromUrl) dispatch(productsPageActions.setOffset(Number(offsetFromUrl)));
+  if (sellerIdFromUrl) dispatch(productsPageActions.setSellerId(sellerIdFromUrl));
+  if (minRatingFromUrl)
+    dispatch(productsPageActions.setMinRating(Number(minRatingFromUrl)));
 
   dispatch(fetchProductsList({}));
 });
