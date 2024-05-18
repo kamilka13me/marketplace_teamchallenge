@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import { FC, useState } from 'react';
 
@@ -6,6 +5,8 @@ import { Disclosure } from '@headlessui/react';
 import { useSearchParams } from 'react-router-dom';
 
 import { Category } from '@/enteties/Category';
+import { Rating } from '@/enteties/Rating';
+import { User } from '@/enteties/User';
 import arrowDown from '@/shared/assets/icons/arrow_down.svg?react';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import useAxios from '@/shared/lib/hooks/useAxios';
@@ -21,31 +22,51 @@ const ProductsSidebar: FC<Props> = () => {
     ApiRoutes.CATEGORY,
   );
 
+  const { data: sellerData, isLoading: sellerIsLoading } = useAxios<{ users: User[] }>(
+    ApiRoutes.SELLER_PRODUCTS,
+  );
+
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState<Category | null>(null);
+  const [selectedSubSubcategory, setSelectedSubSubcategory] = useState<Category | null>(
+    null,
+  );
+  const [selectedSeller, setSelectedSeller] = useState<User | null>(null);
   const [price, setPrice] = useState<{ min: string; max: string }>({
     min: searchParams.get('minPrice') || '0',
-    max: searchParams.get('maxPrice') || '99999',
+    max: searchParams.get('maxPrice') || '999999',
   });
-  const [rating, setRating] = useState<string | null>(searchParams.get('rating') || null);
+  const [minRating, setMinRating] = useState<string | null>(
+    searchParams.get('minRating') || null,
+  );
 
   const handleApplyFilters = () => {
     if (selectedCategory) searchParams.set('category', String(selectedCategory?._id));
     if (selectedSubcategory)
       searchParams.set('category', String(selectedSubcategory?._id));
-    if (price.min !== '0' || price.max !== '99999') {
+    if (selectedSubSubcategory)
+      searchParams.set('category', String(selectedSubSubcategory?._id));
+
+    if (selectedSeller) searchParams.set('sellerId', String(selectedSeller?._id));
+
+    if (price.min !== '0' || price.max !== '999999') {
       searchParams.set('minPrice', String(price.min));
       searchParams.set('maxPrice', String(price.max));
     }
-    if (rating) searchParams.set('rating', String(rating));
+    if (minRating) searchParams.set('minRating', String(minRating));
 
     setSearchParams(searchParams);
   };
 
   const clearSearchParams = () => {
-    const params = new URLSearchParams();
+    setSelectedCategory(null);
+    setSelectedSubcategory(null);
+    setSelectedSubSubcategory(null);
+    setSelectedSeller(null);
+    setPrice({ min: '0', max: '99999' });
+    setMinRating(null);
 
-    setSearchParams(params);
+    setSearchParams(new URLSearchParams());
   };
 
   return (
@@ -185,7 +206,30 @@ const ProductsSidebar: FC<Props> = () => {
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                  No.
+                  <ul className="flex flex-col gap-2">
+                    {!selectedSubcategory && <span>Виберіть підкатегорію</span>}
+                    {selectedSubcategory?.subcategories.length === 0 && (
+                      <span>Немає розділів</span>
+                    )}
+                    {selectedSubcategory &&
+                      selectedSubcategory.subcategories.map((item) => (
+                        <li key={item._id}>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedSubSubcategory(item)}
+                          >
+                            <Text
+                              Tag="span"
+                              text={item.name}
+                              size="sm"
+                              color="primary"
+                              className={`${item._id === selectedSubSubcategory?._id && 'font-bold'}`}
+                            />
+                          </button>
+                        </li>
+                      ))}
+                  </ul>
+
                   <Disclosure.Button className="w-full flex content-center justify-center">
                     <Text
                       Tag="span"
@@ -220,7 +264,26 @@ const ProductsSidebar: FC<Props> = () => {
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                  No.
+                  <ul className="flex flex-col gap-2">
+                    {sellerIsLoading && (
+                      <span className="text-center">Завантаження...</span>
+                    )}
+                    {sellerData &&
+                      sellerData.users.slice(0, 11).map((item) => (
+                        <li key={item._id}>
+                          <button type="button" onClick={() => setSelectedSeller(item)}>
+                            <Text
+                              Tag="span"
+                              text={item.username}
+                              size="sm"
+                              color="primary"
+                              className={`${item._id === selectedSeller?._id && 'font-bold'}`}
+                            />
+                          </button>
+                        </li>
+                      ))}
+                  </ul>
+
                   <Disclosure.Button className="w-full flex content-center justify-center">
                     <Text
                       Tag="span"
@@ -254,7 +317,7 @@ const ProductsSidebar: FC<Props> = () => {
                     className={`h-4 w-4 duration-75 absolute pointer-events-none right-0 top-3.5 ${open ? 'rotate-180 transform' : ''}`}
                   />
                 </Disclosure.Button>
-                <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
+                <Disclosure.Panel className="px-3 pb-2 pt-4 text-sm text-gray-500">
                   <div className="flex gap-1 items-center content-center">
                     <Text Tag="span" text="від" size="sm" color="primary" />
                     <input
@@ -266,7 +329,7 @@ const ProductsSidebar: FC<Props> = () => {
                       maxLength={6}
                       onChange={(e) => setPrice({ ...price, min: e.target.value })}
                       autoComplete="off"
-                      className="rounded-lg p-2 w-full border-gray-300 border-[1px] focus:outline-none text-selected-dark"
+                      className="rounded-lg p-2 w-[78px] border-gray-300 border-[1px] focus:outline-none text-selected-dark"
                     />
                     <Text Tag="span" text="—" size="sm" color="primary" />
                     <Text Tag="span" text="до" size="sm" color="primary" />
@@ -279,7 +342,7 @@ const ProductsSidebar: FC<Props> = () => {
                       maxLength={6}
                       onChange={(e) => setPrice({ ...price, max: e.target.value })}
                       autoComplete="off"
-                      className="rounded-lg p-2 w-full border-gray-300 border-[1px] focus:outline-none text-selected-dark"
+                      className="rounded-lg p-2 w-[81px] border-gray-300 border-[1px] focus:outline-none text-selected-dark"
                     />
                     <Text Tag="span" text="₴" size="sm" color="primary" />
                   </div>
@@ -308,70 +371,27 @@ const ProductsSidebar: FC<Props> = () => {
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
                   <div className="flex flex-col gap-1">
-                    <div className="flex gap-1 items-center content-center">
-                      <input
-                        type="radio"
-                        id="5"
-                        name="rating"
-                        value="5"
-                        checked={rating === '5'}
-                        onChange={() => setRating('5')}
-                        className="cursor-pointer"
-                      />
-                      <Text Tag="span" text="5" size="xs" color="primary" />
-                    </div>
-
-                    <div className="flex gap-1 items-center content-center">
-                      <input
-                        type="radio"
-                        id="4"
-                        name="rating"
-                        value="4"
-                        checked={rating === '4'}
-                        onChange={() => setRating('4')}
-                        className="cursor-pointer"
-                      />
-                      <Text Tag="span" text="від 4" size="xs" color="primary" />
-                    </div>
-
-                    <div className="flex gap-1 items-center content-center">
-                      <input
-                        type="radio"
-                        id="3"
-                        name="rating"
-                        value="3"
-                        checked={rating === '3'}
-                        onChange={() => setRating('3')}
-                        className="cursor-pointer"
-                      />
-                      <Text Tag="span" text="від 3" size="xs" color="primary" />
-                    </div>
-
-                    <div className="flex gap-1 items-center content-center">
-                      <input
-                        type="radio"
-                        id="2"
-                        name="rating"
-                        value="2"
-                        checked={rating === '2'}
-                        onChange={() => setRating('2')}
-                        className="cursor-pointer"
-                      />
-                      <Text Tag="span" text="від 2" size="xs" color="primary" />
-                    </div>
-
-                    <div className="flex gap-1 items-center content-center">
-                      <input
-                        type="radio"
-                        id="1"
-                        name="rating"
-                        value="1"
-                        checked={rating === '1'}
-                        onChange={() => setRating('1')}
-                        className="cursor-pointer"
-                      />
-                      <Text Tag="span" text="від 1" size="xs" color="primary" />
-                    </div>
+                    {[5, 4, 3, 2, 1].map((number) => (
+                      <div className="flex gap-2 items-center" key={number}>
+                        <input
+                          type="radio"
+                          id={String(number)}
+                          name="rating"
+                          value={String(number)}
+                          checked={minRating === String(number)}
+                          onChange={() => setMinRating(String(number))}
+                          className="cursor-pointer mt-[7px]"
+                        />
+                        <Text
+                          Tag="span"
+                          text={number === 5 ? '5' : `від   ${String(number)}`}
+                          size="xs"
+                          color="primary"
+                          className="mt-[8px]"
+                        />
+                        <Rating rating={number} isProducts />
+                      </div>
+                    ))}
                   </div>
                 </Disclosure.Panel>
               </>

@@ -1,7 +1,7 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 
 import { t } from 'i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import search from '@/shared/assets/icons/search.svg?react';
 import { Button } from '@/shared/ui/Button';
@@ -12,11 +12,16 @@ interface Props {}
 
 const HeaderSearchInput: FC<Props> = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const [inputData, setInputData] = useState<string>('');
+
+  useEffect(() => {
+    setInputData(searchParams.get('name') || '');
+  }, [searchParams]);
+
   const onSubmitSearch = () => {
     navigate(`/products?name=${inputData}`);
-    setInputData('');
   };
 
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>): void => {

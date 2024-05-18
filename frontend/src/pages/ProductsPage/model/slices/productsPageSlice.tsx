@@ -29,6 +29,10 @@ export const productsPageSlice = createSlice({
     quantity: '1',
     sortDirection: '1',
     count: 0,
+    sellerId: '',
+    minRating: null,
+    minPrice: null,
+    maxPrice: null,
   }),
   reducers: {
     setName: (state, action: PayloadAction<string>) => {
@@ -52,6 +56,18 @@ export const productsPageSlice = createSlice({
     setSortDirection: (state, action: PayloadAction<'1' | '-1'>) => {
       state.sortDirection = action.payload;
     },
+    setSellerId: (state, action: PayloadAction<string>) => {
+      state.sellerId = action.payload;
+    },
+    setMinRating: (state, action: PayloadAction<number>) => {
+      state.minRating = action.payload;
+    },
+    setMinPrice: (state, action: PayloadAction<number>) => {
+      state.minPrice = action.payload;
+    },
+    setMaxPrice: (state, action: PayloadAction<number>) => {
+      state.maxPrice = action.payload;
+    },
     clearSortParams: (state) => {
       state.name = '';
       state.sortBy = '';
@@ -61,6 +77,10 @@ export const productsPageSlice = createSlice({
       state.sortDirection = '1';
       state.offset = 0;
       state.count = 0;
+      state.sellerId = '';
+      state.minRating = null;
+      state.minPrice = null;
+      state.maxPrice = null;
     },
   },
   extraReducers: (builder) => {
