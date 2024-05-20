@@ -3,6 +3,7 @@ import { FC, useLayoutEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import ManagingOffers from './Tabs/ManagingOffers/ManagingOffers';
+import SupportCenter from './Tabs/SupportCenter/SupportCenter';
 
 import analytics from '@/shared/assets/icons/analytics.svg?react';
 import content from '@/shared/assets/icons/content.svg?react';
@@ -127,7 +128,7 @@ const AdminPage: FC = () => {
           {/* {currentTab === 4 && <ManagingContent />} */}
           {/* {currentTab === 5 && <Analytics />} */}
           {/* {currentTab === 6 && <Finances />} */}
-          {/* {currentTab === 7 && <SupportCentre />} */}
+          {currentTab === 7 && <SupportCenter />}
         </VStack>
       </Container>
     </div>
