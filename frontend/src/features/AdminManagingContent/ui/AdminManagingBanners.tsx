@@ -1,47 +1,43 @@
-import { FC, useState } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 
 import ModalWindow from '../../../shared/ui/ModalWindow/ModalWindow';
 
-import banner from './photo.png';
-
+import { $api } from '@/shared/api/api';
 import close from '@/shared/assets/icons/cancel.svg?react';
 import exclamation from '@/shared/assets/icons/exclamation.svg?react';
 import gallery from '@/shared/assets/icons/gallery-add.svg?react';
 import trashbin from '@/shared/assets/icons/trash.svg?react';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
+import useAxios from '@/shared/lib/hooks/useAxios';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Image } from '@/shared/ui/Image';
+import { Skeleton } from '@/shared/ui/Skeleton';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
-const banners = [
-  {
-    id: 0,
-    banner,
-  },
-  {
-    id: 1,
-    banner,
-  },
-  {
-    id: 2,
-    banner,
-  },
-  {
-    id: 3,
-    banner,
-  },
-  {
-    id: 4,
-    banner,
-  },
-];
+interface ImageData {
+  _id: string;
+  image: string;
+}
 
 const AdminManagingBanners: FC = () => {
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [addBannerModalIsOpen, setAddBannerModalIsOpen] = useState(false);
-  const [currentBanner, setCurrentBanner] = useState<number | null>(null);
-  const [, setSelectedBannerForDelete] = useState<number | null>(null);
+  const [currentBanner, setCurrentBanner] = useState<string | null>(null);
+  const [banner, setBanner] = useState<File | null>(null);
+  const [selectedBannerForDelete, setSelectedBannerForDelete] = useState<string | null>(
+    null,
+  );
+  const [bannerErrorMessage, setBannerErrorMessage] = useState('');
+  const [bannerPreview, setBannerPreview] = useState<string | null>(null);
+  const [bannerPreviewOverlayIsOpen, setBannerPreviewOverlayIsOpen] = useState(false);
+
+  const {
+    data: banners,
+    isLoading,
+    refetch,
+  } = useAxios<ImageData[]>(ApiRoutes.CONTROL_PANEL);
 
   const closeDeleteBannerModalHandler = () => {
     setDeleteModalIsOpen(false);
@@ -50,6 +46,71 @@ const AdminManagingBanners: FC = () => {
 
   const closeAddBannerModalHandler = () => {
     setAddBannerModalIsOpen(false);
+  };
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      const maxSize = 10 * 1024 * 1024; // 10MB
+      const allowedTypes = ['image/png', 'image/jpg', 'image/jpeg'];
+
+      if (file) {
+        if (!allowedTypes.includes(file.type)) {
+          setBannerErrorMessage('Недопустиме розширення файлу!');
+
+          return;
+        }
+
+        if (file.size > maxSize) {
+          setBannerErrorMessage('Файл розміром більше 10 МБ!');
+
+          return;
+        }
+
+        setBanner(file);
+        setBannerPreview(URL.createObjectURL(file));
+        setBannerErrorMessage('');
+        closeAddBannerModalHandler();
+      }
+    } else {
+      setBannerErrorMessage('Щось пышло не так');
+    }
+  };
+
+  const deleteBannerHandler = async () => {
+    try {
+      await $api.delete(`${ApiRoutes.CONTROL_PANEL}/${selectedBannerForDelete}`);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(e);
+    } finally {
+      setDeleteModalIsOpen(false);
+      refetch();
+    }
+  };
+
+  const sendBanner = async () => {
+    if (!banner) {
+      setBannerErrorMessage('Будь ласка, виберіть баннер для завантаження.');
+
+      return;
+    }
+
+    const formData = new FormData();
+
+    formData.append('image', banner);
+
+    try {
+      await $api.post(ApiRoutes.CONTROL_PANEL, formData);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(e);
+    } finally {
+      setBanner(null);
+      setBannerPreview(null);
+      setBannerErrorMessage('');
+      refetch();
+    }
   };
 
   return (
@@ -62,39 +123,81 @@ const AdminManagingBanners: FC = () => {
           size="lg"
           color="gray-light"
         />
-        <div className="grid grid-cols-5 gap-3">
-          {banners.map((banner) => (
-            <div
-              key={banner.id}
-              className="relative cursor-pointer"
-              onMouseEnter={() => setCurrentBanner(banner.id)}
-              onMouseLeave={() => setCurrentBanner(null)}
-            >
-              <Image
-                objectFit="cover"
-                src={banner.banner}
-                alt="img"
-                className="w-[180px] h-[94px] rounded-lg"
-              />
-              {currentBanner === banner.id && (
-                <ImageDeleteOverlay
-                  onClick={() => {
-                    setDeleteModalIsOpen(true);
-                    setSelectedBannerForDelete(banner.id);
-                  }}
+        {isLoading ? (
+          <div className="grid grid-cols-5 gap-3">
+            {Array(5)
+              .fill(null)
+              .map((_, i) => (
+                <Skeleton key={i} width={180} height={94} border="16px" />
+              ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-5 gap-3">
+            {banners?.map((banner) => (
+              <div
+                key={banner._id}
+                className="relative"
+                onMouseEnter={() => setCurrentBanner(banner._id)}
+                onMouseLeave={() => setCurrentBanner(null)}
+              >
+                <Image
+                  objectFit="cover"
+                  src={`${process.env.BASE_URL}${banner.image}`}
+                  alt="img"
+                  className="w-[180px] h-[94px] rounded-lg"
                 />
-              )}
-            </div>
-          ))}
-        </div>
-        <VStack justify="between" align="center" className="w-full mt-4">
-          <Button onClick={() => setAddBannerModalIsOpen(true)} variant="border-bottom">
-            Додати {banners.length > 0 ? 'ще' : ''} баннер
-          </Button>
+                {currentBanner === banner._id && (
+                  <ImageDeleteOverlay
+                    onClick={() => {
+                      setDeleteModalIsOpen(true);
+                      setSelectedBannerForDelete(banner._id);
+                    }}
+                  />
+                )}
+              </div>
+            ))}
+            {bannerPreview && (
+              <div
+                onMouseEnter={() => setBannerPreviewOverlayIsOpen(true)}
+                onMouseLeave={() => setBannerPreviewOverlayIsOpen(false)}
+                className="relative"
+              >
+                <Image
+                  objectFit="cover"
+                  src={bannerPreview}
+                  alt="Preview"
+                  className="w-[180px] h-[94px] rounded-lg"
+                />
+                {bannerPreviewOverlayIsOpen && (
+                  <ImageDeleteOverlay
+                    onClick={() => {
+                      setBannerPreview(null);
+                    }}
+                  />
+                )}
+              </div>
+            )}
+          </div>
+        )}
 
-          <Button className="h-12 max-w-[282px] w-full" variant="primary">
-            Зберегти
-          </Button>
+        <VStack justify="between" align="center" className="w-full mt-4">
+          {!bannerPreview ? (
+            <Button onClick={() => setAddBannerModalIsOpen(true)} variant="border-bottom">
+              Додати {(banners?.length || 0) > 0 ? 'ще' : ''} баннер
+            </Button>
+          ) : (
+            <div />
+          )}
+
+          {bannerPreview && (
+            <Button
+              onClick={sendBanner}
+              className="h-12 max-w-[282px] w-full justify-self-end"
+              variant="primary"
+            >
+              Зберегти
+            </Button>
+          )}
         </VStack>
       </HStack>
 
@@ -140,7 +243,11 @@ const AdminManagingBanners: FC = () => {
                 >
                   Відмінити
                 </Button>
-                <Button variant="primary" className="!w-full">
+                <Button
+                  onClick={deleteBannerHandler}
+                  variant="primary"
+                  className="!w-full"
+                >
                   Видалити
                 </Button>
               </VStack>
@@ -172,9 +279,18 @@ const AdminManagingBanners: FC = () => {
             />
           </div>
           <HStack gap="2" align="center" className="w-full max-w-[282px] mt-7">
-            <Button variant="primary" className="w-full">
-              Додати
-            </Button>
+            <Text Tag="p" text={bannerErrorMessage} size="md" color="red" />
+
+            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+            <label className="flex justify-center items-center cursor-pointer rounded-lg h-[48px] bg-main w-full">
+              <Text Tag="span" text="Додати" size="md" align="center" />
+              <input
+                type="file"
+                accept=".png,.jpg,.jpeg,.pdf,.doc,.docx"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+            </label>
             <Button
               onClick={closeAddBannerModalHandler}
               className="text-sm"
