@@ -113,7 +113,7 @@ const OfferController: FC<Props> = (props) => {
           className="group flex items-center gap-2 w-[180px] p-2.5 hover:bg-secondary-yellow rounded-lg"
           onClick={() => blockHandler()}
         >
-          <Icon Svg={block} width={30} height={30} />
+          <Icon Svg={block} width={30} height={30} className="stroke-error-red" />
           <Text
             Tag="span"
             text="Заблокувати"
