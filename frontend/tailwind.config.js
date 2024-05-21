@@ -20,6 +20,7 @@ export default {
       dropShadow: {
         'custom-primary': '0px 2px 16px rgba(255, 255, 255, 0.25)',
         'custom-user-info': '0px 2px 6px rgba(50, 196, 47, 0.25)',
+        'custom-dark-modal': '4px 4px 8px rgba(118, 110, 110, 0.25)',
       },
       fontSize: {
         xxs: ['10px', '12.6px'],

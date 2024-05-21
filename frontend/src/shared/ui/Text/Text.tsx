@@ -44,9 +44,9 @@ const fontSize: Record<FontSize, string> = {
   sm: 'text-sm',
   md: 'text-md',
   lg: 'text-lg',
-  xl: 'text-xl font-bold',
+  xl: 'text-xl font-semibold',
   '2xl': 'text-2xl',
-  '3xl': 'text-3xl font-bold',
+  '3xl': 'text-3xl font-semibold',
   '4xl': 'text-4xl font-ibm-plex-sans',
 };
 

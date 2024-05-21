@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import ManagingOffers from './Tabs/ManagingOffers/ManagingOffers';
 import SupportCenter from './Tabs/SupportCenter/SupportCenter';
 
+import { AdminManagingContent } from '@/features/AdminManagingContent';
 import analytics from '@/shared/assets/icons/analytics.svg?react';
 import content from '@/shared/assets/icons/content.svg?react';
 import finances from '@/shared/assets/icons/finances.svg?react';
@@ -125,7 +126,7 @@ const AdminPage: FC = () => {
           {/* {currentTab === 1 && <ManagingSellers />} */}
           {currentTab === 2 && <ManagingOffers />}
           {/* {currentTab === 3 && <ManagingFeedbacks />} */}
-          {/* {currentTab === 4 && <ManagingContent />} */}
+          {currentTab === 4 && <AdminManagingContent />}
           {/* {currentTab === 5 && <Analytics />} */}
           {/* {currentTab === 6 && <Finances />} */}
           {currentTab === 7 && <SupportCenter />}
