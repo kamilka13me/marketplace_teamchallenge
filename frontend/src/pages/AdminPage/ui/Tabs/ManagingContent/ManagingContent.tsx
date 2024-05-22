@@ -5,6 +5,7 @@ import { FC, useState } from 'react';
 import CategorySelector from './components/CategorySelector';
 
 import { Category } from '@/enteties/Category';
+import { AdminManagingBanners } from '@/features/AdminManagingBanners';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import useAxios from '@/shared/lib/hooks/useAxios';
 import { Text } from '@/shared/ui/Text';
@@ -118,24 +119,7 @@ const ManagingContent: FC = () => {
         </div>
       </div>
 
-      {/* --------------Слайдер----------------- */}
-      <div className="flex flex-col items-start justify-between w-full bg-dark-grey rounded-2xl p-[16px]">
-        <Text
-          Tag="span"
-          text="Управління контентом"
-          color="white"
-          size="xl"
-          className="font-semibold"
-        />
-
-        <Text
-          Tag="span"
-          text="Для  редагування, наведіть мишкою на банер."
-          color="gray-light"
-          size="lg"
-          className="font-normal"
-        />
-      </div>
+      <AdminManagingBanners />
     </div>
   );
 };

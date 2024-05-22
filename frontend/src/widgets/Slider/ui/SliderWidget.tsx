@@ -11,9 +11,7 @@ interface ImageData {
 }
 
 const SliderWidget: FC = () => {
-  const { data, error, isLoading } = useAxios<ImageData[]>(
-    `${ApiRoutes.CONTROL_PANEL}/banner`,
-  );
+  const { data, error, isLoading } = useAxios<ImageData[]>(`${ApiRoutes.CONTROL_PANEL}`);
 
   const renderContent = () => {
     if (isLoading) {

@@ -3,7 +3,7 @@ export enum ApiRoutes {
   AUTHENTICATION = '/auth',
   PRODUCTS = '/products',
   CATEGORY = '/category',
-  CONTROL_PANEL = '/control-panel',
+  CONTROL_PANEL = '/control-panel/banner',
   FEEDBACK = '/feedback',
   SELLER_PRODUCTS = '/seller',
   SELLER_CONTACTS = '/seller/contacts',
