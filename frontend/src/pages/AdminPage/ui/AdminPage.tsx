@@ -2,6 +2,7 @@ import { FC, useLayoutEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
+import ManagingContent from './Tabs/ManagingContent/ManagingContent';
 import ManagingOffers from './Tabs/ManagingOffers/ManagingOffers';
 import SupportCenter from './Tabs/SupportCenter/SupportCenter';
 
@@ -125,7 +126,7 @@ const AdminPage: FC = () => {
           {/* {currentTab === 1 && <ManagingSellers />} */}
           {currentTab === 2 && <ManagingOffers />}
           {/* {currentTab === 3 && <ManagingFeedbacks />} */}
-          {/* {currentTab === 4 && <ManagingContent />} */}
+          {currentTab === 4 && <ManagingContent />}
           {/* {currentTab === 5 && <Analytics />} */}
           {/* {currentTab === 6 && <Finances />} */}
           {currentTab === 7 && <SupportCenter />}
