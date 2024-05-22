@@ -125,7 +125,7 @@ const AdminPage: FC = () => {
           {/* {currentTab === 1 && <ManagingSellers />} */}
           {currentTab === 2 && <ManagingOffers />}
           {/* {currentTab === 3 && <ManagingFeedbacks />} */}
-          {/* {currentTab === 4 && <AdminManagingContent />} */}
+          {/* {currentTab === 4 && <AdminManagingBanners />} */}
           {/* {currentTab === 5 && <Analytics />} */}
           {/* {currentTab === 6 && <Finances />} */}
           {currentTab === 7 && <SupportCenter />}
