@@ -15,19 +15,21 @@ interface Props {
   setSelected: (category: Category | null) => void;
   addButton: { text: string; open: () => void };
   categoryLimit: number;
+  disabled?: boolean;
 }
 
 const CategorySelector: FC<Props> = (props) => {
-  const { categoryArr, selected, setSelected, addButton, categoryLimit } = props;
+  const { categoryArr, selected, setSelected, addButton, categoryLimit, disabled } =
+    props;
 
   return (
     <span className="flex relative items-center gap-2">
       <div className="w-[240px] h-[44px]">
-        <Listbox value={selected} onChange={setSelected}>
+        <Listbox value={selected} onChange={setSelected} disabled={disabled}>
           {({ open }) => (
             <div className="relative">
               <Listbox.Button
-                className={`relative w-full cursor-painter ${open ? 'rounded-t-lg' : 'rounded-lg'} bg-selected-dark py-2 pl-3 pr-10 text-left focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm`}
+                className={`relative w-full cursor-painter ${open && !disabled ? 'rounded-t-lg' : 'rounded-lg'} bg-selected-dark py-2 pl-3 pr-10 text-left focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm`}
               >
                 <span className="block truncate text-base font-normal">
                   {selected ? selected?.name : 'Обрати'}
@@ -46,7 +48,9 @@ const CategorySelector: FC<Props> = (props) => {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <Listbox.Options className="absolute z-10 max-h-[450px] w-full overflow-auto rounded-b-md bg-selected-dark py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                <Listbox.Options
+                  className={`${disabled && 'hidden'} absolute z-10 max-h-[450px] w-full overflow-auto rounded-b-md bg-selected-dark py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm`}
+                >
                   {categoryArr &&
                     categoryArr.map((category, categoryIdx) => (
                       <Listbox.Option

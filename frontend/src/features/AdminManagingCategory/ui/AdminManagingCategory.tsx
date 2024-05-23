@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 /* eslint-disable jsx-a11y/control-has-associated-label */
@@ -19,15 +21,20 @@ const AdminManagingCategory: FC = () => {
   const [selectedSubSubcategory, setSelectedSubSubcategory] = useState<Category | null>(
     null,
   );
+
   const [isSaveActive, setIsSaveActive] = useState<boolean>(false);
   const [deleteCategoryArr, setDeleteCategoryArr] = useState<string[]>([]);
+
+  const [subcategoryClick, setSubcategoryClick] = useState<boolean>(false);
+  const [subsubcategoryClick, setSubsubcategoryClick] = useState<boolean>(false);
+
+  console.log(categoryData);
+  console.log('deleteCategoryArr:', deleteCategoryArr);
 
   useEffect(() => {
     if (deleteCategoryArr.length > 0) setIsSaveActive(true);
     else setIsSaveActive(false);
   }, [deleteCategoryArr]);
-
-  console.log('deleteCategoryArr:', deleteCategoryArr);
 
   const deleteCategory = (type: 'category' | 'subcategory' | 'subsubcategory') => {
     if (type === 'category' && selectedCategory) {
@@ -42,6 +49,9 @@ const AdminManagingCategory: FC = () => {
       setDeleteCategoryArr((prev) => [...prev, selectedSubSubcategory?._id]);
       setSelectedSubSubcategory(null);
     }
+
+    setSubcategoryClick(false);
+    setSubsubcategoryClick(false);
   };
 
   const addNewCategory = () => {
@@ -62,8 +72,6 @@ const AdminManagingCategory: FC = () => {
     setDeleteCategoryArr([]);
     setIsSaveActive(false);
   };
-
-  console.log(categoryData);
 
   return (
     <div className="flex flex-col gap-[16px] items-start justify-between w-full bg-dark-grey rounded-2xl p-[16px]">
@@ -123,7 +131,11 @@ const AdminManagingCategory: FC = () => {
             size="lg"
             className="font-semibold w-[120px]"
           />
-          <div className="flex flex-col items-start justify-between">
+
+          <div
+            className="flex flex-col items-start justify-between"
+            onClick={() => setSubcategoryClick(true)}
+          >
             <CategorySelector
               categoryArr={
                 selectedCategory?.subcategories?.filter(
@@ -134,13 +146,16 @@ const AdminManagingCategory: FC = () => {
               setSelected={setSelectedSubcategory}
               addButton={{ text: 'Додати нову підкатегорію', open: addNewSubCategory }}
               categoryLimit={12}
+              disabled={!selectedCategory && subcategoryClick}
             />
-            {!selectedCategory && (
+
+            {!selectedCategory && subcategoryClick && (
               <span className="text-error-red text-[10px] font-outfit">
                 Оберіть спочатку категорію.
               </span>
             )}
           </div>
+
           <button
             type="button"
             onClick={() => deleteCategory('subcategory')}
@@ -161,7 +176,11 @@ const AdminManagingCategory: FC = () => {
             size="lg"
             className="font-semibold w-[120px]"
           />
-          <div className="flex flex-col items-start justify-between">
+
+          <div
+            className="flex flex-col items-start justify-between"
+            onClick={() => setSubsubcategoryClick(true)}
+          >
             <CategorySelector
               categoryArr={
                 selectedSubcategory?.subcategories?.filter(
@@ -172,8 +191,10 @@ const AdminManagingCategory: FC = () => {
               setSelected={setSelectedSubSubcategory}
               addButton={{ text: 'Додати новий розділ', open: addNewSubSubCategory }}
               categoryLimit={7}
+              disabled={!selectedSubcategory && subsubcategoryClick}
             />
-            {!selectedSubcategory && (
+
+            {!selectedSubcategory && subsubcategoryClick && (
               <span className="text-error-red text-[10px] font-outfit">
                 Оберіть спочатку категорію, підкатегорію.
               </span>
@@ -191,6 +212,7 @@ const AdminManagingCategory: FC = () => {
           </button>
         </div>
 
+        {/* --------------Зберегти----------------- */}
         <Button
           onClick={handleSave}
           className="h-12 max-w-[282px] w-full justify-self-end"
