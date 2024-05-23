@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import { FC, useState } from 'react';
@@ -7,6 +8,7 @@ import CategorySelector from './components/CategorySelector';
 import { Category } from '@/enteties/Category';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import useAxios from '@/shared/lib/hooks/useAxios';
+import { Button } from '@/shared/ui/Button';
 import { Text } from '@/shared/ui/Text';
 
 const AdminManagingCategory: FC = () => {
@@ -17,6 +19,7 @@ const AdminManagingCategory: FC = () => {
   const [selectedSubSubcategory, setSelectedSubSubcategory] = useState<Category | null>(
     null,
   );
+  const [isSaveActive, setIsSaveActive] = useState<boolean>(false);
 
   const addNewCategory = () => {
     console.log('addNewCategory');
@@ -28,6 +31,10 @@ const AdminManagingCategory: FC = () => {
 
   const addNewSubSubCategory = () => {
     console.log('addNewSubSubCategory');
+  };
+
+  const handleSave = () => {
+    console.log('handleSave');
   };
 
   console.log(categoryData);
@@ -65,6 +72,7 @@ const AdminManagingCategory: FC = () => {
             selected={selectedCategory}
             setSelected={setSelectedCategory}
             addButton={{ text: 'Додати нову категорію', open: addNewCategory }}
+            categoryLimit={11}
           />
           <button type="button" onClick={() => {}}>
             <span className="text-main text-[14px] font-outfit underline underline-offset-[6px]">
@@ -87,6 +95,7 @@ const AdminManagingCategory: FC = () => {
             selected={selectedSubcategory}
             setSelected={setSelectedSubcategory}
             addButton={{ text: 'Додати нову підкатегорію', open: addNewSubCategory }}
+            categoryLimit={12}
           />
           <button type="button" onClick={() => {}}>
             <span className="text-main text-[14px] font-outfit underline underline-offset-[6px]">
@@ -109,6 +118,7 @@ const AdminManagingCategory: FC = () => {
             selected={selectedSubSubcategory}
             setSelected={setSelectedSubSubcategory}
             addButton={{ text: 'Додати новий розділ', open: addNewSubSubCategory }}
+            categoryLimit={7}
           />
           <button type="button" onClick={() => {}}>
             <span className="text-main text-[14px] font-outfit underline underline-offset-[6px]">
@@ -116,6 +126,15 @@ const AdminManagingCategory: FC = () => {
             </span>
           </button>
         </div>
+
+        <Button
+          onClick={handleSave}
+          className="h-12 max-w-[282px] w-full justify-self-end"
+          variant="primary"
+          disabled={!isSaveActive}
+        >
+          Зберегти
+        </Button>
       </div>
     </div>
   );

@@ -14,10 +14,11 @@ interface Props {
   selected: Category | null;
   setSelected: (category: Category | null) => void;
   addButton: { text: string; open: () => void };
+  categoryLimit: number;
 }
 
 const CategorySelector: FC<Props> = (props) => {
-  const { categoryArr, selected, setSelected, addButton } = props;
+  const { categoryArr, selected, setSelected, addButton, categoryLimit } = props;
 
   return (
     <span className="flex relative items-center gap-2">
@@ -59,18 +60,20 @@ const CategorySelector: FC<Props> = (props) => {
                       </Listbox.Option>
                     ))}
 
-                  <button
-                    type="button"
-                    onClick={() => {
-                      addButton.open();
-                      setSelected(null);
-                    }}
-                    className="w-full py-2 flex justify-items-start pl-[16px]"
-                  >
-                    <span className="text-main text-[14px] font-outfit font-semibold">
-                      {addButton.text}
-                    </span>
-                  </button>
+                  {categoryArr && categoryArr?.length < categoryLimit && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        addButton.open();
+                        setSelected(null);
+                      }}
+                      className="w-full py-2 flex justify-items-start pl-[16px]"
+                    >
+                      <span className="text-main text-[14px] font-outfit font-semibold">
+                        {addButton.text}
+                      </span>
+                    </button>
+                  )}
                 </Listbox.Options>
               </Transition>
             </div>
