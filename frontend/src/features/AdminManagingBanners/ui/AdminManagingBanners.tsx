@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 
 import ModalWindow from '../../../shared/ui/ModalWindow/ModalWindow';
 
@@ -114,7 +114,7 @@ const AdminManagingBanners: FC = () => {
   };
 
   return (
-    <section className="px-4 py-6 rounded-lg bg-dark-grey w-full">
+    <section className="px-4 py-6 rounded-[16px] bg-dark-grey w-full">
       <HStack className="gap-3">
         <Text Tag="h3" text="Управління контентом" size="xl" color="white" />
         <Text
