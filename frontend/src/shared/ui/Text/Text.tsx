@@ -11,7 +11,8 @@ export type TextColors =
   | 'orange'
   | 'red'
   | 'green'
-  | 'white';
+  | 'white'
+  | 'dark';
 
 export type FontSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
 
@@ -25,6 +26,7 @@ const TextColor: Record<TextColors, string> = {
   red: 'text-error-red',
   green: 'text-green',
   white: 'text-main-white',
+  dark: 'text-main-dark',
 };
 
 const TextAlignClass: Record<TextAlign, string> = {
@@ -52,7 +54,7 @@ const fontSize: Record<FontSize, string> = {
 
 interface Props {
   Tag: HeaderTagType;
-  text: string;
+  text: string|undefined;
   size: FontSize;
   color?: TextColors;
   bold?: boolean;
