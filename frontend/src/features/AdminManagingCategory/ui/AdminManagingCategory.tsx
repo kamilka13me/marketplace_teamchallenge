@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import CategorySelector from './components/CategorySelector';
 
@@ -20,6 +20,29 @@ const AdminManagingCategory: FC = () => {
     null,
   );
   const [isSaveActive, setIsSaveActive] = useState<boolean>(false);
+  const [deleteCategoryArr, setDeleteCategoryArr] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (deleteCategoryArr.length > 0) setIsSaveActive(true);
+    else setIsSaveActive(false);
+  }, [deleteCategoryArr]);
+
+  console.log('deleteCategoryArr:', deleteCategoryArr);
+
+  const deleteCategory = (type: 'category' | 'subcategory' | 'subsubcategory') => {
+    if (type === 'category' && selectedCategory) {
+      setDeleteCategoryArr((prev) => [...prev, selectedCategory?._id]);
+      setSelectedCategory(null);
+    }
+    if (type === 'subcategory' && selectedSubcategory) {
+      setDeleteCategoryArr((prev) => [...prev, selectedSubcategory?._id]);
+      setSelectedSubcategory(null);
+    }
+    if (type === 'subsubcategory' && selectedSubSubcategory) {
+      setDeleteCategoryArr((prev) => [...prev, selectedSubSubcategory?._id]);
+      setSelectedSubSubcategory(null);
+    }
+  };
 
   const addNewCategory = () => {
     console.log('addNewCategory');
@@ -35,6 +58,9 @@ const AdminManagingCategory: FC = () => {
 
   const handleSave = () => {
     console.log('handleSave');
+
+    setDeleteCategoryArr([]);
+    setIsSaveActive(false);
   };
 
   console.log(categoryData);
@@ -59,7 +85,7 @@ const AdminManagingCategory: FC = () => {
 
       <div className="flex flex-col gap-[8px] items-start justify-between">
         {/* --------------Категорія----------------- */}
-        <div className="flex flex-row items-center justify-start w-full gap-[16px]">
+        <div className="flex flex-row items-start justify-start w-full gap-[16px]">
           <Text
             Tag="span"
             text="Категорія"
@@ -68,13 +94,20 @@ const AdminManagingCategory: FC = () => {
             className="font-semibold w-[120px]"
           />
           <CategorySelector
-            categoryArr={categoryData}
+            categoryArr={
+              categoryData?.filter((item) => !deleteCategoryArr.includes(item._id)) ||
+              null
+            }
             selected={selectedCategory}
             setSelected={setSelectedCategory}
             addButton={{ text: 'Додати нову категорію', open: addNewCategory }}
             categoryLimit={11}
           />
-          <button type="button" onClick={() => {}}>
+          <button
+            type="button"
+            onClick={() => deleteCategory('category')}
+            className="mt-[8px]"
+          >
             <span className="text-main text-[14px] font-outfit underline underline-offset-[6px]">
               Видалити
             </span>
@@ -82,7 +115,7 @@ const AdminManagingCategory: FC = () => {
         </div>
 
         {/* --------------Підкатегорія----------------- */}
-        <div className="flex flex-row items-center justify-start w-full gap-[16px]">
+        <div className="flex flex-row items-start justify-start w-full gap-[16px]">
           <Text
             Tag="span"
             text="Підкатегорія"
@@ -90,14 +123,29 @@ const AdminManagingCategory: FC = () => {
             size="lg"
             className="font-semibold w-[120px]"
           />
-          <CategorySelector
-            categoryArr={selectedCategory?.subcategories || null}
-            selected={selectedSubcategory}
-            setSelected={setSelectedSubcategory}
-            addButton={{ text: 'Додати нову підкатегорію', open: addNewSubCategory }}
-            categoryLimit={12}
-          />
-          <button type="button" onClick={() => {}}>
+          <div className="flex flex-col items-start justify-between">
+            <CategorySelector
+              categoryArr={
+                selectedCategory?.subcategories?.filter(
+                  (item) => !deleteCategoryArr.includes(item._id),
+                ) || null
+              }
+              selected={selectedSubcategory}
+              setSelected={setSelectedSubcategory}
+              addButton={{ text: 'Додати нову підкатегорію', open: addNewSubCategory }}
+              categoryLimit={12}
+            />
+            {!selectedCategory && (
+              <span className="text-error-red text-[10px] font-outfit">
+                Оберіть спочатку категорію.
+              </span>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={() => deleteCategory('subcategory')}
+            className="mt-[8px]"
+          >
             <span className="text-main text-[14px] font-outfit underline underline-offset-[6px]">
               Видалити
             </span>
@@ -105,7 +153,7 @@ const AdminManagingCategory: FC = () => {
         </div>
 
         {/* --------------Розділ----------------- */}
-        <div className="flex flex-row items-center justify-start w-full gap-[16px]">
+        <div className="flex flex-row items-start justify-start w-full gap-[16px]">
           <Text
             Tag="span"
             text="Розділ"
@@ -113,14 +161,30 @@ const AdminManagingCategory: FC = () => {
             size="lg"
             className="font-semibold w-[120px]"
           />
-          <CategorySelector
-            categoryArr={selectedSubcategory?.subcategories || null}
-            selected={selectedSubSubcategory}
-            setSelected={setSelectedSubSubcategory}
-            addButton={{ text: 'Додати новий розділ', open: addNewSubSubCategory }}
-            categoryLimit={7}
-          />
-          <button type="button" onClick={() => {}}>
+          <div className="flex flex-col items-start justify-between">
+            <CategorySelector
+              categoryArr={
+                selectedSubcategory?.subcategories?.filter(
+                  (item) => !deleteCategoryArr.includes(item._id),
+                ) || null
+              }
+              selected={selectedSubSubcategory}
+              setSelected={setSelectedSubSubcategory}
+              addButton={{ text: 'Додати новий розділ', open: addNewSubSubCategory }}
+              categoryLimit={7}
+            />
+            {!selectedSubcategory && (
+              <span className="text-error-red text-[10px] font-outfit">
+                Оберіть спочатку категорію, підкатегорію.
+              </span>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => deleteCategory('subsubcategory')}
+            className="mt-[8px]"
+          >
             <span className="text-main text-[14px] font-outfit underline underline-offset-[6px]">
               Видалити
             </span>
