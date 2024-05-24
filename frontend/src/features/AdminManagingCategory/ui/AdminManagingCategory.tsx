@@ -6,6 +6,7 @@
 import { FC, useEffect, useState } from 'react';
 
 import CategorySelector from './components/CategorySelector';
+import DeleteModal from './components/DeleteModal';
 
 import { Category } from '@/enteties/Category';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
@@ -22,6 +23,10 @@ const AdminManagingCategory: FC = () => {
     null,
   );
 
+  const [deleteModalType, setDeleteModalType] = useState<
+    'category' | 'subcategory' | 'subsubcategory' | null
+  >(null);
+
   const [isSaveActive, setIsSaveActive] = useState<boolean>(false);
   const [deleteCategoryArr, setDeleteCategoryArr] = useState<string[]>([]);
 
@@ -36,20 +41,24 @@ const AdminManagingCategory: FC = () => {
     else setIsSaveActive(false);
   }, [deleteCategoryArr]);
 
-  const deleteCategory = (type: 'category' | 'subcategory' | 'subsubcategory') => {
-    if (type === 'category' && selectedCategory) {
+  const deleteCategory = () => {
+    if (deleteModalType === 'category' && selectedCategory) {
       setDeleteCategoryArr((prev) => [...prev, selectedCategory?._id]);
       setSelectedCategory(null);
+      setSelectedSubcategory(null);
+      setSelectedSubSubcategory(null);
     }
-    if (type === 'subcategory' && selectedSubcategory) {
+    if (deleteModalType === 'subcategory' && selectedSubcategory) {
       setDeleteCategoryArr((prev) => [...prev, selectedSubcategory?._id]);
       setSelectedSubcategory(null);
+      setSelectedSubSubcategory(null);
     }
-    if (type === 'subsubcategory' && selectedSubSubcategory) {
+    if (deleteModalType === 'subsubcategory' && selectedSubSubcategory) {
       setDeleteCategoryArr((prev) => [...prev, selectedSubSubcategory?._id]);
       setSelectedSubSubcategory(null);
     }
 
+    setDeleteModalType(null);
     setSubcategoryClick(false);
     setSubsubcategoryClick(false);
   };
@@ -71,6 +80,9 @@ const AdminManagingCategory: FC = () => {
 
     setDeleteCategoryArr([]);
     setIsSaveActive(false);
+    setSelectedCategory(null);
+    setSelectedSubcategory(null);
+    setSelectedSubSubcategory(null);
   };
 
   return (
@@ -113,8 +125,9 @@ const AdminManagingCategory: FC = () => {
           />
           <button
             type="button"
-            onClick={() => deleteCategory('category')}
+            onClick={() => setDeleteModalType('category')}
             className="mt-[8px]"
+            disabled={!selectedCategory}
           >
             <span className="text-main text-[14px] font-outfit underline underline-offset-[6px]">
               Видалити
@@ -158,8 +171,9 @@ const AdminManagingCategory: FC = () => {
 
           <button
             type="button"
-            onClick={() => deleteCategory('subcategory')}
+            onClick={() => setDeleteModalType('subcategory')}
             className="mt-[8px]"
+            disabled={!selectedSubcategory}
           >
             <span className="text-main text-[14px] font-outfit underline underline-offset-[6px]">
               Видалити
@@ -203,8 +217,9 @@ const AdminManagingCategory: FC = () => {
 
           <button
             type="button"
-            onClick={() => deleteCategory('subsubcategory')}
+            onClick={() => setDeleteModalType('subsubcategory')}
             className="mt-[8px]"
+            disabled={!selectedSubSubcategory}
           >
             <span className="text-main text-[14px] font-outfit underline underline-offset-[6px]">
               Видалити
@@ -222,6 +237,14 @@ const AdminManagingCategory: FC = () => {
           Зберегти
         </Button>
       </div>
+
+      {/* --------------Видалення-категорії----------------- */}
+      {deleteModalType && (
+        <DeleteModal
+          setDeleteModalType={setDeleteModalType}
+          deleteCategory={deleteCategory}
+        />
+      )}
     </div>
   );
 };
