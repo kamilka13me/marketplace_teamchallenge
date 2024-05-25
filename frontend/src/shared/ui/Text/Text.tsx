@@ -54,7 +54,7 @@ const fontSize: Record<FontSize, string> = {
 
 interface Props {
   Tag: HeaderTagType;
-  text: string|undefined;
+  text: string | undefined;
   size: FontSize;
   color?: TextColors;
   bold?: boolean;

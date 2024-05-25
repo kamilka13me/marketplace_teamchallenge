@@ -32,7 +32,7 @@ const ManagingOffers: FC = () => {
           <thead className="mb-1 bg-selected-dark rounded-2xl">
             <tr>
               <th aria-label="Дата" className="w-[125px] p-2.5 font-normal text-start">
-                <Text Tag="span" text="Дата" size="lg" color="white"/>
+                <Text Tag="span" text="Дата" size="lg" color="white" />
               </th>
               <th
                 aria-label="ID Продавця"
@@ -132,9 +132,10 @@ const ManagingOffers: FC = () => {
               </td>
             </tr> */}
             {/* ******************************************* */}
-            <ListingDataMap id={inputData}
-            isCheckedAscending={isCheckedAscending}
-             isCheckedDescending={isCheckedDescending}
+            <ListingDataMap
+              id={inputData}
+              isCheckedAscending={isCheckedAscending}
+              isCheckedDescending={isCheckedDescending}
             />
           </tbody>
         </table>

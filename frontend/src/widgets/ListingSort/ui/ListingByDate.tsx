@@ -1,14 +1,15 @@
+import { FC, useState } from 'react';
+
+import ListingSearchCalendar from './components/ListingSearchCalendar';
+import ListingSearchInput from './components/ListingSearchInput';
+import SpecyfyingSorting from './components/SpecyfyingSorting';
+
+import { SpecyfyingSortingProps } from '@/pages/AdminPage/ui/Tabs/ManagingOffers/ManagingOffers';
+import sort from '@/shared/assets/icons/sort-date.svg?react';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
-
-import sort from '@/shared/assets/icons/sort-date.svg?react';
-import ListingSearchInput from './components/ListingSearchInput';
-import ListingSearchCalendar from './components/ListingSearchCalendar';
-import SpecyfyingSorting from './components/SpecyfyingSorting';
-import { FC, useState } from 'react';
-import { SpecyfyingSortingProps } from '@/pages/AdminPage/ui/Tabs/ManagingOffers/ManagingOffers';
 
 export interface ListingByDateProps extends SpecyfyingSortingProps {
   setInputData: (e: string) => void;
@@ -42,16 +43,16 @@ const ListingByDate: FC<ListingByDateProps> = ({
               width={24}
               height={32}
               className="stroke-white mr-3"
-              />
+            />
           </Button>
-              {sortingOpen && (
-                <SpecyfyingSorting
-                  isCheckedAscending={isCheckedAscending}
-                  isCheckedDescending={isCheckedDescending}
-                  setIsCheckedAscending={setIsCheckedAscending}
-                  setIsCheckedDescending={setIsCheckedDescending}
-                />
-              )}
+          {sortingOpen && (
+            <SpecyfyingSorting
+              isCheckedAscending={isCheckedAscending}
+              isCheckedDescending={isCheckedDescending}
+              setIsCheckedAscending={setIsCheckedAscending}
+              setIsCheckedDescending={setIsCheckedDescending}
+            />
+          )}
         </div>
         <ListingSearchInput setInputData={setInputData} />
         <ListingSearchCalendar />

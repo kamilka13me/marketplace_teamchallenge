@@ -1,18 +1,19 @@
-import { Icon } from '@/shared/ui/Icon';
-import { Text } from '@/shared/ui/Text';
-import { Button } from '@/shared/ui/Button';
-
-import reject from '@/shared/assets/icons/reject.svg?react';
-import block from '@/shared/assets/icons/block.svg?react';
-import published from '@/shared/assets/icons/published.svg?react';
-import allListing from '@/shared/assets/icons/allListing.svg?react';
-import dropdown from '@/shared/assets/icons/listing-dropdown.svg?react';
 import { useState } from 'react';
+
 import ListingDropDownBtn from './components/ListingDropDownBtn';
 
+import allListing from '@/shared/assets/icons/allListing.svg?react';
+import block from '@/shared/assets/icons/block.svg?react';
+import dropdown from '@/shared/assets/icons/listing-dropdown.svg?react';
+import published from '@/shared/assets/icons/published.svg?react';
+import reject from '@/shared/assets/icons/reject.svg?react';
+import { Button } from '@/shared/ui/Button';
+import { Icon } from '@/shared/ui/Icon';
+import { Text } from '@/shared/ui/Text';
+
 const ListingSort = () => {
-  const [clicked, setClicked] = useState<React.SetStateAction<number>>(),
-    [dropDownOpen, setDropDownOpen] = useState<React.SetStateAction<boolean>>(false);
+  const [clicked, setClicked] = useState<React.SetStateAction<number>>();
+  const [dropDownOpen, setDropDownOpen] = useState<React.SetStateAction<boolean>>(false);
 
   const btnArr = [
     { id: 0, text: 'Всі', svg: allListing },
@@ -40,9 +41,12 @@ const ListingSort = () => {
                 p-[4px_8px] md:p-[4px_12px] xl:w-[180px] h-[48px]
                  rounded-[8px] md:rounded-[16px]`}
               onClick={() => {
+                // eslint-disable-next-line no-unused-expressions
                 elem.id !== 4
                   ? setClicked(elem.id)
-                  : setDropDownOpen((prev: boolean) => !prev),setClicked(elem.id)
+                  : // eslint-disable-next-line no-sequences
+                    setDropDownOpen((prev: boolean) => !prev),
+                  setClicked(elem.id);
               }}
             >
               <Icon
@@ -51,6 +55,7 @@ const ListingSort = () => {
                 width={elem.svg === allListing ? 30 : 24}
                 height={elem.svg === allListing ? 30 : 24}
                 className={
+                  // eslint-disable-next-line no-nested-ternary
                   elem.svg === allListing
                     ? ''
                     : clicked === ind

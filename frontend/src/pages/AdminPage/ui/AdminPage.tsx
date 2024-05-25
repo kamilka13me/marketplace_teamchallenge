@@ -4,8 +4,10 @@ import { useParams } from 'react-router-dom';
 
 import ManagingContent from './Tabs/ManagingContent/ManagingContent';
 import ManagingOffers from './Tabs/ManagingOffers/ManagingOffers';
+import ManagingOffersMobile from './Tabs/ManagingOffers/ManagingOffersMobile';
 import SupportCenter from './Tabs/SupportCenter/SupportCenter';
 
+import PersonalDataForms from '@/pages/ProfilePage/ui/Tabs/ProfileInfo/PersonalDataForms';
 import analytics from '@/shared/assets/icons/analytics.svg?react';
 import content from '@/shared/assets/icons/content.svg?react';
 import finances from '@/shared/assets/icons/finances.svg?react';
@@ -21,8 +23,6 @@ import { ProfileSidebar } from '@/widgets/ProfileSidebar';
 import { ITab } from '@/widgets/ProfileSidebar/ui/ProfileSidebar';
 import ProfileSidebarMobile from '@/widgets/ProfileSidebar/ui/ProfileSidebarMobile';
 import { WishlistProfileTab } from '@/widgets/WishlistProfileTab';
-import PersonalDataForms from '@/pages/ProfilePage/ui/Tabs/ProfileInfo/PersonalDataForms';
-import ManagingOffersMobile from './Tabs/ManagingOffers/ManagingOffersMobile';
 
 const tabs: ITab[] = [
   {
@@ -79,7 +79,7 @@ const AdminPage: FC = () => {
   const { id } = useParams<{ id: string }>();
 
   const [currentTab, setCurrentTab] = useState(0);
-  const components: FC<any>[] = [PersonalDataForms, WishlistProfileTab, ManagingOffersMobile];
+  const components: FC[] = [PersonalDataForms, WishlistProfileTab, ManagingOffersMobile];
 
   /* const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
 
@@ -126,9 +126,9 @@ const AdminPage: FC = () => {
     >
       <Container>
         <VStack className="gap-12">
-        <VStack className={`hidden lg:flex ${currentTab === 0 ? 'gap-12' : 'gap-5'}`}>
-          <ProfileSidebar tabs={tabs} tab={currentTab} setTab={setCurrentTabHandler}/>
-        </VStack>
+          <VStack className={`hidden lg:flex ${currentTab === 0 ? 'gap-12' : 'gap-5'}`}>
+            <ProfileSidebar tabs={tabs} tab={currentTab} setTab={setCurrentTabHandler} />
+          </VStack>
           <ProfileSidebarMobile
             tabs={tabs}
             tab={currentTab}
