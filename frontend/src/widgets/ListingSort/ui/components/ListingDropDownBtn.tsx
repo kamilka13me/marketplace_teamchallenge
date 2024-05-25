@@ -1,9 +1,10 @@
-import reject from '@/shared/assets/icons/reject.svg?react';
+import { useState } from 'react';
+
 import block from '@/shared/assets/icons/block.svg?react';
+import reject from '@/shared/assets/icons/reject.svg?react';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
-import { useState } from 'react';
 
 const ListingDropDownBtn = () => {
   const [clicked, setClicked] = useState<React.SetStateAction<number>>();

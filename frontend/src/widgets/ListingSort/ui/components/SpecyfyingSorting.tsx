@@ -1,8 +1,10 @@
-import { Checkbox } from '@/shared/ui/Checkbox';
-import checked from '@/shared/assets/icons/checked-gold.svg?react';
-import { t } from 'i18next';
 import { FC } from 'react';
+
+import { t } from 'i18next';
+
 import { SpecyfyingSortingProps } from '@/pages/AdminPage/ui/Tabs/ManagingOffers/ManagingOffers';
+import checked from '@/shared/assets/icons/checked-gold.svg?react';
+import { Checkbox } from '@/shared/ui/Checkbox';
 
 const SpecyfyingSorting: FC<SpecyfyingSortingProps> = ({
   isCheckedAscending,
@@ -10,8 +12,6 @@ const SpecyfyingSorting: FC<SpecyfyingSortingProps> = ({
   setIsCheckedAscending,
   setIsCheckedDescending,
 }) => {
-  
-
   return (
     <div className="absolute top-10 left-0 w-[274px] h-[84px] bg-selected-dark hover:drop-shadow-custom-primary rounded-[8px] flex items-center justify-evenly flex-col z-50">
       <div className="w-[100%] h-[28px] p-[2px_12px] flex items-center justify-center gap-[8px]">

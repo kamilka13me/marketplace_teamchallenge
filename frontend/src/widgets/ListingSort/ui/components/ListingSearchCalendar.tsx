@@ -1,12 +1,13 @@
-import { RangeKeyDict } from 'react-date-range';
-import CustomCalendar from '@/shared/ui/CustomCalendar/ui/CustomCalendar';
-import DateSortWidget, { buttonData } from '@/widgets/DateSortWidget/ui/DateSortWidget';
 import { useState } from 'react';
-import { Button } from '@/shared/ui/Button';
+
+import { RangeKeyDict } from 'react-date-range';
 
 import calendar from '@/shared/assets/icons/calendar.svg?react';
+import { Button } from '@/shared/ui/Button';
+import CustomCalendar from '@/shared/ui/CustomCalendar/ui/CustomCalendar';
 import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
+import DateSortWidget, { buttonData } from '@/widgets/DateSortWidget/ui/DateSortWidget';
 
 export type RangeSortType = 'day' | 'week' | 'month' | 'year' | 'range';
 
@@ -17,7 +18,6 @@ interface IRangeDate {
 }
 
 const ListingSearchCalendar = () => {
-  
   const [state, setState] = useState<IRangeDate[]>([
     {
       startDate: new Date(),
@@ -36,33 +36,32 @@ const ListingSearchCalendar = () => {
     setState([selection as IRangeDate]);
   };
 
-  
   return (
     <div className="flex items-center justify-center gap-[8px]">
       <div className="hidden xl:block">
-      <DateSortWidget
-        onSelectRange={(type: RangeSortType) => {
-          const endDate = new Date();
+        <DateSortWidget
+          onSelectRange={(type: RangeSortType) => {
+            const endDate = new Date();
 
-          endDate.setDate(endDate.getDate() + 1);
-          setState((prevState) => {
-            const updatedState = prevState.map((rangeDate, index) => {
-              if (index === 0) {
-                return {
-                  ...rangeDate,
-                  startDate:
-                    buttonData.find((btn) => btn.type === type)?.clb() || new Date(),
-                  endDate: new Date(),
-                };
-              }
+            endDate.setDate(endDate.getDate() + 1);
+            setState((prevState) => {
+              const updatedState = prevState.map((rangeDate, index) => {
+                if (index === 0) {
+                  return {
+                    ...rangeDate,
+                    startDate:
+                      buttonData.find((btn) => btn.type === type)?.clb() || new Date(),
+                    endDate: new Date(),
+                  };
+                }
 
-              return rangeDate;
+                return rangeDate;
+              });
+
+              return updatedState;
             });
-
-            return updatedState;
-          });
-         }}
-      />
+          }}
+        />
       </div>
       <div className="flex items-center justify-center w-[22vw] xl:w-full">
         <div className="h-[24px] hidden md:block text-nowrap">
