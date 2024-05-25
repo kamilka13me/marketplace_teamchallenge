@@ -24,9 +24,17 @@ const AdminManagingCategory: FC = () => {
     null,
   );
 
-  const [addModalType, setAddModalType] = useState<
-    'category' | 'subcategory' | 'subsubcategory' | null
-  >(null);
+  const [addCategory, setAddCategory] = useState<{
+    name: string;
+    icon: string;
+    parentCategory: string;
+    type: 'category' | 'subcategory' | 'subsubcategory' | null;
+  }>({
+    name: '',
+    icon: '',
+    parentCategory: '',
+    type: null,
+  });
 
   const [deleteModalType, setDeleteModalType] = useState<
     'category' | 'subcategory' | 'subsubcategory' | null
@@ -68,9 +76,10 @@ const AdminManagingCategory: FC = () => {
     setSubsubcategoryClick(false);
   };
 
-  const addNewCategory = () => setAddModalType('category');
-  const addNewSubCategory = () => setAddModalType('subcategory');
-  const addNewSubSubCategory = () => setAddModalType('subsubcategory');
+  const addNewCategory = () => setAddCategory({ ...addCategory, type: 'category' });
+  const addNewSubCategory = () => setAddCategory({ ...addCategory, type: 'subcategory' });
+  const addNewSubSubCategory = () =>
+    setAddCategory({ ...addCategory, type: 'subsubcategory' });
 
   const handleSave = () => {
     console.log('handleSave');
@@ -244,11 +253,8 @@ const AdminManagingCategory: FC = () => {
       )}
 
       {/* --------------Видалення-категорії----------------- */}
-      {addModalType && (
-        <AddCategoryModal
-          setAddeModalType={setAddModalType}
-          addModalType={addModalType}
-        />
+      {addCategory.type && (
+        <AddCategoryModal addCategory={addCategory} setAddCategory={setAddCategory} />
       )}
     </div>
   );
