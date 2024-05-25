@@ -12,8 +12,8 @@ import { Text } from '@/shared/ui/Text';
 
 interface AddCategory {
   name: string;
-  icon: string;
-  parentCategory: string;
+  icon: File | null;
+  parentCategory: string | undefined;
   type: 'category' | 'subcategory' | 'subsubcategory' | null;
 }
 
@@ -26,7 +26,12 @@ const AddCategoryModal: FC<Props> = (props) => {
   const { setAddCategory, addCategory } = props;
 
   const closeAndClear = () => {
-    setAddCategory({ ...addCategory, name: '', icon: '', type: null });
+    setAddCategory({
+      name: '',
+      icon: null,
+      parentCategory: undefined,
+      type: null,
+    });
   };
 
   const closeModal = () => setAddCategory({ ...addCategory, type: null });
@@ -35,7 +40,7 @@ const AddCategoryModal: FC<Props> = (props) => {
     const file = event.target.files?.[0];
 
     if (file) {
-      console.log(file);
+      setAddCategory({ ...addCategory, icon: file });
     }
   };
 
@@ -90,7 +95,13 @@ const AddCategoryModal: FC<Props> = (props) => {
           />
         </label>
 
-        <span className="text-disabled text-[16px] font-outfit">файл не вибрано</span>
+        {addCategory.icon?.name ? (
+          <span className="text-disabled text-[16px] font-outfit">
+            {addCategory.icon.name}
+          </span>
+        ) : (
+          <span className="text-disabled text-[16px] font-outfit">файл не вибрано</span>
+        )}
       </div>
 
       <button

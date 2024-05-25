@@ -26,13 +26,13 @@ const AdminManagingCategory: FC = () => {
 
   const [addCategory, setAddCategory] = useState<{
     name: string;
-    icon: string;
-    parentCategory: string;
+    icon: File | null;
+    parentCategory: string | undefined;
     type: 'category' | 'subcategory' | 'subsubcategory' | null;
   }>({
     name: '',
-    icon: '',
-    parentCategory: '',
+    icon: null,
+    parentCategory: undefined,
     type: null,
   });
 
@@ -46,8 +46,9 @@ const AdminManagingCategory: FC = () => {
   const [subcategoryClick, setSubcategoryClick] = useState<boolean>(false);
   const [subsubcategoryClick, setSubsubcategoryClick] = useState<boolean>(false);
 
-  console.log(categoryData);
-  console.log('deleteCategoryArr:', deleteCategoryArr);
+  // console.log(categoryData);
+  // console.log('deleteCategoryArr:', deleteCategoryArr);
+  console.log('addCategory', addCategory);
 
   useEffect(() => {
     if (deleteCategoryArr.length > 0) setIsSaveActive(true);
@@ -77,9 +78,18 @@ const AdminManagingCategory: FC = () => {
   };
 
   const addNewCategory = () => setAddCategory({ ...addCategory, type: 'category' });
-  const addNewSubCategory = () => setAddCategory({ ...addCategory, type: 'subcategory' });
+  const addNewSubCategory = () =>
+    setAddCategory({
+      ...addCategory,
+      type: 'subcategory',
+      parentCategory: selectedCategory?._id,
+    });
   const addNewSubSubCategory = () =>
-    setAddCategory({ ...addCategory, type: 'subsubcategory' });
+    setAddCategory({
+      ...addCategory,
+      type: 'subsubcategory',
+      parentCategory: selectedSubcategory?._id,
+    });
 
   const handleSave = () => {
     console.log('handleSave');
