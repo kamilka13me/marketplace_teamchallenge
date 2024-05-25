@@ -70,6 +70,75 @@ const productController = {
     }
   },
 
+  // update product by id
+  updateProduct: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const {
+        name,
+        description,
+        brand,
+        condition,
+        status,
+        price,
+        category,
+        quantity,
+        discount,
+        userId,
+        discountStart,
+        discountEnd,
+      } = req.body;
+
+      let { images, specifications } = req.body;
+
+      images = images.map((name) => `/static/products/${name}`);
+
+      let parsedSpecifications;
+
+      try {
+        if (
+          !specifications.trim().startsWith('[') ||
+          !specifications.trim().endsWith(']')
+        ) {
+          specifications = `[${specifications}]`;
+        }
+
+        parsedSpecifications = JSON.parse(specifications);
+      } catch (error) {
+        return res.status(400).json({ error: 'Invalid request body in specifications' });
+      }
+
+      const product = {
+        name,
+        description,
+        price,
+        brand,
+        condition,
+        status,
+        category,
+        quantity,
+        discount,
+        images,
+        specifications: parsedSpecifications,
+        sellerId: userId,
+        discount_start: discountStart ? new Date(discountStart) : undefined,
+        discount_end: discountEnd ? new Date(discountEnd) : undefined,
+      };
+
+      const updatedProduct = await Product.findByIdAndUpdate(id, product, { new: true });
+
+      if (!updatedProduct) {
+        return res.status(404).json({ message: 'Product not found.' });
+      }
+
+      res.status(200).json({ product: updatedProduct });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+      res.status(500).json({ error });
+    }
+  },
+
   // get product by id
   getOneProduct: async (req, res) => {
     try {
