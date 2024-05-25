@@ -5,6 +5,7 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import { FC, useEffect, useState } from 'react';
 
+import AddCategoryModal from './components/AddCategoryModal';
 import CategorySelector from './components/CategorySelector';
 import DeleteModal from './components/DeleteModal';
 
@@ -22,6 +23,10 @@ const AdminManagingCategory: FC = () => {
   const [selectedSubSubcategory, setSelectedSubSubcategory] = useState<Category | null>(
     null,
   );
+
+  const [addModalType, setAddModalType] = useState<
+    'category' | 'subcategory' | 'subsubcategory' | null
+  >(null);
 
   const [deleteModalType, setDeleteModalType] = useState<
     'category' | 'subcategory' | 'subsubcategory' | null
@@ -63,17 +68,9 @@ const AdminManagingCategory: FC = () => {
     setSubsubcategoryClick(false);
   };
 
-  const addNewCategory = () => {
-    console.log('addNewCategory');
-  };
-
-  const addNewSubCategory = () => {
-    console.log('addNewSubCategory');
-  };
-
-  const addNewSubSubCategory = () => {
-    console.log('addNewSubSubCategory');
-  };
+  const addNewCategory = () => setAddModalType('category');
+  const addNewSubCategory = () => setAddModalType('subcategory');
+  const addNewSubSubCategory = () => setAddModalType('subsubcategory');
 
   const handleSave = () => {
     console.log('handleSave');
@@ -243,6 +240,14 @@ const AdminManagingCategory: FC = () => {
         <DeleteModal
           setDeleteModalType={setDeleteModalType}
           deleteCategory={deleteCategory}
+        />
+      )}
+
+      {/* --------------Видалення-категорії----------------- */}
+      {addModalType && (
+        <AddCategoryModal
+          setAddeModalType={setAddModalType}
+          addModalType={addModalType}
         />
       )}
     </div>
