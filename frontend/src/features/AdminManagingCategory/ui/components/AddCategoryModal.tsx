@@ -65,12 +65,10 @@ const AddCategoryModal: FC<Props> = (props) => {
   };
 
   const validateForm = () => {
-    if (addCategory.type === 'category' && addCategory.name && addCategory.icon) {
+    if (addCategory.type === 'category' && addCategory.name && addCategory.icon)
       return false;
-    }
-    if (addCategory.type === 'subcategory' && addCategory.name) {
-      return false;
-    }
+    if (addCategory.type === 'subcategory' && addCategory.name) return false;
+    if (addCategory.type === 'subsubcategory' && addCategory.name) return false;
 
     return true;
   };

@@ -50,10 +50,6 @@ const AdminManagingCategory: FC = () => {
   const [subcategoryClick, setSubcategoryClick] = useState<boolean>(false);
   const [subsubcategoryClick, setSubsubcategoryClick] = useState<boolean>(false);
 
-  // console.log(categoryData);
-  // console.log('deleteCategoryArr:', deleteCategoryArr);
-  console.log('addCategory', addCategory);
-
   useEffect(() => {
     if (deleteCategoryArr.length > 0) setIsSaveActive(true);
     else setIsSaveActive(false);
@@ -172,9 +168,11 @@ const AdminManagingCategory: FC = () => {
           >
             <CategorySelector
               categoryArr={
-                selectedCategory?.subcategories?.filter(
-                  (item) => !deleteCategoryArr.includes(item._id),
-                ) || null
+                categoryData
+                  ?.find((item) => item._id === selectedCategory?._id)
+                  ?.subcategories?.filter(
+                    (item: Category) => !deleteCategoryArr.includes(item._id),
+                  ) || null
               }
               selected={selectedSubcategory}
               setSelected={setSelectedSubcategory}
@@ -218,9 +216,14 @@ const AdminManagingCategory: FC = () => {
           >
             <CategorySelector
               categoryArr={
-                selectedSubcategory?.subcategories?.filter(
-                  (item) => !deleteCategoryArr.includes(item._id),
-                ) || null
+                categoryData
+                  ?.find((item: Category) => item._id === selectedCategory?._id)
+                  ?.subcategories?.find(
+                    (item: Category) => item._id === selectedSubcategory?._id,
+                  )
+                  ?.subcategories?.filter(
+                    (item: Category) => !deleteCategoryArr.includes(item._id),
+                  ) || null
               }
               selected={selectedSubSubcategory}
               setSelected={setSelectedSubSubcategory}
