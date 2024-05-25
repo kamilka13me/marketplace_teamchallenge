@@ -16,7 +16,11 @@ import { Button } from '@/shared/ui/Button';
 import { Text } from '@/shared/ui/Text';
 
 const AdminManagingCategory: FC = () => {
-  const { data: categoryData } = useAxios<Category[]>(ApiRoutes.CATEGORY);
+  const {
+    data: categoryData,
+    isLoading,
+    refetch: refetchCategoryData,
+  } = useAxios<Category[]>(ApiRoutes.CATEGORY);
 
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState<Category | null>(null);
@@ -99,6 +103,7 @@ const AdminManagingCategory: FC = () => {
     setSelectedCategory(null);
     setSelectedSubcategory(null);
     setSelectedSubSubcategory(null);
+    refetchCategoryData();
   };
 
   return (
@@ -264,7 +269,11 @@ const AdminManagingCategory: FC = () => {
 
       {/* --------------Видалення-категорії----------------- */}
       {addCategory.type && (
-        <AddCategoryModal addCategory={addCategory} setAddCategory={setAddCategory} />
+        <AddCategoryModal
+          addCategory={addCategory}
+          setAddCategory={setAddCategory}
+          refetchCategoryData={refetchCategoryData}
+        />
       )}
     </div>
   );

@@ -4,7 +4,9 @@
 /* eslint-disable no-console */
 import { FC } from 'react';
 
+import { $api } from '@/shared/api/api';
 import close from '@/shared/assets/icons/cancel.svg?react';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { ModalWindow } from '@/shared/ui/ModalWindow';
@@ -20,10 +22,11 @@ interface AddCategory {
 interface Props {
   addCategory: AddCategory;
   setAddCategory: ({ name, icon, parentCategory, type }: AddCategory) => void;
+  refetchCategoryData: () => void;
 }
 
 const AddCategoryModal: FC<Props> = (props) => {
-  const { setAddCategory, addCategory } = props;
+  const { setAddCategory, addCategory, refetchCategoryData } = props;
 
   const closeAndClear = () => {
     setAddCategory({
@@ -34,14 +37,42 @@ const AddCategoryModal: FC<Props> = (props) => {
     });
   };
 
-  const closeModal = () => setAddCategory({ ...addCategory, type: null });
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
     if (file) {
       setAddCategory({ ...addCategory, icon: file });
     }
+  };
+
+  const sendNewCategory = async () => {
+    const formData = new FormData();
+
+    if (addCategory.name) formData.append('name', addCategory.name);
+    if (addCategory.icon) formData.append('image', addCategory.icon);
+    if (addCategory.parentCategory)
+      formData.append('parentId', addCategory.parentCategory || '');
+    formData.append('description', 'Test description');
+
+    try {
+      await $api.post(ApiRoutes.CATEGORY, formData);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      closeAndClear();
+      refetchCategoryData();
+    }
+  };
+
+  const validateForm = () => {
+    if (addCategory.type === 'category' && addCategory.name && addCategory.icon) {
+      return false;
+    }
+    if (addCategory.type === 'subcategory' && addCategory.name) {
+      return false;
+    }
+
+    return true;
   };
 
   return (
@@ -57,7 +88,11 @@ const AddCategoryModal: FC<Props> = (props) => {
         onClick={closeAndClear}
       />
 
-      <span className="text-white text-[18px] font-outfit">Додайте назву категорії</span>
+      {addCategory.type === 'category' && (
+        <span className="text-white text-[18px] font-outfit">
+          Додайте назву категорії
+        </span>
+      )}
 
       <div className="relative w-full">
         <input
@@ -76,38 +111,45 @@ const AddCategoryModal: FC<Props> = (props) => {
         </span>
       </div>
 
-      <span className="text-white text-[18px] font-outfit">
-        Завантажте іконку категорії
-      </span>
-
-      <span className="text-disabled text-[14px] font-outfit">
-        Файли з форматів: png, jpg, svg
-      </span>
-
-      <div className="flex justify-start items-center w-full gap-[20px]">
-        <label className="flex justify-center items-center cursor-pointer w-[108] border-[1px] border-disabled p-[10px]">
-          <span className="text-disabled text-[16px] font-outfit">Обрати файл</span>
-          <input
-            type="file"
-            accept=".png,.jpg,.jpeg,.pdf,.doc,.docx"
-            className="hidden"
-            onChange={handleFileChange}
-          />
-        </label>
-
-        {addCategory.icon?.name ? (
-          <span className="text-disabled text-[16px] font-outfit">
-            {addCategory.icon.name}
+      {addCategory.type === 'category' && (
+        <div className="w-full flex flex-col gap-[5px]">
+          <span className="text-white text-[18px] font-outfit">
+            Завантажте іконку категорії
           </span>
-        ) : (
-          <span className="text-disabled text-[16px] font-outfit">файл не вибрано</span>
-        )}
-      </div>
+
+          <span className="text-disabled text-[14px] font-outfit">
+            Файли з форматів: png, jpg, svg
+          </span>
+
+          <div className="flex justify-start items-center w-full gap-[20px]">
+            <label className="flex justify-center items-center cursor-pointer w-[108] border-[1px] border-disabled p-[10px]">
+              <span className="text-disabled text-[16px] font-outfit">Обрати файл</span>
+              <input
+                type="file"
+                accept=".png,.jpg,.jpeg,.pdf,.doc,.docx"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+            </label>
+
+            {addCategory.icon?.name ? (
+              <span className="text-disabled text-[16px] font-outfit">
+                {addCategory.icon.name}
+              </span>
+            ) : (
+              <span className="text-disabled text-[16px] font-outfit">
+                файл не вибрано
+              </span>
+            )}
+          </div>
+        </div>
+      )}
 
       <button
         type="button"
-        className="flex justify-center items-center cursor-pointer rounded-lg h-[48px] mt-[15px] bg-main w-full"
-        onClick={closeModal}
+        className="flex justify-center items-center rounded-lg h-[48px] mt-[15px] bg-main w-full"
+        onClick={sendNewCategory}
+        disabled={validateForm()}
       >
         <Text Tag="span" text="Додати" size="md" align="center" />
       </button>
