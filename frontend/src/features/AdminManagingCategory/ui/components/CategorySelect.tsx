@@ -15,6 +15,7 @@ const CategorySelect: FC<Props> = (props) => {
   const [svgIsLoading, setSvgIsLoading] = useState(true);
 
   useEffect(() => {
+    if (!category.image) return;
     const fetchData = async () => {
       const response = await axios.get(`${category.image}`);
 
