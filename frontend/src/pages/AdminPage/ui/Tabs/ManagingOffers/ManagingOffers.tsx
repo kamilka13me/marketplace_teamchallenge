@@ -1,43 +1,34 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
-import OfferController from './OfferController';
-
-import { HStack, VStack } from '@/shared/ui/Stack';
+import { HStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
+import { ListingByDate, ListingSort } from '@/widgets/ListingSort';
+import ListingDataMap from '@/widgets/ListingSort/ui/components/ListingDataMap';
+
+export interface SpecyfyingSortingProps {
+  isCheckedAscending: boolean;
+  isCheckedDescending: boolean;
+  setIsCheckedAscending: (e: boolean) => void;
+  setIsCheckedDescending: (e: boolean) => void;
+}
 
 const ManagingOffers: FC = () => {
-  const editHandler = () => {};
-
-  const publishHandler = () => {};
-
-  const rejectHandler = () => {};
-
-  const blockHandler = () => {};
+  const [inputData, setInputData] = useState<string>('');
+  const [isCheckedAscending, setIsCheckedAscending] = useState(false);
+  const [isCheckedDescending, setIsCheckedDescending] = useState(false);
 
   return (
-    <section className="flex flex-col gap-4 w-full">
-      <ul className="bg-dark-grey flex justify-between py-2 px-4 rounded-2xl">
-        <li>
-          <Text Tag="span" text="Всі" size="md" color="white" />
-        </li>
-        <li>
-          <Text Tag="span" text="Опубліковані" size="md" color="white" />
-        </li>
-        <li>
-          <Text Tag="span" text="Відхилені" size="md" color="white" />
-        </li>
-        <li>
-          <Text Tag="span" text="Заблоковані" size="md" color="white" />
-        </li>
-      </ul>
+    <section className="lg:flex flex-col w-full lg:gap-4 bg-dark-grey lg:bg-transparent rounded-2xl hidden">
+      <ListingSort />
       <HStack gap="4" className="p-4 bg-dark-grey rounded-2xl ">
-        <VStack
-          className="w-full
-        "
-        >
-          <Text Tag="span" text="Сортування за" size="md" color="white" />
-        </VStack>
-        <table className="w-full border-separate border-spacing-0 ">
+        <ListingByDate
+          setInputData={setInputData}
+          isCheckedAscending={isCheckedAscending}
+          isCheckedDescending={isCheckedDescending}
+          setIsCheckedAscending={setIsCheckedAscending}
+          setIsCheckedDescending={setIsCheckedDescending}
+        />
+        <table className="w-full border-separate border-spacing-0">
           <thead className="mb-1 bg-selected-dark rounded-2xl">
             <tr>
               <th aria-label="Дата" className="w-[125px] p-2.5 font-normal text-start">
@@ -109,7 +100,8 @@ const ManagingOffers: FC = () => {
                 </td>
               </tr>
             ))} */}
-            <tr className="h-[76px] mb-1 even:bg-selected-dark odd:bg-transparent rounded-2xl">
+            {/* ********************************* */}
+            {/* <tr className="h-[76px] mb-1 even:bg-selected-dark odd:bg-transparent rounded-2xl">
               <td aria-label="Дата" className="pl-2.5 rounded-l-2xl">
                 <Text Tag="p" text="25.04.2024" size="md" color="white" />
               </td>
@@ -138,7 +130,13 @@ const ManagingOffers: FC = () => {
                   blockHandler={blockHandler}
                 />
               </td>
-            </tr>
+            </tr> */}
+            {/* ******************************************* */}
+            <ListingDataMap
+              id={inputData}
+              isCheckedAscending={isCheckedAscending}
+              isCheckedDescending={isCheckedDescending}
+            />
           </tbody>
         </table>
       </HStack>

@@ -119,6 +119,123 @@ productRoute.post(
 /**
  * @swagger
  * /products/{id}:
+ *   post:
+ *     summary: Updates a product by id
+ *     tags:
+ *        - Products
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The product ID
+ *     security:
+ *        - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 required: true
+ *                 description: Product name
+ *               description:
+ *                 type: string
+ *                 required: true
+ *                 description: Product description
+ *               brand:
+ *                 type: string
+ *                 description: Product brand
+ *               condition:
+ *                 type: string
+ *                 description: Product condition
+ *               status:
+ *                 type: string
+ *                 description: Product status
+ *               price:
+ *                 type: number
+ *                 required: true
+ *                 format: double
+ *                 description: Product price
+ *               discount:
+ *                 type: number
+ *                 required: true
+ *                 format: int
+ *                 description: Product price
+ *               specifications:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     specification:
+ *                       type: string
+ *                       example: "Processor"
+ *                     specificationDescription:
+ *                       type: string
+ *                       example: "Intel Core i7"
+ *               discountStart:
+ *                 type: string
+ *                 format: date-time
+ *                 description: Start date of the discount period yy,mm,dd
+ *               discountEnd:
+ *                 type: string
+ *                 format: date-time
+ *                 description: End date of the discount period yy,mm,dd
+ *               category:
+ *                 type: string
+ *                 required: true
+ *                 description: Product category
+ *               quantity:
+ *                 type: number
+ *                 required: true
+ *                 format: int64
+ *                 description: Quantity
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
+ *                 description: Product image
+ *
+ *
+ *     responses:
+ *       200:
+ *         description: Updated a product by ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *                properties:
+ *                    product:
+ *                      $ref: '#/components/schemas/Product'
+ *       '400':
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example:  Invalid request body
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
+
+productRoute.put(
+  '/:id',
+
+  upload.array('images'),
+  appendFileNamesToBody,
+  idToReq(),
+  productController.updateProduct,
+);
+/**
+ * @swagger
+ * /products/{id}:
  *   get:
  *     summary: Get a product by ID
  *     tags: [Products]
