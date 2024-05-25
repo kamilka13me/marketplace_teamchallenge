@@ -1,8 +1,9 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
+import axios from 'axios';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { Product } from '@/enteties/Product';
+import { Product, SellerProduct } from '@/enteties/Product';
 import FirstBlockProductForm from '@/features/createProduct/ui/blocks/first/FirstBlockProductForm';
 import FormMiddleBlock from '@/features/createProduct/ui/FormMiddleBlock';
 import ImageUpload, { InputData } from '@/features/createProduct/ui/ImageUpload';
@@ -16,26 +17,91 @@ interface FormProduct extends Product {
   selectSubSubCategory: string;
 }
 
-const ProductForm: FC = () => {
+interface Props {
+  product?: SellerProduct;
+}
+
+function convertIsoToDate(isoDate: string): string {
+  if (isoDate === '') {
+    return '';
+  }
+
+  const date = new Date(isoDate);
+
+  // Extract day, month, and year
+  const day = date.getUTCDate();
+  const month = date.getUTCMonth() + 1; // Months are zero-indexed in JavaScript
+  const year = date.getUTCFullYear();
+
+  // Format the day and month to ensure two digits
+  const formattedDay = day < 10 ? `0${day}` : day.toString();
+  const formattedMonth = month < 10 ? `0${month}` : month.toString();
+
+  // Construct the final formatted date string
+  const formattedDate = `${formattedDay}.${formattedMonth}.${year}`;
+
+  return formattedDate;
+}
+
+const ProductForm: FC<Props> = (props) => {
+  const { product } = props;
+
   const methods = useForm<FormProduct>({
     defaultValues: {
-      name: '',
-      price: Number(''),
-      discount: Number(''),
-      brand: '',
-      quantity: Number(''),
-      category: '',
-      condition: '',
-      images: [],
-      description: '',
-      specifications: [{ specification: '', specificationDescription: '' }],
-      discountEnd: '',
-      discountStart: '',
+      name: product?.name || '',
+      price: product?.price || Number(''),
+      discount: product?.discount || Number(''),
+      brand: product?.brand || '',
+      quantity: product?.quantity || Number(''),
+      category: product?.category || '',
+      condition: product?.condition || '',
+      images: product?.images || [],
+      description: product?.description || '',
+      specifications: product?.specifications || [
+        { specification: '', specificationDescription: '' },
+      ],
+      discountEnd: convertIsoToDate(product?.discount_end || ''),
+      discountStart: convertIsoToDate(product?.discount_start || ''),
     },
   });
 
-  const [inputs, setInputs] = useState<InputData[]>([]);
+  const [inputs, setInputs] = useState<InputData[]>();
+  const [imagesIsLoading, setImagesIsLoading] = useState(false);
   const [category, setCategory] = useState('');
+
+  useEffect(() => {
+    const fetchImageFile = async (url: string, index: number) => {
+      try {
+        const response = await axios.get(`${process.env.BASE_URL}${url}`, {
+          responseType: 'blob',
+        });
+        const blob = response.data;
+        const file = new File([blob], `image-${index}.jpg`, { type: 'image/jpeg' });
+
+        return { id: index, previewUrl: url, file, rotation: 0 };
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('Error fetching image:', error);
+
+        return { id: index, previewUrl: url, file: null, rotation: 0 };
+      }
+    };
+
+    if (product?.images) {
+      setImagesIsLoading(true);
+      const fetchImages = async () => {
+        const initialInputs = await Promise.all(
+          product.images.map((image, index) => fetchImageFile(image, index)),
+        ).finally(() => {
+          setImagesIsLoading(false);
+        });
+
+        setInputs(initialInputs as InputData[]);
+      };
+
+      fetchImages();
+    }
+  }, [product]);
 
   const handleInputsChange = (newInputs: InputData[]) => {
     setInputs(newInputs);
@@ -72,18 +138,22 @@ const ProductForm: FC = () => {
     formData.append('category', category);
     formData.append('quantity', String(data.quantity));
 
-    inputs.forEach((file) => {
+    inputs?.forEach((file) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
       formData.append('images', file.file);
     });
 
     try {
-      await $api.post(ApiRoutes.PRODUCTS, formData);
+      if (product?._id) {
+        await $api.put(`${ApiRoutes.PRODUCTS}/${product._id}`, formData);
+      } else {
+        await $api.post(ApiRoutes.PRODUCTS, formData);
+      }
 
       return formData;
     } catch (error) {
-      /* eslint-disable no-console */
+      // eslint-disable-next-line no-console
       console.error('Error while saving product:', error);
     }
   };
@@ -97,8 +167,12 @@ const ProductForm: FC = () => {
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-end gap-5">
           <FirstBlockProductForm setCategory={setCategoryHandler} />
-          <FormMiddleBlock />
-          <ImageUpload onInputsChange={handleInputsChange} />
+          <FormMiddleBlock hasDiscount={(product?.discount || 0) > 0 || false} />
+          <ImageUpload
+            onInputsChange={handleInputsChange}
+            productImages={inputs}
+            imagesIsLoading={imagesIsLoading}
+          />
           <input
             type="submit"
             value="Зберегти"

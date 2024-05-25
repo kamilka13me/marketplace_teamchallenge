@@ -5,7 +5,6 @@ import { useSearchParams } from 'react-router-dom';
 import MobileProductController from './MobileProductController';
 
 import { countDiscount, deleteProductsById } from '@/enteties/Product';
-import { ProductForm } from '@/features/createProduct';
 import { ProductStatuses } from '@/features/managingProducts';
 import {
   getSellerProductsPageIsLoading,
@@ -23,6 +22,7 @@ import {
   getSellerProducts,
   sellerProductsPageActions,
 } from '@/features/managingProducts/model/slice/sellerProductsSlice';
+import EditProductContainer from '@/features/managingProducts/ui/EditProductContainer';
 import SellerProductStatusBadge from '@/features/managingProducts/ui/SellerProductStatusBadge';
 import edit from '@/shared/assets/icons/edit-2.svg?react';
 import plus from '@/shared/assets/icons/plus.svg?react';
@@ -47,6 +47,10 @@ const ManagingProducts: FC = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+
+  const [curruentProductIdForEditing, setCurrentProductIdForEditing] = useState<
+    null | string
+  >(null);
 
   const [searchParams] = useSearchParams();
 
@@ -420,7 +424,14 @@ const ManagingProducts: FC = () => {
                     </th>
                     <th aria-label="Дії" className="px-[10px] text-left">
                       <VStack gap="2">
-                        <Icon Svg={edit} className="cursor-pointer" />
+                        <Icon
+                          onClick={() => {
+                            setIsFormOpen(true);
+                            setCurrentProductIdForEditing(product._id);
+                          }}
+                          Svg={edit}
+                          className="cursor-pointer"
+                        />
                         <Icon
                           Svg={trashbin}
                           className="cursor-pointer"
@@ -656,7 +667,10 @@ const ManagingProducts: FC = () => {
                 </HStack>
                 <MobileProductController
                   product={product}
-                  editHandler={() => setIsFormOpen(true)}
+                  editHandler={() => {
+                    setIsFormOpen(true);
+                    setCurrentProductIdForEditing(product._id);
+                  }}
                   deleteHandler={deleteByIdHandler}
                 />
               </VStack>
@@ -668,7 +682,7 @@ const ManagingProducts: FC = () => {
   };
 
   return isFormOpen ? (
-    <ProductForm />
+    <EditProductContainer productId={curruentProductIdForEditing || ''} />
   ) : (
     <HStack className="w-full">
       <div className="w-full bg-dark-grey rounded-2xl lg:px-4 lg:py-5 ">

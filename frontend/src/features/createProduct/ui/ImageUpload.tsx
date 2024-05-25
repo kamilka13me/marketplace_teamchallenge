@@ -8,6 +8,8 @@ import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
 interface ImageUploadProps {
+  productImages?: InputData[];
+  imagesIsLoading?: boolean;
   onInputsChange: (inputs: InputData[]) => void;
 }
 
@@ -23,14 +25,21 @@ interface RotateImageFileCallback {
   (rotatedFile: File, newPreviewUrl: string): void;
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ onInputsChange }) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({
+  onInputsChange,
+  productImages,
+  imagesIsLoading,
+}) => {
   const [inputs, setInputs] = useState<InputData[]>([]);
   const [nextId, setNextId] = useState(1);
 
   useEffect(() => {
-    addInput();
+    if (productImages) {
+      setInputs(productImages);
+      setNextId(productImages.length + 1);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [imagesIsLoading]);
 
   const handleFileChange =
     (id: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
