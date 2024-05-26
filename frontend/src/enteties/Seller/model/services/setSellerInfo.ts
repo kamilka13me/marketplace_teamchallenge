@@ -28,7 +28,7 @@ export const setSellerInfo = createAsyncThunk<ApiResponse, sellerDataProps>(
 
     try {
       const response = await $api.post<ApiResponse>(
-        `${ApiRoutes.SELLER_PRODUCTS}/updateSellerInfo`,
+        `${ApiRoutes.SELLER}/updateSellerInfo`,
         {
           ...sellerInfo,
         },

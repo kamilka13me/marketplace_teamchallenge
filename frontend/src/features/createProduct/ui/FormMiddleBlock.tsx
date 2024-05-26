@@ -9,11 +9,17 @@ import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 import { Textarea } from '@/shared/ui/Textarea';
 
-const FormMiddleBlock: FC = () => {
+interface Props {
+  hasDiscount: boolean;
+}
+
+const FormMiddleBlock: FC<Props> = (props) => {
+  const { hasDiscount } = props;
+
   const { t } = useTranslation();
 
   const [descriptionLetters, setDescriptionLetters] = useState(0);
-  const [hasDiscount, setHasDiscount] = useState(false);
+  const [productHasDiscount, setProductHasDiscount] = useState(hasDiscount);
   const [priceWithDiscount, setPriceWithDiscount] = useState(0);
   const [specificationLengths, setSpecificationLengths] = useState<number[]>([]);
 
@@ -33,6 +39,19 @@ const FormMiddleBlock: FC = () => {
     control,
     name: `specifications`,
   });
+
+  useEffect(() => {
+    const values = getValues();
+
+    if (productHasDiscount) {
+      const decimalPercentage = Number(values.discount) / 100;
+
+      const percentageAmount = values.price * decimalPercentage;
+
+      setPriceWithDiscount(values.price - percentageAmount);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const appendSpec = () => {
     appendSpecification({ specification: '', specificationDescription: '' });
@@ -113,7 +132,7 @@ const FormMiddleBlock: FC = () => {
           <VStack gap="2" align="center" className="mt-2">
             <label htmlFor="all selector" className="relative" aria-label="checkbox">
               <input
-                checked={hasDiscount}
+                checked={productHasDiscount}
                 type="checkbox"
                 className="peer relative appearance-none cursor-pointer w-6 h-6 border-[2px] border-light-grey rounded focus:outline-none"
                 onChange={(event) => {
@@ -121,7 +140,7 @@ const FormMiddleBlock: FC = () => {
                   setValue('discountStart', '');
                   setValue('discountEnd', '');
                   setPriceWithDiscount(0);
-                  setHasDiscount(event.target.checked);
+                  setProductHasDiscount(event.target.checked);
                 }}
               />
               <span className="absolute text-main-white transition-opacity opacity-0 left-[2px] top-[2px] pointer-events-none peer-checked:opacity-100">
@@ -178,7 +197,7 @@ const FormMiddleBlock: FC = () => {
       </VStack>
 
       {/* DISCOUNT */}
-      {hasDiscount && (
+      {productHasDiscount && (
         <HStack className="w-full">
           <VStack gap="4" justify="between" className="w-full mt-5">
             <div className="w-full">

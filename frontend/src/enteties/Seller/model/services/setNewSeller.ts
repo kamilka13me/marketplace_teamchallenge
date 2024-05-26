@@ -45,7 +45,7 @@ export const setNewSeller = createAsyncThunk<ApiResponse, newSellerDataProps>(
     const { rejectWithValue } = thunkApi;
 
     try {
-      const response = await $api.post<ApiResponse>(ApiRoutes.SELLER_PRODUCTS, {
+      const response = await $api.post<ApiResponse>(ApiRoutes.SELLER, {
         ...newSellerData,
       });
 

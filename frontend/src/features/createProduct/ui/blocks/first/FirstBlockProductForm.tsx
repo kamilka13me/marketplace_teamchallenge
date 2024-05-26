@@ -20,10 +20,11 @@ interface ICondition {
 
 interface Props {
   setCategory: (id: string) => void;
+  initialCategoryId: string | null;
 }
 
 const FirstBlockProductForm: FC<Props> = (props) => {
-  const { setCategory } = props;
+  const { setCategory, initialCategoryId } = props;
 
   const {
     register,
@@ -43,6 +44,56 @@ const FirstBlockProductForm: FC<Props> = (props) => {
   const [quantity, setQuantity] = useState<number>(0);
   const [currentSub, setCurrentSub] = useState<number | null>(null);
   const [currentSubSub, setCurrentSubSub] = useState<number | null>(null);
+  const [categoryMap, setCategoryMap] = useState<Map<string, Category>>(new Map());
+
+  useEffect(() => {
+    if (data) {
+      const map = new Map<string, Category>();
+
+      data.forEach((category) => {
+        map.set(category._id, category);
+        category.subcategories.forEach((sub) => {
+          map.set(sub._id, sub);
+          sub.subcategories.forEach((subSub) => {
+            map.set(subSub._id, subSub);
+          });
+        });
+      });
+      setCategoryMap(map);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (initialCategoryId) {
+      const currentCategory = categoryMap.get(initialCategoryId);
+
+      setCategory(initialCategoryId);
+      if (currentCategory) {
+        setValue('selectSubSubCategory', currentCategory.name);
+
+        if (currentCategory.parentId) {
+          const parentCategory = categoryMap.get(currentCategory.parentId);
+
+          if (parentCategory) {
+            setValue('selectSubCategory', parentCategory.name);
+
+            if (parentCategory.parentId) {
+              const grandParentCategory = categoryMap.get(parentCategory.parentId);
+
+              if (grandParentCategory) {
+                setValue('selectCategory', grandParentCategory.name);
+              }
+            } else {
+              setValue('selectCategory', parentCategory.name);
+              setValue('selectSubCategory', currentCategory.name);
+              setValue('selectSubSubCategory', '');
+            }
+          }
+        }
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialCategoryId, categoryMap, data, setValue]);
 
   useEffect(() => {
     if (isSubmitted) {
