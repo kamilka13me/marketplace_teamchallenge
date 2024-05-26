@@ -7,6 +7,7 @@ import useAxios from '@/shared/lib/hooks/useAxios';
 
 interface Props {
   productId: string;
+  closeForm: () => void;
 }
 
 interface ApiResponse {
@@ -14,7 +15,7 @@ interface ApiResponse {
 }
 
 const EditProductContainer: FC<Props> = (props) => {
-  const { productId } = props;
+  const { productId, closeForm } = props;
 
   const { data, isLoading } = useAxios<ApiResponse>(`${ApiRoutes.PRODUCTS}/${productId}`);
 
@@ -24,7 +25,10 @@ const EditProductContainer: FC<Props> = (props) => {
 
   return (
     <div>
-      <ProductForm product={data?.product || ({} as SellerProduct)} />
+      <ProductForm
+        onCloseForm={closeForm}
+        product={data?.product || ({} as SellerProduct)}
+      />
     </div>
   );
 };

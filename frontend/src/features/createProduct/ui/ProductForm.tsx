@@ -19,6 +19,7 @@ interface FormProduct extends Product {
 
 interface Props {
   product?: SellerProduct;
+  onCloseForm: () => void;
 }
 
 function convertIsoToDate(isoDate: string): string {
@@ -44,7 +45,7 @@ function convertIsoToDate(isoDate: string): string {
 }
 
 const ProductForm: FC<Props> = (props) => {
-  const { product } = props;
+  const { product, onCloseForm } = props;
 
   const methods = useForm<FormProduct>({
     defaultValues: {
@@ -155,6 +156,8 @@ const ProductForm: FC<Props> = (props) => {
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error while saving product:', error);
+    } finally {
+      onCloseForm();
     }
   };
 
@@ -166,7 +169,10 @@ const ProductForm: FC<Props> = (props) => {
     <div className="w-full">
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-end gap-5">
-          <FirstBlockProductForm setCategory={setCategoryHandler} />
+          <FirstBlockProductForm
+            initialCategoryId={product?.category || ''}
+            setCategory={setCategoryHandler}
+          />
           <FormMiddleBlock hasDiscount={(product?.discount || 0) > 0 || false} />
           <ImageUpload
             onInputsChange={handleInputsChange}

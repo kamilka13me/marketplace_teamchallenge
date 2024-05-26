@@ -682,7 +682,10 @@ const ManagingProducts: FC = () => {
   };
 
   return isFormOpen ? (
-    <EditProductContainer productId={curruentProductIdForEditing || ''} />
+    <EditProductContainer
+      productId={curruentProductIdForEditing || ''}
+      closeForm={() => setIsFormOpen(false)}
+    />
   ) : (
     <HStack className="w-full">
       <div className="w-full bg-dark-grey rounded-2xl lg:px-4 lg:py-5 ">
