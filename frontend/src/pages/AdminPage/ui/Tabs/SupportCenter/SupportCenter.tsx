@@ -3,16 +3,37 @@
 import { FC, useState } from 'react';
 
 import SupportCenterSelector from './components/SupportCenterSelector';
+import { supportMessagesData } from './testData';
 
+import Pagination from '@/shared/ui/Pagination/Pagination';
 import ListingSearchCalendar from '@/widgets/ListingSort/ui/components/ListingSearchCalendar';
 import ListingSearchInput from '@/widgets/ListingSort/ui/components/ListingSearchInput';
+
+const supportStatusMap = {
+  new: { bg: 'bg-secondary-yellow', textColor: 'text-main-dark', text: 'Новий' },
+  consider: { bg: 'bg-[#F4F2EC]', textColor: 'text-main-dark', text: 'На розгляді' },
+  work: { bg: 'bg-[#393939]', textColor: 'text-main-dark', text: 'В роботі' },
+  closed: { bg: 'bg-disabled', textColor: 'text-main-dark', text: 'Вирішено' },
+};
 
 const SupportCenter: FC = () => {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [inputData, setInputData] = useState<string>('');
 
-  console.log(selectedFilter);
   console.log(inputData);
+  console.log(selectedFilter);
+  // console.log(supportMessagesData);
+
+  const [offset, setOffset] = useState(0);
+
+  const { messages, count } = supportMessagesData;
+  const messagesLimit = 7;
+  const currentPage = offset / messagesLimit + 1;
+
+  const fetchNext = () => setOffset(offset + messagesLimit);
+  const fetchPrev = () => setOffset(offset - messagesLimit);
+  const handleClickPage = (pageNumber: number) =>
+    setOffset(messagesLimit * (pageNumber - 1));
 
   return (
     <div className="SupportCenter flex flex-col gap-4 w-full text-white">
@@ -36,35 +57,38 @@ const SupportCenter: FC = () => {
             <span className="w-[15%]">Дія</span>
           </div>
 
-          <div className="w-full flex flex-row items-center gap-[20px] rounded-2xl px-[16px] py-[10px]">
-            <span className="w-[15%] flex items-center text-[16px]">01.01.2022</span>
-            <span className="w-[15%] flex items-center">395151287888</span>
-            <span className="w-[40%] flex items-center">
-              Запит на підвищення видимості товарів у пошуку
-            </span>
-            <span className="w-[15%] flex items-center justify-center bg-secondary-yellow rounded-[8px] h-[26px] text-main-dark text-[14px]">
-              Новий
-            </span>
-            <span className="w-[15%] flex items-center justify-center border-main border-[1px] rounded-[8px] h-[26px] text-main text-[14px]">
-              Переглянути
-            </span>
-          </div>
-
-          <div className="w-full flex flex-row items-center gap-[20px] bg-selected-dark rounded-2xl px-[16px] py-[10px]">
-            <span className="w-[15%] flex items-center text-[16px]">01.01.2022</span>
-            <span className="w-[15%] flex items-center">395151287888</span>
-            <span className="w-[40%] flex items-center">
-              Запит на підвищення видимості товарів у пошуку
-            </span>
-            <span className="w-[15%] flex items-center justify-center bg-secondary-yellow rounded-[8px] h-[26px] text-main-dark text-[14px]">
-              Новий
-            </span>
-            <span className="w-[15%] flex items-center justify-center border-main border-[1px] rounded-[8px] h-[26px] text-main text-[14px]">
-              Переглянути
-            </span>
-          </div>
+          {messages.map((message, index) => (
+            <div
+              key={message._id}
+              className={` ${index % 2 && 'bg-selected-dark'} w-full flex flex-row items-center gap-[20px] rounded-2xl px-[16px] py-[10px]`}
+            >
+              <span className="w-[15%] flex items-center text-[16px]">
+                {message.date}
+              </span>
+              <span className="w-[15%] flex items-center">{message.userId}</span>
+              <span className="w-[40%] flex items-center">{message.topic}</span>
+              <span
+                className={`${supportStatusMap[message.status].bg} ${supportStatusMap[message.status].textColor} w-[15%] flex items-center justify-center rounded-[8px] h-[26px] text-[14px]`}
+              >
+                {supportStatusMap[message.status].text}
+              </span>
+              <span className="w-[15%] flex items-center justify-center border-main border-[1px] rounded-[8px] h-[26px] text-main text-[14px]">
+                Переглянути
+              </span>
+            </div>
+          ))}
         </div>
       </div>
+
+      <Pagination
+        dataLength={count}
+        itemsPerPage={messagesLimit}
+        currentPage={currentPage}
+        setPage={handleClickPage}
+        offset={offset}
+        fetchNext={fetchNext}
+        fetchPrev={fetchPrev}
+      />
     </div>
   );
 };
