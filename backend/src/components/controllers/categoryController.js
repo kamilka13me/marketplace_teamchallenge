@@ -68,6 +68,24 @@ const categoryController = {
       res.status(500).send(error);
     }
   },
+
+  deleteCategory: async (req, res) => {
+    const categoryId = req.params.id;
+
+    try {
+      const result = await Category.findByIdAndDelete(categoryId);
+
+      if (result) {
+        res.status(200).send(`Category with ID ${categoryId} deleted successfully.`);
+      } else {
+        res.status(404).send(`Category with ID ${categoryId} not found.`);
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(`Error deleting category with ID ${categoryId}:`, error);
+      res.status(500).send('Internal server error');
+    }
+  },
 };
 
 export default categoryController;
