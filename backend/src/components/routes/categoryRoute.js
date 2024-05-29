@@ -110,4 +110,27 @@ categoryRoute.post(
 
 categoryRoute.get('/', categoryController.getCategory);
 
+/**
+ * @swagger
+ * /category/{id}:
+ *   delete:
+ *     summary: Delete a category by ID
+ *     description: Delete a specific category by its ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the category to delete
+ *     responses:
+ *       200:
+ *         description: Category deleted successfully
+ *       404:
+ *         description: Category not found
+ *       500:
+ *         description: Internal server error
+ */
+categoryRoute.delete('/:id', categoryController.deleteCategory);
+
 export default categoryRoute;
