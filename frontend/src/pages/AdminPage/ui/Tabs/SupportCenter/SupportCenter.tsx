@@ -1,130 +1,94 @@
+/* eslint-disable no-console */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import { FC, useState } from 'react';
 
-import supportCenterFilterAll from '@/shared/assets/icons/supportCenterFilterAll.svg?react';
-import supportCenterFilterClosed from '@/shared/assets/icons/supportCenterFilterClosed.svg?react';
-import supportCenterFilterConsider from '@/shared/assets/icons/supportCenterFilterConsider.svg?react';
-import supportCenterFilterWork from '@/shared/assets/icons/supportCenterFilterWork.svg?react';
-import { Icon } from '@/shared/ui/Icon';
-import { Text } from '@/shared/ui/Text';
+import SupportCenterSelector from './components/SupportCenterSelector';
+import { supportMessagesData } from './testData';
+
+import Pagination from '@/shared/ui/Pagination/Pagination';
+import ListingSearchCalendar from '@/widgets/ListingSort/ui/components/ListingSearchCalendar';
+import ListingSearchInput from '@/widgets/ListingSort/ui/components/ListingSearchInput';
+
+const supportStatusMap = {
+  new: { bg: 'bg-secondary-yellow', textColor: 'text-main-dark', text: 'Новий' },
+  consider: { bg: 'bg-[#F4F2EC]', textColor: 'text-main-dark', text: 'На розгляді' },
+  work: { bg: 'bg-[#393939]', textColor: 'text-main-dark', text: 'В роботі' },
+  closed: { bg: 'bg-disabled', textColor: 'text-main-dark', text: 'Вирішено' },
+};
 
 const SupportCenter: FC = () => {
   const [selectedFilter, setSelectedFilter] = useState('all');
+  const [inputData, setInputData] = useState<string>('');
+
+  console.log(inputData);
+  console.log(selectedFilter);
+  // console.log(supportMessagesData);
+
+  const [offset, setOffset] = useState(0);
+
+  const { messages, count } = supportMessagesData;
+  const messagesLimit = 7;
+  const currentPage = offset / messagesLimit + 1;
+
+  const fetchNext = () => setOffset(offset + messagesLimit);
+  const fetchPrev = () => setOffset(offset - messagesLimit);
+  const handleClickPage = (pageNumber: number) =>
+    setOffset(messagesLimit * (pageNumber - 1));
 
   return (
     <div className="SupportCenter flex flex-col gap-4 w-full text-white">
-      <div className="flex flex-row items-center justify-between w-full h-[64px] bg-dark-grey rounded-2xl px-[16px]">
-        <button
-          type="button"
-          onClick={() => setSelectedFilter('all')}
-          className={`${selectedFilter === 'all' && 'bg-selected-dark'} gap-[7px] flex flex-row items-center justify-start w-[180px] h-[48px] px-[12px] rounded-2xl`}
-        >
-          <div
-            className={`${selectedFilter === 'all' && 'bg-main'} w-[31px] h-[31px] rounded-[7px] flex items-center justify-center`}
-          >
-            <Icon
-              aria-hidden="true"
-              Svg={supportCenterFilterAll}
-              className={`${selectedFilter === 'all' ? 'stroke-selected-dark' : 'stroke-disabled'} h-5 w-5 duration-75 pointer-events-none`}
-            />
-          </div>
-          <Text
-            Tag="span"
-            text="Всі"
-            color={selectedFilter === 'all' ? 'white' : 'gray-light'}
-            size="md"
-          />
-        </button>
+      <SupportCenterSelector
+        selectedFilter={selectedFilter}
+        setSelectedFilter={setSelectedFilter}
+      />
 
-        <button
-          type="button"
-          onClick={() => setSelectedFilter('new')}
-          className={`${selectedFilter === 'new' && 'bg-selected-dark'} gap-[7px] flex flex-row items-center justify-start w-[180px] h-[48px] px-[12px] rounded-2xl`}
-        >
-          <div
-            className={`${selectedFilter === 'new' && 'bg-main'} w-[31px] h-[31px] rounded-[7px] flex items-center justify-center`}
-          >
-            <Icon
-              aria-hidden="true"
-              Svg={supportCenterFilterAll}
-              className={`${selectedFilter === 'new' ? 'stroke-selected-dark' : 'stroke-disabled'} h-5 w-5 duration-75 pointer-events-none`}
-            />
-          </div>
-          <Text
-            Tag="span"
-            text="Нові"
-            color={selectedFilter === 'new' ? 'white' : 'gray-light'}
-            size="md"
-          />
-        </button>
+      <div className="flex flex-col gap-[15px] items-center justify-between w-full bg-dark-grey rounded-2xl p-[16px]">
+        <div className="flex flex-row items-center justify-between w-full">
+          <ListingSearchInput setInputData={setInputData} />
+          <ListingSearchCalendar />
+        </div>
 
-        <button
-          type="button"
-          onClick={() => setSelectedFilter('consider')}
-          className={`${selectedFilter === 'consider' && 'bg-selected-dark'} gap-[7px] flex flex-row items-center justify-start w-[180px] h-[48px] px-[12px] rounded-2xl`}
-        >
-          <div
-            className={`${selectedFilter === 'consider' && 'bg-main'} w-[31px] h-[31px] rounded-[7px] flex items-center justify-center`}
-          >
-            <Icon
-              aria-hidden="true"
-              Svg={supportCenterFilterConsider}
-              className={`${selectedFilter === 'consider' ? 'stroke-selected-dark' : 'stroke-disabled'} h-5 w-5 duration-75 pointer-events-none`}
-            />
+        <div className="w-full flex flex-col">
+          <div className="w-full flex flex-row gap-[20px] bg-selected-dark rounded-2xl p-[16px] text-[18px]">
+            <span className="w-[15%]">Дата</span>
+            <span className="w-[15%]">ID</span>
+            <span className="w-[40%]">Тема звернення</span>
+            <span className="w-[15%]">Статус</span>
+            <span className="w-[15%]">Дія</span>
           </div>
-          <Text
-            Tag="span"
-            text="На розгляді"
-            color={selectedFilter === 'consider' ? 'white' : 'gray-light'}
-            size="md"
-          />
-        </button>
 
-        <button
-          type="button"
-          onClick={() => setSelectedFilter('work')}
-          className={`${selectedFilter === 'work' && 'bg-selected-dark'} gap-[7px] flex flex-row items-center justify-start w-[180px] h-[48px] px-[12px] rounded-2xl`}
-        >
-          <div
-            className={`${selectedFilter === 'work' && 'bg-main'} w-[31px] h-[31px] rounded-[7px] flex items-center justify-center`}
-          >
-            <Icon
-              aria-hidden="true"
-              Svg={supportCenterFilterWork}
-              className={`${selectedFilter === 'work' ? 'stroke-selected-dark' : 'stroke-disabled'} h-5 w-5 duration-75 pointer-events-none`}
-            />
-          </div>
-          <Text
-            Tag="span"
-            text="В роботі"
-            color={selectedFilter === 'work' ? 'white' : 'gray-light'}
-            size="md"
-          />
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setSelectedFilter('closed')}
-          className={`${selectedFilter === 'closed' && 'bg-selected-dark'} gap-[7px] flex flex-row items-center justify-start w-[180px] h-[48px] px-[12px] rounded-2xl`}
-        >
-          <div
-            className={`${selectedFilter === 'closed' && 'bg-main'} w-[31px] h-[31px] rounded-[7px] flex items-center justify-center`}
-          >
-            <Icon
-              aria-hidden="true"
-              Svg={supportCenterFilterClosed}
-              className={`${selectedFilter === 'closed' ? 'stroke-selected-dark' : 'stroke-disabled'} h-5 w-5 duration-75 pointer-events-none`}
-            />
-          </div>
-          <Text
-            Tag="span"
-            text="Закриті"
-            color={selectedFilter === 'closed' ? 'white' : 'gray-light'}
-            size="md"
-          />
-        </button>
+          {messages.map((message, index) => (
+            <div
+              key={message._id}
+              className={` ${index % 2 && 'bg-selected-dark'} w-full flex flex-row items-center gap-[20px] rounded-2xl px-[16px] py-[10px]`}
+            >
+              <span className="w-[15%] flex items-center text-[16px]">
+                {message.date}
+              </span>
+              <span className="w-[15%] flex items-center">{message.userId}</span>
+              <span className="w-[40%] flex items-center">{message.topic}</span>
+              <span
+                className={`${supportStatusMap[message.status].bg} ${supportStatusMap[message.status].textColor} w-[15%] flex items-center justify-center rounded-[8px] h-[26px] text-[14px]`}
+              >
+                {supportStatusMap[message.status].text}
+              </span>
+              <span className="w-[15%] flex items-center justify-center border-main border-[1px] rounded-[8px] h-[26px] text-main text-[14px]">
+                Переглянути
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
-      Support Center
+
+      <Pagination
+        dataLength={count}
+        itemsPerPage={messagesLimit}
+        currentPage={currentPage}
+        setPage={handleClickPage}
+        offset={offset}
+        fetchNext={fetchNext}
+        fetchPrev={fetchPrev}
+      />
     </div>
   );
 };
