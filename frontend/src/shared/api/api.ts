@@ -6,6 +6,7 @@ import {
   COOKIE_KEY_TOKEN,
   COOKIE_KEY_USER,
 } from '@/shared/const/cookies';
+import { getServerErrorRoute } from '@/shared/const/routes';
 
 export const $api = axios.create({
   baseURL: '/api',
@@ -62,11 +63,11 @@ $api.interceptors.response.use(
         error.response.data.message === 'Token is required')
     ) {
       clearCookies();
-      // window.location.reload();
+      window.location.reload();
     }
 
     if (error.response.status === 500) {
-      // window.location.href = getServerErrorRoute();
+      window.location.href = getServerErrorRoute();
     }
 
     console.log(error.response);
