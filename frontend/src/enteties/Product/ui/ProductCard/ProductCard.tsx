@@ -62,7 +62,7 @@ interface Props {
 const ProductCard: FC<Props> = (props) => {
   const { t } = useTranslation();
 
-  const { product, dark, dashboard } = props;
+  const { product, dark, dashboard = false } = props;
 
   const { _id, name, discount, images, price, quantity } = product;
 
@@ -107,7 +107,13 @@ const ProductCard: FC<Props> = (props) => {
       {images?.length > 0 ? (
         <Link to={getRouteProduct(`${_id}`)}>
           <Image
-            loadingFallback={<Skeleton width={281} height={252} />}
+            loadingFallback={
+              <Skeleton
+                width="156px"
+                height="140px"
+                className="lg:!w-[280px] lg:!h-[252px]"
+              />
+            }
             src={`${images[0]}`}
             alt="product-card-img"
             className={`${dashboard ? 'min-h-[118px] !min-w-[132px]' : 'h-[140px] !min-w-[156px]'} 
