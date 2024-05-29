@@ -14,9 +14,16 @@ import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
 
-interface Props {}
+interface Props {
+  isMobile?: boolean;
+  onCloseMobileModal?: () => void;
+}
 
-const ProductsSidebar: FC<Props> = () => {
+const PANEL_CLS = 'px-1 lg:px-4 pb-2 lg:pt-4 text-sm text-gray-500';
+
+const ProductsSidebar: FC<Props> = (props) => {
+  const { isMobile = false, onCloseMobileModal } = props;
+
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: categoryData, isLoading: categoryIsLoading } = useAxios<Category[]>(
     ApiRoutes.CATEGORY,
@@ -56,6 +63,9 @@ const ProductsSidebar: FC<Props> = () => {
     if (minRating) searchParams.set('minRating', String(minRating));
 
     setSearchParams(searchParams);
+    if (onCloseMobileModal) {
+      onCloseMobileModal();
+    }
   };
 
   const clearSearchParams = () => {
@@ -67,23 +77,29 @@ const ProductsSidebar: FC<Props> = () => {
     setMinRating(null);
 
     setSearchParams(new URLSearchParams());
+    if (onCloseMobileModal) {
+      onCloseMobileModal();
+    }
   };
 
   return (
-    <aside className="w-full flex flex-col gap-3">
-      <div className="w-full px-4 py-2 shadow-custom-base rounded-2xl">
-        <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-2">
+    <aside className={`w-full flex flex-col gap-5 lg:gap-3 `}>
+      <div
+        className={`w-full ${isMobile ? '' : 'px-4 py-2 shadow-custom-base rounded-2xl'}`}
+      >
+        <div className="lg:mx-auto w-full lg:max-w-md rounded-2xl bg-white lg:p-2">
           {/* --------------------Категорія----------------------- */}
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="flex relative w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+                <Disclosure.Button className="flex relative w-full justify-between rounded-lg bg-purple-100 px-1 py-3 lg:px-4 lg:py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
                   <Text
                     Tag="span"
                     text="Категорія"
                     size="md"
                     color="primary"
-                    className="font-semibold"
+                    bold
+                    className="lg:!font-semibold"
                   />
                   <Icon
                     aria-hidden="true"
@@ -92,7 +108,7 @@ const ProductsSidebar: FC<Props> = () => {
                   />
                 </Disclosure.Button>
 
-                <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
+                <Disclosure.Panel className={`${PANEL_CLS}`}>
                   <ul className="flex flex-col gap-2">
                     {categoryIsLoading && (
                       <span className="text-center">Завантаження...</span>
@@ -106,7 +122,7 @@ const ProductsSidebar: FC<Props> = () => {
                               text={item.name}
                               size="sm"
                               color="primary"
-                              className={`${item._id === selectedCategory?._id && 'font-bold'}`}
+                              className={`${item._id === selectedCategory?._id && '!text-main font-bold'}`}
                             />
                           </button>
                         </li>
@@ -132,13 +148,14 @@ const ProductsSidebar: FC<Props> = () => {
           <Disclosure as="div" className="mt-2">
             {({ open }) => (
               <>
-                <Disclosure.Button className="flex relative w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+                <Disclosure.Button className="flex relative w-full justify-between rounded-lg bg-purple-100 px-1 py-3 lg:px-4 lg:py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
                   <Text
                     Tag="span"
                     text="Підкатегорія"
                     size="md"
                     color="primary"
-                    className="font-semibold"
+                    bold
+                    className="lg:!font-semibold"
                   />
                   <Icon
                     aria-hidden="true"
@@ -147,7 +164,7 @@ const ProductsSidebar: FC<Props> = () => {
                   />
                 </Disclosure.Button>
 
-                <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
+                <Disclosure.Panel className={`${PANEL_CLS}`}>
                   <ul className="flex flex-col gap-2">
                     {!selectedCategory && <span>Виберіть категорію</span>}
                     {selectedCategory?.subcategories.length === 0 && (
@@ -165,7 +182,7 @@ const ProductsSidebar: FC<Props> = () => {
                               text={item.name}
                               size="sm"
                               color="primary"
-                              className={`${item._id === selectedSubcategory?._id && 'font-bold'}`}
+                              className={`${item._id === selectedSubcategory?._id && '!text-main font-bold'}`}
                             />
                           </button>
                         </li>
@@ -191,13 +208,14 @@ const ProductsSidebar: FC<Props> = () => {
           <Disclosure as="div" className="mt-2">
             {({ open }) => (
               <>
-                <Disclosure.Button className="flex relative w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+                <Disclosure.Button className="flex relative w-full justify-between rounded-lg bg-purple-100 px-1 py-3 lg:px-4 lg:py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
                   <Text
                     Tag="span"
                     text="Розділ"
                     size="md"
                     color="primary"
-                    className="font-semibold"
+                    bold
+                    className="lg:!font-semibold"
                   />
                   <Icon
                     aria-hidden="true"
@@ -205,7 +223,7 @@ const ProductsSidebar: FC<Props> = () => {
                     className={`h-4 w-4 duration-75 absolute pointer-events-none right-0 top-3.5 ${open ? 'rotate-180 transform' : ''}`}
                   />
                 </Disclosure.Button>
-                <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
+                <Disclosure.Panel className={`${PANEL_CLS}`}>
                   <ul className="flex flex-col gap-2">
                     {!selectedSubcategory && <span>Виберіть підкатегорію</span>}
                     {selectedSubcategory?.subcategories.length === 0 && (
@@ -223,7 +241,7 @@ const ProductsSidebar: FC<Props> = () => {
                               text={item.name}
                               size="sm"
                               color="primary"
-                              className={`${item._id === selectedSubSubcategory?._id && 'font-bold'}`}
+                              className={`${item._id === selectedSubSubcategory?._id && '!text-main font-bold'}`}
                             />
                           </button>
                         </li>
@@ -249,13 +267,14 @@ const ProductsSidebar: FC<Props> = () => {
           <Disclosure as="div" className="mt-2">
             {({ open }) => (
               <>
-                <Disclosure.Button className="flex relative w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+                <Disclosure.Button className="flex relative w-full justify-between rounded-lg bg-purple-100 px-1 py-3 lg:px-4 lg:py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
                   <Text
                     Tag="span"
                     text="Продавець"
                     size="md"
                     color="primary"
-                    className="font-semibold"
+                    bold
+                    className="lg:!font-semibold"
                   />
                   <Icon
                     aria-hidden="true"
@@ -263,7 +282,7 @@ const ProductsSidebar: FC<Props> = () => {
                     className={`h-4 w-4 duration-75 absolute pointer-events-none right-0 top-3.5 ${open ? 'rotate-180 transform' : ''}`}
                   />
                 </Disclosure.Button>
-                <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
+                <Disclosure.Panel className={`${PANEL_CLS}`}>
                   <ul className="flex flex-col gap-2">
                     {sellerIsLoading && (
                       <span className="text-center">Завантаження...</span>
@@ -277,7 +296,7 @@ const ProductsSidebar: FC<Props> = () => {
                               text={item.username}
                               size="sm"
                               color="primary"
-                              className={`${item._id === selectedSeller?._id && 'font-bold'}`}
+                              className={`${item._id === selectedSeller?._id && '!text-main font-bold'}`}
                             />
                           </button>
                         </li>
@@ -303,13 +322,14 @@ const ProductsSidebar: FC<Props> = () => {
           <Disclosure as="div" className="mt-2">
             {({ open }) => (
               <>
-                <Disclosure.Button className="flex relative w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+                <Disclosure.Button className="flex relative w-full justify-between rounded-lg bg-purple-100 px-1 py-3 lg:px-4 lg:py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
                   <Text
                     Tag="span"
                     text="Ціна"
                     size="md"
                     color="primary"
-                    className="font-semibold"
+                    bold
+                    className="lg:!font-semibold"
                   />
                   <Icon
                     aria-hidden="true"
@@ -317,7 +337,7 @@ const ProductsSidebar: FC<Props> = () => {
                     className={`h-4 w-4 duration-75 absolute pointer-events-none right-0 top-3.5 ${open ? 'rotate-180 transform' : ''}`}
                   />
                 </Disclosure.Button>
-                <Disclosure.Panel className="px-3 pb-2 pt-4 text-sm text-gray-500">
+                <Disclosure.Panel className={`${PANEL_CLS}`}>
                   <div className="flex gap-1 items-center content-center">
                     <Text Tag="span" text="від" size="sm" color="primary" />
                     <input
@@ -355,13 +375,14 @@ const ProductsSidebar: FC<Props> = () => {
           <Disclosure as="div" className="mt-2">
             {({ open }) => (
               <>
-                <Disclosure.Button className="flex relative w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+                <Disclosure.Button className="flex relative w-full justify-between rounded-lg bg-purple-100 px-1 py-3 lg:px-4 lg:py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
                   <Text
                     Tag="span"
                     text="Рейтинг"
                     size="md"
                     color="primary"
-                    className="font-semibold"
+                    bold
+                    className="lg:!font-semibold"
                   />
                   <Icon
                     aria-hidden="true"
@@ -369,7 +390,7 @@ const ProductsSidebar: FC<Props> = () => {
                     className={`h-4 w-4 duration-75 absolute pointer-events-none right-0 top-3.5 ${open ? 'rotate-180 transform' : ''}`}
                   />
                 </Disclosure.Button>
-                <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
+                <Disclosure.Panel className={`${PANEL_CLS}`}>
                   <div className="flex flex-col gap-1">
                     {[5, 4, 3, 2, 1].map((number) => (
                       <div className="flex gap-2 items-center" key={number}>
@@ -405,7 +426,7 @@ const ProductsSidebar: FC<Props> = () => {
         aria-controls="all-category-modal"
         variant="primary"
         aria-haspopup
-        className="hidden lg:block all-products-button py-[5px] w-full bg-secondary-yellow"
+        className="all-products-button py-[5px] w-full bg-secondary-yellow"
         onClick={handleApplyFilters}
       >
         <Text Tag="span" text="Застосувати" size="lg" color="primary" />

@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
@@ -17,6 +17,7 @@ import {
   getProducts,
   productsPageActions,
 } from '@/pages/ProductsPage/model/slices/productsPageSlice';
+import ProductMobileFilterModal from '@/pages/ProductsPage/ui/components/ProductMobileFilterModal';
 import { Container } from '@/shared/layouts/Container';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
@@ -29,6 +30,7 @@ const ProductsPage: FC<Props> = () => {
   const dispatch = useAppDispatch();
 
   const [searchParams] = useSearchParams();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const products = useAppSelector(getProducts.selectAll);
   const isLoading = useAppSelector(getProductsPageIsLoading);
@@ -70,18 +72,19 @@ const ProductsPage: FC<Props> = () => {
             </div>
           </div>
 
-          <div className="w-full flex flex-col gap-5">
-            <div className="topRow w-full flex items-center justify-between">
+          <div className="w-full flex flex-col gap-5 -mt-4">
+            <div className="topRow w-full flex flex-col lg:flex-row lg:items-center justify-between">
               <Text
                 Tag="span"
                 text={`Знайдено ${productsCount} результатів пошуку`}
                 size="lg"
                 color="primary"
+                className="self-center lg:self-start"
               />
-              <ProductsSortSelector />
+              <ProductsSortSelector openFilterModal={() => setIsModalOpen(true)} />
             </div>
 
-            <div className="productsContent w-full flex flex-wrap gap-5 justify-around">
+            <div className="productsContent w-full grid justify-center grid-cols-2 gap-2 lg:grid-cols-3 lg:gap-5">
               {products.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}
@@ -91,6 +94,7 @@ const ProductsPage: FC<Props> = () => {
           </div>
         </div>
       </Container>
+      {isModalOpen && <ProductMobileFilterModal onClose={() => setIsModalOpen(false)} />}
     </div>
   );
 };

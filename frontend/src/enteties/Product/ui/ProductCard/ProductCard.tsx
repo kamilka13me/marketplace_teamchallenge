@@ -62,7 +62,7 @@ interface Props {
 const ProductCard: FC<Props> = (props) => {
   const { t } = useTranslation();
 
-  const { product, dark, dashboard } = props;
+  const { product, dark, dashboard = false } = props;
 
   const { _id, name, discount, images, price, quantity } = product;
 
