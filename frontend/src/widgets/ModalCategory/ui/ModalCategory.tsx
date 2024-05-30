@@ -22,10 +22,14 @@ const ModalCategory: FC<Props> = (props) => {
   const modalCategoriesRef = useRef<HTMLDivElement>(null);
   const listItemRef = useRef<HTMLUListElement>(null);
 
+  const [width, setWidth] = useState<number>(() => window.innerWidth);
   const { data, error, isLoading } = useAxios<Category[]>(ApiRoutes.CATEGORY);
   const [currentCategory, setCurrentCategory] = useState<number>(0);
 
   useEffect(() => {
+    if (width < 1024) {
+      setClose();
+    }
     const outsideClickHandler = (event: MouseEvent | TouchEvent) => {
       if (
         modalCategoriesRef.current?.contains(event.target as Node) ||
@@ -51,7 +55,19 @@ const ModalCategory: FC<Props> = (props) => {
       document.removeEventListener('mousedown', outsideClickHandler);
       document.removeEventListener('keydown', escapeKeyHandler);
     };
-  }, [setClose, modalCategoriesRef, modalButtonRef, isOpen]);
+  }, [setClose, modalCategoriesRef, modalButtonRef, isOpen, width]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   if (isLoading) {
     return null;
