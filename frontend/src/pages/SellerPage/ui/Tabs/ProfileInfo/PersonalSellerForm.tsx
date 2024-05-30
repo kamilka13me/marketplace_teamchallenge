@@ -3,7 +3,10 @@ import React, { FC, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { getSellerInfo } from '@/enteties/Seller/model/selectors/sellerInfoSelectors';
+import {
+  getSellerInfo,
+  sellerInfoIsLoading,
+} from '@/enteties/Seller/model/selectors/sellerInfoSelectors';
 import { setSellerInfo } from '@/enteties/Seller/model/services/setSellerInfo';
 import { sellerInfoActions } from '@/enteties/Seller/model/slice/sellerSlice';
 import { Seller } from '@/enteties/Seller/model/types/seller';
@@ -25,6 +28,7 @@ import { Text } from '@/shared/ui/Text';
 const PersonalSellerForm: FC = () => {
   const user = useAppSelector(getUserAuthData);
   const sellerInfo = useAppSelector(getSellerInfo);
+  const isLoading = useAppSelector(sellerInfoIsLoading);
 
   const { t } = useTranslation();
 
@@ -49,6 +53,10 @@ const PersonalSellerForm: FC = () => {
     register,
     formState: { isValid },
   } = methods;
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   const onSubmit: SubmitHandler<Seller> = async (data) => {
     await dispatch(
