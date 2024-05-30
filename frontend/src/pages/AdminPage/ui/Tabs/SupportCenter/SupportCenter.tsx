@@ -3,6 +3,8 @@
 import { FC, useState } from 'react';
 
 import SupportCenterSelector from './components/SupportCenterSelector';
+import ViewContentModal from './components/ViewContentModal';
+import { SupportMessage } from './interfaces/SupportMessage';
 import { supportMessagesData } from './testData';
 
 import Pagination from '@/shared/ui/Pagination/Pagination';
@@ -19,6 +21,9 @@ const supportStatusMap = {
 const SupportCenter: FC = () => {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [inputData, setInputData] = useState<string>('');
+
+  const [viewContentSelectedMessage, setViewContentSelectedMessage] =
+    useState<SupportMessage | null>(null);
 
   console.log(inputData);
   console.log(selectedFilter);
@@ -72,9 +77,15 @@ const SupportCenter: FC = () => {
               >
                 {supportStatusMap[message.status].text}
               </span>
-              <span className="w-[15%] flex items-center justify-center border-main border-[1px] rounded-[8px] h-[26px] text-main text-[14px]">
+              <button
+                onClick={() => {
+                  setViewContentSelectedMessage(message);
+                }}
+                type="button"
+                className="w-[15%] flex items-center justify-center border-main border-[1px] rounded-[8px] h-[26px] text-main text-[14px]"
+              >
                 Переглянути
-              </span>
+              </button>
             </div>
           ))}
         </div>
@@ -89,6 +100,14 @@ const SupportCenter: FC = () => {
         fetchNext={fetchNext}
         fetchPrev={fetchPrev}
       />
+
+      {/* --------------Видалення-категорії----------------- */}
+      {viewContentSelectedMessage && (
+        <ViewContentModal
+          viewContentSelectedMessage={viewContentSelectedMessage}
+          setViewContentSelectedMessage={setViewContentSelectedMessage}
+        />
+      )}
     </div>
   );
 };
