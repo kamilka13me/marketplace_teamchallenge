@@ -100,9 +100,9 @@ const FormMiddleBlock: FC<Props> = (props) => {
   };
 
   return (
-    <HStack className="w-full bg-dark-grey px-4 py-6 rounded-2xl">
+    <HStack className="w-full bg-dark-grey lg:px-4 lg:py-6 rounded-2xl">
       {/* PRICE */}
-      <VStack gap="4" justify="between" className="w-full">
+      <HStack gap="4" justify="between" className="lg:flex lg:flex-row w-full">
         <div className="w-full">
           <Text Tag="p" text="Ціна товару" size="md" color="white" />
           <div className="w-full relative">
@@ -168,7 +168,7 @@ const FormMiddleBlock: FC<Props> = (props) => {
             />
           </VStack>
         </div>
-        <div className="w-full">
+        <div className="order-first lg:order-last w-full">
           <Text Tag="p" text="Кількість товару" size="md" color="white" />
           <div className="w-full relative">
             <Input
@@ -194,12 +194,16 @@ const FormMiddleBlock: FC<Props> = (props) => {
             />
           </div>
         </div>
-      </VStack>
+      </HStack>
 
       {/* DISCOUNT */}
       {productHasDiscount && (
         <HStack className="w-full">
-          <VStack gap="4" justify="between" className="w-full mt-5">
+          <HStack
+            gap="4"
+            justify="between"
+            className="lg:flex lg:flex-row w-full mt-4 lg:mt-5"
+          >
             <div className="w-full">
               <Text Tag="p" text="Відсоток знижки" size="md" color="white" />
               <div className="w-full mt-2 relative">
@@ -252,7 +256,7 @@ const FormMiddleBlock: FC<Props> = (props) => {
                 />
               </div>
             </div>
-          </VStack>
+          </HStack>
 
           <VStack gap="4" justify="between" className="max-w-[467px] w-full mt-5">
             <div className="w-full">
@@ -331,7 +335,7 @@ const FormMiddleBlock: FC<Props> = (props) => {
       )}
 
       {/* DESCRIPTION */}
-      <div className="w-full mt-5">
+      <div className="w-full mt-4 lg:mt-5">
         <Text Tag="p" text="Опис товару" size="md" color="white" />
         <Textarea
           variant="fill"
@@ -361,9 +365,9 @@ const FormMiddleBlock: FC<Props> = (props) => {
         </VStack>
       </div>
 
-      <div className="w-full mt-5">
+      <div className="w-full">
         {fields.map((field, index) => (
-          <div key={field.id} className="w-full mt-5">
+          <div key={field.id} className="w-full mt-4 lg:mt-5">
             {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
             <label>
               <VStack justify="between" className="mb-2">
@@ -377,7 +381,7 @@ const FormMiddleBlock: FC<Props> = (props) => {
                 <Button
                   variant="clear"
                   onClick={() => removeSpec(index)}
-                  className="text-disabled border-b-[1px] border-b-disabled"
+                  className="min-w-[108px] text-disabled border-b-[1px] border-b-disabled"
                 >
                   Видалити поле
                 </Button>
