@@ -1,8 +1,6 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-console */
-/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { FC, useEffect, useState } from 'react';
 
 import AddCategoryModal from './components/AddCategoryModal';
@@ -12,7 +10,6 @@ import DeleteModal from './components/DeleteModal';
 import { Category } from '@/enteties/Category';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import useAxios from '@/shared/lib/hooks/useAxios';
-import { Button } from '@/shared/ui/Button';
 import { Text } from '@/shared/ui/Text';
 
 const AdminManagingCategory: FC = () => {
@@ -28,6 +25,9 @@ const AdminManagingCategory: FC = () => {
     null,
   );
 
+  const [subcategoryClick, setSubcategoryClick] = useState<boolean>(false);
+  const [subsubcategoryClick, setSubsubcategoryClick] = useState<boolean>(false);
+
   const [addCategory, setAddCategory] = useState<{
     name: string;
     icon: File | null;
@@ -40,41 +40,27 @@ const AdminManagingCategory: FC = () => {
     type: null,
   });
 
-  const [deleteModalType, setDeleteModalType] = useState<
-    'category' | 'subcategory' | 'subsubcategory' | null
-  >(null);
-
-  const [isSaveActive, setIsSaveActive] = useState<boolean>(false);
-  const [deleteCategoryArr, setDeleteCategoryArr] = useState<string[]>([]);
-
-  const [subcategoryClick, setSubcategoryClick] = useState<boolean>(false);
-  const [subsubcategoryClick, setSubsubcategoryClick] = useState<boolean>(false);
+  const [selectedDeleteCategoryID, setSelectedDeleteCategoryID] = useState<string | null>(
+    null,
+  );
 
   useEffect(() => {
-    if (deleteCategoryArr.length > 0) setIsSaveActive(true);
-    else setIsSaveActive(false);
-  }, [deleteCategoryArr]);
+    setSelectedSubcategory(null);
+    setSelectedSubSubcategory(null);
+  }, [selectedCategory]);
 
-  const deleteCategory = () => {
-    if (deleteModalType === 'category' && selectedCategory) {
-      setDeleteCategoryArr((prev) => [...prev, selectedCategory?._id]);
-      setSelectedCategory(null);
-      setSelectedSubcategory(null);
-      setSelectedSubSubcategory(null);
-    }
-    if (deleteModalType === 'subcategory' && selectedSubcategory) {
-      setDeleteCategoryArr((prev) => [...prev, selectedSubcategory?._id]);
-      setSelectedSubcategory(null);
-      setSelectedSubSubcategory(null);
-    }
-    if (deleteModalType === 'subsubcategory' && selectedSubSubcategory) {
-      setDeleteCategoryArr((prev) => [...prev, selectedSubSubcategory?._id]);
-      setSelectedSubSubcategory(null);
-    }
+  useEffect(() => {
+    setSelectedSubSubcategory(null);
+  }, [selectedSubcategory]);
 
-    setDeleteModalType(null);
-    setSubcategoryClick(false);
-    setSubsubcategoryClick(false);
+  const refetchCategoryDataHandler = () => {
+    if (selectedCategory?._id === selectedDeleteCategoryID) setSelectedCategory(null);
+    if (selectedSubcategory?._id === selectedDeleteCategoryID)
+      setSelectedSubcategory(null);
+    if (selectedSubSubcategory?._id === selectedDeleteCategoryID)
+      setSelectedSubSubcategory(null);
+
+    refetchCategoryData();
   };
 
   const addNewCategory = () => setAddCategory({ ...addCategory, type: 'category' });
@@ -90,17 +76,6 @@ const AdminManagingCategory: FC = () => {
       type: 'subsubcategory',
       parentCategory: selectedSubcategory?._id,
     });
-
-  const handleSave = () => {
-    console.log('handleSave');
-
-    setDeleteCategoryArr([]);
-    setIsSaveActive(false);
-    setSelectedCategory(null);
-    setSelectedSubcategory(null);
-    setSelectedSubSubcategory(null);
-    refetchCategoryData();
-  };
 
   return (
     <div className="flex flex-col gap-[16px] items-start justify-between w-full bg-dark-grey rounded-2xl p-[16px]">
@@ -131,10 +106,7 @@ const AdminManagingCategory: FC = () => {
             className="font-semibold w-[120px]"
           />
           <CategorySelector
-            categoryArr={
-              categoryData?.filter((item) => !deleteCategoryArr.includes(item._id)) ||
-              null
-            }
+            categoryArr={categoryData}
             selected={selectedCategory}
             setSelected={setSelectedCategory}
             addButton={{ text: 'Додати нову категорію', open: addNewCategory }}
@@ -142,7 +114,7 @@ const AdminManagingCategory: FC = () => {
           />
           <button
             type="button"
-            onClick={() => setDeleteModalType('category')}
+            onClick={() => setSelectedDeleteCategoryID(selectedCategory!._id)}
             className="mt-[8px]"
             disabled={!selectedCategory}
           >
@@ -168,11 +140,8 @@ const AdminManagingCategory: FC = () => {
           >
             <CategorySelector
               categoryArr={
-                categoryData
-                  ?.find((item) => item._id === selectedCategory?._id)
-                  ?.subcategories?.filter(
-                    (item: Category) => !deleteCategoryArr.includes(item._id),
-                  ) || null
+                categoryData?.find((item) => item._id === selectedCategory?._id)
+                  ?.subcategories || null
               }
               selected={selectedSubcategory}
               setSelected={setSelectedSubcategory}
@@ -190,7 +159,7 @@ const AdminManagingCategory: FC = () => {
 
           <button
             type="button"
-            onClick={() => setDeleteModalType('subcategory')}
+            onClick={() => setSelectedDeleteCategoryID(selectedSubcategory!._id)}
             className="mt-[8px]"
             disabled={!selectedSubcategory}
           >
@@ -220,10 +189,7 @@ const AdminManagingCategory: FC = () => {
                   ?.find((item: Category) => item._id === selectedCategory?._id)
                   ?.subcategories?.find(
                     (item: Category) => item._id === selectedSubcategory?._id,
-                  )
-                  ?.subcategories?.filter(
-                    (item: Category) => !deleteCategoryArr.includes(item._id),
-                  ) || null
+                  )?.subcategories || null
               }
               selected={selectedSubSubcategory}
               setSelected={setSelectedSubSubcategory}
@@ -241,7 +207,7 @@ const AdminManagingCategory: FC = () => {
 
           <button
             type="button"
-            onClick={() => setDeleteModalType('subsubcategory')}
+            onClick={() => setSelectedDeleteCategoryID(selectedSubSubcategory!._id)}
             className="mt-[8px]"
             disabled={!selectedSubSubcategory}
           >
@@ -250,27 +216,18 @@ const AdminManagingCategory: FC = () => {
             </span>
           </button>
         </div>
-
-        {/* --------------Зберегти----------------- */}
-        <Button
-          onClick={handleSave}
-          className="h-12 max-w-[282px] w-full justify-self-end"
-          variant="primary"
-          disabled={!isSaveActive}
-        >
-          Зберегти
-        </Button>
       </div>
 
       {/* --------------Видалення-категорії----------------- */}
-      {deleteModalType && (
+      {selectedDeleteCategoryID && (
         <DeleteModal
-          setDeleteModalType={setDeleteModalType}
-          deleteCategory={deleteCategory}
+          selectedDeleteCategoryID={selectedDeleteCategoryID}
+          setSelectedDeleteCategoryID={setSelectedDeleteCategoryID}
+          refetchCategoryDataHandler={refetchCategoryDataHandler}
         />
       )}
 
-      {/* --------------Видалення-категорії----------------- */}
+      {/* --------------Додавання-категорії----------------- */}
       {addCategory.type && (
         <AddCategoryModal
           addCategory={addCategory}
