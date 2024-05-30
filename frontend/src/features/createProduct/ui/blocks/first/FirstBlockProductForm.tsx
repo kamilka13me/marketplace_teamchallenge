@@ -399,8 +399,8 @@ const FirstBlockProductForm: FC<Props> = (props) => {
   );
 
   return (
-    <form className="w-full bg-dark-grey rounded-2xl px-4 py-6 mb-5">
-      <HStack gap="2" className="mb-5">
+    <div className="w-full bg-dark-grey rounded-2xl lg:px-4 lg:py-6 lg:mb-5">
+      <HStack gap="2" className="mb-4 lg:mb-5">
         <Text Tag="p" text={t('Назва товару')} size="md" color="white" />
         <Input
           variant="fill"
@@ -427,13 +427,13 @@ const FirstBlockProductForm: FC<Props> = (props) => {
         </VStack>
       </HStack>
 
-      <VStack align="center" gap="4" className="w-full mb-5">
+      <HStack align="center" gap="4" className="lg:flex lg:flex-row w-full mb-4 lg:mb-5">
         {renderSelectCategory()}
         {renderSelectSubCategory()}
         {renderSelectSubSubCategory()}
-      </VStack>
+      </HStack>
 
-      <VStack align="center" gap="4" className="w-full">
+      <HStack align="center" gap="4" className="lg:flex lg:flex-row w-full">
         {renderSelectConditions()}
         <HStack gap="2" className="w-full">
           <Text Tag="p" text={t('Бренд')} size="md" color="white" />
@@ -447,8 +447,8 @@ const FirstBlockProductForm: FC<Props> = (props) => {
             {...register('brand')}
           />
         </HStack>
-      </VStack>
-    </form>
+      </HStack>
+    </div>
   );
 };
 
