@@ -95,14 +95,14 @@ const EmailConfirmation = () => {
                 <button
                   type="button"
                   onClick={handleCloseModal}
-                  className="text-disabled"
+                  className="text-disabled hover:underline focus:underline"
                 >
                   Відхилити
                 </button>
                 <button
                   type="button"
                   onClick={handlerEmail}
-                  className="text-secondary-yellow"
+                  className="text-secondary-yellow hover:underline focus:underline"
                   disabled={buttonDisabled}
                 >
                   Відправити

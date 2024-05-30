@@ -168,7 +168,7 @@ const ProductSubscription = () => {
               <Button
                 variant="gray"
                 onClick={() => setClose(false)}
-                className="w-[99px] text-[16px] rounded-lg underline bg-selected-dark text-disabled md:bg-disabled md:text-[18px] md:text-wh md:no-underline md:w-[312px]"
+                className="w-[99px] text-[16px] rounded-lg hover:underline focus:underline bg-selected-dark text-disabled md:bg-disabled md:text-[18px] md:text-wh md:focus:no-underline md:hover:no-underline md:w-[312px]"
               >
                 Скасувати
               </Button>
@@ -187,7 +187,7 @@ const ProductSubscription = () => {
                   onClick={handleConfirm}
                   className={`${
                     isCheckboxChecked
-                      ? 'text-secondary-yellow pointer-events-auto underline'
+                      ? 'text-secondary-yellow pointer-events-auto hover:underline focus:underline'
                       : 'text-disabled pointer-events-none'
                   } py-[8px] w-[99px]`}
                 >

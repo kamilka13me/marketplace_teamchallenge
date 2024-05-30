@@ -17,7 +17,7 @@ const EmailSuccessfully = () => {
         </p>
         <Button
           variant="primary"
-          className=" py-4 w-full self-center md:self-start font-normal text-[18px]"
+          className="w-full self-center md:self-start font-normal text-[18px]"
           onClick={() => {
             navigate(getRouteProfile('info'));
           }}

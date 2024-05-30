@@ -168,7 +168,10 @@ const ProductForm: FC<Props> = (props) => {
   return (
     <div className="w-full">
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-end gap-5">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col items-end mt-12 lg:mt-0 gap-12 lg:gap-5"
+        >
           <FirstBlockProductForm
             initialCategoryId={product?.category || ''}
             setCategory={setCategoryHandler}
@@ -182,7 +185,7 @@ const ProductForm: FC<Props> = (props) => {
           <input
             type="submit"
             value="Зберегти"
-            className="bg-main max-w-[320px] h-[52px] w-full rounded-lg mt-5"
+            className="bg-main max-w-[320px] h-[52px] w-full rounded-lg"
           />
         </form>
       </FormProvider>

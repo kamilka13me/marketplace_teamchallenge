@@ -185,7 +185,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
       additionalDivs.push(
         <div
           key={i}
-          className="provider w-[222px] h-[150px] bg-selected-dark rounded-2xl relative items-center justify-center"
+          className="provider w-[319px] h-[210px] lg:w-[222px] lg:h-[150px] bg-selected-dark rounded-2xl relative items-center justify-center"
         />,
       );
     }
@@ -193,15 +193,15 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 
   return (
     <>
-      <HStack className="w-full gap-4 bg-dark-grey px-4 py-6 min-h-[158px] mb-5 rounded-2xl ">
+      <HStack className="w-full gap-4 bg-dark-grey lg:px-4 lg:py-6 min-h-[158px] rounded-2xl ">
         <VStack className="mb-[6px]">
           <Text Tag="p" size="lg" color="white" text="Завантажити фотографії" />
         </VStack>
-        <VStack className="gap-4" wrap="wrap">
+        <VStack className="justify-center gap-4" wrap="wrap">
           {inputs.map((input, index) => (
             <HStack
               key={input.id}
-              className="provider w-[222px] h-[150px] bg-selected-dark rounded-2xl relative items-center justify-center"
+              className="provider w-[319px] h-[210px] lg:w-[222px] lg:h-[150px] bg-selected-dark rounded-2xl relative items-center justify-center"
               onMouseEnter={() => handleMouseEnter(input.id)}
               onMouseLeave={() => handleMouseLeave(input.id)}
             >
@@ -282,8 +282,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           {/* clear */}
           {additionalDivs}
         </VStack>
-      </HStack>
-      <div className="flex justify-start gap-4">
         <Button variant="clear" onClick={addInput} className="pb-1 border-b border-main ">
           <Text
             Tag="p"
@@ -292,7 +290,17 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             className=" font-normal !text-main"
           />
         </Button>
-      </div>
+      </HStack>
+      {/* <div className="flex justify-start gap-4"> */}
+      {/*  <Button variant="clear" onClick={addInput} className="pb-1 border-b border-main "> */}
+      {/*    <Text */}
+      {/*      Tag="p" */}
+      {/*      size="sm" */}
+      {/*      text={`Завантажте ще ${8 - inputs.length} фотографії`} */}
+      {/*      className=" font-normal !text-main" */}
+      {/*    /> */}
+      {/*  </Button> */}
+      {/* </div> */}
     </>
   );
 };

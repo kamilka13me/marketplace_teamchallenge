@@ -37,10 +37,25 @@ const PersonalSellerForm: FC = () => {
     defaultValues: {
       email: user?.email,
       password: 'HardcorePassword',
-      contacts: sellerInfo?.contacts,
-      communication: sellerInfo?.communication,
+      contacts: sellerInfo?.contacts || [
+        {
+          phone: '',
+          person: '',
+        },
+      ],
+      communication: sellerInfo?.communication || [
+        {
+          messenger: '',
+          phone: '',
+        },
+      ],
       generalName: sellerInfo?.generalName,
-      generalCommunication: sellerInfo?.generalCommunication,
+      generalCommunication: sellerInfo?.generalCommunication || [
+        {
+          messenger: '',
+          phone: '',
+        },
+      ],
     },
   });
 
