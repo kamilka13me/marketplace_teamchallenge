@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { sellerInfoActions } from '@/enteties/Seller/model/slice/sellerSlice';
 import { Seller } from '@/enteties/Seller/model/types/seller';
 import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
@@ -24,7 +25,7 @@ interface sellerDataProps {
 export const setSellerInfo = createAsyncThunk<ApiResponse, sellerDataProps>(
   'seller/updateInfo',
   async (sellerInfo, thunkApi) => {
-    const { rejectWithValue } = thunkApi;
+    const { dispatch, rejectWithValue } = thunkApi;
 
     try {
       const response = await $api.post<ApiResponse>(
@@ -41,6 +42,8 @@ export const setSellerInfo = createAsyncThunk<ApiResponse, sellerDataProps>(
 
         return rejectWithValue(`:: ${response.statusText} `);
       }
+
+      dispatch(sellerInfoActions.setSellerData(response.data));
 
       return response.data;
     } catch (e: unknown) {
