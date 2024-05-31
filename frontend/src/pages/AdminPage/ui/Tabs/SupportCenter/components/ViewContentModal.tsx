@@ -6,6 +6,8 @@ import { FC } from 'react';
 
 import { SupportMessage } from '../interfaces/SupportMessage';
 
+import SupportImagesSlider from './SupportImagesSlider';
+
 import close from '@/shared/assets/icons/cancel.svg?react';
 import { Icon } from '@/shared/ui/Icon';
 import { ModalWindow } from '@/shared/ui/ModalWindow';
@@ -31,7 +33,7 @@ const ViewContentModal: FC<Props> = (props) => {
 
   return (
     <ModalWindow
-      className={`${isImage ? 'max-w-[900px]' : 'max-w-[450px]'} flex flex-row gap-[50px] items-start !bg-selected-dark rounded-2xl w-full px-[50px] pt-[50px] pb-[20px] relative`}
+      className={`${isImage ? 'max-w-[900px]' : 'max-w-[450px]'} flex flex-row gap-[30px] justify-center items-center !bg-selected-dark rounded-2xl w-full p-[30px] pt-[60px] relative`}
       onCloseFunc={() => setViewContentSelectedMessage(null)}
     >
       <Icon
@@ -42,17 +44,9 @@ const ViewContentModal: FC<Props> = (props) => {
         onClick={() => setViewContentSelectedMessage(null)}
       />
 
-      {isImage && (
-        <div className="w-full h-[150px] rounded-2xl overflow-hidden">
-          <img
-            src={viewContentSelectedMessage?.images[0]}
-            alt="support"
-            className="w-full h-full object-cover"
-          />
-        </div>
-      )}
+      {isImage && <SupportImagesSlider images={viewContentSelectedMessage.images} />}
 
-      <div className="w-full flex flex-col gap-[20px] h-[350px] text-main-white font-outfit font-[400]">
+      <div className="w-full flex flex-col gap-[20px] h-[400px] text-main-white font-outfit font-[400] overflow-y-auto">
         <span className="text-[16px] font-[600]">
           {viewContentSelectedMessage?.topic}
         </span>
