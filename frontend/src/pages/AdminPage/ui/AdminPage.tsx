@@ -79,7 +79,13 @@ const AdminPage: FC = () => {
   const { id } = useParams<{ id: string }>();
 
   const [currentTab, setCurrentTab] = useState(0);
-  const components: FC[] = [PersonalDataForms, WishlistProfileTab, ManagingOffersMobile];
+  const components: FC[] = [
+    PersonalDataForms,
+    WishlistProfileTab,
+    ManagingOffersMobile,
+    ManagingContent,
+    ManagingContent,
+  ];
 
   /* const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
 
@@ -126,8 +132,18 @@ const AdminPage: FC = () => {
     >
       <Container>
         <VStack className="gap-12">
-          <VStack className={`hidden lg:flex ${currentTab === 0 ? 'gap-12' : 'gap-5'}`}>
+          <VStack
+            className={`hidden lg:flex ${currentTab === 0 ? 'gap-12' : 'gap-5'} w-full`}
+          >
             <ProfileSidebar tabs={tabs} tab={currentTab} setTab={setCurrentTabHandler} />
+            {/* {currentTab === 0 && <ManagingUsers />} */}
+            {/* {currentTab === 1 && <ManagingSellers />} */}
+            {currentTab === 2 && <ManagingOffers />}
+            {/* {currentTab === 3 && <ManagingFeedbacks />} */}
+            {currentTab === 4 && <ManagingContent />}
+            {/* {currentTab === 5 && <Analytics />} */}
+            {/* {currentTab === 6 && <Finances />} */}
+            {currentTab === 7 && <SupportCenter />}
           </VStack>
           <ProfileSidebarMobile
             tabs={tabs}
@@ -135,14 +151,6 @@ const AdminPage: FC = () => {
             setTab={setCurrentTabHandler}
             renderContent={components}
           />
-          {/* {currentTab === 0 && <ManagingUsers />} */}
-          {/* {currentTab === 1 && <ManagingSellers />} */}
-          {currentTab === 2 && <ManagingOffers />}
-          {/* {currentTab === 3 && <ManagingFeedbacks />} */}
-          {currentTab === 4 && <ManagingContent />}
-          {/* {currentTab === 5 && <Analytics />} */}
-          {/* {currentTab === 6 && <Finances />} */}
-          {currentTab === 7 && <SupportCenter />}
         </VStack>
       </Container>
     </div>

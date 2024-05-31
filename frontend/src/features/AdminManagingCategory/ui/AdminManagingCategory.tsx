@@ -10,6 +10,7 @@ import DeleteModal from './components/DeleteModal';
 import { Category } from '@/enteties/Category';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import useAxios from '@/shared/lib/hooks/useAxios';
+import { HStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
 const AdminManagingCategory: FC = () => {
@@ -78,32 +79,36 @@ const AdminManagingCategory: FC = () => {
     });
 
   return (
-    <div className="flex flex-col gap-[16px] items-start justify-between w-full bg-dark-grey rounded-2xl p-[16px]">
+    <HStack
+      justify="between"
+      align="start"
+      className="gap-3 lg:gap-4 w-full bg-dark-grey rounded-2xl p-[16px]"
+    >
       <Text
         Tag="span"
         text="Додавання категорій, підкатегорій та розділів"
         color="white"
         size="xl"
-        className="font-semibold"
+        className="max-w-[287px] lg:!max-w-full font-semibold"
       />
 
       <Text
         Tag="span"
         text="Для створення нового розділу або категорію, зробіть вибір."
         color="gray-light"
-        size="lg"
-        className="font-normal"
+        size="md"
+        className="lg:text-lg font-normal"
       />
 
-      <div className="flex flex-col gap-[8px] items-start justify-between">
+      <div className="flex flex-col lg:gap-2 items-start justify-between w-full">
         {/* --------------Категорія----------------- */}
-        <div className="flex flex-row items-start justify-start w-full gap-[16px]">
+        <div className="flex flex-col gap-1  lg:flex-row items-start justify-start w-full lg:gap-[16px]">
           <Text
             Tag="span"
             text="Категорія"
             color="white"
-            size="lg"
-            className="font-semibold w-[120px]"
+            size="md"
+            className="lg:text-lg lg:font-semibold lg:w-[140px]"
           />
           <CategorySelector
             categoryArr={categoryData}
@@ -115,7 +120,7 @@ const AdminManagingCategory: FC = () => {
           <button
             type="button"
             onClick={() => setSelectedDeleteCategoryID(selectedCategory!._id)}
-            className="mt-[8px]"
+            className="self-end lg:self-start lg:mt-[8px]"
             disabled={!selectedCategory}
           >
             <span className="text-main text-[14px] font-outfit underline underline-offset-[6px]">
@@ -125,17 +130,17 @@ const AdminManagingCategory: FC = () => {
         </div>
 
         {/* --------------Підкатегорія----------------- */}
-        <div className="flex flex-row items-start justify-start w-full gap-[16px]">
+        <div className="flex flex-col gap-1 lg:flex-row items-start justify-start w-full lg:gap-[16px]">
           <Text
             Tag="span"
             text="Підкатегорія"
             color="white"
-            size="lg"
-            className="font-semibold w-[120px]"
+            size="md"
+            className="lg:text-lg lg:font-semibold w-[140px]"
           />
 
           <div
-            className="flex flex-col items-start justify-between"
+            className="flex flex-col items-start justify-between w-full"
             onClick={() => setSubcategoryClick(true)}
           >
             <CategorySelector
@@ -160,7 +165,7 @@ const AdminManagingCategory: FC = () => {
           <button
             type="button"
             onClick={() => setSelectedDeleteCategoryID(selectedSubcategory!._id)}
-            className="mt-[8px]"
+            className="self-end lg:self-start lg:mt-[8px]"
             disabled={!selectedSubcategory}
           >
             <span className="text-main text-[14px] font-outfit underline underline-offset-[6px]">
@@ -170,17 +175,17 @@ const AdminManagingCategory: FC = () => {
         </div>
 
         {/* --------------Розділ----------------- */}
-        <div className="flex flex-row items-start justify-start w-full gap-[16px]">
+        <div className="flex flex-col gap-1  lg:flex-row items-start justify-start w-full lg:gap-[16px]">
           <Text
             Tag="span"
             text="Розділ"
             color="white"
-            size="lg"
-            className="font-semibold w-[120px]"
+            size="md"
+            className="lg:text-lg lg:font-semibold w-[140px]"
           />
 
           <div
-            className="flex flex-col items-start justify-between"
+            className="flex flex-col items-start justify-between w-full"
             onClick={() => setSubsubcategoryClick(true)}
           >
             <CategorySelector
@@ -208,7 +213,7 @@ const AdminManagingCategory: FC = () => {
           <button
             type="button"
             onClick={() => setSelectedDeleteCategoryID(selectedSubSubcategory!._id)}
-            className="mt-[8px]"
+            className="self-end lg:self-start lg:mt-[8px]"
             disabled={!selectedSubSubcategory}
           >
             <span className="text-main text-[14px] font-outfit underline underline-offset-[6px]">
@@ -235,7 +240,7 @@ const AdminManagingCategory: FC = () => {
           refetchCategoryData={refetchCategoryData}
         />
       )}
-    </div>
+    </HStack>
   );
 };
 

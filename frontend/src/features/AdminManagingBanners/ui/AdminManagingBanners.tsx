@@ -114,14 +114,15 @@ const AdminManagingBanners: FC = () => {
   };
 
   return (
-    <section className="px-4 py-6 rounded-[16px] bg-dark-grey w-full">
+    <section className="px-4 py-6 rounded-2xl bg-dark-grey w-full">
       <HStack className="gap-3">
         <Text Tag="h3" text="Управління контентом" size="xl" color="white" />
         <Text
           Tag="h4"
           text="Для  редагування, наведіть мишкою на банер."
-          size="lg"
+          size="md"
           color="gray-light"
+          className="lg:text-lg"
         />
         {isLoading ? (
           <div className="grid grid-cols-5 gap-3">
@@ -132,11 +133,11 @@ const AdminManagingBanners: FC = () => {
               ))}
           </div>
         ) : (
-          <div className="grid grid-cols-5 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
             {banners?.map((banner) => (
               <div
                 key={banner._id}
-                className="relative"
+                className="relative w-full"
                 onMouseEnter={() => setCurrentBanner(banner._id)}
                 onMouseLeave={() => setCurrentBanner(null)}
               >
@@ -144,7 +145,7 @@ const AdminManagingBanners: FC = () => {
                   objectFit="cover"
                   src={`${process.env.BASE_URL}${banner.image}`}
                   alt="img"
-                  className="w-[180px] h-[94px] rounded-lg"
+                  className="lg:max-w-[180px] w-full lg:h-[94px] rounded-lg"
                 />
                 {currentBanner === banner._id && (
                   <ImageDeleteOverlay
@@ -160,13 +161,13 @@ const AdminManagingBanners: FC = () => {
               <div
                 onMouseEnter={() => setBannerPreviewOverlayIsOpen(true)}
                 onMouseLeave={() => setBannerPreviewOverlayIsOpen(false)}
-                className="relative"
+                className="relative w-full"
               >
                 <Image
                   objectFit="cover"
                   src={bannerPreview}
                   alt="Preview"
-                  className="w-[180px] h-[94px] rounded-lg"
+                  className="lg:max-w-[180px] w-full lg:h-[94px] rounded-lg"
                 />
                 {bannerPreviewOverlayIsOpen && (
                   <ImageDeleteOverlay
@@ -203,7 +204,7 @@ const AdminManagingBanners: FC = () => {
 
       {deleteModalIsOpen && (
         <ModalWindow
-          className="flex flex-col items-center !bg-selected-dark rounded-2xl max-w-[404px] !pb-[60px] w-full drop-shadow-custom-dark-modal"
+          className="flex flex-col items-center !bg-selected-dark rounded-2xl max-w-[380px] lg:max-w-[404px] !pb-[60px] w-full drop-shadow-custom-dark-modal"
           onCloseFunc={closeDeleteBannerModalHandler}
         >
           <Icon
@@ -258,7 +259,7 @@ const AdminManagingBanners: FC = () => {
 
       {addBannerModalIsOpen && (
         <ModalWindow
-          className="flex flex-col items-center !bg-selected-dark rounded-2xl max-w-[386px] w-full"
+          className="flex flex-col items-center !bg-selected-dark rounded-2xl max-w-[380px] lg:max-w-[386px] w-full"
           onCloseFunc={closeAddBannerModalHandler}
         >
           <Icon
