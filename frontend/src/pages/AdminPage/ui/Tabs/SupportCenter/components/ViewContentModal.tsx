@@ -5,6 +5,7 @@
 import { FC } from 'react';
 
 import { SupportMessage } from '../interfaces/SupportMessage';
+import { formatDate } from '../utils/formatDate';
 
 import SupportImagesSlider from './SupportImagesSlider';
 
@@ -16,15 +17,6 @@ interface Props {
   viewContentSelectedMessage: SupportMessage;
   setViewContentSelectedMessage: (message: SupportMessage | null) => void;
 }
-
-const formatDate = (dateStr: string) => {
-  const date = new Date(dateStr);
-  const day = String(date.getUTCDate()).padStart(2, '0');
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-  const year = date.getUTCFullYear();
-
-  return `${day}.${month}.${year}`;
-};
 
 const ViewContentModal: FC<Props> = (props) => {
   const { viewContentSelectedMessage, setViewContentSelectedMessage } = props;

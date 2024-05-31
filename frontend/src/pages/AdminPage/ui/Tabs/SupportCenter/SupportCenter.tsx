@@ -6,6 +6,7 @@ import SupportCenterSelector from './components/SupportCenterSelector';
 import ViewContentModal from './components/ViewContentModal';
 import { SupportMessage } from './interfaces/SupportMessage';
 import { supportMessagesData } from './testData';
+import { formatDate } from './utils/formatDate';
 
 import Pagination from '@/shared/ui/Pagination/Pagination';
 import ListingSearchCalendar from '@/widgets/ListingSort/ui/components/ListingSearchCalendar';
@@ -14,7 +15,7 @@ import ListingSearchInput from '@/widgets/ListingSort/ui/components/ListingSearc
 const supportStatusMap = {
   new: { bg: 'bg-secondary-yellow', textColor: 'text-main-dark', text: 'Новий' },
   consider: { bg: 'bg-[#F4F2EC]', textColor: 'text-main-dark', text: 'На розгляді' },
-  work: { bg: 'bg-[#393939]', textColor: 'text-main-dark', text: 'В роботі' },
+  work: { bg: 'bg-[#393939]', textColor: 'text-white', text: 'В роботі' },
   closed: { bg: 'bg-disabled', textColor: 'text-main-dark', text: 'Вирішено' },
 };
 
@@ -68,7 +69,7 @@ const SupportCenter: FC = () => {
               className={` ${index % 2 && 'bg-selected-dark'} w-full flex flex-row items-center gap-[20px] rounded-2xl px-[16px] py-[10px]`}
             >
               <span className="w-[15%] flex items-center text-[16px]">
-                {message.date}
+                {formatDate(message.date)}
               </span>
               <span className="w-[15%] flex items-center">{message.userId}</span>
               <span className="w-[40%] flex items-center">{message.topic}</span>
