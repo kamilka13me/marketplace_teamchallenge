@@ -38,7 +38,7 @@ const ViewContentModal: FC<Props> = (props) => {
 
       {isImage && <SupportImagesSlider images={viewContentSelectedMessage.images} />}
 
-      <div className="w-full flex flex-col gap-[20px] h-[400px] text-main-white font-outfit font-[400] overflow-y-auto">
+      <div className="w-full flex flex-col gap-[20px] h-[400px] text-main-white font-outfit font-[400] overflow-y-auto pr-[10px]">
         <span className="text-[16px] font-[600]">
           {viewContentSelectedMessage?.topic}
         </span>

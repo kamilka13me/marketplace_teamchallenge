@@ -36,7 +36,7 @@ export const supportMessagesData: SupportMessagesResponse = {
       topic: 'Запит на підвищення видимості товарів у пошуку',
       content:
         'Зробив запит на підвищення видимості товарів у пошуку. Зробіть так щоб товар продавався і був першим в магазині.',
-      images: [],
+      images: ['https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'],
       date: '2023-01-01T00:00:00Z',
       status: 'work',
       _id: '3',

@@ -27,14 +27,14 @@ const SupportImagesSlider: FC<Props> = (props) => {
   return (
     <Slider
       {...settings}
-      className="w-[480px] h-[420px] flex justify-center items-center bg-dark-grey rounded-2xl"
+      className="min-w-[480px] min-h-[420px] w-[480px] h-[420px] flex justify-center items-center bg-dark-grey rounded-2xl"
     >
       {(images || []).map((item, i) => (
         <img
           key={i}
           src={item}
           alt={item}
-          className="w-[480px] h-[420px] object-contain"
+          className="min-w-[480px] min-h-[420px] w-[480px] h-[420px] object-contain"
         />
       ))}
     </Slider>
