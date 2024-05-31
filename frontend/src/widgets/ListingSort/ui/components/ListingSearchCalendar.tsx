@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { RangeKeyDict } from 'react-date-range';
 
@@ -11,15 +11,22 @@ import DateSortWidget, { buttonData } from '@/widgets/DateSortWidget/ui/DateSort
 
 export type RangeSortType = 'day' | 'week' | 'month' | 'year' | 'range';
 
-interface IRangeDate {
+export interface IRangeDate {
   startDate: Date;
   endDate: Date;
   key: string;
 }
 
-const ListingSearchCalendar = () => {
+interface Props {
+  dateRange?: IRangeDate;
+  setDateRange?: (range: IRangeDate) => void;
+}
+
+const ListingSearchCalendar: FC<Props> = (props) => {
+  const { dateRange, setDateRange } = props;
+
   const [state, setState] = useState<IRangeDate[]>([
-    {
+    dateRange || {
       startDate: new Date(),
       endDate: new Date(),
       key: 'selection',
@@ -29,6 +36,12 @@ const ListingSearchCalendar = () => {
 
   const startDate = state[0]?.startDate.toLocaleDateString('uk-UA');
   const endDate = state[0]?.endDate.toLocaleDateString('uk-UA');
+
+  useEffect(() => {
+    if (state[0] && setDateRange) {
+      setDateRange(state[0]);
+    }
+  }, [state, setDateRange]);
 
   const handleOnChange = (ranges: RangeKeyDict) => {
     const { selection } = ranges;

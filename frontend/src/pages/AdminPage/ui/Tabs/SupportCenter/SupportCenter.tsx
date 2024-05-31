@@ -11,7 +11,9 @@ import { supportMessagesData } from './testData';
 import { formatDate } from './utils/formatDate';
 
 import Pagination from '@/shared/ui/Pagination/Pagination';
-import ListingSearchCalendar from '@/widgets/ListingSort/ui/components/ListingSearchCalendar';
+import ListingSearchCalendar, {
+  IRangeDate,
+} from '@/widgets/ListingSort/ui/components/ListingSearchCalendar';
 import ListingSearchInput from '@/widgets/ListingSort/ui/components/ListingSearchInput';
 
 const supportStatusMap = {
@@ -25,7 +27,14 @@ const SupportCenter: FC = () => {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [inputData, setInputData] = useState<string>('');
 
-  console.log(inputData);
+  const [dateRange, setDateRange] = useState<IRangeDate>({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: 'selection',
+  });
+
+  console.log(dateRange.startDate.toISOString(), dateRange.endDate.toISOString());
+  console.log(`inputData:`, inputData);
 
   const [viewContentSelectedMessage, setViewContentSelectedMessage] =
     useState<SupportMessage | null>(null);
@@ -54,7 +63,7 @@ const SupportCenter: FC = () => {
       <div className="flex flex-col gap-[15px] items-center justify-between w-full bg-dark-grey rounded-2xl p-[16px]">
         <div className="flex flex-row items-center justify-between w-full">
           <ListingSearchInput setInputData={setInputData} />
-          <ListingSearchCalendar />
+          <ListingSearchCalendar dateRange={dateRange} setDateRange={setDateRange} />
         </div>
 
         <div className="w-full flex flex-col">
