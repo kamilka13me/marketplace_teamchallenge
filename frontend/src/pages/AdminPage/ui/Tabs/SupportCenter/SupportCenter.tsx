@@ -25,6 +25,8 @@ const SupportCenter: FC = () => {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [inputData, setInputData] = useState<string>('');
 
+  console.log(inputData);
+
   const [viewContentSelectedMessage, setViewContentSelectedMessage] =
     useState<SupportMessage | null>(null);
 

@@ -26,7 +26,11 @@ const ListingSearchInput: FC<ListingSearchInputProps> = ({ setInputData }) => {
         variant="search"
         placeholder={t('Номер ID')}
         onChange={(e) => setValue(e.target.value)}
-        onKeyDown={handleSubmit}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            handleSubmit();
+          }
+        }}
         className="min-h-[38px] rounded-l-[8px] bg-selected-dark !text-white placeholder-light-grey"
         classNameBlockWrap="w-full"
       />
