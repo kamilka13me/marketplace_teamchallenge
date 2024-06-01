@@ -46,7 +46,7 @@ const ViewContentModal: FC<Props> = (props) => {
           <span className="text-[14px]">
             {formatDate(viewContentSelectedMessage?.date)}
           </span>
-          <div className="flex flex-row gap-[10px]">
+          <div className="flex flex-col gap-[10px]">
             <span className="text-[16px]">{viewContentSelectedMessage?.userMail}</span>
             <span>
               <span className="text-[16px]">ID: </span>

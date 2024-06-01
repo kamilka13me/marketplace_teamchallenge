@@ -32,7 +32,7 @@ const SupportImagesSlider: FC<Props> = (props) => {
       {(images || []).map((item, i) => (
         <img
           key={i}
-          src={item}
+          src={`${process.env.BASE_URL}${item}`}
           alt={item}
           className="min-w-[480px] min-h-[420px] w-[480px] h-[420px] object-contain"
         />
