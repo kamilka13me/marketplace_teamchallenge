@@ -5,27 +5,27 @@ import Slider from 'react-slick';
 
 import { Product, ProductSectionLayout } from '@/enteties/Product';
 import { calcAverage } from '@/features/managingFeedbacks/helpers/managingFeedbacksHelpers';
-import { useGetCommentsQuery } from '@/pages/ProductPage/model/services/commentsApi';
 import {
   ApiFeedbackResponse,
   ApiProductResponse,
   RatingResponse,
 } from '@/pages/ProductPage/model/types';
+import ProductCategoriesLinkTree from '@/pages/ProductPage/ui/components/ProductCategoriesLinkTree';
 import ProductDescription from '@/pages/ProductPage/ui/components/ProductDescription';
 import ProductFeedbacks from '@/pages/ProductPage/ui/components/ProductFeedbacks';
 import ProductSpecification from '@/pages/ProductPage/ui/components/ProductSpecification';
 import SellerContacts from '@/pages/ProductPage/ui/components/SellerContacts';
 import { useGetPromotionsProductsQuery } from '@/pages/ProductsPage';
 import { productsPageActions } from '@/pages/ProductsPage/model/slices/productsPageSlice';
+import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { Container } from '@/shared/layouts/Container';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import useAxios from '@/shared/lib/hooks/useAxios';
 import { ReactHelmet } from '@/shared/SEO';
-import { Link } from '@/shared/ui/Link';
 import NextArrow from '@/shared/ui/Slider/NextArrow';
 import PrevArrow from '@/shared/ui/Slider/PrevArrow';
-import { HStack, VStack } from '@/shared/ui/Stack';
+import { HStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
 interface Props {}
@@ -33,7 +33,10 @@ interface Props {}
 const ProductPage: FC<Props> = () => {
   const { id } = useParams<{ id: string }>();
 
-  const [, setCurrentSlide] = useState(0);
+  const [nav1, setNav1] = useState();
+  const [nav2, setNav2] = useState();
+
+  const [triggerRefetchSellerInfo, setTriggerRefetchSellerInfo] = useState(false);
 
   const promotionsProduct = useGetPromotionsProductsQuery({});
 
@@ -41,10 +44,9 @@ const ProductPage: FC<Props> = () => {
 
   const { data, isLoading } = useAxios<ApiProductResponse>(`${ApiRoutes.PRODUCTS}/${id}`);
 
-  const { data: comments, refetch: refetchComments } = useGetCommentsQuery({
-    offset: 0,
-    productId: id,
-  });
+  const { data: comments, refetch: refetchComments } = useAxios<ApiFeedbackResponse>(
+    `${ApiRoutes.PRODUCT_COMMENTS}?productId=${id}&limit=1&offset=${0}`,
+  );
 
   const {
     data: productRating,
@@ -55,13 +57,21 @@ const ProductPage: FC<Props> = () => {
   const refetchDataHandler = () => {
     refetchRating();
     refetchComments();
+    setTriggerRefetchSellerInfo((prev) => !prev);
   };
 
   useEffect(() => {
-    if (data && data.product) {
-      setCurrentSlide(0);
-    }
-  }, [data]);
+    const alertTimeout = setTimeout(() => {
+      try {
+        $api.post(`${ApiRoutes.PRODUCT_VIEW}/${id}`);
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log(e);
+      }
+    }, 7000);
+
+    return () => clearTimeout(alertTimeout);
+  }, [id]);
 
   const promotionsProductsSearchParamsHandler = () => {
     dispatch(productsPageActions.clearSortParams());
@@ -72,13 +82,14 @@ const ProductPage: FC<Props> = () => {
 
   const settingsSmall = {
     dots: false,
-    infinite: false,
+    infinite: !((data?.product?.images.length || 0) <= 7),
     arrows: false,
     speed: 500,
-    slidesToShow: 7,
+    slidesToShow: (data?.product?.images.length || 0) <= 7 ? data?.product.images : 7,
     slidesToScroll: 1,
     draggable: false,
-    adaptiveHeight: true,
+    swipeToSlide: true,
+    focusOnSelect: true,
   };
 
   const settingsBig = {
@@ -91,11 +102,14 @@ const ProductPage: FC<Props> = () => {
     adaptiveHeight: true,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
-    afterChange: (index: number) => setCurrentSlide(index),
   };
 
   if (isLoading) {
-    return <>Loading...</>;
+    return (
+      <HStack justify="center" align="center" className="w-full h-full">
+        Завантаження...
+      </HStack>
+    );
   }
 
   return (
@@ -106,15 +120,18 @@ const ProductPage: FC<Props> = () => {
         description={data?.product.description || ''}
       />
       <Container>
-        <VStack gap="1" className="!text-main-white mb-5">
-          <Link to="/">Товари Apple /</Link>
-          <Link to="/">Mackbook /</Link>
-          <Link to="/">Mackbook Air 1</Link>
-        </VStack>
+        <ProductCategoriesLinkTree
+          categoryId={data?.product.category || ''}
+          className="mb-6"
+        />
         <HStack gap="4" align="center" className="lg:gap-5 lg:flex-row">
           <HStack gap="5" className="w-full max-w-[646px]">
             <div className="relative w-full bg-dark-grey  rounded-2xl lg:h-[514px] lg:max-w-[646px]">
-              <Slider {...settingsBig}>
+              <Slider
+                asNavFor={nav2}
+                ref={(slider1) => setNav1(slider1 as never)}
+                {...settingsBig}
+              >
                 {data?.product?.images.map((item) => (
                   <img
                     key={item} // Ensure each item has a unique key
@@ -135,8 +152,14 @@ const ProductPage: FC<Props> = () => {
               )}
             </div>
 
-            <div className="hidden lg:block h-[84px] w-full">
-              <Slider {...settingsSmall}>
+            <div className="hidden lg:block items-center  h-[84px] w-[646px]">
+              {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+              {/* @ts-expect-error */}
+              <Slider
+                asNavFor={nav1}
+                ref={(slider2) => setNav2(slider2 as never)}
+                {...settingsSmall}
+              >
                 {data?.product.images.map((item) => (
                   <img
                     key={item}
@@ -152,11 +175,14 @@ const ProductPage: FC<Props> = () => {
           <HStack gap="4" className="lg:gap-5 w-full max-w-[646px]">
             <ProductDescription
               rating={productRating ? calcAverage(productRating.current) : 0}
-              feedbackLength={comments?.totalComments}
+              feedbackLength={comments?.totalComments || 0}
               product={data?.product || ({} as Product)}
             />
 
-            <SellerContacts sellerId={data?.product.sellerId || ''} />
+            <SellerContacts
+              sellerId={data?.product.sellerId || ''}
+              triggerRefetchSellerInfo={triggerRefetchSellerInfo}
+            />
           </HStack>
         </HStack>
         <HStack

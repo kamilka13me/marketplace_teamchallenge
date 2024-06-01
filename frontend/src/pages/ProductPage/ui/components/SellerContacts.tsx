@@ -22,20 +22,25 @@ interface SellerResponse {
 
 interface Props {
   sellerId: string;
+  triggerRefetchSellerInfo: boolean;
 }
 
-const SellerContacts: FC<Props> = ({ sellerId }) => {
+const SellerContacts: FC<Props> = ({ sellerId, triggerRefetchSellerInfo }) => {
   const user = useAppSelector(getUserAuthData);
 
   const { data, isLoading } = useAxios<ApiResponse>(`${ApiRoutes.USER}/${sellerId}`);
 
-  const { data: feedbacks, isLoading: loadingFeedbacks } = useAxios<ApiFeedbackResponse>(
-    `${ApiRoutes.SELLER_FEEDBACKS}?sellerId=${sellerId}`,
-  );
+  const {
+    data: feedbacks,
+    isLoading: loadingFeedbacks,
+    refetch: refetchFeedbacks,
+  } = useAxios<ApiFeedbackResponse>(`${ApiRoutes.SELLER_FEEDBACKS}?sellerId=${sellerId}`);
 
-  const { data: ratings, isLoading: loadingRatings } = useAxios<RatingResponse>(
-    `${ApiRoutes.RATINGS}?sellerId=${sellerId}`,
-  );
+  const {
+    data: ratings,
+    isLoading: loadingRatings,
+    refetch: refetchRatings,
+  } = useAxios<RatingResponse>(`${ApiRoutes.RATINGS}?sellerId=${sellerId}`);
 
   const [isContactsOpen, setIsContactsOpen] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -79,6 +84,12 @@ const SellerContacts: FC<Props> = ({ sellerId }) => {
       clearTimeout(timer);
     };
   }, [isAlertOpen]);
+
+  useEffect(() => {
+    refetchRatings();
+    refetchFeedbacks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [triggerRefetchSellerInfo]);
 
   return (
     <HStack

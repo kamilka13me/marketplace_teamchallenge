@@ -129,6 +129,7 @@ const ProductFeedbacks: FC<Props> = (props) => {
           </Link>
 
           <Comment
+            refetch={refetchFeedbacks}
             alignItems="horizontal"
             sellerId={product?.sellerId}
             comment={

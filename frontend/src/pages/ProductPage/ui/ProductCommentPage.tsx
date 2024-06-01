@@ -1,4 +1,11 @@
-import { FC, MutableRefObject, useEffect, useRef, useState } from 'react';
+import React, {
+  FC,
+  MutableRefObject,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { useParams } from 'react-router-dom';
 
@@ -7,12 +14,24 @@ import Comment from '../../../enteties/Comment/ui/Comment';
 import { IComment } from '@/enteties/Comment';
 import { Product } from '@/enteties/Product';
 import { getUserAuthData } from '@/enteties/User';
-import { useGetCommentsQuery } from '@/pages/ProductPage/model/services/commentsApi';
-import { ApiProductResponse } from '@/pages/ProductPage/model/types';
+import { calcAverage } from '@/features/managingFeedbacks/helpers/managingFeedbacksHelpers';
+import {
+  getProductCommentsPageIsLoading,
+  getProductCommentsPageOffset,
+  getTotalProductFeedbacks,
+} from '@/pages/ProductPage/model/selectors/ProductCommentsListSelector';
+import { fetchNextProductComments } from '@/pages/ProductPage/model/services/fetchNextProductComments';
+import { fetchProductCommentsList } from '@/pages/ProductPage/model/services/fetchProductComments';
+import {
+  getProductComments,
+  productCommentsActions,
+} from '@/pages/ProductPage/model/slices/productCommentsSlice';
+import { ApiProductResponse, RatingResponse } from '@/pages/ProductPage/model/types';
 import ProductComment from '@/pages/ProductPage/ui/components/ProductComment';
 import ProductDescription from '@/pages/ProductPage/ui/components/ProductDescription';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { Container } from '@/shared/layouts/Container';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import useAxios from '@/shared/lib/hooks/useAxios';
 import { useInfiniteScroll } from '@/shared/lib/hooks/useInfiniteScroll';
@@ -27,18 +46,23 @@ const ProductCommentPage: FC = () => {
   const wrapperRef = useRef() as MutableRefObject<HTMLDivElement>;
   const triggerRef = useRef() as MutableRefObject<HTMLDivElement>;
 
-  const [offset, setOffset] = useState(0);
   const [isCommentOpen, setIsCommentIsOpen] = useState(false);
   const [filledStars, setFilledStars] = useState(0);
+
+  const productComments = useAppSelector(getProductComments.selectAll);
+  const totalProductComments = useAppSelector(getTotalProductFeedbacks);
+  const productCommentsISLoading = useAppSelector(getProductCommentsPageIsLoading);
+  const offset = useAppSelector(getProductCommentsPageOffset);
+
+  const dispatch = useAppDispatch();
 
   const { data: product, isLoading } = useAxios<ApiProductResponse>(
     `${ApiRoutes.PRODUCTS}/${id}`,
   );
 
-  const { data, isFetching, refetch } = useGetCommentsQuery({
-    offset: offset * 10,
-    productId: id,
-  });
+  const { data: productRating, refetch: productRatingRefetch } = useAxios<RatingResponse>(
+    `${ApiRoutes.PRODUCT_RATINGS}?productId=${id}`,
+  );
 
   const user = useAppSelector(getUserAuthData);
 
@@ -46,14 +70,24 @@ const ProductCommentPage: FC = () => {
     triggerRef,
     wrapperRef,
     callback: () => {
-      if (!isFetching && offset * 10 <= data.totalComments) {
-        setOffset((prevState) => prevState + 1);
+      if (!productCommentsISLoading && offset <= totalProductComments) {
+        dispatch(fetchNextProductComments({ productId: id || '' }));
       }
     },
   });
 
+  const refetchInfo = () => {
+    productRatingRefetch();
+    dispatch(productCommentsActions.resetState());
+  };
+
+  useLayoutEffect(() => {
+    dispatch(productCommentsActions.resetState());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
-    refetch();
+    dispatch(fetchProductCommentsList({ productId: id || '' }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offset]);
 
@@ -74,7 +108,7 @@ const ProductCommentPage: FC = () => {
               <HStack
                 justify="center"
                 align="center"
-                className="w-full h-[336px] rounded-2xl bg-dark-grey"
+                className="relative w-full h-[336px] rounded-2xl bg-dark-grey"
               >
                 {!isLoading && (
                   <img
@@ -83,11 +117,21 @@ const ProductCommentPage: FC = () => {
                     className="!w-[380px] !h-[315px] !object-cover"
                   />
                 )}
+
+                {product?.product.discount && (
+                  <HStack
+                    align="center"
+                    justify="center"
+                    className="absolute top-4 left-4 w-[47px] h-[26px] bg-error-red rounded-lg"
+                  >
+                    <Text Tag="span" text="Sale" size="md" color="white" />
+                  </HStack>
+                )}
               </HStack>
               {!isLoading && (
                 <ProductDescription
-                  feedbackLength={data?.totalComments || 0}
-                  rating={2}
+                  feedbackLength={totalProductComments || 0}
+                  rating={productRating ? calcAverage(productRating.current) : 0}
                   size="medium"
                   product={product?.product as Product}
                 />
@@ -100,7 +144,7 @@ const ProductCommentPage: FC = () => {
                   <Text Tag="p" text={`Всі відгуки `} size="4xl" color="white" />
                   <Text
                     Tag="span"
-                    text={`${data?.totalComments || 0}`}
+                    text={`${totalProductComments || 0}`}
                     size="2xl"
                     color="white"
                     className="bg-selected-dark px-3 py-2 rounded-lg mt-2"
@@ -121,6 +165,7 @@ const ProductCommentPage: FC = () => {
               <div className="mt-4 w-full">
                 {isCommentOpen && (
                   <ProductComment
+                    refetchFeedbacks={refetchInfo}
                     stars={filledStars}
                     setStars={handleStarClick}
                     product={product?.product || ({} as Product)}
@@ -133,12 +178,16 @@ const ProductCommentPage: FC = () => {
                 gap="4"
                 className="w-full h-full overflow-auto lg:gap-0 lg:h-[1000px]"
               >
-                {data?.comments.map((item: IComment, idx: number) => (
+                {productComments?.map((item: IComment, idx: number) => (
                   <div key={item._id} className="w-full">
                     {idx !== 0 && (
                       <Separator className="bg-selected-dark h-0.5 lg:w-full lg:h-0.5" />
                     )}
+
                     <Comment
+                      refetch={() => {
+                        dispatch(productCommentsActions.resetState());
+                      }}
                       sellerId={product?.product?.sellerId as string}
                       comment={item}
                       alignItems="horizontal"

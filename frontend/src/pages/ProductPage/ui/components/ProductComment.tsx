@@ -154,14 +154,14 @@ const ProductComment: FC<Props> = (props) => {
             ))}
           </div>
 
-          <HStack gap="1" align="start" className=" mt-4 w-full">
+          <HStack gap="1" align="start" className="mt-4 max-w-[365px] w-full">
             <Text
               Tag="span"
               text="Файли з форматів: png, jpg, jpeg"
               size="sm"
               color="gray-light"
             />
-            <VStack gap="4" className="mt-2 w-full lg:justify-end">
+            <VStack gap="4" className="mt-2 w-full  lg:justify-end">
               {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
               <label className="cursor-pointer p-[10px] border-[1px] border-disabled rounded-[4px] lg:min-w-[123px] lg:rounded-none">
                 <Text

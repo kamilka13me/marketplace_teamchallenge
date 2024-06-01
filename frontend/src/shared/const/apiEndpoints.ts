@@ -12,6 +12,7 @@ export enum ApiRoutes {
   SELLER_FEEDBACKS = '/feedback/comments',
   PRODUCT_RATINGS = '/feedback/product',
   PRODUCT_COMMENTS = '/feedback/comments/product',
+  PRODUCT_VIEW = '/products/view',
   RATINGS = '/feedback/seller',
   SUPPORT = '/support',
   WISHLIST = '/wishlist',
