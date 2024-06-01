@@ -44,9 +44,9 @@ const openedCounter = () => {
         }
 
         // Check if the user has already viewed the product
-        if (!user.views.includes(id)) {
+        if (!user.opened.includes(id)) {
           await Product.findByIdAndUpdate(id, { $inc: { opened: 1 } }); // Increase views only if the user has not viewed the product before
-          user.views.push(id);
+          user.opened.push(id);
           await user.save();
         }
       }
