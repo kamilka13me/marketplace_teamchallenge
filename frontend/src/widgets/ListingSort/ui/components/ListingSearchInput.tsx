@@ -24,7 +24,7 @@ const ListingSearchInput: FC<ListingSearchInputProps> = ({ setInputData }) => {
         name="searchInput"
         type="text"
         variant="search"
-        placeholder={t('Номер ID')}
+        placeholder={t('Номер ID, email')}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {

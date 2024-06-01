@@ -24,26 +24,32 @@ const supportStatusMap = {
   closed: { bg: 'bg-disabled', textColor: 'text-main-dark', text: 'Вирішено' },
 };
 
+const createUrlQuery = (
+  offset: number,
+  selectedFilter: string,
+  inputData: string,
+  dateRange: IRangeDate,
+) => {
+  let url = `/?limit=7&`;
+
+  if (offset) url += `offset=${offset}&`;
+  if (selectedFilter !== 'all') url += `status=${selectedFilter}&`;
+  if (inputData) url += `search=${inputData}&`;
+  if (dateRange.startDate) url += `startDate=${dateRange.startDate.toISOString()}&`;
+  if (dateRange.endDate) url += `endDate=${dateRange.endDate.toISOString()}`;
+
+  return url;
+};
+
 const SupportCenter: FC = () => {
-  const {
-    data: messages,
-    isLoading,
-    refetch: refetchSupportData,
-  } = useAxios<SupportMessage[]>(ApiRoutes.SUPPORT);
-
-  console.log(`supportMessagesData:`, messages);
-
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [inputData, setInputData] = useState<string>('');
 
   const [dateRange, setDateRange] = useState<IRangeDate>({
-    startDate: new Date(),
+    startDate: new Date(0),
     endDate: new Date(),
     key: 'selection',
   });
-
-  console.log(dateRange.startDate.toISOString(), dateRange.endDate.toISOString());
-  console.log(`inputData:`, inputData);
 
   const [viewContentSelectedMessage, setViewContentSelectedMessage] =
     useState<SupportMessage | null>(null);
@@ -53,6 +59,14 @@ const SupportCenter: FC = () => {
 
   const [offset, setOffset] = useState(0);
 
+  const {
+    data: messages,
+    isLoading,
+    refetch: refetchSupportData,
+  } = useAxios<SupportMessage[]>(
+    ApiRoutes.SUPPORT + createUrlQuery(offset, selectedFilter, inputData, dateRange),
+  );
+
   const count = 10;
   const messagesLimit = 7;
   const currentPage = offset / messagesLimit + 1;
@@ -61,14 +75,6 @@ const SupportCenter: FC = () => {
   const fetchPrev = () => setOffset(offset - messagesLimit);
   const handleClickPage = (pageNumber: number) =>
     setOffset(messagesLimit * (pageNumber - 1));
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!messages) {
-    return <div>No data</div>;
-  }
 
   return (
     <div className="SupportCenter flex flex-col gap-4 w-full text-white">
@@ -92,7 +98,7 @@ const SupportCenter: FC = () => {
             <span className="w-[15%]">Дія</span>
           </div>
 
-          {messages.map((message, index) => (
+          {messages?.map((message, index) => (
             <div
               key={message._id}
               className={` ${index % 2 && 'bg-selected-dark'} w-full flex flex-row items-center gap-[20px] rounded-2xl px-[16px] py-[10px]`}
