@@ -114,6 +114,7 @@ categoryRoute.get('/', categoryController.getCategory);
  * @swagger
  * /category/{id}:
  *   delete:
+ *     tags: [Category]
  *     summary: Delete a category by ID
  *     description: Delete a specific category by its ID.
  *     parameters:

@@ -176,6 +176,7 @@ const productController = {
         minRating,
         sellerId,
         sortBy,
+        status,
       } = req.query;
       let { sortDirection = 1, limit = 10, offset = 0 } = req.query;
 
@@ -211,6 +212,10 @@ const productController = {
         } else {
           return res.status(400).json({ message: 'Invalid sellerId' });
         }
+      }
+
+      if (status) {
+        query.status = status;
       }
 
       const aggregationPipeline = [
@@ -318,6 +323,33 @@ const productController = {
       res.send(`Successfully deleted ${result.deletedCount} items.`);
     } catch (error) {
       res.status(500).send(`Server error: ${error.message}`);
+    }
+  },
+
+  updateStatus: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+
+      // Check if the status is valid
+      if (!['published', 'canceled', 'under-consideration', 'blocked'].includes(status)) {
+        return res.status(400).json({ message: 'Invalid status' });
+      }
+
+      const product = await Product.findById(id);
+
+      if (!product) {
+        return res.status(404).json({ message: 'Support not found' });
+      }
+
+      product.status = status;
+      await product.save();
+
+      res.status(200).json({ message: 'product status updated successfully' });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log('Error updating product status:', error);
+      res.status(500).json({ message: 'Server error' });
     }
   },
 };
