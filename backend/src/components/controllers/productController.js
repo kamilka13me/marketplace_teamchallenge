@@ -325,6 +325,33 @@ const productController = {
       res.status(500).send(`Server error: ${error.message}`);
     }
   },
+
+  updateStatus: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+
+      // Check if the status is valid
+      if (!['published', 'canceled', 'under-consideration', 'blocked'].includes(status)) {
+        return res.status(400).json({ message: 'Invalid status' });
+      }
+
+      const product = await Product.findById(id);
+
+      if (!product) {
+        return res.status(404).json({ message: 'Support not found' });
+      }
+
+      product.status = status;
+      await product.save();
+
+      res.status(200).json({ message: 'product status updated successfully' });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log('Error updating product status:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  },
 };
 
 export default productController;

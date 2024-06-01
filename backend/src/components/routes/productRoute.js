@@ -119,7 +119,7 @@ productRoute.post(
 /**
  * @swagger
  * /products/{id}:
- *   post:
+ *   put:
  *     summary: Updates a product by id
  *     tags:
  *        - Products
@@ -322,7 +322,7 @@ productRoute.get('/:id', openedCounter(), productController.getOneProduct);
  *         schema:
  *           type: string
  *           enum: ['published' , 'canceled' , 'under-consideration' , 'blocked']
- *         description: Sort direction, where 1 is ascending and -1 is descending.
+ *         description: filter by product status.
  *       - in: query
  *         name: discount
  *         schema:
@@ -425,5 +425,43 @@ productRoute.get('/', productController.getAllProducts);
  *         description: Server error
  */
 productRoute.delete('/', productController.deleteProducts);
+
+/**
+ * @swagger
+ * /products/updateStatus/{id}:
+ *   put:
+ *     summary: Update product status by ID
+ *     tags:
+ *       - Products
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the product to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *                   status:
+ *                     type: string
+ *                     enum: ['published' , 'canceled' , 'under-consideration' , 'blocked']
+ *                     description: avalible statuses 'published' , 'canceled' , 'under-consideration' , 'blocked'
+ *     responses:
+ *       200:
+ *         description: Support status updated successfully
+ *       400:
+ *         description: Invalid status provided
+ *       404:
+ *         description: Support not found
+ *       500:
+ *         description: Server error
+ */
+
+productRoute.put('/updateStatus/:id', productController.updateStatus);
 
 export default productRoute;
