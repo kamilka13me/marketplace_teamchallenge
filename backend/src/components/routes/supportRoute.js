@@ -158,7 +158,7 @@ supportRoute.get('/', supportController.getSupport);
  * @swagger
  * /support/{id}:
  *   put:
- *     summary: Update support status by IDd
+ *     summary: Update support status by ID
  *     tags: [Support]
  *     parameters:
  *       - in: path

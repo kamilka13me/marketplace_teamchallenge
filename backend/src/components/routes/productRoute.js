@@ -318,6 +318,12 @@ productRoute.get('/:id', openedCounter(), productController.getOneProduct);
  *           default: 1
  *         description: Sort direction, where 1 is ascending and -1 is descending.
  *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *           enum: ['published' , 'canceled' , 'under-consideration' , 'blocked']
+ *         description: Sort direction, where 1 is ascending and -1 is descending.
+ *       - in: query
  *         name: discount
  *         schema:
  *           type: integer

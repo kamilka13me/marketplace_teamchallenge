@@ -176,6 +176,7 @@ const productController = {
         minRating,
         sellerId,
         sortBy,
+        status,
       } = req.query;
       let { sortDirection = 1, limit = 10, offset = 0 } = req.query;
 
@@ -211,6 +212,10 @@ const productController = {
         } else {
           return res.status(400).json({ message: 'Invalid sellerId' });
         }
+      }
+
+      if (status) {
+        query.status = status;
       }
 
       const aggregationPipeline = [
