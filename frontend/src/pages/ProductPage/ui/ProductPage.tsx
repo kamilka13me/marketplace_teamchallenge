@@ -10,21 +10,22 @@ import {
   ApiProductResponse,
   RatingResponse,
 } from '@/pages/ProductPage/model/types';
+import ProductCategoriesLinkTree from '@/pages/ProductPage/ui/components/ProductCategoriesLinkTree';
 import ProductDescription from '@/pages/ProductPage/ui/components/ProductDescription';
 import ProductFeedbacks from '@/pages/ProductPage/ui/components/ProductFeedbacks';
 import ProductSpecification from '@/pages/ProductPage/ui/components/ProductSpecification';
 import SellerContacts from '@/pages/ProductPage/ui/components/SellerContacts';
 import { useGetPromotionsProductsQuery } from '@/pages/ProductsPage';
 import { productsPageActions } from '@/pages/ProductsPage/model/slices/productsPageSlice';
+import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { Container } from '@/shared/layouts/Container';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import useAxios from '@/shared/lib/hooks/useAxios';
 import { ReactHelmet } from '@/shared/SEO';
-import { Link } from '@/shared/ui/Link';
 import NextArrow from '@/shared/ui/Slider/NextArrow';
 import PrevArrow from '@/shared/ui/Slider/PrevArrow';
-import { HStack, VStack } from '@/shared/ui/Stack';
+import { HStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
 interface Props {}
@@ -61,12 +62,16 @@ const ProductPage: FC<Props> = () => {
 
   useEffect(() => {
     const alertTimeout = setTimeout(() => {
-      // eslint-disable-next-line no-alert
-      alert('Send request 7 sec');
+      try {
+        $api.post(`${ApiRoutes.PRODUCT_VIEW}/${id}`);
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log(e);
+      }
     }, 7000);
 
     return () => clearTimeout(alertTimeout);
-  }, []);
+  }, [id]);
 
   const promotionsProductsSearchParamsHandler = () => {
     dispatch(productsPageActions.clearSortParams());
@@ -100,7 +105,11 @@ const ProductPage: FC<Props> = () => {
   };
 
   if (isLoading) {
-    return <>Loading...</>;
+    return (
+      <HStack justify="center" align="center" className="w-full h-full">
+        Завантаження...
+      </HStack>
+    );
   }
 
   return (
@@ -111,11 +120,10 @@ const ProductPage: FC<Props> = () => {
         description={data?.product.description || ''}
       />
       <Container>
-        <VStack gap="1" className="!text-main-white mb-5">
-          <Link to="/">Товари Apple /</Link>
-          <Link to="/">Mackbook /</Link>
-          <Link to="/">Mackbook Air 1</Link>
-        </VStack>
+        <ProductCategoriesLinkTree
+          categoryId={data?.product.category || ''}
+          className="mb-6"
+        />
         <HStack gap="4" align="center" className="lg:gap-5 lg:flex-row">
           <HStack gap="5" className="w-full max-w-[646px]">
             <div className="relative w-full bg-dark-grey  rounded-2xl lg:h-[514px] lg:max-w-[646px]">
