@@ -134,4 +134,34 @@ categoryRoute.get('/', categoryController.getCategory);
  */
 categoryRoute.delete('/:id', categoryController.deleteCategory);
 
+/**
+ * @swagger
+ * /category/getCategorysTree/{id}:
+ *   get:
+ *     summary: Get parent categories by category ID
+ *     tags: [Category]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the category to for get tree
+ *     responses:
+ *       200:
+ *         description: Parent categories found successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Category'
+ *       404:
+ *         description: Category not found
+ *       500:
+ *         description: Server error
+ */
+
+categoryRoute.get('/getCategorysTree/:id', categoryController.getCategoryTree);
+
 export default categoryRoute;
