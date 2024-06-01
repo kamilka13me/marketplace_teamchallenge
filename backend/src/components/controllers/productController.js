@@ -2,6 +2,7 @@ import mongoose, { isValidObjectId } from 'mongoose';
 
 import Category from '../../models/Category.js';
 import Product from '../../models/Product.js';
+import User from '../../models/User.js';
 import findChildCategories from '../../utils/findChildCategories.js';
 
 const productController = {
@@ -346,6 +347,40 @@ const productController = {
       await product.save();
 
       res.status(200).json({ message: 'product status updated successfully' });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log('Error updating product status:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  },
+
+  updateView: async (req, res) => {
+    const { id } = req.params;
+    const { userId } = req.body;
+
+    try {
+      const user = await User.findById(userId).populate('role');
+
+      if (!user) {
+        return res.status(401).json({ message: 'Access denied. User not found.' });
+      }
+
+      const product = await Product.findById(id);
+
+      if (!product) {
+        return res.status(404).json({ message: 'Support not found' });
+      }
+
+      // Check if the user has already viewed the product
+      if (!user.views.includes(id)) {
+        await Product.findByIdAndUpdate(id, { $inc: { views: 1 } }); // Increase views only if the user has not viewed the product before
+        user.views.push(id);
+        await user.save();
+
+        return res.status(200).json({ message: 'views added' });
+      }
+
+      return res.status(200).json({ message: 'allready views' });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log('Error updating product status:', error);

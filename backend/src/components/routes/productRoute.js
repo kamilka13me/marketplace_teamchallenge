@@ -239,6 +239,8 @@ productRoute.put(
  *   get:
  *     summary: Get a product by ID
  *     tags: [Products]
+ *     security:
+ *        - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -463,5 +465,34 @@ productRoute.delete('/', productController.deleteProducts);
  */
 
 productRoute.put('/updateStatus/:id', productController.updateStatus);
+
+/**
+ * @swagger
+ * /products/view/{id}:
+ *   post:
+ *     summary: Update product views by ID
+ *     tags:
+ *       - Products
+ *     security:
+ *        - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the product to update
+ *     responses:
+ *       200:
+ *         description: Views status updated successfully or allready updated
+ *       400:
+ *         description: Invalid status provided
+ *       404:
+ *         description: Views not found
+ *       500:
+ *         description: Server error
+ */
+
+productRoute.post('/view/:id', idToReq(), productController.updateView);
 
 export default productRoute;
