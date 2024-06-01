@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 
 import { Product, ProductSectionLayout } from '@/enteties/Product';
+import { getUserAuthData } from '@/enteties/User';
 import { calcAverage } from '@/features/managingFeedbacks/helpers/managingFeedbacksHelpers';
 import {
   ApiFeedbackResponse,
@@ -21,6 +22,7 @@ import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { Container } from '@/shared/layouts/Container';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
+import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import useAxios from '@/shared/lib/hooks/useAxios';
 import { ReactHelmet } from '@/shared/SEO';
 import NextArrow from '@/shared/ui/Slider/NextArrow';
@@ -42,6 +44,8 @@ const ProductPage: FC<Props> = () => {
 
   const dispatch = useAppDispatch();
 
+  const user = useAppSelector(getUserAuthData);
+
   const { data, isLoading } = useAxios<ApiProductResponse>(`${ApiRoutes.PRODUCTS}/${id}`);
 
   const { data: comments, refetch: refetchComments } = useAxios<ApiFeedbackResponse>(
@@ -62,16 +66,18 @@ const ProductPage: FC<Props> = () => {
 
   useEffect(() => {
     const alertTimeout = setTimeout(() => {
-      try {
-        $api.post(`${ApiRoutes.PRODUCT_VIEW}/${id}`);
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.log(e);
+      if (user) {
+        try {
+          $api.post(`${ApiRoutes.PRODUCT_VIEW}/${id}`);
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.log(e);
+        }
       }
     }, 7000);
 
     return () => clearTimeout(alertTimeout);
-  }, [id]);
+  }, [id, user]);
 
   const promotionsProductsSearchParamsHandler = () => {
     dispatch(productsPageActions.clearSortParams());
