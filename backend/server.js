@@ -121,6 +121,7 @@ app.use('/static/products', express.static(path.join(__dirname, 'public/uploads'
 app.use('/static/banners', express.static(path.join(__dirname, 'public/banners')));
 app.use('/static/category', express.static(path.join(__dirname, 'public/category')));
 app.use('/static/comments', express.static(path.join(__dirname, 'public/comments')));
+app.use('/static/support', express.static(path.join(__dirname, 'public/support')));
 
 server.listen(config.port, async () => {
   // eslint-disable-next-line no-console
