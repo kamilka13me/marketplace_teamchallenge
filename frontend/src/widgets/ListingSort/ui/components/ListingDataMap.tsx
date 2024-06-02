@@ -6,23 +6,17 @@ import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import useAxios from '@/shared/lib/hooks/useAxios';
 import { Text } from '@/shared/ui/Text';
 
-interface ListingDataMapProps {
-  isCheckedDescending: boolean;
-  isCheckedAscending: boolean;
+export interface ListingDataMapProps {
+  isAscending: boolean;
   id: string;
 }
 interface ApiProductsResponse {
   products: Product[];
 }
 
-const ListingDataMap: FC<ListingDataMapProps> = ({
-  id,
-  isCheckedDescending,
-  isCheckedAscending,
-}) => {
-  const { data } = useAxios<ApiProductsResponse>(
-    // eslint-disable-next-line no-nested-ternary
-    `${ApiRoutes.PRODUCTS}?sellerId=${id}&sortDirection=${isCheckedAscending ? 1 : isCheckedDescending ? -1 : '--'}`,
+const ListingDataMap: FC<ListingDataMapProps> = ({ id, isAscending }) => {
+  const { data, isLoading } = useAxios<ApiProductsResponse>(
+    `${ApiRoutes.PRODUCTS}?sellerId=${id}&sortDirection=${isAscending ? 1 : -1}`,
   );
 
   const editHandler = () => {};
@@ -30,7 +24,17 @@ const ListingDataMap: FC<ListingDataMapProps> = ({
   const rejectHandler = () => {};
   const blockHandler = () => {};
 
-  return data?.products ? (
+  if (!isLoading && !data?.products) {
+    return (
+      <tr>
+        <td aria-label="Не знайдено">
+          <Text Tag="p" text="Не знайдено" size="md" color="white" />
+        </td>
+      </tr>
+    );
+  }
+
+  return !isLoading ? (
     data?.products.map((elem) => {
       return (
         <tr
@@ -70,7 +74,9 @@ const ListingDataMap: FC<ListingDataMapProps> = ({
     })
   ) : (
     <tr>
-      <td>Not Found</td>
+      <td aria-label="Завантаження">
+        <Text Tag="p" text="Loading..." size="md" color="white" />
+      </td>
     </tr>
   );
 };
