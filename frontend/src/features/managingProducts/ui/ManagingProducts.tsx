@@ -594,10 +594,11 @@ const ManagingProducts: FC = () => {
                     <></>
                   )}
                   <Image
-                    width="68px"
-                    height="68px"
+                    width="60px"
+                    height="60px"
                     src={`${product?.images[0]}`}
                     alt="product-card"
+                    className="h-[100px] object-scale-down "
                   />
                 </div>
                 <HStack>
