@@ -30,7 +30,7 @@ const createUrlQuery = (
   inputData: string,
   dateRange: IRangeDate,
 ) => {
-  let url = `/?limit=7&`;
+  let url = `?limit=7&`;
 
   if (offset) url += `offset=${offset}&`;
   if (selectedFilter !== 'all') url += `status=${selectedFilter}&`;
@@ -64,7 +64,7 @@ const SupportCenter: FC = () => {
     isLoading,
     refetch: refetchSupportData,
   } = useAxios<SupportMessagesResponse>(
-    ApiRoutes.SUPPORT + createUrlQuery(offset, selectedFilter, inputData, dateRange),
+    `${ApiRoutes.SUPPORT}${createUrlQuery(offset, selectedFilter, inputData, dateRange)}`,
   );
 
   const fetchNext = () => setOffset(offset + messagesLimit);
