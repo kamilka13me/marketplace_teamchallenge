@@ -72,6 +72,9 @@ const supportController = {
         }
       }
 
+      // Get total count of documents matching the query
+      const totalCount = await Support.countDocuments(query);
+
       const messages = await Support.find(query)
         .limit(Number(limit))
         .skip(Number(offset))
@@ -88,7 +91,7 @@ const supportController = {
         _id: item._id,
       }));
 
-      res.status(200).json(supportMessage);
+      res.status(200).json({ totalCount, supportMessage });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log('Error fetching support messages:', error);
