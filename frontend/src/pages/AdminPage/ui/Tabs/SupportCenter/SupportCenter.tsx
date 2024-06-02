@@ -6,7 +6,7 @@ import { FC, useState } from 'react';
 import ChangeStatusModal from './components/ChangeStatusModal';
 import SupportCenterSelector from './components/SupportCenterSelector';
 import ViewContentModal from './components/ViewContentModal';
-import { SupportMessage } from './interfaces/SupportMessage';
+import { SupportMessage, SupportMessagesResponse } from './interfaces/SupportMessage';
 import { formatDate } from './utils/formatDate';
 
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
@@ -44,7 +44,6 @@ const createUrlQuery = (
 const SupportCenter: FC = () => {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [inputData, setInputData] = useState<string>('');
-
   const [dateRange, setDateRange] = useState<IRangeDate>({
     startDate: new Date(0),
     endDate: new Date(),
@@ -53,23 +52,20 @@ const SupportCenter: FC = () => {
 
   const [viewContentSelectedMessage, setViewContentSelectedMessage] =
     useState<SupportMessage | null>(null);
-
   const [changeStatusSelectedMessage, setChangeStatusSelectedMessage] =
     useState<SupportMessage | null>(null);
 
   const [offset, setOffset] = useState(0);
-
-  const {
-    data: messages,
-    isLoading,
-    refetch: refetchSupportData,
-  } = useAxios<SupportMessage[]>(
-    ApiRoutes.SUPPORT + createUrlQuery(offset, selectedFilter, inputData, dateRange),
-  );
-
-  const count = 10;
   const messagesLimit = 7;
   const currentPage = offset / messagesLimit + 1;
+
+  const {
+    data: supportData,
+    isLoading,
+    refetch: refetchSupportData,
+  } = useAxios<SupportMessagesResponse>(
+    ApiRoutes.SUPPORT + createUrlQuery(offset, selectedFilter, inputData, dateRange),
+  );
 
   const fetchNext = () => setOffset(offset + messagesLimit);
   const fetchPrev = () => setOffset(offset - messagesLimit);
@@ -98,7 +94,7 @@ const SupportCenter: FC = () => {
             <span className="w-[15%]">Дія</span>
           </div>
 
-          {messages?.map((message, index) => (
+          {supportData?.supportMessage?.map((message, index) => (
             <div
               key={message._id}
               className={` ${index % 2 && 'bg-selected-dark'} w-full flex flex-row items-center gap-[20px] rounded-2xl px-[16px] py-[10px]`}
@@ -106,7 +102,7 @@ const SupportCenter: FC = () => {
               <span className="w-[10%] flex items-center text-[16px]">
                 {formatDate(message.date)}
               </span>
-              <span className="w-[25%] flex items-center">{message.userId}</span>
+              <span className="w-[25%] flex items-center">{message._id}</span>
               <span className="w-[35%] flex items-center">{message.topic}</span>
               <button
                 onClick={() => {
@@ -132,7 +128,7 @@ const SupportCenter: FC = () => {
       </div>
 
       <Pagination
-        dataLength={count}
+        dataLength={supportData?.totalCount || 0}
         itemsPerPage={messagesLimit}
         currentPage={currentPage}
         setPage={handleClickPage}
