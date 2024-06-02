@@ -6,10 +6,11 @@ import { FC, useState } from 'react';
 import ChangeStatusModal from './components/ChangeStatusModal';
 import SupportCenterSelector from './components/SupportCenterSelector';
 import ViewContentModal from './components/ViewContentModal';
-import { SupportMessage } from './interfaces/SupportMessage';
-import { supportMessagesData } from './testData';
+import { SupportMessage, SupportMessagesResponse } from './interfaces/SupportMessage';
 import { formatDate } from './utils/formatDate';
 
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
+import useAxios from '@/shared/lib/hooks/useAxios';
 import Pagination from '@/shared/ui/Pagination/Pagination';
 import ListingSearchCalendar, {
   IRangeDate,
@@ -23,30 +24,48 @@ const supportStatusMap = {
   closed: { bg: 'bg-disabled', textColor: 'text-main-dark', text: 'Вирішено' },
 };
 
+const createUrlQuery = (
+  offset: number,
+  selectedFilter: string,
+  inputData: string,
+  dateRange: IRangeDate,
+) => {
+  let url = `/?limit=7&`;
+
+  if (offset) url += `offset=${offset}&`;
+  if (selectedFilter !== 'all') url += `status=${selectedFilter}&`;
+  if (inputData) url += `search=${inputData}&`;
+  if (dateRange.startDate) url += `startDate=${dateRange.startDate.toISOString()}&`;
+  if (dateRange.endDate) url += `endDate=${dateRange.endDate.toISOString()}`;
+
+  return url;
+};
+
 const SupportCenter: FC = () => {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [inputData, setInputData] = useState<string>('');
-
   const [dateRange, setDateRange] = useState<IRangeDate>({
-    startDate: new Date(),
+    startDate: new Date(0),
     endDate: new Date(),
     key: 'selection',
   });
 
-  console.log(dateRange.startDate.toISOString(), dateRange.endDate.toISOString());
-  console.log(`inputData:`, inputData);
-
   const [viewContentSelectedMessage, setViewContentSelectedMessage] =
     useState<SupportMessage | null>(null);
-
   const [changeStatusSelectedMessage, setChangeStatusSelectedMessage] =
     useState<SupportMessage | null>(null);
 
   const [offset, setOffset] = useState(0);
-
-  const { messages, count } = supportMessagesData;
   const messagesLimit = 7;
   const currentPage = offset / messagesLimit + 1;
+
+  const {
+    data: supportData,
+    isLoading,
+    refetch: refetchSupportData,
+  } = useAxios<SupportMessagesResponse>(
+    ApiRoutes.SUPPORT + createUrlQuery(offset, selectedFilter, inputData, dateRange),
+  );
 
   const fetchNext = () => setOffset(offset + messagesLimit);
   const fetchPrev = () => setOffset(offset - messagesLimit);
@@ -68,23 +87,23 @@ const SupportCenter: FC = () => {
 
         <div className="w-full flex flex-col">
           <div className="w-full flex flex-row gap-[20px] bg-selected-dark rounded-2xl p-[16px] text-[18px]">
-            <span className="w-[15%]">Дата</span>
-            <span className="w-[15%]">ID</span>
-            <span className="w-[40%]">Тема звернення</span>
+            <span className="w-[10%]">Дата</span>
+            <span className="w-[25%]">ID</span>
+            <span className="w-[35%]">Тема звернення</span>
             <span className="w-[15%]">Статус</span>
             <span className="w-[15%]">Дія</span>
           </div>
 
-          {messages.map((message, index) => (
+          {supportData?.supportMessage?.map((message, index) => (
             <div
               key={message._id}
               className={` ${index % 2 && 'bg-selected-dark'} w-full flex flex-row items-center gap-[20px] rounded-2xl px-[16px] py-[10px]`}
             >
-              <span className="w-[15%] flex items-center text-[16px]">
+              <span className="w-[10%] flex items-center text-[16px]">
                 {formatDate(message.date)}
               </span>
-              <span className="w-[15%] flex items-center">{message.userId}</span>
-              <span className="w-[40%] flex items-center">{message.topic}</span>
+              <span className="w-[25%] flex items-center">{message._id}</span>
+              <span className="w-[35%] flex items-center">{message.topic}</span>
               <button
                 onClick={() => {
                   setChangeStatusSelectedMessage(message);
@@ -109,7 +128,7 @@ const SupportCenter: FC = () => {
       </div>
 
       <Pagination
-        dataLength={count}
+        dataLength={supportData?.totalCount || 0}
         itemsPerPage={messagesLimit}
         currentPage={currentPage}
         setPage={handleClickPage}
@@ -131,6 +150,7 @@ const SupportCenter: FC = () => {
         <ChangeStatusModal
           changeStatusSelectedMessage={changeStatusSelectedMessage}
           setChangeStatusSelectedMessage={setChangeStatusSelectedMessage}
+          refetchSupportData={refetchSupportData}
         />
       )}
     </div>

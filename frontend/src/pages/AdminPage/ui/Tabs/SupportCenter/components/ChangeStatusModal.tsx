@@ -6,25 +6,40 @@ import { FC, useState } from 'react';
 
 import { SupportMessage } from '../interfaces/SupportMessage';
 
+import { $api } from '@/shared/api/api';
 import close from '@/shared/assets/icons/cancel.svg?react';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { Icon } from '@/shared/ui/Icon';
 import { ModalWindow } from '@/shared/ui/ModalWindow';
 
 interface Props {
   changeStatusSelectedMessage: SupportMessage;
   setChangeStatusSelectedMessage: (message: SupportMessage | null) => void;
+  refetchSupportData: () => void;
 }
 
 const ChangeStatusModal: FC<Props> = (props) => {
-  const { changeStatusSelectedMessage, setChangeStatusSelectedMessage } = props;
+  const {
+    changeStatusSelectedMessage,
+    setChangeStatusSelectedMessage,
+    refetchSupportData,
+  } = props;
 
   const [selectedStatus, setSelectedStatus] = useState<
     'new' | 'consider' | 'work' | 'closed'
   >(changeStatusSelectedMessage.status);
 
-  const submitNewStatus = () => {
-    console.log(selectedStatus);
-    setChangeStatusSelectedMessage(null);
+  const submitNewStatus = async () => {
+    try {
+      await $api.put(`${ApiRoutes.SUPPORT}/${changeStatusSelectedMessage._id}`, {
+        status: selectedStatus,
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      refetchSupportData();
+      setChangeStatusSelectedMessage(null);
+    }
   };
 
   return (

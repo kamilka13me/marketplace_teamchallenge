@@ -10,6 +10,6 @@ export interface SupportMessage {
 }
 
 export interface SupportMessagesResponse {
-  count: number;
-  messages: SupportMessage[];
+  totalCount: number;
+  supportMessage: SupportMessage[];
 }
