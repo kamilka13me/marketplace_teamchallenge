@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import ChangeStatusModal from './components/ChangeStatusModal';
 import SupportCenterSelector from './components/SupportCenterSelector';
@@ -29,9 +29,11 @@ const createUrlQuery = (
   selectedFilter: string,
   inputData: string,
   dateRange: IRangeDate,
+  messagesLimit: number,
 ) => {
-  let url = `?limit=7&`;
+  let url = `?`;
 
+  if (messagesLimit) url += `limit=${messagesLimit}&`;
   if (offset) url += `offset=${offset}&`;
   if (selectedFilter !== 'all') url += `status=${selectedFilter}&`;
   if (inputData) url += `search=${inputData}&`;
@@ -56,7 +58,7 @@ const SupportCenter: FC = () => {
     useState<SupportMessage | null>(null);
 
   const [offset, setOffset] = useState(0);
-  const messagesLimit = 7;
+  const messagesLimit = 10;
   const currentPage = offset / messagesLimit + 1;
 
   const {
@@ -64,8 +66,12 @@ const SupportCenter: FC = () => {
     isLoading,
     refetch: refetchSupportData,
   } = useAxios<SupportMessagesResponse>(
-    `${ApiRoutes.SUPPORT}${createUrlQuery(offset, selectedFilter, inputData, dateRange)}`,
+    `${ApiRoutes.SUPPORT}${createUrlQuery(offset, selectedFilter, inputData, dateRange, messagesLimit)}`,
   );
+
+  useEffect(() => {
+    setOffset(0);
+  }, [selectedFilter, inputData, dateRange]);
 
   const fetchNext = () => setOffset(offset + messagesLimit);
   const fetchPrev = () => setOffset(offset - messagesLimit);
