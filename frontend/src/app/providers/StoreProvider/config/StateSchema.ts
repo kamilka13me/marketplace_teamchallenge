@@ -3,6 +3,7 @@ import { AxiosInstance } from 'axios';
 import { SellerSchema } from '@/enteties/Seller/model/types/seller';
 import { UserSchema } from '@/enteties/User';
 import { SellerFeedbackPageSchema } from '@/features/managingFeedbacks/model/types/sellerFeedbackSchema';
+import { AdminOffersSchema } from '@/features/managingOffers';
 import { SellerProductsPageSchema } from '@/features/managingProducts';
 import { LoginSchema } from '@/features/userAuth';
 import { ProductsCommentsSchema } from '@/pages/ProductPage/model/types';
@@ -17,6 +18,7 @@ export interface StateSchema {
   sellerProducts: SellerProductsPageSchema;
   sellerFeedbacks: SellerFeedbackPageSchema;
   productComments: ProductsCommentsSchema;
+  adminOffers: AdminOffersSchema;
 
   [rtkApi.reducerPath]: ReturnType<typeof rtkApi.reducer>;
 }

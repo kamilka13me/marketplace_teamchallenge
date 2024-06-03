@@ -2,16 +2,31 @@ import { FC } from 'react';
 
 import { t } from 'i18next';
 
-import { SpecyfyingSortingProps } from '@/features/managingOffers/ui/ManagingOffers';
+import { adminOffersActions } from '@/features/managingOffers';
+import { getAdminOffersSortDirection } from '@/features/managingOffers/model/selectors';
 import checked from '@/shared/assets/icons/checked-gold.svg?react';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
+import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Checkbox } from '@/shared/ui/Checkbox';
 
-const SpecyfyingSorting: FC<SpecyfyingSortingProps> = ({
-  isAscending,
-  setIsAscending,
-}) => {
+const SpecyfyingSorting: FC = () => {
+  const dispatch = useAppDispatch();
+
+  const sortDirection = useAppSelector(getAdminOffersSortDirection);
+
+  const isAscending = () => {
+    if (sortDirection === '1') {
+      return true;
+    }
+
+    return false;
+  };
   const onCheckClick = () => {
-    setIsAscending(!isAscending);
+    if (isAscending()) {
+      dispatch(adminOffersActions.setSortDirection('-1'));
+    } else {
+      dispatch(adminOffersActions.setSortDirection('1'));
+    }
   };
 
   return (
@@ -26,7 +41,7 @@ const SpecyfyingSorting: FC<SpecyfyingSortingProps> = ({
           icon={checked}
           label={t('За датою: від старих до нових')}
           onChange={onCheckClick}
-          checked={isAscending}
+          checked={isAscending()}
         />
       </div>
       <div className="w-[100%] h-[28px] p-[2px_12px] flex items-center justify-center gap-[8px]">
@@ -39,7 +54,7 @@ const SpecyfyingSorting: FC<SpecyfyingSortingProps> = ({
           icon={checked}
           label={t('За датою: від нових до старих')}
           onChange={onCheckClick}
-          checked={!isAscending}
+          checked={!isAscending()}
         />
       </div>
     </div>

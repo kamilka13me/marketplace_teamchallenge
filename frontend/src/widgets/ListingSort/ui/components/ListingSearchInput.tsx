@@ -2,20 +2,28 @@ import { FC, useState } from 'react';
 
 import { t } from 'i18next';
 
+import { adminOffersActions } from '@/features/managingOffers';
 import search from '@/shared/assets/icons/search.svg?react';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Input } from '@/shared/ui/Input';
 
 interface ListingSearchInputProps {
-  setInputData: (e: string) => void;
+  setInputData?: (e: string) => void;
 }
 
 const ListingSearchInput: FC<ListingSearchInputProps> = ({ setInputData }) => {
   const [value, setValue] = useState('');
 
+  const dispatch = useAppDispatch();
+
   const handleSubmit = () => {
-    setInputData(value);
+    if (setInputData) {
+      setInputData(value);
+    } else {
+      dispatch(adminOffersActions.setSellerId(value));
+    }
   };
 
   return (

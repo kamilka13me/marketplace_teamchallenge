@@ -4,22 +4,13 @@ import ListingSearchCalendar from './components/ListingSearchCalendar';
 import ListingSearchInput from './components/ListingSearchInput';
 import SpecyfyingSorting from './components/SpecyfyingSorting';
 
-import { SpecyfyingSortingProps } from '@/features/managingOffers/ui/ManagingOffers';
 import sort from '@/shared/assets/icons/sort-date.svg?react';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
-export interface ListingByDateProps extends SpecyfyingSortingProps {
-  setInputData: (e: string) => void;
-}
-
-const ListingByDate: FC<ListingByDateProps> = ({
-  setInputData,
-  isAscending,
-  setIsAscending,
-}) => {
+const ListingByDate: FC = () => {
   const [sortingOpen, setSortingOpen] = useState(false);
 
   return (
@@ -43,14 +34,9 @@ const ListingByDate: FC<ListingByDateProps> = ({
               className="stroke-white mr-3"
             />
           </Button>
-          {sortingOpen && (
-            <SpecyfyingSorting
-              isAscending={isAscending}
-              setIsAscending={setIsAscending}
-            />
-          )}
+          {sortingOpen && <SpecyfyingSorting />}
         </div>
-        <ListingSearchInput setInputData={setInputData} />
+        <ListingSearchInput />
         <ListingSearchCalendar />
       </div>
     </VStack>

@@ -3,7 +3,6 @@ import { FC, useEffect, useLayoutEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import ManagingContent from './Tabs/ManagingContent/ManagingContent';
-import ManagingOffersMobile from './Tabs/ManagingOffers/ManagingOffersMobile';
 import SupportCenter from './Tabs/SupportCenter/SupportCenter';
 
 import { ManagingOffers } from '@/features/managingOffers';
@@ -78,7 +77,6 @@ const tabs: ITab[] = [
 const components: FC[] = [
   PersonalDataForms,
   WishlistProfileTab,
-  ManagingOffersMobile,
   ManagingContent,
   ManagingContent,
 ];
