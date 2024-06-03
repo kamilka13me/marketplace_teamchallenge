@@ -50,6 +50,10 @@ const ProfileSidebarMobile: FC<Props> = (props) => {
       setSelectedTab(tabs[4]);
     } else if (tab === 5) {
       setSelectedTab(tabs[5]);
+    } else if (tab === 6) {
+      setSelectedTab(tabs[6]);
+    } else if (tab === 7) {
+      setSelectedTab(tabs[7]);
     } else {
       setSelectedTab(tabs[0]);
     }

@@ -27,14 +27,14 @@ const SupportImagesSlider: FC<Props> = (props) => {
   return (
     <Slider
       {...settings}
-      className="min-w-[480px] min-h-[420px] w-[480px] h-[420px] flex justify-center items-center bg-dark-grey rounded-2xl"
+      className="w-[292px] h-[244px] md:w-[364px] md:h-[320px] lg:w-[498px] lg:h-[420px] flex justify-center items-center bg-dark-grey rounded-2xl"
     >
       {(images || []).map((item, i) => (
         <img
           key={i}
           src={`${process.env.BASE_URL}${item}`}
           alt={item}
-          className="min-w-[480px] min-h-[420px] w-[480px] h-[420px] object-contain"
+          className="w-[292px] h-[244px] md:w-[364px] md:h-[320px] lg:w-[498px] lg:h-[420px] object-contain"
         />
       ))}
     </Slider>

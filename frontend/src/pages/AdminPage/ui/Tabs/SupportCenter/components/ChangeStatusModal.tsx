@@ -51,7 +51,7 @@ const ChangeStatusModal: FC<Props> = (props) => {
         Svg={close}
         width={24}
         height={24}
-        className="fill-main-white self-end cursor-pointer absolute right-[30px] top-[30px]"
+        className="fill-main-white self-end cursor-pointer absolute right-[30px] top-[30px] hover:rotate-90 hover:duration-300 duration-300"
         onClick={() => setChangeStatusSelectedMessage(null)}
       />
 

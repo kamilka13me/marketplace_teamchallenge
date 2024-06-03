@@ -71,6 +71,12 @@
     font-size: 14px;
 }
 
+@media (max-width: 1024px) {
+  .rdrMonth {
+    width: 319px !important;
+  }
+}
+
 .rdrDays {
     gap: 6px 0;
 }
