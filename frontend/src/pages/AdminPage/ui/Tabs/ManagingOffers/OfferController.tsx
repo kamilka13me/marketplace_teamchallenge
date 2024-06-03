@@ -54,7 +54,10 @@ const OfferController: FC<Props> = (props) => {
         <Button
           variant="clear"
           className="group flex items-center gap-2 w-[180px] p-2.5 hover:bg-secondary-yellow rounded-lg"
-          onClick={editHandler}
+          onClick={() => {
+            editHandler();
+            setShowModal(false);
+          }}
         >
           <Icon
             Svg={edit}
@@ -73,7 +76,10 @@ const OfferController: FC<Props> = (props) => {
         <Button
           variant="clear"
           className="group flex items-center gap-2 w-[180px] p-2.5 hover:bg-secondary-yellow rounded-lg"
-          onClick={() => publishHandler()}
+          onClick={() => {
+            publishHandler();
+            setShowModal(false);
+          }}
         >
           <Icon
             Svg={publish}
@@ -92,7 +98,10 @@ const OfferController: FC<Props> = (props) => {
         <Button
           variant="clear"
           className="group flex items-center gap-2 w-[180px] p-2.5 hover:bg-secondary-yellow rounded-lg"
-          onClick={() => rejectHandler()}
+          onClick={() => {
+            rejectHandler();
+            setShowModal(false);
+          }}
         >
           <Icon
             Svg={reject}
@@ -111,7 +120,10 @@ const OfferController: FC<Props> = (props) => {
         <Button
           variant="clear"
           className="group flex items-center gap-2 w-[180px] p-2.5 hover:bg-secondary-yellow rounded-lg"
-          onClick={() => blockHandler()}
+          onClick={() => {
+            blockHandler();
+            setShowModal(false);
+          }}
         >
           <Icon Svg={block} width={30} height={30} className="stroke-error-red" />
           <Text

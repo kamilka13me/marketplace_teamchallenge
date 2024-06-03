@@ -1,12 +1,11 @@
-import { FC, useLayoutEffect, useState } from 'react';
+import { FC, useEffect, useLayoutEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
 import ManagingContent from './Tabs/ManagingContent/ManagingContent';
-import ManagingOffers from './Tabs/ManagingOffers/ManagingOffers';
-import ManagingOffersMobile from './Tabs/ManagingOffers/ManagingOffersMobile';
 import SupportCenter from './Tabs/SupportCenter/SupportCenter';
 
+import { ManagingOffers } from '@/features/managingOffers';
 import PersonalDataForms from '@/pages/ProfilePage/ui/Tabs/ProfileInfo/PersonalDataForms';
 import analytics from '@/shared/assets/icons/analytics.svg?react';
 import content from '@/shared/assets/icons/content.svg?react';
@@ -75,19 +74,18 @@ const tabs: ITab[] = [
   },
 ];
 
+const components: FC[] = [
+  PersonalDataForms,
+  WishlistProfileTab,
+  ManagingContent,
+  ManagingContent,
+];
+
 const AdminPage: FC = () => {
   const { id } = useParams<{ id: string }>();
 
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const [currentTab, setCurrentTab] = useState(0);
-  const components: FC[] = [
-    PersonalDataForms,
-    WishlistProfileTab,
-    ManagingOffersMobile,
-    ManagingContent,
-    ManagingContent,
-  ];
-
-  /* const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
 
   useEffect(() => {
     const handleResize = () => {
@@ -97,7 +95,7 @@ const AdminPage: FC = () => {
     window.addEventListener('resize', handleResize);
 
     return () => window.removeEventListener('resize', handleResize);
-  }, []); */
+  }, []);
 
   useLayoutEffect(() => {
     if (id === 'users') {
@@ -131,27 +129,34 @@ const AdminPage: FC = () => {
       className="bg-main-dark min-h-[100vh_-_20%] pt-[44px] pb-[72px]"
     >
       <Container>
-        <VStack className="gap-12">
-          <VStack
-            className={`hidden lg:flex ${currentTab === 0 ? 'gap-12' : 'gap-5'} w-full`}
-          >
-            <ProfileSidebar tabs={tabs} tab={currentTab} setTab={setCurrentTabHandler} />
-            {/* {currentTab === 0 && <ManagingUsers />} */}
-            {/* {currentTab === 1 && <ManagingSellers />} */}
-            {currentTab === 2 && <ManagingOffers />}
-            {/* {currentTab === 3 && <ManagingFeedbacks />} */}
-            {currentTab === 4 && <ManagingContent />}
-            {/* {currentTab === 5 && <Analytics />} */}
-            {/* {currentTab === 6 && <Finances />} */}
-            {currentTab === 7 && <SupportCenter />}
+        {windowWidth >= 1024 ? (
+          <VStack className="gap-12">
+            <VStack
+              className={`hidden lg:flex ${currentTab === 0 ? 'gap-12' : 'gap-5'} w-full`}
+            >
+              <ProfileSidebar
+                tabs={tabs}
+                tab={currentTab}
+                setTab={setCurrentTabHandler}
+              />
+              {/* {currentTab === 0 && <ManagingUsers />} */}
+              {/* {currentTab === 1 && <ManagingSellers />} */}
+              {currentTab === 2 && <ManagingOffers />}
+              {/* {currentTab === 3 && <ManagingFeedbacks />} */}
+              {currentTab === 4 && <ManagingContent />}
+              {/* {currentTab === 5 && <Analytics />} */}
+              {/* {currentTab === 6 && <Finances />} */}
+              {currentTab === 7 && <SupportCenter />}
+            </VStack>
           </VStack>
+        ) : (
           <ProfileSidebarMobile
             tabs={tabs}
             tab={currentTab}
             setTab={setCurrentTabHandler}
             renderContent={components}
           />
-        </VStack>
+        )}
       </Container>
     </div>
   );

@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import { ListingDataMapProps } from './ListingDataMap';
+
 import { Product } from '@/enteties/Product';
 import OfferController from '@/pages/AdminPage/ui/Tabs/ManagingOffers/OfferController';
 import idIcon from '@/shared/assets/icons/id.svg?react';
@@ -8,23 +10,13 @@ import useAxios from '@/shared/lib/hooks/useAxios';
 import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
 
-interface ListingDataMapProps {
-  isCheckedDescending: boolean;
-  isCheckedAscending: boolean;
-  id: string;
-}
 interface ApiProductsResponse {
   products: Product[];
 }
 
-const ListingDataMapMobile: FC<ListingDataMapProps> = ({
-  id,
-  isCheckedDescending,
-  isCheckedAscending,
-}) => {
-  const { data } = useAxios<ApiProductsResponse>(
-    // eslint-disable-next-line no-nested-ternary
-    `${ApiRoutes.PRODUCTS}?sellerId=${id}&sortDirection=${isCheckedAscending ? 1 : isCheckedDescending ? -1 : '--'}`,
+const ListingDataMapMobile: FC<ListingDataMapProps> = ({ id, isAscending }) => {
+  const { data, isLoading } = useAxios<ApiProductsResponse>(
+    `${ApiRoutes.PRODUCTS}?sellerId=${id}&sortDirection=${isAscending ? 1 : -1}`,
   );
 
   const editHandler = () => {};
@@ -32,9 +24,17 @@ const ListingDataMapMobile: FC<ListingDataMapProps> = ({
   const rejectHandler = () => {};
   const blockHandler = () => {};
 
+  if (!isLoading && !data?.products) {
+    return (
+      <div>
+        <Text Tag="p" text="Не знайдено" size="md" color="white" />
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-[12px] w-full ">
-      {data?.products ? (
+      {!isLoading ? (
         data?.products.map((elem) => {
           return (
             <div
@@ -103,7 +103,7 @@ const ListingDataMapMobile: FC<ListingDataMapProps> = ({
         })
       ) : (
         <div>
-          <h2>Not Found</h2>
+          <Text Tag="p" text="Loading..." size="md" color="white" />
         </div>
       )}
     </div>
