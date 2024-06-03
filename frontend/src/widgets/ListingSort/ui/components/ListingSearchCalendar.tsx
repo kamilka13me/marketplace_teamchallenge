@@ -50,7 +50,7 @@ const ListingSearchCalendar: FC<Props> = (props) => {
   };
 
   return (
-    <div className="flex items-center justify-center gap-[8px]">
+    <div className="order-first lg:order-last flex items-center justify-center gap-[8px]">
       <div className="hidden xl:block">
         <DateSortWidget
           onSelectRange={(type: RangeSortType) => {
@@ -76,7 +76,7 @@ const ListingSearchCalendar: FC<Props> = (props) => {
           }}
         />
       </div>
-      <div className="flex items-center justify-center w-[22vw] xl:w-full">
+      <div className="flex items-center justify-center w-full lg:w-[22vw] xl:w-full">
         <div className="h-[24px] hidden md:block text-nowrap">
           <Text Tag="span" text={startDate} size="sm" font-normal color="white" />
           <Text Tag="span" text="-" size="sm" font-normal color="white" />
@@ -85,11 +85,15 @@ const ListingSearchCalendar: FC<Props> = (props) => {
         <Button
           variant="clear"
           onClick={() => setCalendarIsOpened((prev) => !prev)}
-          className="hover:cursor-pointer absolute left-14 md:static"
+          className="hover:cursor-pointer"
         >
-          <Icon Svg={calendar} fill="white" className="w-[24px] h-[24px] ml-5 xl:ml-1" />
+          <Icon
+            Svg={calendar}
+            fill="white"
+            className="w-[24px] h-[24px] ml-2 lg:ml-5 xl:ml-1"
+          />
         </Button>
-        <div className="relative top-0 right-[-1vw] hover:drop-shadow-custom-primary">
+        <div className="relative top-0 right-[32px] lg:right-[-1vw] hover:drop-shadow-custom-primary">
           <CustomCalendar
             calendarIsOpened={calendarIsOpened}
             dates={state}

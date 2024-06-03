@@ -6,7 +6,6 @@ import ManagingContent from './Tabs/ManagingContent/ManagingContent';
 import SupportCenter from './Tabs/SupportCenter/SupportCenter';
 
 import { ManagingOffers } from '@/features/managingOffers';
-import PersonalDataForms from '@/pages/ProfilePage/ui/Tabs/ProfileInfo/PersonalDataForms';
 import analytics from '@/shared/assets/icons/analytics.svg?react';
 import content from '@/shared/assets/icons/content.svg?react';
 import finances from '@/shared/assets/icons/finances.svg?react';
@@ -75,10 +74,14 @@ const tabs: ITab[] = [
 ];
 
 const components: FC[] = [
-  PersonalDataForms,
+  WishlistProfileTab,
   WishlistProfileTab,
   ManagingContent,
   ManagingContent,
+  ManagingContent,
+  ManagingContent,
+  ManagingContent,
+  SupportCenter,
 ];
 
 const AdminPage: FC = () => {

@@ -17,19 +17,19 @@ const SupportCenterSelector: FC<Props> = (props) => {
   const { selectedFilter, setSelectedFilter } = props;
 
   return (
-    <div className="flex flex-row items-center justify-between w-full h-[64px] bg-dark-grey rounded-2xl px-[16px]">
+    <div className="flex flex-row items-center justify-between w-full h-[64px] bg-dark-grey rounded-2xl lg:px-[16px] overflow-x-auto lg:overflow-hidden">
       <button
         type="button"
         onClick={() => setSelectedFilter('all')}
-        className={`${selectedFilter === 'all' && 'bg-selected-dark'} gap-[7px] flex flex-row items-center justify-start w-[180px] h-[48px] px-[12px] rounded-2xl`}
+        className={`${selectedFilter === 'all' && 'bg-selected-dark'} gap-[6px] lg:gap-2 flex flex-row items-center justify-start w-[180px] h-8 lg:h-[48px] px-2 lg:px-[12px] rounded-lg lg:rounded-2xl`}
       >
         <div
-          className={`${selectedFilter === 'all' && 'bg-main'} w-[31px] h-[31px] rounded-[7px] flex items-center justify-center`}
+          className={`${selectedFilter === 'all' && 'bg-main'} w-6 h-6 lg:w-[31px] lg:h-[31px] rounded-lg flex items-center justify-center`}
         >
           <Icon
             aria-hidden="true"
             Svg={supportCenterFilterAll}
-            className={`${selectedFilter === 'all' ? 'stroke-selected-dark' : 'stroke-disabled'} h-5 w-5 duration-75 pointer-events-none`}
+            className={`${selectedFilter === 'all' ? 'stroke-selected-dark' : 'stroke-disabled'} h-4 w-4 lg:h-5 lg:w-5 duration-75 pointer-events-none`}
           />
         </div>
         <Text
@@ -43,15 +43,15 @@ const SupportCenterSelector: FC<Props> = (props) => {
       <button
         type="button"
         onClick={() => setSelectedFilter('new')}
-        className={`${selectedFilter === 'new' && 'bg-selected-dark'} gap-[7px] flex flex-row items-center justify-start w-[180px] h-[48px] px-[12px] rounded-2xl`}
+        className={`${selectedFilter === 'new' && 'bg-selected-dark'} gap-[6px] lg:gap-2 flex flex-row items-center justify-start w-[180px] h-8 lg:h-[48px] px-2 lg:px-[12px] rounded-lg lg:rounded-2xl`}
       >
         <div
-          className={`${selectedFilter === 'new' && 'bg-main'} w-[31px] h-[31px] rounded-[7px] flex items-center justify-center`}
+          className={`${selectedFilter === 'new' && 'bg-main'} w-6 h-6 lg:w-[31px] lg:h-[31px] rounded-lg flex items-center justify-center`}
         >
           <Icon
             aria-hidden="true"
             Svg={supportCenterFilterAll}
-            className={`${selectedFilter === 'new' ? 'stroke-selected-dark' : 'stroke-disabled'} h-5 w-5 duration-75 pointer-events-none`}
+            className={`${selectedFilter === 'new' ? 'stroke-selected-dark' : 'stroke-disabled'} h-4 w-4 lg:h-5 lg:w-5 duration-75 pointer-events-none`}
           />
         </div>
         <Text
@@ -65,15 +65,15 @@ const SupportCenterSelector: FC<Props> = (props) => {
       <button
         type="button"
         onClick={() => setSelectedFilter('consider')}
-        className={`${selectedFilter === 'consider' && 'bg-selected-dark'} gap-[7px] flex flex-row items-center justify-start w-[180px] h-[48px] px-[12px] rounded-2xl`}
+        className={`${selectedFilter === 'consider' && 'bg-selected-dark'} gap-[6px] lg:gap-2 flex flex-row items-center justify-start w-[180px] h-8 lg:h-[48px] px-2 lg:px-[12px] rounded-lg lg:rounded-2xl`}
       >
         <div
-          className={`${selectedFilter === 'consider' && 'bg-main'} w-[31px] h-[31px] rounded-[7px] flex items-center justify-center`}
+          className={`${selectedFilter === 'consider' && 'bg-main'} w-6 h-6 lg:w-[31px] lg:h-[31px] rounded-lg flex items-center justify-center`}
         >
           <Icon
             aria-hidden="true"
             Svg={supportCenterFilterConsider}
-            className={`${selectedFilter === 'consider' ? 'stroke-selected-dark' : 'stroke-disabled'} h-5 w-5 duration-75 pointer-events-none`}
+            className={`${selectedFilter === 'consider' ? 'stroke-selected-dark' : 'stroke-disabled'} h-4 w-4 lg:h-5 lg:w-5 duration-75 pointer-events-none`}
           />
         </div>
         <Text
@@ -81,21 +81,22 @@ const SupportCenterSelector: FC<Props> = (props) => {
           text="На розгляді"
           color={selectedFilter === 'consider' ? 'white' : 'gray-light'}
           size="md"
+          className="text-nowrap"
         />
       </button>
 
       <button
         type="button"
         onClick={() => setSelectedFilter('work')}
-        className={`${selectedFilter === 'work' && 'bg-selected-dark'} gap-[7px] flex flex-row items-center justify-start w-[180px] h-[48px] px-[12px] rounded-2xl`}
+        className={`${selectedFilter === 'work' && 'bg-selected-dark'} gap-[6px] lg:gap-2 flex flex-row items-center justify-start w-[180px] h-8 lg:h-[48px] px-2 lg:px-[12px] rounded-lg lg:rounded-2xl`}
       >
         <div
-          className={`${selectedFilter === 'work' && 'bg-main'} w-[31px] h-[31px] rounded-[7px] flex items-center justify-center`}
+          className={`${selectedFilter === 'work' && 'bg-main'} w-6 h-6 lg:w-[31px] lg:h-[31px] rounded-lg flex items-center justify-center`}
         >
           <Icon
             aria-hidden="true"
             Svg={supportCenterFilterWork}
-            className={`${selectedFilter === 'work' ? 'stroke-selected-dark' : 'stroke-disabled'} h-5 w-5 duration-75 pointer-events-none`}
+            className={`${selectedFilter === 'work' ? 'stroke-selected-dark' : 'stroke-disabled'} h-4 w-4 lg:h-5 lg:w-5 duration-75 pointer-events-none`}
           />
         </div>
         <Text
@@ -103,21 +104,22 @@ const SupportCenterSelector: FC<Props> = (props) => {
           text="В роботі"
           color={selectedFilter === 'work' ? 'white' : 'gray-light'}
           size="md"
+          className="text-nowrap"
         />
       </button>
 
       <button
         type="button"
         onClick={() => setSelectedFilter('closed')}
-        className={`${selectedFilter === 'closed' && 'bg-selected-dark'} gap-[7px] flex flex-row items-center justify-start w-[180px] h-[48px] px-[12px] rounded-2xl`}
+        className={`${selectedFilter === 'closed' && 'bg-selected-dark'} gap-[6px] lg:gap-2 flex flex-row items-center justify-start w-[180px] h-8 lg:h-[48px] px-2 lg:px-[12px] rounded-lg lg:rounded-2xl`}
       >
         <div
-          className={`${selectedFilter === 'closed' && 'bg-main'} w-[31px] h-[31px] rounded-[7px] flex items-center justify-center`}
+          className={`${selectedFilter === 'closed' && 'bg-main'} w-6 h-6 lg:w-[31px] lg:h-[31px] rounded-lg flex items-center justify-center`}
         >
           <Icon
             aria-hidden="true"
             Svg={supportCenterFilterClosed}
-            className={`${selectedFilter === 'closed' ? 'stroke-selected-dark' : 'stroke-disabled'} h-5 w-5 duration-75 pointer-events-none`}
+            className={`${selectedFilter === 'closed' ? 'stroke-selected-dark' : 'stroke-disabled'} h-4 w-4 lg:h-5 lg:w-5 duration-75 pointer-events-none`}
           />
         </div>
         <Text
