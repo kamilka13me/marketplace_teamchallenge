@@ -1,11 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import {
+  getAdminOffersEndDate,
   getAdminOffersLimit,
   getAdminOffersOffset,
   getAdminOffersSellerId,
   getAdminOffersSortBy,
   getAdminOffersSortDirection,
+  getAdminOffersStartDate,
   getAdminOffersStatus,
 } from '../selectors';
 import { ApiOffersResponse } from '../types';
@@ -32,14 +34,14 @@ export const fetchAdminOffersList = createAsyncThunk<
   const status = getAdminOffersStatus(getState());
   const sortBy = getAdminOffersSortBy(getState());
   const sortDirection = getAdminOffersSortDirection(getState());
+  const startDate = getAdminOffersStartDate(getState());
+  const endDate = getAdminOffersEndDate(getState());
 
   try {
     addQueryParams({
       limit: limit.toString(),
       offset: offset.toString(),
-      sellerId,
       status,
-      sortBy,
       sortDirection,
     });
     const response = await $api.get<ApiOffersResponse>(ApiRoutes.PRODUCTS, {
@@ -50,6 +52,8 @@ export const fetchAdminOffersList = createAsyncThunk<
         status,
         sortDirection,
         sortBy,
+        startDate,
+        endDate,
       },
     });
 

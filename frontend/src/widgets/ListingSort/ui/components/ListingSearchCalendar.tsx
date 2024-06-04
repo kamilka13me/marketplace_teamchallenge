@@ -2,7 +2,10 @@ import { FC, useEffect, useState } from 'react';
 
 import { RangeKeyDict } from 'react-date-range';
 
+import { adminOffersActions } from '@/features/managingOffers';
+import { fetchAdminOffersList } from '@/features/managingOffers/model/services';
 import calendar from '@/shared/assets/icons/calendar.svg?react';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { Button } from '@/shared/ui/Button';
 import CustomCalendar from '@/shared/ui/CustomCalendar/ui/CustomCalendar';
 import { Icon } from '@/shared/ui/Icon';
@@ -22,6 +25,12 @@ interface Props {
   setDateRange?: (range: IRangeDate) => void;
 }
 
+const adjustDate = (date: Date, days: number) => {
+  date.setDate(date.getDate() + days);
+
+  return date;
+};
+
 const ListingSearchCalendar: FC<Props> = (props) => {
   const { dateRange, setDateRange } = props;
 
@@ -34,8 +43,35 @@ const ListingSearchCalendar: FC<Props> = (props) => {
   ]);
   const [calendarIsOpened, setCalendarIsOpened] = useState(false);
 
+  const dispatch = useAppDispatch();
+
   const startDate = state[0]?.startDate.toLocaleDateString('uk-UA');
   const endDate = state[0]?.endDate.toLocaleDateString('uk-UA');
+
+  useEffect(() => {
+    const endDate = adjustDate(new Date(state[0]?.endDate as unknown as Date), 2);
+
+    dispatch(
+      adminOffersActions.setEndDate(
+        endDate.toISOString()?.slice(0, 10) as unknown as Date,
+      ),
+    );
+  }, [dispatch, state]);
+
+  useEffect(() => {
+    const startDate = adjustDate(new Date(state[0]?.startDate as unknown as Date), 1);
+
+    dispatch(
+      adminOffersActions.setStartDate(
+        startDate.toISOString()?.slice(0, 10) as unknown as Date,
+      ),
+    );
+  }, [dispatch, state]);
+
+  useEffect(() => {
+    dispatch(fetchAdminOffersList({}));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, state]);
 
   useEffect(() => {
     if (state[0] && setDateRange) {
@@ -73,6 +109,12 @@ const ListingSearchCalendar: FC<Props> = (props) => {
 
               return updatedState;
             });
+            dispatch(
+              adminOffersActions.setStartDate(
+                buttonData.find((btn) => btn.type === type)?.clb() || new Date(),
+              ),
+            );
+            dispatch(adminOffersActions.setEndDate(endDate));
           }}
         />
       </div>

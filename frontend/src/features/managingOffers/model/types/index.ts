@@ -21,5 +21,8 @@ export interface AdminOffersSchema extends EntityState<Product, string> {
   sortBy: string;
   sortDirection: '1' | '-1';
 
+  startDate: string | Date;
+  endDate: string | Date;
+
   _inited: boolean;
 }

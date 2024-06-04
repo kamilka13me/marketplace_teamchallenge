@@ -16,14 +16,8 @@ export const initAdminOffersTab = createAsyncThunk<
   const inited = getAdminOffersInited(getState());
 
   if (!inited) {
-    const sellerIdFromUrl = searchParams?.get('sellerId');
     const statusFromUrl = searchParams?.get('status');
-    const sortByFromUrl = searchParams?.get('sortBy');
     const sortDirectionFromUrl = searchParams?.get('sortDirection') as '1' | '-1';
-
-    if (sellerIdFromUrl) {
-      dispatch(adminOffersActions.setSellerId(sellerIdFromUrl));
-    }
 
     if (statusFromUrl) {
       dispatch(adminOffersActions.setStatus(statusFromUrl));
@@ -31,10 +25,6 @@ export const initAdminOffersTab = createAsyncThunk<
 
     if (sortDirectionFromUrl) {
       dispatch(adminOffersActions.setSortDirection(sortDirectionFromUrl));
-    }
-
-    if (sortByFromUrl) {
-      dispatch(adminOffersActions.setSortBy(sortByFromUrl));
     }
 
     dispatch(adminOffersActions.initState());

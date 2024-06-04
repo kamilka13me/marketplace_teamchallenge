@@ -20,4 +20,9 @@ export const getAdminOffersSortBy = (state: StateSchema) => state.adminOffers.so
 export const getAdminOffersSortDirection = (state: StateSchema) =>
   state.adminOffers.sortDirection;
 
+export const getAdminOffersStartDate = (state: StateSchema) =>
+  state.adminOffers.startDate;
+
+export const getAdminOffersEndDate = (state: StateSchema) => state.adminOffers.endDate;
+
 export const getAdminOffersInited = (state: StateSchema) => state.adminOffers._inited;
