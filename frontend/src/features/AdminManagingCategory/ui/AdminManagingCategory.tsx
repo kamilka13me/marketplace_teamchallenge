@@ -102,14 +102,15 @@ const AdminManagingCategory: FC = () => {
 
       <div className="flex flex-col lg:gap-2 items-start justify-between w-full">
         {/* --------------Категорія----------------- */}
-        <div className="flex flex-col gap-1  lg:flex-row items-start justify-start w-full lg:gap-[16px]">
+        <div className="flex flex-col gap-1 w-full lg:w-min lg:flex-row items-start justify-start lg:justify-between lg:gap-[16px]">
           <Text
             Tag="span"
             text="Категорія"
             color="white"
             size="md"
-            className="lg:text-lg lg:font-semibold lg:w-[140px]"
+            className="lg:text-lg lg:font-semibold lg:w-[110px]"
           />
+
           <CategorySelector
             categoryArr={categoryData}
             selected={selectedCategory}
@@ -130,17 +131,17 @@ const AdminManagingCategory: FC = () => {
         </div>
 
         {/* --------------Підкатегорія----------------- */}
-        <div className="flex flex-col gap-1 lg:flex-row items-start justify-start w-full lg:gap-[16px]">
+        <div className="flex flex-col gap-1 w-full lg:w-min lg:flex-row items-start justify-start lg:justify-between lg:gap-[16px]">
           <Text
             Tag="span"
             text="Підкатегорія"
             color="white"
             size="md"
-            className="lg:text-lg lg:font-semibold w-[140px]"
+            className="lg:text-lg lg:font-semibold lg:w-[110px]"
           />
 
           <div
-            className="flex flex-col items-start justify-between w-full"
+            className="flex flex-col items-start justify-between w-full lg:w-min"
             onClick={() => setSubcategoryClick(true)}
           >
             <CategorySelector
@@ -175,17 +176,17 @@ const AdminManagingCategory: FC = () => {
         </div>
 
         {/* --------------Розділ----------------- */}
-        <div className="flex flex-col gap-1  lg:flex-row items-start justify-start w-full lg:gap-[16px]">
+        <div className="flex flex-col gap-1 w-full lg:w-min lg:flex-row items-start justify-start lg:justify-between lg:gap-[16px]">
           <Text
             Tag="span"
             text="Розділ"
             color="white"
             size="md"
-            className="lg:text-lg lg:font-semibold w-[140px]"
+            className="lg:text-lg lg:font-semibold lg:w-[110px]"
           />
 
           <div
-            className="flex flex-col items-start justify-between w-full"
+            className="flex flex-col items-start justify-between w-full lg:w-min"
             onClick={() => setSubsubcategoryClick(true)}
           >
             <CategorySelector

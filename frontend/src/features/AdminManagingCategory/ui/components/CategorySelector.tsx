@@ -23,7 +23,7 @@ const CategorySelector: FC<Props> = (props) => {
     props;
 
   return (
-    <span className="flex relative items-center gap-2 w-full">
+    <span className="flex relative items-center gap-2 w-full lg:w-min">
       <div className="w-full lg:w-[240px] h-[44px]">
         <Listbox value={selected} onChange={setSelected} disabled={disabled}>
           {({ open }) => (
