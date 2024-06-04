@@ -49,7 +49,9 @@ const openedCounter = () => {
           user.opened.push(id);
           await user.save();
         }
+        next();
       }
+      next();
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {
         // return res.status(401).send('Token expired');
