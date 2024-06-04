@@ -30,7 +30,7 @@ import User from '../models/User.js';
 const openedCounter = () => {
   return async (req, res, next) => {
     try {
-      const { id } = req.params; // Product ID
+      const { id } = req.params;
       const accessToken =
         req.headers.authorization?.split(' ')[1] || req.cookies.accessToken;
 
@@ -38,36 +38,28 @@ const openedCounter = () => {
         const decoded = jwt.verify(accessToken, config.accessSecretKey);
         const user = await User.findById(decoded.id).populate('role');
 
-        if (!user) {
-          // return res.status(401).json({ message: 'Access denied. User not found.' });
-          next();
+        if (user) {
+          if (!user.opened.includes(id)) {
+            await Product.findByIdAndUpdate(id, { $inc: { opened: 1 } });
+            user.opened.push(id);
+            await user.save();
+          }
         }
-
-        // Check if the user has already viewed the product
-        if (!user.opened.includes(id)) {
-          await Product.findByIdAndUpdate(id, { $inc: { opened: 1 } }); // Increase views only if the user has not viewed the product before
-          user.opened.push(id);
-          await user.save();
-        }
-        next();
       }
-      next();
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {
-        // return res.status(401).send('Token expired');
-        next();
+        // eslint-disable-next-line no-console
+        console.warn('The token is expired');
+      } else if (error instanceof jwt.JsonWebTokenError) {
+        // eslint-disable-next-line no-console
+        console.warn('Invalid access token');
+      } else {
+        // eslint-disable-next-line no-console
+        console.error(error);
       }
-      if (error instanceof jwt.JsonWebTokenError) {
-        // return res.status(401).send('Invalid accessToken');
-        next();
-      }
-      // eslint-disable-next-line no-console
-      console.error(error);
-
-      // return res.status(500).send('Internal Server Error');
+    } finally {
       next();
     }
-    next();
   };
 };
 
