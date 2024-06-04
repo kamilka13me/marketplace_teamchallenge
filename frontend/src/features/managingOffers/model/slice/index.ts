@@ -33,6 +33,9 @@ const slice = createSlice({
     sortBy: '',
     sortDirection: '-1',
 
+    startDate: '',
+    endDate: '',
+
     _inited: false,
   }),
   reducers: {
@@ -51,11 +54,12 @@ const slice = createSlice({
     setSortDirection: (state, action: PayloadAction<'1' | '-1'>) => {
       state.sortDirection = action.payload;
     },
-    // clearSortParams: (state) => {
-    //   state.status = '';
-    //   state.sortBy = '';
-    //   state.sortDirection = '1';
-    // },
+    setStartDate: (state, action: PayloadAction<Date>) => {
+      state.startDate = action.payload;
+    },
+    setEndDate: (state, action: PayloadAction<Date>) => {
+      state.endDate = action.payload;
+    },
     initState: (state) => {
       state._inited = true;
     },
