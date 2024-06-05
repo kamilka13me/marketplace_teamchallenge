@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 
 import Support from '../../models/Support.js';
 import User from '../../models/User.js';
+import Comment from '../../models/Comment.js';
+import Complaint from '../../models/Complaint.js';
 
 const supportController = {
   sendForm: async (req, res) => {
@@ -123,6 +125,33 @@ const supportController = {
       // eslint-disable-next-line no-console
       console.log('Error updating support status:', error);
       res.status(500).json({ message: 'Server error' });
+    }
+  },
+
+  createComplaint: async (req, res) => {
+    try {
+      const { commentId, reason } = req.body;
+
+      // Перевіряємо чи commentId та reason присутні
+      if (!commentId || ![0, 1, 2, 3, 4, 5].includes(reason)) {
+        return res.status(400).json({ message: 'Некоректні дані' });
+      }
+
+      // Перевіряємо чи коментар існує
+      console.log(commentId);
+      const comment = await Comment.findById(commentId);
+      if (!comment) {
+        return res.status(404).json({ message: 'Коментар не знайдено' });
+      }
+
+      // Створюємо нове оскарження
+      const complaint = new Complaint({ commentId, reason });
+      await complaint.save();
+
+      res.status(201).json({ message: 'Оскарження збережено успішно' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Внутрішня помилка сервера' });
     }
   },
 };
