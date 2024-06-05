@@ -70,6 +70,60 @@ supportRoute.post(
 
 /**
  * @swagger
+ * /support/complaint:
+ *   post:
+ *     summary: Creates a new complaint
+ *     tags:
+ *        - Support
+ *     security:
+ *        - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               commentId:
+ *                 type: string
+ *                 required: true
+ *                 description: commentId
+ *               content:
+ *                 type: string
+ *                 required: true
+ *                 description: Content
+ *               reason:
+ *                 type: string
+ *                 required: true
+ *                 description: Content
+ *
+ *
+ *     responses:
+ *       201:
+ *         description: Created
+ *         content:
+ *           application/json:
+ *             schema:
+ *                properties:
+ *                    product:
+ *                      $ref: '#/components/schemas/Support'
+ *       '400':
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               typevj;yf: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example:  Invalid request body
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
+supportRoute.post('/complaint', supportController.createComplaint);
+
+/**
+ * @swagger
  * /support:
  *   get:
  *     summary: Get support messages with optional filtering and pagination

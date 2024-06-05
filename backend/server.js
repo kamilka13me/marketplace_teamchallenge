@@ -28,6 +28,7 @@ import connectDb from './src/config/connectDb.js';
 import errorLogger from './src/middlewares/errorLogger.js';
 import jsonErrorHandler from './src/middlewares/jsonErrorHandler.js';
 import setupSocket from './src/services/socketService/socket.js';
+import AdminRoute from './src/components/routes/adminRoute.js';
 
 dotenv.config();
 
@@ -116,6 +117,7 @@ app.use('/api/wishlist', wishlistRoute);
 app.use('/api/seller', sellerRoute);
 app.use('/api/support', supportRoute);
 app.use('/api/feedback', FeedbackRoute);
+app.use('/api/admin', AdminRoute);
 
 app.use('/static/products', express.static(path.join(__dirname, 'public/uploads')));
 app.use('/static/banners', express.static(path.join(__dirname, 'public/banners')));
