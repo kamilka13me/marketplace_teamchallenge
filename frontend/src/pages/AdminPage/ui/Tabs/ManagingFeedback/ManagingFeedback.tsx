@@ -113,8 +113,8 @@ const ManagingFeedback: FC = () => {
                 <span className="flex flex-row flex-wrap gap-[5px]">
                   {complaint.comment.images.map((imageUrl, index) => (
                     <img
-                      key={imageUrl + index}
-                      src={imageUrl}
+                      key={index}
+                      src={`${process.env.BASE_URL}${imageUrl}`}
                       alt={imageUrl}
                       className="w-[68px] h-[68px] object-contain"
                     />
@@ -126,7 +126,7 @@ const ManagingFeedback: FC = () => {
                 <div className="flex flex-row flex-wrap gap-[5px]">
                   {testImagesArray.map((imageUrl, index) => (
                     <img
-                      key={imageUrl + index}
+                      key={index}
                       src={imageUrl}
                       alt={imageUrl}
                       className="w-[68px] h-[68px] object-contain"
