@@ -11,6 +11,7 @@ import morgan from 'morgan';
 import { Server } from 'socket.io';
 
 import swaggerDocs from './docs/swagger/swager.js';
+import AdminRoute from './src/components/routes/adminRoute.js';
 import authRoute from './src/components/routes/authRoute.js';
 import categoryRoute from './src/components/routes/categoryRoute.js';
 import controlPanelRoute from './src/components/routes/controlPanelRoute.js';
@@ -28,7 +29,6 @@ import connectDb from './src/config/connectDb.js';
 import errorLogger from './src/middlewares/errorLogger.js';
 import jsonErrorHandler from './src/middlewares/jsonErrorHandler.js';
 import setupSocket from './src/services/socketService/socket.js';
-import AdminRoute from './src/components/routes/adminRoute.js';
 
 dotenv.config();
 

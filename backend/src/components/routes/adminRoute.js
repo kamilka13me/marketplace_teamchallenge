@@ -1,4 +1,5 @@
 import express from 'express';
+
 import adminController from '../controllers/adminController.js';
 
 const AdminRoute = express.Router();
@@ -7,8 +8,8 @@ const AdminRoute = express.Router();
  * @swagger
  * /admin/complaints:
  *   get:
- *     summary: Get list of complaints
- *     description: Retrieve a list of complaints with related products, average product rating, responses to comments, and author information. Supports pagination.
+ *     summary: Get a list of complaints
+ *     description: Returns a list of complaints with details about the comment, response, and product.
  *     tags:
  *       - Complaints
  *     parameters:
@@ -24,9 +25,28 @@ const AdminRoute = express.Router();
  *           type: integer
  *           default: 0
  *         description: Offset for pagination
+ *       - in: query
+ *         name: sortDirection
+ *         schema:
+ *           type: integer
+ *           enum: [1, -1]
+ *           default: 1
+ *         description: Sorting direction (1 for ascending, -1 for descending)
+ *       - in: query
+ *         name: startDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Start date for filtering
+ *       - in: query
+ *         name: endDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: End date for filtering
  *     responses:
  *       200:
- *         description: Successful retrieval of complaints list
+ *         description: Successful response, returns a list of complaints
  *         content:
  *           application/json:
  *             schema:
@@ -35,7 +55,6 @@ const AdminRoute = express.Router();
  *                 totalCount:
  *                   type: integer
  *                   description: Total number of complaints
- *                   example: 50
  *                 complaints:
  *                   type: array
  *                   items:
@@ -43,105 +62,77 @@ const AdminRoute = express.Router();
  *                     properties:
  *                       _id:
  *                         type: string
- *                         description: Complaint ID
- *                         example: 60c72b2f9b1d4c3a4a4f4c9b
- *                       commentId:
- *                         type: object
- *                         properties:
- *                           _id:
- *                             type: string
- *                             description: Comment ID
- *                             example: 60c72b2f9b1d4c3a4a4f4c9a
- *                           authorId:
- *                             type: object
- *                             properties:
- *                               _id:
- *                                 type: string
- *                                 description: Author ID
- *                                 example: 60c72b2f9b1d4c3a4a4f4c99
- *                               name:
- *                                 type: string
- *                                 description: Author's name
- *                                 example: John Doe
- *                           productId:
- *                             type: object
- *                             properties:
- *                               _id:
- *                                 type: string
- *                                 description: Product ID
- *                                 example: 60c72b2f9b1d4c3a4a4f4c98
- *                               name:
- *                                 type: string
- *                                 description: Product name
- *                                 example: Awesome Product
- *                               price:
- *                                 type: number
- *                                 description: Product price
- *                                 example: 100.00
+ *                         description: ID of the complaint
  *                       reason:
  *                         type: integer
- *                         description: Complaint reason
- *                         example: 3
- *                       created_at:
+ *                         description: Reason for the complaint
+ *                       createdAt:
  *                         type: string
- *                         format: date-time
- *                         description: Complaint creation date
- *                         example: 2021-06-13T12:34:56.789Z
- *                       response:
+ *                         description: date for the complaint
+ *                       comment:
  *                         type: object
+ *                         description: Details of the comment
  *                         properties:
  *                           _id:
  *                             type: string
- *                             description: Response comment ID
- *                             example: 60c72b2f9b1d4c3a4a4f4c9c
- *                           authorId:
- *                             type: object
- *                             properties:
- *                               _id:
- *                                 type: string
- *                                 description: Response author ID
- *                                 example: 60c72b2f9b1d4c3a4a4f4c97
- *                               name:
- *                                 type: string
- *                                 description: Response author's name
- *                                 example: Jane Doe
+ *                             description: ID of the comment
+ *                           username:
+ *                             type: string
+ *                             description: Username of the commenter
+ *                           email:
+ *                             type: string
+ *                             description: Email of the commenter
  *                           comment:
  *                             type: string
- *                             description: Response text
- *                             example: This is a response to your comment
- *                       product:
+ *                             description: Text of the comment
+ *                           images:
+ *                             type: array
+ *                             items:
+ *                               type: string
+ *                             description: Images attached to the comment
+ *                           rating:
+ *                             type: number
+ *                             description: Rating of the comment
+ *                       response:
  *                         type: object
+ *                         description: Details of the response to the comment
  *                         properties:
  *                           _id:
  *                             type: string
- *                             description: Product ID
- *                             example: 60c72b2f9b1d4c3a4a4f4c98
+ *                             description: ID of the response
+ *                           username:
+ *                             type: string
+ *                             description: Username of the responder
+ *                           email:
+ *                             type: string
+ *                             description: Email of the responder
+ *                           comment:
+ *                             type: string
+ *                             description: Text of the response
+ *                           images:
+ *                             type: array
+ *                             items:
+ *                               type: string
+ *                             description: Images attached to the response
+ *                       product:
+ *                         type: object
+ *                         description: Details of the product
+ *                         properties:
+ *                           _id:
+ *                             type: string
+ *                             description: ID of the product
  *                           name:
  *                             type: string
- *                             description: Product name
- *                             example: Awesome Product
- *                           price:
- *                             type: number
- *                             description: Product price
- *                             example: 100.00
- *                           averageRating:
- *                             type: number
- *                             description: Average product rating
- *                             example: 4.5
+ *                             description: Name of the product
+ *                           images:
+ *                             type: array
+ *                             items:
+ *                               type: string
+ *                             description: Images of the product
  *       500:
  *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Error description
- *                   example: Internal server error
  */
 
 AdminRoute.get('/complaints', adminController.getComplaints);
 
 export default AdminRoute;
-
