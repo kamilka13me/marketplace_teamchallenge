@@ -17,4 +17,5 @@ export enum ApiRoutes {
   RATINGS = '/feedback/seller',
   SUPPORT = '/support',
   WISHLIST = '/wishlist',
+  COMPLAINTS = '/admin/complaints',
 }
