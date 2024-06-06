@@ -1,4 +1,5 @@
 import express from 'express';
+
 import adminController from '../controllers/adminController.js';
 
 const AdminRoute = express.Router();
@@ -144,4 +145,3 @@ const AdminRoute = express.Router();
 AdminRoute.get('/complaints', adminController.getComplaints);
 
 export default AdminRoute;
-
