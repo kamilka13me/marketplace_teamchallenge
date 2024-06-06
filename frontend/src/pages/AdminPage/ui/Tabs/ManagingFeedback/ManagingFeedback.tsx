@@ -9,8 +9,11 @@ import SortDirectionSelector from './components/SortDirectionSelector';
 import { ComplaintsResponse } from './interfaces/Complaints';
 
 import { Rating } from '@/enteties/Rating';
+import alertSVG from '@/shared/assets/icons/alert.svg?react';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
+import { DISPUTE_TYPES } from '@/shared/const/disputeTypes';
 import useAxios from '@/shared/lib/hooks/useAxios';
+import { Icon } from '@/shared/ui/Icon';
 import Pagination from '@/shared/ui/Pagination/Pagination';
 import ListingSearchCalendar, {
   IRangeDate,
@@ -27,16 +30,16 @@ const testImagesArray = [
 const createUrlQuery = (
   limit: number | undefined,
   offset: number | undefined,
-  // selectedFilter: string | undefined,
-  // inputData: string | undefined,
-  // dateRange: IRangeDate | undefined,
+  sortDirection: string | undefined,
+  inputData: string | undefined,
+  dateRange: IRangeDate | undefined,
 ) => {
   let url = `?`;
 
   if (limit) url += `limit=${limit}&`;
   if (offset) url += `offset=${offset}&`;
-  // if (selectedFilter !== 'all') url += `status=${selectedFilter}&`;
-  // if (inputData) url += `search=${inputData}&`;
+  if (sortDirection) url += `sortDirection=${sortDirection}&`;
+  if (inputData) url += `search=${inputData}&`;
   // if (dateRange?.startDate) url += `startDate=${dateRange.startDate.toISOString()}&`;
   // if (dateRange?.endDate) url += `endDate=${dateRange.endDate.toISOString()}`;
 
@@ -58,8 +61,8 @@ const ManagingFeedback: FC = () => {
   const limit = 3;
   const currentPage = offset / limit + 1;
 
-  const { data, isLoading, refetch } = useAxios<ComplaintsResponse>(
-    `${ApiRoutes.COMPLAINTS}${createUrlQuery(limit, offset)}`,
+  const { data } = useAxios<ComplaintsResponse>(
+    `${ApiRoutes.COMPLAINTS}${createUrlQuery(limit, offset, sortDirection, inputData, dateRange)}`,
   );
 
   console.log(data);
@@ -69,7 +72,7 @@ const ManagingFeedback: FC = () => {
   const handleClickPage = (pageNumber: number) => setOffset(limit * (pageNumber - 1));
 
   return (
-    <div className="ManagingFeedback flex flex-col gap-4 w-full text-white mt-[18px] font-outfit font-[400] text-[14px]">
+    <div className="ManagingFeedback flex flex-col w-full text-white font-outfit font-[400] text-[14px]">
       <div className="flex flex-row gap-[15px] items-center justify-between w-full bg-dark-grey rounded-2xl px-[20px] py-[8px]">
         <SortDirectionSelector
           sortDirection={sortDirection}
@@ -79,11 +82,11 @@ const ManagingFeedback: FC = () => {
         <ListingSearchCalendar dateRange={dateRange} setDateRange={setDateRange} />
       </div>
 
-      <div className="w-full flex flex-col gap-2 bg-selected-dark rounded-2xl">
-        <div className="w-full flex flex-row gap-[20px] p-[16px] text-[16px]">
+      <div className="w-full flex flex-col gap-2 bg-selected-dark rounded-2xl mt-[20px]">
+        <div className="w-full flex flex-row gap-[15px] p-[16px] text-[16px]">
           <span className="w-[10%]">ID</span>
-          <span className="w-[35%]">Коментар покупця</span>
-          <span className="w-[20%]">Відповідь продавця</span>
+          <span className="w-[30%]">Коментар покупця</span>
+          <span className="w-[25%]">Відповідь продавця</span>
           <span className="w-[20%]">Звернення продавця</span>
           <span className="w-[10%]">Дата</span>
           <span className="w-[5%]">Дії</span>
@@ -92,19 +95,19 @@ const ManagingFeedback: FC = () => {
         {data?.complaints?.map((complaint, index) => (
           <div
             key={complaint._id}
-            className={` ${index % 2 || 'bg-dark-grey'} ${index === data.complaints.length - 1 && 'rounded-b-2xl'} w-full flex flex-row items-start gap-[20px] p-[16px]`}
+            className={` ${index % 2 || 'bg-dark-grey'} ${index === data.complaints.length - 1 && 'rounded-b-2xl'} w-full flex flex-row items-start gap-[15px] p-[16px]`}
           >
-            <span className="w-[10%] break-words overflow-hidden">{complaint._id}</span>
+            <div className="w-[10%] break-words overflow-hidden">{complaint._id}</div>
 
-            <div className="w-[35%] flex flex-col gap-[5px] overflow-hidden">
-              <span>{complaint.comment.authorId.email}</span>
+            <div className="w-[30%] flex flex-col gap-[5px] overflow-hidden">
+              <span className="font-[600]">{complaint.comment.email}</span>
               <span className="overflow-hidden whitespace-nowrap text-ellipsis">
                 {complaint.product.name}
               </span>
               <span>
-                <Rating rating={3} />
+                <Rating rating={complaint.comment.rating} />
               </span>
-              <span>{complaint.comment.comment}</span>
+              <span className="text-disabled">{complaint.comment.comment}</span>
 
               {complaint.comment.images.length > 0 && (
                 <span className="flex flex-row flex-wrap gap-[5px]">
@@ -133,18 +136,24 @@ const ManagingFeedback: FC = () => {
               )}
             </div>
 
-            <span className="w-[20%] overflow-hidden flex flex-col gap-[5px]">
-              <span>{complaint.response.authorId.username}</span>
-              <span>{complaint.response.comment}</span>
-            </span>
-            <span className="w-[20%] overflow-hidden flex flex-col gap-[5px]">
-              <span>Звернення продавця</span>
-              <span>Звернення продавця</span>
-            </span>
-            <span className="w-[10%] overflow-hidden">
-              {formatDate(complaint.created_at)}
-            </span>
-            <span className="w-[5%] overflow-hidden flex justify-center">
+            <div className="w-[25%] overflow-hidden flex flex-col gap-[5px]">
+              <span className="font-[600]">{complaint.response.username}</span>
+              <span className="text-disabled">{complaint.response.comment}</span>
+            </div>
+
+            <div className="w-[20%] overflow-hidden flex flex-row gap-[5px]">
+              <div className="w-[18px] h-[18px] flex items-center justify-center">
+                <Icon aria-hidden="true" Svg={alertSVG} />
+              </div>
+              <span className="text-disabled">
+                {DISPUTE_TYPES[complaint.reason]?.text || 'Не визначено'}
+              </span>
+            </div>
+
+            <div className="w-[10%] overflow-hidden">
+              {formatDate(complaint.createdAt)}
+            </div>
+            <div className="w-[5%] overflow-hidden flex justify-center">
               <button
                 type="button"
                 onClick={() => {}}
@@ -154,7 +163,7 @@ const ManagingFeedback: FC = () => {
                   <div key={index} className="w-[4px] h-[4px] bg-white rounded-full" />
                 ))}
               </button>
-            </span>
+            </div>
           </div>
         ))}
       </div>
