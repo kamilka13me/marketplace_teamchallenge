@@ -1,7 +1,5 @@
 import { FC, useState } from 'react';
 
-import { t } from 'i18next';
-
 import { adminOffersActions } from '@/features/managingOffers';
 import search from '@/shared/assets/icons/search.svg?react';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
@@ -9,11 +7,14 @@ import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Input } from '@/shared/ui/Input';
 
-interface ListingSearchInputProps {
+interface Props {
   setInputData?: (e: string) => void;
+  placeholder?: string;
 }
 
-const ListingSearchInput: FC<ListingSearchInputProps> = ({ setInputData }) => {
+const ListingSearchInput: FC<Props> = (props) => {
+  const { setInputData, placeholder } = props;
+
   const [value, setValue] = useState('');
 
   const dispatch = useAppDispatch();
@@ -32,7 +33,7 @@ const ListingSearchInput: FC<ListingSearchInputProps> = ({ setInputData }) => {
         name="searchInput"
         type="text"
         variant="search"
-        placeholder={t('Номер ID, email')}
+        placeholder={placeholder}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
