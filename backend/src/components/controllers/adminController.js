@@ -30,7 +30,6 @@ const adminController = {
           populate: [{ path: 'authorId' }, { path: 'productId', select: 'name images' }],
         });
 
-      console.log(complaints);
       const totalCount = await Complaint.countDocuments(query);
 
       const complaintsWithDetails = await Promise.all(
