@@ -1,6 +1,8 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 
+import arrowRight from '@/shared/assets/icons/arrow-right.svg?react';
 import { Button } from '@/shared/ui/Button';
+import { Icon } from '@/shared/ui/Icon';
 import { VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
@@ -28,6 +30,20 @@ const Pagination: FC<Props> = (props) => {
     className,
     isProducts,
   } = props;
+
+  const [width, setWidth] = useState<number>(() => window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const selectedBtnColor = isProducts
     ? '!bg-secondary-yellow border-none'
@@ -152,14 +168,23 @@ const Pagination: FC<Props> = (props) => {
         disabled={offset === 0}
         variant="grey-outlined"
         onClick={fetchPrev}
-        className={`px-3 py-[3.3px] disabled:invisible ${isProducts && 'hover:bg-secondary-yellow'}`}
+        className={`md:px-3 md:py-[3.3px] disabled:invisible ${isProducts && 'hover:bg-secondary-yellow'}`}
       >
-        <Text
-          Tag="span"
-          text="Попередня"
-          size="sm"
-          color={isProducts ? 'primary' : 'white'}
-        />
+        {width >= 768 ? (
+          <Text
+            Tag="span"
+            text="Попередня"
+            size="sm"
+            color={isProducts ? 'primary' : 'white'}
+          />
+        ) : (
+          <Icon
+            Svg={arrowRight}
+            width={32}
+            height={32}
+            className={`${isProducts ? 'fill-main-dark' : 'fill-white'} rotate-180`}
+          />
+        )}
       </Button>
       <VStack gap="2">
         {renderPages(Math.ceil(dataLength / itemsPerPage), currentPage, setPage)}
@@ -169,14 +194,23 @@ const Pagination: FC<Props> = (props) => {
         variant="grey-outlined"
         type="button"
         onClick={fetchNext}
-        className={`px-3 py-[3.3px] disabled:invisible ${isProducts && 'hover:bg-secondary-yellow'}`}
+        className={`md:px-3 md:py-[3.3px] disabled:invisible ${isProducts && 'hover:bg-secondary-yellow'}`}
       >
-        <Text
-          Tag="span"
-          text="Наступна"
-          size="sm"
-          color={isProducts ? 'primary' : 'white'}
-        />
+        {width >= 768 ? (
+          <Text
+            Tag="span"
+            text="Наступна"
+            size="sm"
+            color={isProducts ? 'primary' : 'white'}
+          />
+        ) : (
+          <Icon
+            Svg={arrowRight}
+            width={32}
+            height={32}
+            className={isProducts ? 'fill-main-dark' : 'fill-white'}
+          />
+        )}
       </Button>
     </VStack>
   );
