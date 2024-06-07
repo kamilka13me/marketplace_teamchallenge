@@ -20,13 +20,6 @@ import ListingSearchCalendar, {
 } from '@/widgets/ListingSort/ui/components/ListingSearchCalendar';
 import ListingSearchInput from '@/widgets/ListingSort/ui/components/ListingSearchInput';
 
-const testImagesArray = [
-  'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80',
-  'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80',
-  'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80',
-  'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80',
-];
-
 const createUrlQuery = (
   limit: number | undefined,
   offset: number | undefined,
@@ -40,8 +33,8 @@ const createUrlQuery = (
   if (offset) url += `offset=${offset}&`;
   if (sortDirection) url += `sortDirection=${sortDirection}&`;
   if (inputData) url += `search=${inputData}&`;
-  // if (dateRange?.startDate) url += `startDate=${dateRange.startDate.toISOString()}&`;
-  // if (dateRange?.endDate) url += `endDate=${dateRange.endDate.toISOString()}`;
+  if (dateRange?.startDate) url += `startDate=${dateRange.startDate.toISOString()}&`;
+  if (dateRange?.endDate) url += `endDate=${dateRange.endDate.toISOString()}`;
 
   return url;
 };
@@ -55,8 +48,6 @@ const ManagingFeedback: FC = () => {
     key: 'selection',
   });
 
-  console.log(inputData);
-
   const [offset, setOffset] = useState(0);
   const limit = 3;
   const currentPage = offset / limit + 1;
@@ -64,8 +55,6 @@ const ManagingFeedback: FC = () => {
   const { data } = useAxios<ComplaintsResponse>(
     `${ApiRoutes.COMPLAINTS}${createUrlQuery(limit, offset, sortDirection, inputData, dateRange)}`,
   );
-
-  console.log(data);
 
   const fetchNext = () => setOffset(offset + limit);
   const fetchPrev = () => setOffset(offset - limit);
@@ -120,19 +109,6 @@ const ManagingFeedback: FC = () => {
                     />
                   ))}
                 </span>
-              )}
-
-              {testImagesArray.length > 0 && (
-                <div className="flex flex-row flex-wrap gap-[5px]">
-                  {testImagesArray.map((imageUrl, index) => (
-                    <img
-                      key={index}
-                      src={imageUrl}
-                      alt={imageUrl}
-                      className="w-[68px] h-[68px] object-contain"
-                    />
-                  ))}
-                </div>
               )}
             </div>
 
