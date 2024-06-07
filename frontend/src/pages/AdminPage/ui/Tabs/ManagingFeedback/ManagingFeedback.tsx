@@ -3,7 +3,7 @@
 /* eslint-disable no-console */
 import { FC, useState } from 'react';
 
-import { formatDate } from '../SupportCenter/utils/formatDate';
+import { formatDate } from '../../../../../shared/utils/formatDate';
 
 import SortDirectionSelector from './components/SortDirectionSelector';
 import { ComplaintsResponse } from './interfaces/Complaints';
