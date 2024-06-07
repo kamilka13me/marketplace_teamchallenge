@@ -4,8 +4,8 @@
 /* eslint-disable no-console */
 import { FC } from 'react';
 
+import { formatDate } from '../../../../../../shared/utils/formatDate';
 import { SupportMessage } from '../interfaces/SupportMessage';
-import { formatDate } from '../utils/formatDate';
 
 import SupportImagesSlider from './SupportImagesSlider';
 

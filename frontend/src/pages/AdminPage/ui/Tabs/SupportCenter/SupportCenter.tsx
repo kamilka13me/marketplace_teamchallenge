@@ -5,11 +5,12 @@ import { FC, Fragment, useEffect, useState } from 'react';
 
 import { Popover, Transition } from '@headlessui/react';
 
+import { formatDate } from '../../../../../shared/utils/formatDate';
+
 import ChangeStatusModal from './components/ChangeStatusModal';
 import SupportCenterSelector from './components/SupportCenterSelector';
 import ViewContentModal from './components/ViewContentModal';
 import { SupportMessage, SupportMessagesResponse } from './interfaces/SupportMessage';
-import { formatDate } from './utils/formatDate';
 
 import editDots from '@/shared/assets/icons/editDots.svg?react';
 import supportCenterFilterConsider from '@/shared/assets/icons/supportCenterFilterConsider.svg?react';
