@@ -75,7 +75,19 @@ const ListingSearchCalendar: FC<Props> = (props) => {
 
   useEffect(() => {
     if (state[0] && setDateRange) {
-      setDateRange(state[0]);
+      const startDayDate = new Date(state[0]?.startDate);
+
+      startDayDate.setHours(0, 0, 0, 0);
+
+      const endDayDate = new Date(state[0]?.endDate);
+
+      endDayDate.setHours(23, 59, 59, 999);
+
+      setDateRange({
+        startDate: startDayDate,
+        endDate: endDayDate,
+        key: 'selection',
+      });
     }
   }, [state, setDateRange]);
 

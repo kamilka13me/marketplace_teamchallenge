@@ -45,8 +45,8 @@ const createUrlQuery = (
   if (offset) url += `offset=${offset}&`;
   if (selectedFilter !== 'all') url += `status=${selectedFilter}&`;
   if (inputData) url += `search=${inputData}&`;
-  if (dateRange.startDate) url += `startDate=${dateRange.startDate.toISOString()}&`;
-  if (dateRange.endDate) url += `endDate=${dateRange.endDate.toISOString()}`;
+  if (dateRange?.startDate) url += `startDate=${dateRange.startDate.toISOString()}&`;
+  if (dateRange?.endDate) url += `endDate=${dateRange.endDate.toISOString()}`;
 
   return url;
 };

@@ -59,7 +59,7 @@ const CustomCalendar: FC<Props> = ({
                 onClick={() => {
                   setDates([
                     {
-                      startDate: new Date(),
+                      startDate: new Date(0),
                       endDate: new Date(),
                       key: 'selection',
                     },
