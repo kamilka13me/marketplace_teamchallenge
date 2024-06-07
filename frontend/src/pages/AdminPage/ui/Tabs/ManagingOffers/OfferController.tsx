@@ -45,7 +45,7 @@ const OfferController: FC<Props> = (props) => {
         width={40}
         height={59}
         onClick={() => setShowModal(!showModal)}
-        className="rotate-90 cursor-pointer"
+        className="lg:rotate-90 cursor-pointer"
       />
       <HStack
         justify="center"

@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 
-import ListingDropDownBtn from './components/ListingDropDownBtn';
-
 import { adminOffersActions } from '@/features/managingOffers';
 import { getAdminOffersStatus } from '@/features/managingOffers/model/selectors';
 import block from '@/shared/assets/icons/block.svg?react';
@@ -16,8 +14,6 @@ import { Text } from '@/shared/ui/Text';
 
 const ListingSort = () => {
   const [selectedFilter, setSelectedFilter] = useState('');
-  // const [clicked, setClicked] = useState(0);
-  const [dropDownOpen, setDropDownOpen] = useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -34,41 +30,36 @@ const ListingSort = () => {
     { id: 3, value: 'blocked', text: 'Заблоковані', svg: block },
   ];
 
-  const onSortBtnClick = (elId: number, value: string) => {
-    if (elId === 4) {
-      setDropDownOpen((prev: boolean) => !prev);
-    }
-    // setClicked(elId);
+  const onSortBtnClick = (value: string) => {
     if (status !== value) {
       dispatch(adminOffersActions.setStatus(value));
     }
   };
 
   return (
-    <ul className="bg-dark-grey flex justify-between sm:px-3 px-4 py-2 md:rounded-2xl min-w-full relative">
+    <ul className="bg-dark-grey gap-2 flex items-center justify-between h-[64px] lg:px-4 lg:py-2 lg:rounded-2xl min-w-full relative overflow-x-auto lg:overflow-hidden">
       {btnArr.map((elem) => {
         return (
-          <li key={elem.id} className="w-[180px] h-[48px]">
+          <li key={elem.id} className="w-[180px] h-8 lg:h-[48px]">
             <Button
               variant="clear"
               className={`${selectedFilter === elem.value && 'bg-selected-dark text-white'}
-              ${elem.id === 4 && ' md:hidden'}
                 hover:bg-selected-dark group flex items-center justify-start gap-[6px] 
-                p-[4px_8px] md:p-[9px_12px] w-full 
-                 rounded-[8px] md:rounded-[16px]`}
-              onClick={() => onSortBtnClick(elem.id, elem.value)}
+                p-[4px_8px] lg:p-[9px_12px] w-full 
+                 rounded-[8px] lg:rounded-[16px]`}
+              onClick={() => onSortBtnClick(elem.value)}
             >
               <div
-                className={`${selectedFilter === elem.value && 'bg-main'} w-[31px] h-[31px] rounded-[7px] flex items-center justify-center`}
+                className={`${selectedFilter === elem.value && 'bg-main'} w-6 h-6 lg:w-[31px] lg:h-[31px] rounded-lg flex items-center justify-center`}
               >
                 <Icon
                   aria-hidden="true"
                   Svg={elem.svg}
-                  className={
+                  className={`${
                     selectedFilter === elem.value
                       ? 'stroke-selected-dark'
                       : 'stroke-disabled'
-                  }
+                  } h-4 w-4 lg:h-5 lg:w-5 duration-75 pointer-events-none`}
                 />
               </div>
               <Text
@@ -81,7 +72,6 @@ const ListingSort = () => {
           </li>
         );
       })}
-      {dropDownOpen && <ListingDropDownBtn />}
     </ul>
   );
 };

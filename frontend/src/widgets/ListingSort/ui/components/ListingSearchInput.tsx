@@ -40,8 +40,8 @@ const ListingSearchInput: FC<Props> = (props) => {
             handleSubmit();
           }
         }}
-        className="min-h-[38px] rounded-l-[8px] bg-selected-dark !text-white placeholder-light-grey"
-        classNameBlockWrap="w-full"
+        className="min-h-[38px] rounded-l-[8px] bg-selected-dark !text-white placeholder-light-grey !w-full"
+        classNameBlockWrap="w-full sm:!min-w-[172px]"
       />
       <Button
         variant="primary"
