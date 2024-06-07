@@ -6,7 +6,8 @@ import Rating from '../../models/Rate.js';
 const adminController = {
   getComplaints: async (req, res) => {
     try {
-      let { limit = 10, offset = 0, sortDirection = 1, startDate, endDate } = req.query;
+      let { limit = 10, offset = 0, sortDirection = 1 } = req.query;
+      const { startDate, endDate } = req.query;
 
       limit = parseInt(limit, 10);
       offset = parseInt(offset, 10);
@@ -15,9 +16,9 @@ const adminController = {
       const query = {};
 
       if (startDate || endDate) {
-        query.createdAt = {};
-        if (startDate) query.createdAt.$gte = new Date(startDate);
-        if (endDate) query.createdAt.$lte = new Date(endDate);
+        query.created_at = {};
+        if (startDate) query.created_at.$gte = new Date(startDate);
+        if (endDate) query.created_at.$lte = new Date(endDate);
       }
 
       const complaints = await Complaint.find(query)
@@ -29,6 +30,7 @@ const adminController = {
           populate: [{ path: 'authorId' }, { path: 'productId', select: 'name images' }],
         });
 
+      console.log(complaints);
       const totalCount = await Complaint.countDocuments(query);
 
       const complaintsWithDetails = await Promise.all(
