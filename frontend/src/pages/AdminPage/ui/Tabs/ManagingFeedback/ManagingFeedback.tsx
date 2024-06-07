@@ -3,8 +3,6 @@
 /* eslint-disable no-console */
 import { FC, useState } from 'react';
 
-import { formatDate } from '../../../../../shared/utils/formatDate';
-
 import SortDirectionSelector from './components/SortDirectionSelector';
 import { ComplaintsResponse } from './interfaces/Complaints';
 
@@ -15,6 +13,9 @@ import { DISPUTE_TYPES } from '@/shared/const/disputeTypes';
 import useAxios from '@/shared/lib/hooks/useAxios';
 import { Icon } from '@/shared/ui/Icon';
 import Pagination from '@/shared/ui/Pagination/Pagination';
+import { createEndDateString } from '@/shared/utils/createEndDateString';
+import { createStartDateString } from '@/shared/utils/createStartDateString';
+import { formatDate } from '@/shared/utils/formatDate';
 import ListingSearchCalendar, {
   IRangeDate,
 } from '@/widgets/ListingSort/ui/components/ListingSearchCalendar';
@@ -33,8 +34,10 @@ const createUrlQuery = (
   if (offset) url += `offset=${offset}&`;
   if (sortDirection) url += `sortDirection=${sortDirection}&`;
   if (inputData) url += `search=${inputData}&`;
-  if (dateRange?.startDate) url += `startDate=${dateRange.startDate.toISOString()}&`;
-  if (dateRange?.endDate) url += `endDate=${dateRange.endDate.toISOString()}`;
+  if (dateRange?.startDate)
+    url += `startDate=${`${createStartDateString(dateRange.startDate)}&`}`;
+  if (dateRange?.endDate)
+    url += `endDate=${`${createEndDateString(dateRange.endDate)}&`}`;
 
   return url;
 };
