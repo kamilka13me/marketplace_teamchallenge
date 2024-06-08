@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import Rating from '../../Rating/ui/Rating';
 
@@ -144,7 +144,7 @@ const Comment: FC<Props> = (props) => {
         )}
       </VStack>
       {comment?.replies?.length > 0 && (
-        <VStack justify="end" className="mt-2">
+        <VStack justify="end" className="mt-2 mb-4 lg:mb-0">
           <Button
             onClick={() => setRepliesOpen((prev) => !prev)}
             variant="border-bottom"
@@ -216,13 +216,25 @@ interface ReplyProps {
 const CommentReply: FC<ReplyProps> = (props) => {
   const { comment } = props;
 
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, [windowWidth]);
+
   const { data, isLoading } = useAxios<ApiResponse>(
     `${ApiRoutes.USER}/${comment?.authorId || ''}`,
   );
 
   return (
-    <div className="border-l-2 border-l-main p-2 pb-5 w-full">
-      <VStack gap="4" className="w-full">
+    <div className="border-l-2 border-l-main pl-2 lg:p-2 lg:pb-5 w-full">
+      <VStack gap="2" className="lg:gap-4 w-full mb-2 lg:mb-0">
         <HStack
           justify="center"
           align="center"
@@ -243,20 +255,39 @@ const CommentReply: FC<ReplyProps> = (props) => {
         <HStack className="w-full">
           <div className="w-full">
             {!isLoading ? (
-              <VStack align="center" justify="between">
-                <Text
-                  Tag="p"
-                  text={`${data?.user?.username} ${data?.user?.surname || ''}`}
-                  size="lg"
-                  color="white"
-                />
-                <Text
-                  Tag="p"
-                  text={comment?.created_at?.slice(0, 10) || ''}
-                  size="sm"
-                  color="white"
-                />
-              </VStack>
+              <HStack justify="between" className="lg:flex-row lg:items-center">
+                {windowWidth >= 1024 ? (
+                  <>
+                    <Text
+                      Tag="p"
+                      text={`${data?.user?.username} ${data?.user?.surname || ''}`}
+                      size="lg"
+                      color="white"
+                    />
+                    <Text
+                      Tag="p"
+                      text={comment?.created_at?.slice(0, 10) || ''}
+                      size="sm"
+                      color="white"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Text
+                      Tag="p"
+                      text={comment?.created_at?.slice(0, 10) || ''}
+                      size="sm"
+                      color="gray"
+                    />
+                    <Text
+                      Tag="p"
+                      text={`${data?.user?.username} ${data?.user?.surname || ''}`}
+                      size="lg"
+                      color="white"
+                    />
+                  </>
+                )}
+              </HStack>
             ) : (
               <Text Tag="p" text="" size="lg" color="white" />
             )}
@@ -268,15 +299,26 @@ const CommentReply: FC<ReplyProps> = (props) => {
               className="whitespace-nowrap truncate"
             />
           </div>
-          <Text
-            Tag="p"
-            text={comment?.comment}
-            size="md"
-            color="gray-light"
-            className="whitespace-nowrap truncate"
-          />
+          {windowWidth >= 1024 && (
+            <Text
+              Tag="p"
+              text={comment?.comment}
+              size="md"
+              color="gray-light"
+              className="whitespace-nowrap truncate"
+            />
+          )}
         </HStack>
       </VStack>
+      {windowWidth < 1024 && (
+        <Text
+          Tag="p"
+          text={comment?.comment}
+          size="md"
+          color="gray-light"
+          className="whitespace-nowrap truncate"
+        />
+      )}
     </div>
   );
 };

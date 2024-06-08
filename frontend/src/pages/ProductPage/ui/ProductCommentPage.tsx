@@ -11,6 +11,8 @@ import { useParams } from 'react-router-dom';
 
 import Comment from '../../../enteties/Comment/ui/Comment';
 
+import ProductCategoriesLinkTree from './components/ProductCategoriesLinkTree';
+
 import { IComment } from '@/enteties/Comment';
 import { Product } from '@/enteties/Product';
 import { getUserAuthData } from '@/enteties/User';
@@ -48,6 +50,17 @@ const ProductCommentPage: FC = () => {
 
   const [isCommentOpen, setIsCommentIsOpen] = useState(false);
   const [filledStars, setFilledStars] = useState(0);
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, [windowWidth]);
 
   const productComments = useAppSelector(getProductComments.selectAll);
   const totalProductComments = useAppSelector(getTotalProductFeedbacks);
@@ -99,55 +112,67 @@ const ProductCommentPage: FC = () => {
     <div className="bg-main-dark min-h-[70vh] py-4 lg:py-10">
       <Container>
         <HStack className="w-full">
+          <ProductCategoriesLinkTree
+            categoryId={product?.product.category || ''}
+            className="mb-4 lg:mb-0"
+          />
           <HStack align="center" gap="5" className="lg:items-start  lg:flex-row w-full">
-            <HStack
-              align="center"
-              gap="5"
-              className="lg:items-start max-w-[424px] w-full"
-            >
+            {windowWidth >= 1024 && (
               <HStack
-                justify="center"
                 align="center"
-                className="relative w-full h-[336px] rounded-2xl bg-dark-grey"
+                gap="5"
+                className="lg:items-start max-w-[424px] w-full"
               >
+                <HStack
+                  justify="center"
+                  align="center"
+                  className="relative w-full h-[336px] rounded-2xl bg-dark-grey"
+                >
+                  {!isLoading && (
+                    <img
+                      src={`${process.env.BASE_URL}${product?.product?.images[0] || ''}`}
+                      alt="slider-img"
+                      className="!w-[380px] !h-[315px] !object-cover"
+                    />
+                  )}
+
+                  {product?.product.discount && (
+                    <HStack
+                      align="center"
+                      justify="center"
+                      className="absolute top-4 left-4 w-[47px] h-[26px] bg-error-red rounded-lg"
+                    >
+                      <Text Tag="span" text="Sale" size="md" color="white" />
+                    </HStack>
+                  )}
+                </HStack>
                 {!isLoading && (
-                  <img
-                    src={`${process.env.BASE_URL}${product?.product?.images[0] || ''}`}
-                    alt="slider-img"
-                    className="!w-[380px] !h-[315px] !object-cover"
+                  <ProductDescription
+                    feedbackLength={totalProductComments || 0}
+                    rating={productRating ? calcAverage(productRating.current) : 0}
+                    size="medium"
+                    product={product?.product as Product}
                   />
                 )}
-
-                {product?.product.discount && (
-                  <HStack
-                    align="center"
-                    justify="center"
-                    className="absolute top-4 left-4 w-[47px] h-[26px] bg-error-red rounded-lg"
-                  >
-                    <Text Tag="span" text="Sale" size="md" color="white" />
-                  </HStack>
-                )}
               </HStack>
-              {!isLoading && (
-                <ProductDescription
-                  feedbackLength={totalProductComments || 0}
-                  rating={productRating ? calcAverage(productRating.current) : 0}
-                  size="medium"
-                  product={product?.product as Product}
-                />
-              )}
-            </HStack>
+            )}
 
             <HStack className="w-full rounded-2xl bg-dark-grey p-4">
               <VStack justify="between" align="center" className="w-full">
                 <VStack gap="2" align="center">
-                  <Text Tag="p" text={`Всі відгуки `} size="4xl" color="white" />
+                  <Text
+                    Tag="p"
+                    text={`Всі відгуки `}
+                    size="2xl"
+                    color="white"
+                    className="lg:text-4xl"
+                  />
                   <Text
                     Tag="span"
                     text={`${totalProductComments || 0}`}
-                    size="2xl"
+                    size="sm"
                     color="white"
-                    className="bg-selected-dark px-3 py-2 rounded-lg mt-2"
+                    className="bg-selected-dark px-2 py-1 lg:px-3 lg:py-2 rounded-xl lg:rounded-lg lg:mt-2 lg:text-2xl"
                   />
                 </VStack>
                 {user && user._id !== product?.product?.sellerId && (
@@ -181,7 +206,7 @@ const ProductCommentPage: FC = () => {
                 {productComments?.map((item: IComment, idx: number) => (
                   <div key={item._id} className="w-full">
                     {idx !== 0 && (
-                      <Separator className="bg-selected-dark h-0.5 lg:w-full lg:h-0.5" />
+                      <Separator className="bg-selected-dark h-0.5 lg:w-full lg:h-0.5 mb-4 lg:mb-0" />
                     )}
 
                     <Comment

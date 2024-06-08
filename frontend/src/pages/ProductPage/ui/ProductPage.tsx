@@ -128,7 +128,7 @@ const ProductPage: FC<Props> = () => {
       <Container>
         <ProductCategoriesLinkTree
           categoryId={data?.product.category || ''}
-          className="mb-6"
+          className="mb-4 lg:mb-6"
         />
         <HStack gap="4" align="center" className="lg:gap-5 lg:flex-row">
           <HStack gap="5" className="w-full max-w-[646px]">
