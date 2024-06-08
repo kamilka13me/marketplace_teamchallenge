@@ -3,6 +3,7 @@
 /* eslint-disable no-console */
 import { FC, useState } from 'react';
 
+import FeedbackActionModal from './components/FeedbackActionModal';
 import SortDirectionSelector from './components/SortDirectionSelector';
 import { ComplaintsResponse } from './interfaces/Complaints';
 
@@ -39,7 +40,7 @@ const createUrlQuery = (
 };
 
 const ManagingFeedback: FC = () => {
-  const [sortDirection, setSortDirection] = useState<'-1' | '1'>('-1');
+  const [sortDirection, setSortDirection] = useState<'-1' | '1'>('1');
   const [inputData, setInputData] = useState<string>('');
   const [dateRange, setDateRange] = useState<IRangeDate>({
     startDate: new Date(0),
@@ -48,10 +49,10 @@ const ManagingFeedback: FC = () => {
   });
 
   const [offset, setOffset] = useState(0);
-  const limit = 3;
+  const limit = 4;
   const currentPage = offset / limit + 1;
 
-  const { data } = useAxios<ComplaintsResponse>(
+  const { data, isLoading, refetch } = useAxios<ComplaintsResponse>(
     `${ApiRoutes.COMPLAINTS}${createUrlQuery(limit, offset, sortDirection, inputData, dateRange)}`,
   );
 
@@ -128,16 +129,8 @@ const ManagingFeedback: FC = () => {
             <div className="w-[10%] overflow-hidden">
               {formatDate(complaint.createdAt)}
             </div>
-            <div className="w-[5%] overflow-hidden flex justify-center">
-              <button
-                type="button"
-                onClick={() => {}}
-                className="w-full h-[32px] flex justify-center items-center gap-[4px]"
-              >
-                {[...Array(3)].map((_, index) => (
-                  <div key={index} className="w-[4px] h-[4px] bg-white rounded-full" />
-                ))}
-              </button>
+            <div className="w-[5%] flex justify-center">
+              <FeedbackActionModal complaint={complaint} refetch={refetch} />
             </div>
           </div>
         ))}
