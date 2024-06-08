@@ -29,7 +29,7 @@ interface Response {
   images: string[];
 }
 
-export interface Product {
+interface Product {
   _id: string;
   name: string;
   images: string[];
