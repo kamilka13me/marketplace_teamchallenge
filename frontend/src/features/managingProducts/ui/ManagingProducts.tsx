@@ -326,6 +326,7 @@ const ManagingProducts: FC = () => {
                             height="68px"
                             src={`${product?.images[0]}`}
                             alt="product-card"
+                            className="h-full"
                           />
                         </div>
 
