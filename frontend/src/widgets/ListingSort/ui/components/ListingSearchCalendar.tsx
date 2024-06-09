@@ -147,7 +147,7 @@ const ListingSearchCalendar: FC<Props> = (props) => {
             className="w-[24px] h-[24px] ml-2 lg:ml-5 xl:ml-1"
           />
         </Button>
-        <div className="relative top-0 right-[32px] lg:right-[-1vw] hover:drop-shadow-custom-primary">
+        <div className="relative top-0 right-[32px] lg:right-[-1vw]">
           <CustomCalendar
             calendarIsOpened={calendarIsOpened}
             dates={state}

@@ -32,7 +32,7 @@ const CustomCalendar: FC<Props> = ({
   return (
     <div>
       {calendarIsOpened && (
-        <div className="absolute top-10 w-[319px] lg:w-[382px] lg:right-0 z-20">
+        <div className="absolute top-10 w-[319px] lg:w-[382px] lg:right-0 z-20 hover:drop-shadow-custom-primary">
           <div>
             <VStack className="p-6 bg-selected-dark border-b-[1px] border-disabled rounded-t-2xl">
               <Text
