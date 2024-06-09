@@ -55,7 +55,7 @@ const FeedbackActionModal: FC<Props> = (props) => {
       </button>
 
       {isOpen && (
-        <div className="py-3 px-2 bg-shadow-footer absolute right-[-10px] top-[35px] z-10 rounded-[8px]">
+        <div className="py-3 px-2 bg-shadow-footer absolute right-[-10px] top-[35px] z-10 rounded-[8px] hover:drop-shadow-custom-primary">
           <Button
             variant="clear"
             className="group flex items-center gap-2 w-[180px] p-2.5 pl-[13px] hover:bg-secondary-yellow rounded-lg"
