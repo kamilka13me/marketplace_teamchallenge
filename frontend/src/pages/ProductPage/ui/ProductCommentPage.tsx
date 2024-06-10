@@ -112,10 +112,12 @@ const ProductCommentPage: FC = () => {
     <div className="bg-main-dark min-h-[70vh] py-4 lg:py-10">
       <Container>
         <HStack className="w-full">
-          <ProductCategoriesLinkTree
-            categoryId={product?.product.category || ''}
-            className="mb-4 lg:mb-0"
-          />
+          {!isLoading && (
+            <ProductCategoriesLinkTree
+              categoryId={product?.product.category || ''}
+              className="mb-4 lg:mb-6"
+            />
+          )}
           <HStack align="center" gap="5" className="lg:items-start  lg:flex-row w-full">
             {windowWidth >= 1024 && (
               <HStack
@@ -198,10 +200,9 @@ const ProductCommentPage: FC = () => {
                 )}
               </div>
 
-              <HStack
+              <div
                 ref={wrapperRef}
-                gap="4"
-                className="w-full h-full overflow-auto lg:gap-0 lg:h-[1000px]"
+                className="flex flex-col gap-4 w-full h-full overflow-auto lg:gap-0 lg:h-[1000px]"
               >
                 {productComments?.map((item: IComment, idx: number) => (
                   <div key={item._id} className="w-full">
@@ -221,7 +222,7 @@ const ProductCommentPage: FC = () => {
                 ))}
                 {/* TRIGGER SCROLL */}
                 <div ref={triggerRef} className="h-5 w-10 m-5" />
-              </HStack>
+              </div>
             </HStack>
           </HStack>
         </HStack>
