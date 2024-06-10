@@ -2,6 +2,7 @@ import { AxiosInstance } from 'axios';
 
 import { SellerSchema } from '@/enteties/Seller/model/types/seller';
 import { UserSchema } from '@/enteties/User';
+import { UsersSchema } from '@/enteties/User/model/types/users';
 import { SellerFeedbackPageSchema } from '@/features/managingFeedbacks/model/types/sellerFeedbackSchema';
 import { AdminOffersSchema } from '@/features/managingOffers';
 import { SellerProductsPageSchema } from '@/features/managingProducts';
@@ -13,6 +14,7 @@ import { rtkApi } from '@/shared/api/rtkApi';
 export interface StateSchema {
   login: LoginSchema;
   user: UserSchema;
+  users: UsersSchema;
   sellerInfo: SellerSchema;
   products: ProductsPageSchema;
   sellerProducts: SellerProductsPageSchema;
