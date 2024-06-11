@@ -29,7 +29,7 @@ const StatisticGraph: FC<Props> = (props) => {
   return (
     <Line
       options={{
-        responsive: true,
+        interaction: { mode: 'nearest', intersect: false },
       }}
       data={{
         labels: data.map((item) => new Date(item.date).toISOString().slice(8, 10)),
@@ -40,7 +40,9 @@ const StatisticGraph: FC<Props> = (props) => {
             tension: 0.5,
             borderColor: `rgb(${color})`,
             backgroundColor: `rgba(${color}, 0.2)`,
-            pointRadius: 2.5,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            borderWidth: 1.5,
           },
         ],
       }}
