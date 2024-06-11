@@ -138,7 +138,7 @@ const ProductCommentPage: FC = () => {
                     />
                   )}
 
-                  {product?.product.discount && (
+                  {product?.product.discount ? (
                     <HStack
                       align="center"
                       justify="center"
@@ -146,6 +146,9 @@ const ProductCommentPage: FC = () => {
                     >
                       <Text Tag="span" text="Sale" size="md" color="white" />
                     </HStack>
+                  ) : (
+                    // eslint-disable-next-line react/jsx-no-useless-fragment
+                    <></>
                   )}
                 </HStack>
                 {!isLoading && (
@@ -207,7 +210,7 @@ const ProductCommentPage: FC = () => {
                 {productComments?.map((item: IComment, idx: number) => (
                   <div key={item._id} className="w-full">
                     {idx !== 0 && (
-                      <Separator className="bg-selected-dark h-0.5 lg:w-full lg:h-0.5 mb-4 lg:mb-0" />
+                      <Separator className="bg-selected-dark !h-0.5 lg:w-full lg:h-0.5 mb-4 lg:mb-0" />
                     )}
 
                     <Comment
