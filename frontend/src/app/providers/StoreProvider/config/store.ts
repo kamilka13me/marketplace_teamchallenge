@@ -3,6 +3,7 @@ import { configureStore, ReducersMapObject } from '@reduxjs/toolkit';
 import { StateSchema } from '../config/StateSchema';
 
 import { sellerInfoReducer } from '@/enteties/Seller/model/slice/sellerSlice';
+import { sellersReducer } from '@/enteties/Seller/model/slice/sellersSlice';
 import { userReducer } from '@/enteties/User';
 import { usersReducer } from '@/enteties/User/model/slice/usersSlice';
 import { sellerFeedbackPageReducer } from '@/features/managingFeedbacks';
@@ -24,6 +25,7 @@ export function createReduxStore(initialState?: StateSchema) {
     sellerFeedbacks: sellerFeedbackPageReducer,
     productComments: productCommentsReducer,
     adminOffers: adminOffersReducer,
+    sellers: sellersReducer,
 
     [rtkApi.reducerPath]: rtkApi.reducer,
   };

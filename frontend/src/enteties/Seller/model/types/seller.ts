@@ -1,4 +1,7 @@
+import { EntityState } from '@reduxjs/toolkit';
+
 export interface Seller {
+  _id: string;
   email: string;
   password: string;
   legalName: string;
@@ -37,4 +40,19 @@ export interface SellerSchema {
   isLoading?: boolean;
   error?: string;
   sellerData?: Seller;
+}
+
+export interface SellersSchema extends EntityState<Seller, string> {
+  isLoading?: boolean;
+  error?: string;
+  totalSellers: number;
+
+  // pagination
+  offset: number;
+  limit: number;
+  // filters
+  sortBy: string;
+  sortDirection: '1' | '-1';
+
+  _inited: boolean;
 }
