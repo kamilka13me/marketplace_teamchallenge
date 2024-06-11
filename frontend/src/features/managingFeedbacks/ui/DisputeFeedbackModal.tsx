@@ -2,7 +2,9 @@ import { FC, useState } from 'react';
 
 import ModalWindow from '../../../shared/ui/ModalWindow/ModalWindow';
 
+import { $api } from '@/shared/api/api';
 import cancel from '@/shared/assets/icons/cancel.svg?react';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Input } from '@/shared/ui/Input';
@@ -42,21 +44,24 @@ const DisputeFeedbackModal: FC<Props> = (props) => {
   const { onCloseFunc, commentId, refetch } = props;
 
   const [message, setMessage] = useState('');
-  const [reason, setReason] = useState('');
+  const [reason, setReason] = useState<null | number>(null);
 
-  const onSubmit = () => {
-    // eslint-disable-next-line no-console
-    console.log(message);
-    // eslint-disable-next-line no-console
-    console.log(reason);
-    // eslint-disable-next-line no-console
-    console.log(commentId);
-
-    setMessage('');
-    setReason('');
-    onCloseFunc();
-
-    refetch();
+  const onSubmit = async () => {
+    try {
+      await $api.post(ApiRoutes.SUPPORT_COMPLAINT, {
+        commentId,
+        content: message,
+        reason,
+      });
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(e);
+    } finally {
+      setMessage('');
+      setReason(null);
+      onCloseFunc();
+      refetch();
+    }
   };
 
   return (
@@ -90,7 +95,7 @@ const DisputeFeedbackModal: FC<Props> = (props) => {
         }}
       >
         <HStack gap="4" className="mb-6">
-          {disputeTypes.map((item) => (
+          {disputeTypes.map((item, i) => (
             <div key={item.id} className="inline-flex items-center">
               {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
               <label
@@ -100,7 +105,7 @@ const DisputeFeedbackModal: FC<Props> = (props) => {
                 <input
                   name={item.name}
                   type="radio"
-                  onChange={() => setReason(item.text)}
+                  onChange={() => setReason(i)}
                   required
                   className="peer relative h-5 w-5 cursor-pointer appearance-none rounded-full border border-main-white text-main-white"
                 />
