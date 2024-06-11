@@ -175,6 +175,52 @@ const adminController = {
       res.status(500).json({ message: 'Внутрішня помилка сервера' });
     }
   },
+
+  deleteCoplaints: async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      const complaint = await Complaint.findByIdAndDelete(id);
+
+      if (!complaint) {
+        return res.status(404).json({ message: 'Complaint not found' });
+      }
+
+      res.status(200).json({ message: 'Complaint deleted successfully' });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+  deleteCoplaintsAndComment: async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      const complaint = await Complaint.findByIdAndDelete(id);
+
+      if (!complaint) {
+        return res.status(404).json({ message: 'Complaint not found' });
+      }
+
+      const comment = await Comment.findByIdAndDelete(complaint.commentId);
+
+      if (comment) {
+        await Rating.findOneAndDelete({
+          authorId: comment.authorId,
+          productId: comment.productId,
+        });
+      }
+
+      res
+        .status(200)
+        .json({ message: 'Complaint, comment, and rating deleted successfully' });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  },
 };
 
 export default adminController;
