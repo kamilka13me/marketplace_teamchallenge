@@ -93,9 +93,9 @@ supportRoute.post(
  *                 required: true
  *                 description: Content
  *               reason:
- *                 type: string
+ *                 type: integer
  *                 required: true
- *                 description: Content
+ *                 enum: [0,1,2,3,4,5]
  *
  *
  *     responses:
