@@ -3,8 +3,10 @@ import { FC, useState } from 'react';
 
 import { Complaint } from '../interfaces/Complaints';
 
+import { $api } from '@/shared/api/api';
 import save from '@/shared/assets/icons/save.svg?react';
 import trash from '@/shared/assets/icons/trash2.svg?react';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
@@ -20,8 +22,7 @@ const FeedbackActionModal: FC<Props> = (props) => {
 
   const handleClickSave = async () => {
     try {
-      console.log(`Save ${complaint._id}`);
-      // await $api.delete(`${ApiRoutes.COMPLAINTS}/${complaint._id}`);
+      await $api.delete(`${ApiRoutes.COMPLAINTS}/${complaint._id}`);
     } catch (error) {
       console.error(error);
     } finally {
@@ -32,8 +33,7 @@ const FeedbackActionModal: FC<Props> = (props) => {
 
   const handleClickDelete = async () => {
     try {
-      console.log(`Delete ${complaint._id}`);
-      // await $api.delete(`${ApiRoutes.COMPLAINTS}/${complaint._id}`);
+      await $api.delete(`${ApiRoutes.COMPLAINTS}/${complaint._id}/with-comment-rating`);
     } catch (error) {
       console.error(error);
     } finally {
