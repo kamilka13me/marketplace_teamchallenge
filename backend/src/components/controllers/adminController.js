@@ -10,8 +10,6 @@ const adminController = {
   getComplaints: async (req, res) => {
     try {
       let { limit = 10, offset = 0, sortDirection = 1 } = req.query;
-      const { startDate, endDate } = req.query;
-      let { limit = 10, offset = 0, sortDirection = 1 } = req.query;
 
       const { startDate, endDate, search } = req.query;
 
