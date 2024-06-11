@@ -14,6 +14,11 @@ const AdminRoute = express.Router();
  *       - Complaints
  *     parameters:
  *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: search
+ *       - in: query
  *         name: limit
  *         schema:
  *           type: integer
