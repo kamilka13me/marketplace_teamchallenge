@@ -1,6 +1,4 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-console */
 import { FC, useState } from 'react';
 
 import FeedbackActionModal from './components/FeedbackActionModal';

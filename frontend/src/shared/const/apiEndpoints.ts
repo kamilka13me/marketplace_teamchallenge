@@ -16,6 +16,7 @@ export enum ApiRoutes {
   PRODUCT_STATUS = '/products/updateStatus',
   RATINGS = '/feedback/seller',
   SUPPORT = '/support',
+  SUPPORT_COMPLAINT = '/support/complaint',
   WISHLIST = '/wishlist',
   COMPLAINTS = '/admin/complaints',
 }

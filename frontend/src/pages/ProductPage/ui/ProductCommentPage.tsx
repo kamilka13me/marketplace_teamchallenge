@@ -112,10 +112,12 @@ const ProductCommentPage: FC = () => {
     <div className="bg-main-dark min-h-[70vh] py-4 lg:py-10">
       <Container>
         <HStack className="w-full">
-          <ProductCategoriesLinkTree
-            categoryId={product?.product.category || ''}
-            className="mb-4 lg:mb-0"
-          />
+          {!isLoading && (
+            <ProductCategoriesLinkTree
+              categoryId={product?.product.category || ''}
+              className="mb-4 lg:mb-6"
+            />
+          )}
           <HStack align="center" gap="5" className="lg:items-start  lg:flex-row w-full">
             {windowWidth >= 1024 && (
               <HStack
@@ -136,7 +138,7 @@ const ProductCommentPage: FC = () => {
                     />
                   )}
 
-                  {product?.product.discount && (
+                  {product?.product.discount ? (
                     <HStack
                       align="center"
                       justify="center"
@@ -144,6 +146,9 @@ const ProductCommentPage: FC = () => {
                     >
                       <Text Tag="span" text="Sale" size="md" color="white" />
                     </HStack>
+                  ) : (
+                    // eslint-disable-next-line react/jsx-no-useless-fragment
+                    <></>
                   )}
                 </HStack>
                 {!isLoading && (
@@ -198,15 +203,14 @@ const ProductCommentPage: FC = () => {
                 )}
               </div>
 
-              <HStack
+              <div
                 ref={wrapperRef}
-                gap="4"
-                className="w-full h-full overflow-auto lg:gap-0 lg:h-[1000px]"
+                className="flex flex-col gap-4 w-full h-full overflow-auto lg:gap-0 lg:h-[1000px]"
               >
                 {productComments?.map((item: IComment, idx: number) => (
                   <div key={item._id} className="w-full">
                     {idx !== 0 && (
-                      <Separator className="bg-selected-dark h-0.5 lg:w-full lg:h-0.5 mb-4 lg:mb-0" />
+                      <Separator className="bg-selected-dark !h-0.5 lg:w-full lg:h-0.5 mb-4 lg:mb-0" />
                     )}
 
                     <Comment
@@ -221,7 +225,7 @@ const ProductCommentPage: FC = () => {
                 ))}
                 {/* TRIGGER SCROLL */}
                 <div ref={triggerRef} className="h-5 w-10 m-5" />
-              </HStack>
+              </div>
             </HStack>
           </HStack>
         </HStack>
