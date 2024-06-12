@@ -350,7 +350,7 @@ const sellerController = {
 
       // Check if the status is valid
 
-      const seller = await Seller.findOne(sellerId);
+      const seller = await Seller.findOne({ sellerId });
 
       if (!seller) {
         return res.status(404).json({ message: 'seller not found' });
