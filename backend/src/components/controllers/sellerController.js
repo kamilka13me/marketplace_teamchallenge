@@ -191,7 +191,6 @@ const sellerController = {
         select: 'username email isAccountConfirm isAccountActive',
       });
 
-      console.log(sellers);
       res.status(200).json({ sellers });
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -199,38 +198,6 @@ const sellerController = {
       res.status(500).send(error.message);
     }
   },
-  // getSellers: async (req, res) => {
-  //   try {
-  //     // Find the role "seller"
-  //     const sellerRole = await Role.findOne({ name: 'seller' });
-
-  //     if (!sellerRole) {
-  //       return res.status(404).json({ message: 'Role "seller" not found' });
-  //     }
-
-  //     // Find all users with the "seller" role
-  //     const users = await User.find({ role: sellerRole._id }).populate('role');
-
-  //     // user callback
-  //     const updatedUsers = users.map((user) => {
-  //       const sellerCallback = {
-  //         _id: user._id,
-  //         username: user.username || null,
-  //         email: user.email,
-  //         role: user.role.name,
-  //         isAccountConfirm: user.isAccountConfirm,
-  //       };
-
-  //       return sellerCallback;
-  //     });
-
-  //     res.status(200).json({ users: updatedUsers });
-  //   } catch (error) {
-  //     // eslint-disable-next-line no-console
-  //     console.error(error);
-  //     res.status(500).send(error.message);
-  //   }
-  // },
 
   // get all products
   getAllProducts: async (req, res) => {
