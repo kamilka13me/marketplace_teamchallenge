@@ -142,12 +142,6 @@ supportRoute.post('/complaint', supportController.createComplaint);
  *           format: date-time
  *         description: End date for filtering messages (inclusive)
  *       - in: query
- *         name: status
- *         schema:
- *           type: string
- *           enum: [new, consider, work, closed]
- *         description: Status for filtering messages
- *       - in: query
  *         name: search
  *         schema:
  *           type: string

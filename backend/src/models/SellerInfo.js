@@ -120,6 +120,7 @@ const sellerSchema = new mongoose.Schema({
   idStateRegister: { type: String, required: false },
   identificNumber: { type: String, required: false },
   tax: { type: Boolean, required: false },
+  subscribe: { type: String, required: false, default: 'basic' },
 });
 
 const Seller = mongoose.model('Seller', sellerSchema);
