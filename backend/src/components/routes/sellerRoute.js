@@ -540,13 +540,13 @@ sellerRoute.post('/updateSellerInfo', idToReq(), sellerController.updateSellerIn
 
 /**
  * @swagger
- * /seller/{id}:
+ * /seller/{sellerId}:
  *   put:
  *     summary: Update subscribe status by ID
  *     tags: [Seller]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: sellerId
  *         required: true
  *         schema:
  *           type: string
@@ -572,6 +572,6 @@ sellerRoute.post('/updateSellerInfo', idToReq(), sellerController.updateSellerIn
  *         description: Server error
  */
 
-sellerRoute.put('/:id', sellerController.updateSubscribe);
+sellerRoute.put('/:sellerId', sellerController.updateSubscribe);
 
 export default sellerRoute;
