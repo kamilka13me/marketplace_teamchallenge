@@ -229,19 +229,19 @@ export const testData = {
     },
     {
       date: '2022-01-26T00:00:00.000Z',
-      count: 50,
+      count: 80,
     },
     {
       date: '2022-01-27T00:00:00.000Z',
-      count: 40,
+      count: 120,
     },
     {
       date: '2022-01-28T00:00:00.000Z',
-      count: 30,
+      count: 90,
     },
     {
       date: '2022-01-29T00:00:00.000Z',
-      count: 40,
+      count: 60,
     },
     {
       date: '2022-01-30T00:00:00.000Z',
@@ -249,7 +249,7 @@ export const testData = {
     },
     {
       date: '2022-01-31T00:00:00.000Z',
-      count: 60,
+      count: 40,
     },
   ],
   openContactsCurrentMonth: 240,

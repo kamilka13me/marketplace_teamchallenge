@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { FC } from 'react';
 
 import {
@@ -24,12 +23,18 @@ interface Props {
 const StatisticGraph: FC<Props> = (props) => {
   const { color, data } = props;
 
-  console.log(data);
-
   return (
     <Line
       options={{
         interaction: { mode: 'nearest', intersect: false },
+        scales: {
+          x: {
+            ticks: {
+              color: '#A8A8A8',
+            },
+          },
+          y: { beginAtZero: true, min: 0, suggestedMax: 100 },
+        },
       }}
       data={{
         labels: data.map((item) => new Date(item.date).toISOString().slice(8, 10)),
