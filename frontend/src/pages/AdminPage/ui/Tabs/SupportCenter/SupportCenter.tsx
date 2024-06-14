@@ -205,6 +205,7 @@ const SupportCenter: FC = () => {
             dateRange={dateRange}
             setDateRange={setDateRange}
             classNameDateSort="hidden"
+            classNameCalendar="right-[32px]"
           />
         </div>
 

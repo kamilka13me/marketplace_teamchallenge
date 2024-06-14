@@ -36,7 +36,10 @@ const ListingByDate: FC = () => {
         {sortingOpen && <SpecyfyingSorting />}
       </div>
       <ListingSearchInput />
-      <ListingSearchCalendar classNameDateSort="hidden" />
+      <ListingSearchCalendar
+        classNameDateSort="hidden"
+        classNameCalendar="right-[32px]"
+      />
     </VStack>
   );
 };
