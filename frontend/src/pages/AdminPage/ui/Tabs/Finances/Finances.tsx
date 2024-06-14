@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
-
-import axios from 'axios';
+import { useState } from 'react';
 
 import AdminSubscription from './component/AdminSubscription';
 
 import { $api } from '@/shared/api/api';
 import Cancel from '@/shared/assets/icons/cancel.svg?react';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
+import useAxios from '@/shared/lib/hooks/useAxios';
 import { Icon } from '@/shared/ui/Icon';
 import { ModalWindow } from '@/shared/ui/ModalWindow';
+import Pagination from '@/shared/ui/Pagination/Pagination';
 import { Text } from '@/shared/ui/Text';
 import ListingSearchInput from '@/widgets/ListingSort/ui/components/ListingSearchInput';
 
@@ -21,44 +21,63 @@ export interface Seller {
   subscribe: string;
 }
 
+export interface SellerRes {
+  totalCount: number;
+  sellers: Seller[];
+}
+
 const Finances = () => {
-  const [setInputData] = useState<string>('');
+  const [inputData, setInputData] = useState<string>('');
   const [isTarifOpen, setIsTarifOpen] = useState<boolean>(false);
   const [selectedSeller, setSelectedSeller] = useState<Seller | null>(null);
-  const [sellersData, setSellersData] = useState<Seller[]>([]);
+  // const [sellersData, setSellersData] = useState<Seller[]>([]);
 
-  useEffect(() => {
-    fetchSellersData();
-  }, []);
+  const createUrlQuery = (
+    limit: number | undefined,
+    offset: number | undefined,
+    inputData: string | undefined,
+  ) => {
+    let url = `?`;
 
-  const fetchSellersData = async () => {
-    try {
-      const response = await $api.get(ApiRoutes.SELLER);
+    if (limit) url += `limit=${limit}&`;
+    if (offset) url += `offset=${offset}&`;
+    if (inputData) url += `search=${inputData}&`;
 
-      setSellersData(response.data.sellers);
-    } catch (error) {
-      /* eslint-disable no-console */
-      console.error('Помилка під час завантаження даних продавців:', error);
-    }
+    //  return url.slice(0, -1);
+
+    return url;
   };
+
+  const [offset, setOffset] = useState(0);
+
+  const limit = 7;
+  const currentPage = offset / limit + 1;
+
+  // const { data, isLoading, refetch } = useAxios<SellerRes>(
+  const { data } = useAxios<SellerRes>(
+    `${ApiRoutes.SELLER}${createUrlQuery(limit, offset, inputData)}`,
+  );
 
   const openTarifModal = (seller: Seller) => {
     setSelectedSeller(seller);
     setIsTarifOpen(true);
   };
 
+  const fetchNext = () => setOffset(offset + limit);
+  const fetchPrev = () => setOffset(offset - limit);
+  const handleClickPage = (pageNumber: number) => setOffset(limit * (pageNumber - 1));
+
   const updateTariff = async (sellerId: string, newTariff: string) => {
-    const API_URL = `https://alicesocial.pp.ua:3001/api/seller/${sellerId}`;
-    // const API_URL = $api.get(`/api${ApiRoutes.SELLER}/${sellerId}`);
+    // const API_URL = `https://alicesocial.pp.ua:3001/api/seller/${sellerId}`;
+    const API_URL = `${ApiRoutes.SELLER}/${sellerId}`;
 
     try {
-      await axios.put(API_URL, { subscribe: newTariff });
-
-      await fetchSellersData();
+      await $api.put(API_URL, { subscribe: newTariff });
 
       setIsTarifOpen(false);
       setSelectedSeller(null);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Помилка під час оновлення тарифного плану:', error);
     }
   };
@@ -92,7 +111,7 @@ const Finances = () => {
           <li className="text-center">Дія</li>
         </ul>
         <ul>
-          {sellersData.map((seller, index) => (
+          {data?.sellers.map((seller, index) => (
             <li
               key={seller._id}
               className={`px-4 py-2 flex ${index % 2 === 0 ? 'bg-dark-grey' : 'bg-selected-dark'}`}
@@ -131,6 +150,15 @@ const Finances = () => {
             </li>
           ))}
         </ul>
+        <Pagination
+          dataLength={data?.totalCount || 0}
+          itemsPerPage={limit}
+          currentPage={currentPage}
+          setPage={handleClickPage}
+          offset={offset}
+          fetchNext={fetchNext}
+          fetchPrev={fetchPrev}
+        />
       </div>
       {isTarifOpen && selectedSeller && (
         <ModalWindow
@@ -153,7 +181,7 @@ const Finances = () => {
 
           <AdminSubscription
             seller={selectedSeller}
-            onPlanSelect={(newPlan) => updateTariff(selectedSeller.sellerId._id, newPlan)}
+            onPlanSelect={(newPlan) => updateTariff(selectedSeller._id, newPlan)}
           />
         </ModalWindow>
       )}
