@@ -201,7 +201,11 @@ const SupportCenter: FC = () => {
       <div className="flex flex-col gap-[15px] items-center justify-between w-full bg-dark-grey rounded-2xl lg:p-[16px]">
         <div className="flex flex-row items-center justify-between w-full">
           <ListingSearchInput setInputData={setInputData} />
-          <ListingSearchCalendar dateRange={dateRange} setDateRange={setDateRange} />
+          <ListingSearchCalendar
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            classNameDateSort="hidden"
+          />
         </div>
 
         <div className="w-full flex flex-col gap-2 lg:gap-0">

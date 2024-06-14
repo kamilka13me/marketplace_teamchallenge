@@ -10,10 +10,11 @@ import { Input } from '@/shared/ui/Input';
 interface Props {
   setInputData?: (e: string) => void;
   placeholder?: string;
+  className?: string;
 }
 
 const ListingSearchInput: FC<Props> = (props) => {
-  const { setInputData, placeholder } = props;
+  const { setInputData, placeholder, className } = props;
 
   const [value, setValue] = useState('');
 
@@ -28,7 +29,9 @@ const ListingSearchInput: FC<Props> = (props) => {
   };
 
   return (
-    <div className="flex flex-nowrap items-center hover:drop-shadow-custom-primary">
+    <div
+      className={`flex flex-nowrap items-center hover:drop-shadow-custom-primary ${className}`}
+    >
       <Input
         name="searchInput"
         type="text"

@@ -25,7 +25,7 @@ const SortDirectionSelector: FC<Props> = (props) => {
         size="sm"
         font-normal
         color="white"
-        className="w-[99px] hidden md:block"
+        className="w-[99px]"
       />
 
       <Button variant="clear" onClick={() => setSortingOpen((prev) => !prev)}>
