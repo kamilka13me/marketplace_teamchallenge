@@ -23,6 +23,7 @@ export interface IRangeDate {
 interface Props {
   dateRange?: IRangeDate;
   setDateRange?: (range: IRangeDate) => void;
+  classNameDateSort?: string;
 }
 
 const adjustDate = (date: Date, days: number) => {
@@ -32,7 +33,7 @@ const adjustDate = (date: Date, days: number) => {
 };
 
 const ListingSearchCalendar: FC<Props> = (props) => {
-  const { dateRange, setDateRange } = props;
+  const { dateRange, setDateRange, classNameDateSort } = props;
 
   const [state, setState] = useState<IRangeDate[]>([
     dateRange || {
@@ -99,7 +100,7 @@ const ListingSearchCalendar: FC<Props> = (props) => {
 
   return (
     <div className="order-first lg:order-last flex items-center justify-center gap-[8px]">
-      <div className="hidden xl:block">
+      <div className={`${classNameDateSort} xl:block`}>
         <DateSortWidget
           onSelectRange={(type: RangeSortType) => {
             const endDate = new Date();
