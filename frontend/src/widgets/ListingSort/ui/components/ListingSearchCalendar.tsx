@@ -24,6 +24,7 @@ interface Props {
   dateRange?: IRangeDate;
   setDateRange?: (range: IRangeDate) => void;
   classNameDateSort?: string;
+  classNameCalendar?: string;
 }
 
 const adjustDate = (date: Date, days: number) => {
@@ -33,7 +34,7 @@ const adjustDate = (date: Date, days: number) => {
 };
 
 const ListingSearchCalendar: FC<Props> = (props) => {
-  const { dateRange, setDateRange, classNameDateSort } = props;
+  const { dateRange, setDateRange, classNameDateSort, classNameCalendar } = props;
 
   const [state, setState] = useState<IRangeDate[]>([
     dateRange || {
@@ -148,7 +149,9 @@ const ListingSearchCalendar: FC<Props> = (props) => {
             className="w-[24px] h-[24px] ml-2 lg:ml-5 xl:ml-1"
           />
         </Button>
-        <div className="relative top-0 right-[32px] lg:right-[-1vw]">
+        <div
+          className={`relative top-0 right-[32px] lg:right-[-1vw] ${classNameCalendar}`}
+        >
           <CustomCalendar
             calendarIsOpened={calendarIsOpened}
             dates={state}

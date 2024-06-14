@@ -80,7 +80,7 @@ const components: FC[] = [
   WishlistProfileTab,
   WishlistProfileTab,
   ManagingOffersMobile,
-  ManagingContent,
+  ManagingFeedback,
   ManagingContent,
   ManagingContent,
   ManagingContent,
