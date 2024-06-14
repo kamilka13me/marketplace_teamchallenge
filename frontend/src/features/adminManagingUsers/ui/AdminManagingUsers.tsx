@@ -1,7 +1,14 @@
 import { FC, useEffect, useState } from 'react';
 
-import { fetchAllUsers } from '@/enteties/User';
-import { getIsUsersLoading } from '@/enteties/User/model/selectors/getUsersSelectors';
+import { fetchAllUsers, usersActions } from '@/enteties/User';
+import {
+  getIsUsersLoading,
+  getUsersLength,
+  getUsersLimit,
+  getUsersOffset,
+} from '@/enteties/User/model/selectors/getUsersSelectors';
+import { fetchNextUsers } from '@/enteties/User/model/services/fetchNextUsers';
+import { fetchPrevUsers } from '@/enteties/User/model/services/fetchPrevUsers';
 import { getUsers } from '@/enteties/User/model/slice/usersSlice';
 import AdminManagingUsersController from '@/features/adminManagingUsers/ui/AdminManagingUsersController';
 import ManagingUserActionModal from '@/features/adminManagingUsers/ui/ManagingUserActionModal';
@@ -12,19 +19,40 @@ import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Input } from '@/shared/ui/Input';
+import Pagination from '@/shared/ui/Pagination/Pagination';
 import { HStack } from '@/shared/ui/Stack';
 
 const AdminManagingUsers: FC = () => {
-  // const { data, isLoading } = useAxios<ApiResponse>(ApiRoutes.USER);
+  const [currentPage, setCurrentPage] = useState(1);
 
+  const [searchParams, setSearchParams] = useState('');
   const [isBanModalOpen, setIsBanModalOpen] = useState(false);
   const [isRecoveryPasswordModalOpen, setIsRecoveryPasswordModalOpen] = useState(false);
 
   const dispatch = useAppDispatch();
 
   const data = useAppSelector(getUsers.selectAll);
-
   const isLoading = useAppSelector(getIsUsersLoading);
+  const offset = useAppSelector(getUsersOffset);
+  const totalUsers = useAppSelector(getUsersLength);
+  const limit = useAppSelector(getUsersLimit);
+
+  const handleClickPage = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    dispatch(usersActions.setOffset((pageNumber - 1) * limit));
+  };
+
+  const fetchNext = () => {
+    setCurrentPage((prev) => prev + 1);
+
+    dispatch(fetchNextUsers());
+  };
+
+  const fetchPrev = () => {
+    setCurrentPage((prev) => prev - 1);
+
+    dispatch(fetchPrevUsers());
+  };
 
   useEffect(() => {
     dispatch(fetchAllUsers({}));
@@ -63,6 +91,8 @@ const AdminManagingUsers: FC = () => {
               name="searchInput"
               type="text"
               variant="search"
+              value={searchParams}
+              onChange={(e) => setSearchParams(e.currentTarget.value)}
               className="min-h-[38px] w-full bg-selected-dark"
               classNameBlockWrap="w-full"
             />
@@ -70,7 +100,11 @@ const AdminManagingUsers: FC = () => {
               variant="primary"
               className="rounded-l-none !px-[14px] py-[9px]"
               type="submit"
-              onClick={() => {}}
+              onClick={() => {
+                dispatch(usersActions.setSearchString(searchParams));
+                dispatch(usersActions.setOffset(0));
+                dispatch(fetchAllUsers({}));
+              }}
             >
               <Icon Svg={search} width={20} height={20} />
             </Button>
@@ -173,6 +207,15 @@ const AdminManagingUsers: FC = () => {
             ))}
           </tbody>
         </table>
+        <Pagination
+          dataLength={totalUsers || 0}
+          itemsPerPage={limit}
+          currentPage={currentPage}
+          setPage={handleClickPage}
+          offset={offset}
+          fetchNext={fetchNext}
+          fetchPrev={fetchPrev}
+        />
       </div>
     </HStack>
   );

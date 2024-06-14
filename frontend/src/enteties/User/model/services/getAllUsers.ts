@@ -2,6 +2,11 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { ThunkConfig } from '@/app/providers/StoreProvider/config/StateSchema';
 import { User } from '@/enteties/User';
+import {
+  getUsersLimit,
+  getUsersOffset,
+  getUsersSearch,
+} from '@/enteties/User/model/selectors/getUsersSelectors';
 import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 
@@ -19,10 +24,22 @@ export const fetchAllUsers = createAsyncThunk<
   FetchUsersProps,
   ThunkConfig<string>
 >('users/fetchUsers', async (props, thunkApi) => {
-  const { rejectWithValue } = thunkApi;
+  const { rejectWithValue, getState } = thunkApi;
+
+  const limit = getUsersLimit(getState());
+  const offset = getUsersOffset(getState());
+  const search = getUsersSearch(getState());
+  const role = 'user';
 
   try {
-    const response = await $api.get<ApiResponse>(ApiRoutes.USER);
+    const response = await $api.get<ApiResponse>(`${ApiRoutes.USER}`, {
+      params: {
+        limit,
+        offset,
+        search,
+        role,
+      },
+    });
 
     if (!response.data) {
       throw new Error();

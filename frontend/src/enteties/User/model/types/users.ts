@@ -11,8 +11,7 @@ export interface UsersSchema extends EntityState<User, string> {
   offset: number;
   limit: number;
   // filters
-  sortBy: string;
-  sortDirection: '1' | '-1';
+  search: string;
 
   _inited: boolean;
 }

@@ -26,24 +26,19 @@ export const usersSlice = createSlice({
     limit: 5,
     offset: 0,
 
-    sortBy: '',
-    sortDirection: '-1',
+    search: '',
 
     _inited: false,
   }),
   reducers: {
-    setSortBy: (state, action: PayloadAction<string>) => {
-      state.sortBy = action.payload;
+    setSearchString: (state, action: PayloadAction<string>) => {
+      state.search = action.payload;
     },
     setOffset: (state, action: PayloadAction<number>) => {
       state.offset = action.payload;
     },
-    setSortDirection: (state, action: PayloadAction<'1' | '-1'>) => {
-      state.sortDirection = action.payload;
-    },
     clearSortParams: (state) => {
-      state.sortBy = '';
-      state.sortDirection = '1';
+      state.search = '';
     },
     initState: (state) => {
       state._inited = true;
