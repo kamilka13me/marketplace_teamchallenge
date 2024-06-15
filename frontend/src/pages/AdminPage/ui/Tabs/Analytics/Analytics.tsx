@@ -1,12 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 import StatisticGraph from './components/StatisticGraph';
-import { testData } from './testData';
+import { StatisticData } from './interfaces/StatisticData';
+// import { testData } from './testData';
 
 import people from '@/shared/assets/icons/people.svg?react';
 import userEdit from '@/shared/assets/icons/user-edit.svg?react';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
+import useAxios from '@/shared/lib/hooks/useAxios';
 import { Icon } from '@/shared/ui/Icon';
+import { IRangeDate } from '@/widgets/ListingSort/ui/components/ListingSearchCalendar';
 
 const dateMap = {
   '01': 'Січень',
@@ -23,7 +28,51 @@ const dateMap = {
   '12': 'Грудень',
 };
 
+const getStartOfMonth = () => {
+  const startOfMonth = new Date();
+
+  startOfMonth.setDate(1);
+  startOfMonth.setHours(0, 0, 0, 0);
+
+  return startOfMonth;
+};
+
+const getEndOfMonth = () => {
+  const endOfMonth = new Date();
+
+  endOfMonth.setMonth(endOfMonth.getMonth() + 1);
+  endOfMonth.setDate(0);
+  endOfMonth.setHours(23, 59, 59, 999);
+
+  return endOfMonth;
+};
+
+const createUrlQuery = (dateRange: IRangeDate | undefined) => {
+  let url = `?`;
+
+  if (dateRange?.startDate) url += `startDate=${dateRange.startDate.toISOString()}&`;
+  if (dateRange?.endDate) url += `endDate=${dateRange.endDate.toISOString()}`;
+
+  return url;
+};
+
 const Analytics: FC = () => {
+  const [dateRange, setDateRange] = useState<IRangeDate>({
+    startDate: getStartOfMonth(),
+    endDate: getEndOfMonth(),
+    key: 'selection',
+  });
+
+  const { data: testData, isLoading } = useAxios<StatisticData>(
+    `${ApiRoutes.STATISTICS}${createUrlQuery(dateRange)}`,
+  );
+
+  console.log(testData);
+
+  if (isLoading || !testData) {
+    return <div>Loading...</div>;
+  }
+
   const selectedMonth =
     dateMap[testData.newUsersPerDay[0]?.date.slice(5, 7) as keyof typeof dateMap];
 
