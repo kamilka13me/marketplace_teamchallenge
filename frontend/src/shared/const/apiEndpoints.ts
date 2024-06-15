@@ -19,4 +19,5 @@ export enum ApiRoutes {
   SUPPORT_COMPLAINT = '/support/complaint',
   WISHLIST = '/wishlist',
   COMPLAINTS = '/admin/complaints',
+  STATISTICS = '/admin/statistics',
 }
