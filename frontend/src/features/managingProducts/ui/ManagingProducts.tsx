@@ -431,7 +431,7 @@ const ManagingProducts: FC = () => {
                             setCurrentProductIdForEditing(product._id);
                           }}
                           Svg={edit}
-                          className="cursor-pointer"
+                          className="cursor-pointer !stroke-disabled"
                         />
                         <Icon
                           Svg={trashbin}

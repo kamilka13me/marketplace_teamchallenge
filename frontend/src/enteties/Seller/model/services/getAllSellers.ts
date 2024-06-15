@@ -1,13 +1,21 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { ThunkConfig } from '@/app/providers/StoreProvider/config/StateSchema';
-import { Seller } from '@/enteties/Seller/model/types/seller';
+import {
+  getSellersEndDate,
+  getSellersLimit,
+  getSellersOffset,
+  getSellersSearch,
+  getSellersSortDirection,
+  getSellersStartDate,
+} from '@/enteties/Seller/model/selectors/getSellersSelectors';
+import { UserSeller } from '@/enteties/Seller/model/types/seller';
 import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 
 interface ApiResponse {
-  count: number;
-  users: Seller[];
+  totalCount: number;
+  users: UserSeller[];
 }
 
 interface FetchSellersProps {
@@ -19,10 +27,29 @@ export const fetchAllSellers = createAsyncThunk<
   FetchSellersProps,
   ThunkConfig<string>
 >('sellers/fetchSellers', async (props, thunkApi) => {
-  const { rejectWithValue } = thunkApi;
+  const { rejectWithValue, getState } = thunkApi;
+
+  const startDate = getSellersStartDate(getState());
+  const endDate = getSellersEndDate(getState());
+  const search = getSellersSearch(getState());
+  const limit = getSellersLimit(getState());
+  const offset = getSellersOffset(getState());
+  const sortDirection = getSellersSortDirection(getState());
 
   try {
-    const response = await $api.get<ApiResponse>(ApiRoutes.SELLER);
+    const response = await $api.get<ApiResponse>(
+      `${ApiRoutes.USER}?role=seller&sortBy=created_at`,
+      {
+        params: {
+          startDate,
+          endDate,
+          search,
+          limit,
+          offset,
+          sortDirection,
+        },
+      },
+    );
 
     if (!response.data) {
       throw new Error();

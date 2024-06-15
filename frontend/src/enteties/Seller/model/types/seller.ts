@@ -19,6 +19,13 @@ export interface Seller {
     messenger: string;
     phone: string;
   }[];
+  sellerId: {
+    _id: string;
+    username: string;
+    email: string;
+    isAccountConfirm: boolean;
+    isAccountActive: boolean;
+  };
   descriptCompany: string;
   generalName: string;
   generalCommunication: {
@@ -29,6 +36,26 @@ export interface Seller {
   emailAdvertisement: boolean;
   emailMessage: boolean;
   conditions: boolean;
+}
+
+export type SellerStatus = 'active' | 'blocked' | 'work' | 'close';
+
+export interface UserSeller {
+  accountStatus: SellerStatus;
+  activity: {
+    _id: string;
+    date: string;
+  };
+  created_at: string;
+  email: string;
+  isAccountActive: boolean;
+  isAccountConfirm: boolean;
+  role: {
+    _id: string;
+    name: string;
+  };
+  username: string;
+  _id: string;
 }
 
 export interface SellerContact {
@@ -42,7 +69,7 @@ export interface SellerSchema {
   sellerData?: Seller;
 }
 
-export interface SellersSchema extends EntityState<Seller, string> {
+export interface SellersSchema extends EntityState<UserSeller, string> {
   isLoading?: boolean;
   error?: string;
   totalSellers: number;
@@ -51,7 +78,9 @@ export interface SellersSchema extends EntityState<Seller, string> {
   offset: number;
   limit: number;
   // filters
-  sortBy: string;
+  startDate: string | Date;
+  endDate: string | Date;
+  search: string;
   sortDirection: '1' | '-1';
 
   _inited: boolean;

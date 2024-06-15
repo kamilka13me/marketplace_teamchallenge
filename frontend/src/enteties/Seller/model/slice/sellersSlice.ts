@@ -2,10 +2,10 @@ import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolki
 
 import { StateSchema } from '@/app/providers/StoreProvider';
 import { fetchAllSellers } from '@/enteties/Seller/model/services/getAllSellers';
-import { Seller, SellersSchema } from '@/enteties/Seller/model/types/seller';
+import { SellersSchema, UserSeller } from '@/enteties/Seller/model/types/seller';
 
 export const sellersAdapter = createEntityAdapter({
-  selectId: (seller: Seller) => seller._id,
+  selectId: (seller: UserSeller) => seller._id,
 });
 
 export const getSellers = sellersAdapter.getSelectors<StateSchema>(
@@ -22,17 +22,24 @@ export const usersSlice = createSlice({
     totalSellers: 0,
 
     // pagination
-    limit: 5,
+    limit: 8,
     offset: 0,
 
-    sortBy: '',
-    sortDirection: '-1',
-
+    startDate: '',
+    endDate: '',
+    search: '',
+    sortDirection: '1',
     _inited: false,
   }),
   reducers: {
-    setSortBy: (state, action: PayloadAction<string>) => {
-      state.sortBy = action.payload;
+    setStartDate: (state, action: PayloadAction<Date>) => {
+      state.startDate = action.payload;
+    },
+    setEndDate: (state, action: PayloadAction<Date>) => {
+      state.endDate = action.payload;
+    },
+    setSearch: (state, action: PayloadAction<string>) => {
+      state.search = action.payload;
     },
     setOffset: (state, action: PayloadAction<number>) => {
       state.offset = action.payload;
@@ -41,7 +48,6 @@ export const usersSlice = createSlice({
       state.sortDirection = action.payload;
     },
     clearSortParams: (state) => {
-      state.sortBy = '';
       state.sortDirection = '1';
     },
     initState: (state) => {
@@ -62,7 +68,7 @@ export const usersSlice = createSlice({
         state.isLoading = false;
 
         sellersAdapter.setAll(state, action.payload.users);
-        state.totalSellers = action.payload.count;
+        state.totalSellers = action.payload.totalCount;
       })
       .addCase(fetchAllSellers.rejected, (state, action) => {
         state.isLoading = false;
