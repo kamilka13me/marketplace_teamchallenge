@@ -20,10 +20,11 @@ interface Props {
   userId: string;
   openForm: () => void;
   openSellerActiveModal: () => void;
+  openBanModal: () => void;
 }
 
 const AdminManagingSellersController: FC<Props> = (props) => {
-  const { openForm, userId, openSellerActiveModal } = props;
+  const { openForm, userId, openSellerActiveModal, openBanModal } = props;
 
   const [showModal, setShowModal] = useState(false);
   const dispatch = useAppDispatch();
@@ -138,7 +139,7 @@ const AdminManagingSellersController: FC<Props> = (props) => {
         <Button
           variant="clear"
           className="group flex items-center gap-2 w-[180px] p-2.5 hover:bg-secondary-yellow rounded-lg"
-          onClick={() => setStatus('blocked')}
+          onClick={openBanModal}
         >
           <Icon Svg={block} width={30} height={30} className="stroke-error-red" />
           <Text

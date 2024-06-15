@@ -13,17 +13,23 @@ import { getSellers, sellersActions } from '@/enteties/Seller/model/slice/seller
 import ActiveSellerModal from '@/features/AdminManagingSellers/ui/ActiveSellerModal';
 import AdminManagingSellersController from '@/features/AdminManagingSellers/ui/AdminManagingSellersController';
 import AdminManagingSellersNavbar from '@/features/AdminManagingSellers/ui/AdminManagingSellersNavbar';
+import BanSellerModal from '@/features/AdminManagingSellers/ui/BanSellerModal';
 import SellerInfoForm from '@/features/AdminManagingSellers/ui/SellerInfoForm';
 import SellerStatusBadge from '@/features/AdminManagingSellers/ui/SellerStatusBadge';
+import { $api } from '@/shared/api/api';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
+import { BlockModal } from '@/shared/ui/BlockModal';
 import Pagination from '@/shared/ui/Pagination/Pagination';
 import { IRangeDate } from '@/widgets/ListingSort/ui/components/ListingSearchCalendar';
 
 const AdminManagingSellers: FC = () => {
   const [isSellerInfoOpen, setIsSellerInfoOpen] = useState(false);
   const [currentSellerId, setCurrentSellerId] = useState<string | null>(null);
+  const [banModalOpen, setBanModalOpen] = useState(false);
   const [currentSellerName, setCurrentSellerName] = useState<string | null>(null);
+  const [showBanSellerModal, setShowBanSellerModal] = useState(false);
   const [showActiveSellerModal, setShowActiveSellerModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [state, setState] = useState<IRangeDate[]>([
@@ -129,6 +135,12 @@ const AdminManagingSellers: FC = () => {
                         setCurrentSellerName(seller.username);
                         setShowActiveSellerModal(true);
                       }}
+                      openBanModal={() => {
+                        setCurrentSellerId(seller._id);
+                        setCurrentSellerName(seller.username);
+                        setShowBanSellerModal(true);
+                        setBanModalOpen(true);
+                      }}
                     />
                   </th>
                 </tr>
@@ -152,6 +164,35 @@ const AdminManagingSellers: FC = () => {
             sellerName={currentSellerName || ''}
             sellerId={currentSellerId || ''}
             onClose={() => setShowActiveSellerModal(false)}
+          />
+        )}
+
+        {showBanSellerModal && (
+          <BanSellerModal
+            sellerName={currentSellerName || ''}
+            sellerId={currentSellerId || ''}
+            onClose={() => setShowBanSellerModal(false)}
+          />
+        )}
+
+        {banModalOpen && (
+          <BlockModal
+            title="Ви впевнені?"
+            text={`Ви дісно хочете заблокувати користувача ID${currentSellerId}?`}
+            blockHandler={async () => {
+              try {
+                await $api.patch(`${ApiRoutes.USER}/${currentSellerId}/status`, {
+                  accountStatus: 'blocked',
+                });
+              } catch (e) {
+                // eslint-disable-next-line no-console
+                console.log(e);
+              } finally {
+                dispatch(fetchAllSellers({}));
+                setBanModalOpen(false);
+              }
+            }}
+            onClose={() => setBanModalOpen(false)}
           />
         )}
       </div>
