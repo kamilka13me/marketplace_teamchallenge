@@ -4,6 +4,7 @@ import Comment from '../../models/Comment.js';
 import Complaint from '../../models/Complaint.js';
 import Product from '../../models/Product.js';
 import Rating from '../../models/Rate.js';
+import Role from '../../models/Role.js';
 import User from '../../models/User.js';
 
 const adminController = {
@@ -217,6 +218,86 @@ const adminController = {
       // eslint-disable-next-line no-console
       console.log(error);
       res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+
+  getStatistics: async (req, res) => {
+    try {
+      const { startDate, endDate } = req.query;
+
+      // Check for dates and create a filter
+      const dateFilter = {};
+
+      if (startDate) {
+        dateFilter.$gte = new Date(startDate);
+      }
+      if (endDate) {
+        dateFilter.$lte = new Date(endDate);
+      }
+
+      const userRole = await Role.findOne({ name: { $regex: 'user' } });
+      const sellerRole = await Role.findOne({ name: { $regex: 'seller' } });
+      const matchConditionUser = { role: userRole._id };
+      const matchConditionSaler = { role: sellerRole._id };
+
+      if (startDate || endDate) {
+        matchConditionUser.created_at = dateFilter;
+        matchConditionSaler.created_at = dateFilter;
+      }
+
+      // Grouping users by day for newUsersPerDay
+      const newUsersPerDay = await User.aggregate([
+        { $match: matchConditionUser },
+        {
+          $group: {
+            _id: { $dateToString: { format: '%Y-%m-%d', date: '$created_at' } },
+            count: { $sum: 1 },
+          },
+        },
+        { $sort: { _id: 1 } },
+      ]);
+
+      // Grouping sellers by day for newSalersPerDay
+      const newSalersPerDay = await User.aggregate([
+        { $match: matchConditionSaler },
+        {
+          $group: {
+            _id: { $dateToString: { format: '%Y-%m-%d', date: '$created_at' } },
+            count: { $sum: 1 },
+          },
+        },
+        { $sort: { _id: 1 } },
+      ]);
+
+      // Formatting the results
+      const formattedNewUsersPerDay = newUsersPerDay.map((item) => ({
+        date: item._id,
+        count: item.count,
+      }));
+
+      const formattedNewSalersPerDay = newSalersPerDay.map((item) => ({
+        date: item._id,
+        count: item.count,
+      }));
+
+      // Frozen data for other fields
+      const openContactsCurrentMonth = 150;
+      const openContactsPreviousMonth = 120;
+      const visitsCurrentMonth = 3000;
+      const visitsPreviousMonth = 2800;
+
+      res.status(200).json({
+        newUsersPerDay: formattedNewUsersPerDay,
+        newSalersPerDay: formattedNewSalersPerDay,
+        openContactsCurrentMonth,
+        openContactsPreviousMonth,
+        visitsCurrentMonth,
+        visitsPreviousMonth,
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error fetching statistics:', error);
+      res.status(500).json({ message: 'Server error' });
     }
   },
 };
