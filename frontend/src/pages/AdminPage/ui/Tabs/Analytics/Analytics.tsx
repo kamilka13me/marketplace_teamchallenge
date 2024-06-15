@@ -1,10 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-console */
 import { FC, useState } from 'react';
 
 import StatisticGraph from './components/StatisticGraph';
 import { StatisticData } from './interfaces/StatisticData';
-// import { testData } from './testData';
 
 import people from '@/shared/assets/icons/people.svg?react';
 import userEdit from '@/shared/assets/icons/user-edit.svg?react';
@@ -57,7 +54,7 @@ const createUrlQuery = (dateRange: IRangeDate | undefined) => {
 };
 
 const Analytics: FC = () => {
-  const [dateRange, setDateRange] = useState<IRangeDate>({
+  const [dateRange] = useState<IRangeDate>({
     startDate: getStartOfMonth(),
     endDate: getEndOfMonth(),
     key: 'selection',
@@ -67,11 +64,7 @@ const Analytics: FC = () => {
     `${ApiRoutes.STATISTICS}${createUrlQuery(dateRange)}`,
   );
 
-  console.log(testData);
-
-  if (isLoading || !testData) {
-    return <div>Loading...</div>;
-  }
+  if (isLoading || !testData) return null;
 
   const selectedMonth =
     dateMap[testData.newUsersPerDay[0]?.date.slice(5, 7) as keyof typeof dateMap];
