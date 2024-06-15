@@ -91,6 +91,10 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  accountStatus: {
+    type: String,
+    default: 'active',
+  },
   views: [
     {
       type: mongoose.Schema.Types.ObjectId,

@@ -466,4 +466,63 @@ router.post('/recover-password', userController.recoverPassword);
  */
 router.post('/recover-password-confirm', userController.recoverPasswordConfirm);
 
+/**
+ * @swagger
+ * /users/{userId}/status:
+ *   patch:
+ *     summary: Update the account status of a user
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the user to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               accountStatus:
+ *                 type: string
+ *                 example: active
+ *     responses:
+ *       200:
+ *         description: Account status updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Account status updated
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User not found
+ *       500:
+ *         description: Unexpected error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Unexpected error
+ */
+router.patch('/:userId/status', userController.updateAccountStatus);
+
 export default router;
