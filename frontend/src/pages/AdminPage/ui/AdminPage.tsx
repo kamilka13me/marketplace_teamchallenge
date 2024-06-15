@@ -8,6 +8,7 @@ import ManagingContent from './Tabs/ManagingContent/ManagingContent';
 import ManagingFeedback from './Tabs/ManagingFeedback/ManagingFeedback';
 import SupportCenter from './Tabs/SupportCenter/SupportCenter';
 
+import { AdminManagingUsers } from '@/features/adminManagingUsers';
 import { ManagingOffers } from '@/features/managingOffers';
 import ManagingOffersMobile from '@/pages/AdminPage/ui/Tabs/ManagingOffers/ManagingOffersMobile';
 import analytics from '@/shared/assets/icons/analytics.svg?react';
@@ -78,7 +79,7 @@ const tabs: ITab[] = [
 ];
 
 const components: FC[] = [
-  WishlistProfileTab,
+  AdminManagingUsers,
   WishlistProfileTab,
   ManagingOffersMobile,
   ManagingFeedback,
@@ -146,7 +147,7 @@ const AdminPage: FC = () => {
                 tab={currentTab}
                 setTab={setCurrentTabHandler}
               />
-              {/* {currentTab === 0 && <ManagingUsers />} */}
+              {currentTab === 0 && <AdminManagingUsers />}
               {/* {currentTab === 1 && <ManagingSellers />} */}
               {currentTab === 2 && <ManagingOffers />}
               {currentTab === 3 && <ManagingFeedback />}

@@ -1,0 +1,88 @@
+import { FC } from 'react';
+
+import { User } from '@/enteties/User';
+import close from '@/shared/assets/icons/cancel.svg?react';
+import { Button } from '@/shared/ui/Button';
+import { Icon } from '@/shared/ui/Icon';
+import { ModalWindow } from '@/shared/ui/ModalWindow';
+import { HStack } from '@/shared/ui/Stack';
+import { Text } from '@/shared/ui/Text';
+
+interface Props {
+  user: User;
+  sendRecoveryPassword: () => void;
+  onClose: () => void;
+}
+
+const AdminEditUserInfoModal: FC<Props> = (props) => {
+  const { onClose, sendRecoveryPassword, user } = props;
+
+  return (
+    <ModalWindow
+      className="flex flex-col items-center !bg-selected-dark rounded-2xl max-w-[380px] lg:max-w-[414px] !p-6 w-full"
+      onCloseFunc={onClose}
+    >
+      <Icon
+        Svg={close}
+        width={24}
+        height={24}
+        className="fill-main-white self-end cursor-pointer"
+        onClick={onClose}
+      />
+      <HStack gap="2" className="max-w-[318px] w-full">
+        <div className="border-b-main-white border-b-[1px] w-full py-3 px-4">
+          <Text
+            Tag="h5"
+            text={user?.username || 'Ім`я відсутнє'}
+            size="md"
+            color="white"
+          />
+        </div>
+        <div className="border-b-main-white border-b-[1px] w-full py-3 px-4">
+          <Text
+            Tag="h5"
+            text={user?.surname || 'Прізвище відсутнє'}
+            size="md"
+            color="white"
+          />
+        </div>
+        <div className="border-b-main-white border-b-[1px] w-full py-3 px-4">
+          <Text
+            Tag="h5"
+            text={user?.dob || 'Дата народження відсутня'}
+            size="md"
+            color="white"
+          />
+        </div>
+        <div className="border-b-main-white border-b-[1px] w-full py-3 px-4">
+          <Text
+            Tag="h5"
+            text={user?.email || 'Email відсутній'}
+            size="md"
+            color="white"
+          />
+        </div>
+        <div className="border-b-main-white border-b-[1px] w-full py-3 px-4">
+          <Text
+            Tag="h5"
+            text={user?.phoneNumber || 'Номер телефону відсутній'}
+            size="md"
+            color="white"
+          />
+        </div>
+      </HStack>
+      <Button
+        onClick={() => {
+          sendRecoveryPassword();
+          onClose();
+        }}
+        className="max-w-[318px] w-full h-[48px] mt-8 mb-[18px] text-lg leading-[0px]"
+        variant="primary"
+      >
+        Відновити пароль
+      </Button>
+    </ModalWindow>
+  );
+};
+
+export default AdminEditUserInfoModal;
