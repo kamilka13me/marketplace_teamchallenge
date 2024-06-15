@@ -164,18 +164,50 @@ router.get('/:id', checkPermission('none'), userController.getUser);
  *         schema:
  *           type: string
  *         description: Filter by role
+ *       - in: query
+ *         name: sortBy
+ *         schema:
+ *           type: string
+ *         description: Field to sort by
+ *         example: username
+ *       - in: query
+ *         name: sortDirection
+ *         schema:
+ *           type: integer
+ *           enum: [1, -1]
+ *         description: Direction to sort by (1 for ascending, -1 for descending)
+ *         example: 1
+ *       - in: query
+ *         name: startDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Start date to filter users by creation date
+ *       - in: query
+ *         name: endDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: End date to filter users by creation date
  *     responses:
  *       200:
  *         description: A list of users
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/User'
+ *               type: object
+ *               properties:
+ *                 totalCount:
+ *                   type: integer
+ *                   description: Total number of users
+ *                 users:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/User'
  *       500:
  *         description: Server error
  */
+
 router.get('/', userController.getAllUsers);
 
 /**
