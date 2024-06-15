@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 
-import ListingSearchCalendar from './components/ListingSearchCalendar';
+import ListingSearchCalendar, { IRangeDate } from './components/ListingSearchCalendar';
 import ListingSearchInput from './components/ListingSearchInput';
 import SpecyfyingSorting from './components/SpecyfyingSorting';
 
@@ -10,7 +10,14 @@ import { Icon } from '@/shared/ui/Icon';
 import { VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
-const ListingByDate: FC = () => {
+interface Props {
+  dateRange: IRangeDate;
+  setDateRange: (range: IRangeDate) => void;
+}
+
+const ListingByDate: FC<Props> = (props) => {
+  const { dateRange, setDateRange } = props;
+
   const [sortingOpen, setSortingOpen] = useState(false);
 
   return (
@@ -35,8 +42,8 @@ const ListingByDate: FC = () => {
         </Button>
         {sortingOpen && <SpecyfyingSorting />}
       </div>
-      <ListingSearchInput />
-      <ListingSearchCalendar />
+      <ListingSearchInput placeholder="Введіть ID продавця" />
+      <ListingSearchCalendar dateRange={dateRange} setDateRange={setDateRange} />
     </VStack>
   );
 };

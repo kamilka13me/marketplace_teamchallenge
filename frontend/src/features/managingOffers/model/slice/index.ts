@@ -54,10 +54,10 @@ const slice = createSlice({
     setSortDirection: (state, action: PayloadAction<'1' | '-1'>) => {
       state.sortDirection = action.payload;
     },
-    setStartDate: (state, action: PayloadAction<Date>) => {
+    setStartDate: (state, action: PayloadAction<string>) => {
       state.startDate = action.payload;
     },
-    setEndDate: (state, action: PayloadAction<Date>) => {
+    setEndDate: (state, action: PayloadAction<string>) => {
       state.endDate = action.payload;
     },
     initState: (state) => {

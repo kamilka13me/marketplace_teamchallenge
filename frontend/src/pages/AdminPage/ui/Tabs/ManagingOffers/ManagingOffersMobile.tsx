@@ -35,12 +35,16 @@ import Pagination from '@/shared/ui/Pagination/Pagination';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 import { ListingByDate, ListingSort } from '@/widgets/ListingSort';
+import { IRangeDate } from '@/widgets/ListingSort/ui/components/ListingSearchCalendar';
 
 const ManagingOffersMobile: FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
-
   const [isListOpen, setIsListOpen] = useState(false);
-
+  const [dateRange, setDateRange] = useState<IRangeDate>({
+    startDate: new Date(0),
+    endDate: new Date(),
+    key: 'selection',
+  });
   const [currentOfferIdForEditing, setCurrentOfferIdForEditing] = useState<null | string>(
     null,
   );
@@ -70,7 +74,12 @@ const ManagingOffersMobile: FC = () => {
 
   useEffect(() => {
     dispatch(fetchAdminOffersList({}));
-  }, [dispatch, offset, sellerId, status, sortBy, sortDirection]);
+  }, [dispatch, offset, sellerId, status, sortBy, sortDirection, dateRange]);
+
+  useEffect(() => {
+    dispatch(adminOffersActions.setStartDate(dateRange.startDate.toISOString()));
+    dispatch(adminOffersActions.setEndDate(dateRange.endDate.toISOString()));
+  }, [dispatch, dateRange]);
 
   const fetchNext = () => {
     setCurrentPage((prev) => prev + 1);
@@ -108,7 +117,7 @@ const ManagingOffersMobile: FC = () => {
     <section className="flex flex-col w-full mt-[18px] gap-4 bg-dark-grey rounded-2xl lg:hidden">
       <ListingSort />
       <HStack className="bg-dark-grey rounded-2xl gap-2">
-        <ListingByDate />
+        <ListingByDate dateRange={dateRange} setDateRange={setDateRange} />
         {isLoading ? (
           <div>
             <Text Tag="p" text="Loading..." size="md" color="white" />
