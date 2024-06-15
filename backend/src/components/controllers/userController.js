@@ -170,7 +170,7 @@ const userController = {
       }
 
       if (role) {
-        const userRole = await Role.findOne({ name: { $regex: role, $options: 'i' } });
+        const userRole = await Role.findOne({ name: { $regex: role } });
 
         if (userRole) {
           query.role = userRole._id;
@@ -422,6 +422,30 @@ const userController = {
       return res.status(200).json({
         message: 'mail send successfully.',
       });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+      res.status(500).json({ message: 'Unexpected error' });
+    }
+  },
+
+  updateAccountStatus: async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const { accountStatus } = req.body;
+
+      // Update user status and return the updated user
+      const user = await User.findByIdAndUpdate(
+        userId,
+        { accountStatus },
+        { new: true, runValidators: true },
+      ).populate('role');
+
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      return res.status(200).json({ message: 'Account status updated', user });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
