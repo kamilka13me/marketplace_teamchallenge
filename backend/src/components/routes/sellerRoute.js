@@ -127,6 +127,42 @@ sellerRoute.post('/', sellerController.createSeller);
  *     description: Retrieve a list of all users who have the role "seller".
  *     tags:
  *       - Seller
+ *     parameters:
+ *       - in: query
+ *         name: startDate
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *         description: Start date for filtering messages (inclusive)
+ *       - in: query
+ *         name: endDate
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *         description: End date for filtering messages (inclusive)
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *           enum: [new, consider, work, closed]
+ *         description: Status for filtering messages
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Search term for partial match on user fields (username or email)
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Number of messages to return
+ *       - in: query
+ *         name: offset
+ *         schema:
+ *           type: integer
+ *           default: 0
+ *         description: Number of messages to skip
  *     responses:
  *       200:
  *         description: An array of users information.
@@ -501,5 +537,41 @@ sellerRoute.get('/info', sellerController.getSellerInfo);
  */
 
 sellerRoute.post('/updateSellerInfo', idToReq(), sellerController.updateSellerInfo);
+
+/**
+ * @swagger
+ * /seller/{sellerId}:
+ *   put:
+ *     summary: Update subscribe status by ID
+ *     tags: [Seller]
+ *     parameters:
+ *       - in: path
+ *         name: sellerId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the seller to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *                   subscribe:
+ *                     type: string
+ *                     description: subscribe of the seller
+ *     responses:
+ *       200:
+ *         description: Support status updated successfully
+ *       400:
+ *         description: Invalid status provided
+ *       404:
+ *         description: Support not found
+ *       500:
+ *         description: Server error
+ */
+
+sellerRoute.put('/:sellerId', sellerController.updateSubscribe);
 
 export default sellerRoute;

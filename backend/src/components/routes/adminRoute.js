@@ -10,9 +10,13 @@ const AdminRoute = express.Router();
  *   get:
  *     summary: Get a list of complaints
  *     description: Returns a list of complaints with details about the comment, response, and product.
- *     tags:
- *       - Complaints
+ *     tags: [Complaints]
  *     parameters:
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: search
  *       - in: query
  *         name: limit
  *         schema:
@@ -134,5 +138,50 @@ const AdminRoute = express.Router();
  */
 
 AdminRoute.get('/complaints', adminController.getComplaints);
+/**
+ * @swagger
+ * /admin/complaints/{id}:
+ *   delete:
+ *     summary: Delete a complaint by ID
+ *     tags: [Complaints]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Complaint ID
+ *     responses:
+ *       200:
+ *         description: Complaint deleted successfully
+ *       404:
+ *         description: Complaint not found
+ *       500:
+ *         description: Internal server error
+ */
+AdminRoute.delete('/complaints/:id', adminController.deleteCoplaints);
+
+/**
+ * @swagger
+ * /admin/complaints/{id}/with-comment-rating:
+ *   delete:
+ *     summary: Delete a complaint by ID along with the associated comment and rating
+ *     tags: [Complaints]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Complaint ID
+ *     responses:
+ *       200:
+ *         description: Complaint, comment, and rating deleted successfully
+ *       404:
+ *         description: Complaint not found
+ *       500:
+ *         description: Internal server error
+ */
+AdminRoute.delete('/complaints/:id/with-comment-rating', adminController.deleteCoplaints);
 
 export default AdminRoute;

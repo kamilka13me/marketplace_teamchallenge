@@ -142,31 +142,56 @@ const sellerController = {
     }
   },
   getSellers: async (req, res) => {
-    try {
-      // Find the role "seller"
-      const sellerRole = await Role.findOne({ name: 'seller' });
+    let { sortDirection = 1, limit = 10, offset = 0 } = req.query;
+    const { startDate, endDate, search } = req.query;
 
-      if (!sellerRole) {
-        return res.status(404).json({ message: 'Role "seller" not found' });
+    limit = parseInt(limit, 10);
+    offset = parseInt(offset, 10);
+    sortDirection = parseInt(sortDirection, 10) || 1;
+    const query = {};
+
+    try {
+      if (startDate) {
+        query.createdAt = { $gte: new Date(startDate) };
       }
 
-      // Find all users with the "seller" role
-      const users = await User.find({ role: sellerRole._id }).populate('role');
+      if (endDate) {
+        if (!query.createdAt) {
+          query.createdAt = {};
+        }
+        query.createdAt.$lte = new Date(endDate);
+      }
 
-      // user callback
-      const updatedUsers = users.map((user) => {
-        const sellerCallback = {
-          _id: user._id,
-          username: user.username || null,
-          email: user.email,
-          role: user.role.name,
-          isAccountConfirm: user.isAccountConfirm,
-        };
+      if (search) {
+        // Check if search is a valid ObjectId
+        if (mongoose.Types.ObjectId.isValid(search)) {
+          query._id = search; // Search by support ID if search is a valid ObjectId
+        } else {
+          // Searching the user collection for a partial match in the username and email fields
+          const users = await User.find({
+            $or: [
+              { username: { $regex: search, $options: 'i' } },
+              { email: { $regex: search, $options: 'i' } },
+            ],
+          });
 
-        return sellerCallback;
+          // Create an array of userIds from the IDs of the found users
+          const userIds = users.map((user) => user._id);
+
+          if (userIds.length > 0) {
+            query.sellerId = { $in: userIds };
+          } else {
+            return res.status(200).json([]);
+          }
+        }
+      }
+
+      const sellers = await Seller.find(query).populate({
+        path: 'sellerId',
+        select: 'username email isAccountConfirm isAccountActive',
       });
 
-      res.status(200).json({ users: updatedUsers });
+      res.status(200).json({ sellers });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
@@ -316,6 +341,29 @@ const sellerController = {
       // eslint-disable-next-line no-console
       console.log(error);
       res.status(500).send(error.message);
+    }
+  },
+  updateSubscribe: async (req, res) => {
+    try {
+      const { sellerId } = req.params;
+      const { subscribe } = req.body;
+
+      // Check if the status is valid
+
+      const seller = await Seller.findOne({ sellerId });
+
+      if (!seller) {
+        return res.status(404).json({ message: 'seller not found' });
+      }
+
+      seller.subscribe = subscribe;
+      await seller.save();
+
+      res.status(200).json({ message: 'seller status updated successfully' });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log('Error updating seller status:', error);
+      res.status(500).json({ message: 'Server error' });
     }
   },
 };

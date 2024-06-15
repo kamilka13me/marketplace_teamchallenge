@@ -1,8 +1,10 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 import ModalWindow from '../../../shared/ui/ModalWindow/ModalWindow';
 
+import { $api } from '@/shared/api/api';
 import cancel from '@/shared/assets/icons/cancel.svg?react';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Input } from '@/shared/ui/Input';
@@ -18,7 +20,7 @@ const disputeTypes = [
   {
     id: 1,
     name: 'dispute-type',
-    text: 'Відгук залишений особою, пов&apos;язаною з продавцем або конкурентом',
+    text: "Відгук залишений особою, пов'язаною з продавцем або конкурентом",
   },
   {
     id: 2,
@@ -33,11 +35,34 @@ const disputeTypes = [
 ];
 
 interface Props {
+  commentId: string;
+  refetch: () => void;
   onCloseFunc: () => void;
 }
 
 const DisputeFeedbackModal: FC<Props> = (props) => {
-  const { onCloseFunc } = props;
+  const { onCloseFunc, commentId, refetch } = props;
+
+  const [message, setMessage] = useState('');
+  const [reason, setReason] = useState<null | number>(null);
+
+  const onSubmit = async () => {
+    try {
+      await $api.post(ApiRoutes.SUPPORT_COMPLAINT, {
+        commentId,
+        content: message,
+        reason,
+      });
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(e);
+    } finally {
+      setMessage('');
+      setReason(null);
+      onCloseFunc();
+      refetch();
+    }
+  };
 
   return (
     <ModalWindow
@@ -63,55 +88,70 @@ const DisputeFeedbackModal: FC<Props> = (props) => {
           color="white"
         />
       </div>
-      <HStack gap="4" className="mb-6">
-        {disputeTypes.map((item) => (
-          <div key={item.id} className="inline-flex items-center">
-            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-            <label
-              className="relative flex items-center p-3 rounded-full cursor-pointer"
-              htmlFor="black"
-            >
-              <input
-                name={item.name}
-                type="radio"
-                className="peer relative h-5 w-5 cursor-pointer appearance-none rounded-full border border-main-white text-main-white"
-              />
-              <span className="absolute text-transparent transition-opacity opacity-0 pointer-events-none top-[22px] left-[22px] -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-3.5 w-3.5"
-                  viewBox="0 0 16 16"
-                  fill="#FFFFFF"
-                >
-                  <circle data-name="ellipse" cx="8" cy="8" r="8" />
-                </svg>
-              </span>
-            </label>
-            {item.text}
-          </div>
-        ))}
-      </HStack>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmit();
+        }}
+      >
+        <HStack gap="4" className="mb-6">
+          {disputeTypes.map((item, i) => (
+            <div key={item.id} className="inline-flex items-center">
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+              <label
+                className="relative flex items-center p-3 rounded-full cursor-pointer"
+                htmlFor="black"
+              >
+                <input
+                  name={item.name}
+                  type="radio"
+                  onChange={() => setReason(i)}
+                  required
+                  className="peer relative h-5 w-5 cursor-pointer appearance-none rounded-full border border-main-white text-main-white"
+                />
+                <span className="absolute text-transparent transition-opacity opacity-0 pointer-events-none top-[22px] left-[22px] -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-3.5 w-3.5"
+                    viewBox="0 0 16 16"
+                    fill="#FFFFFF"
+                  >
+                    <circle data-name="ellipse" cx="8" cy="8" r="8" />
+                  </svg>
+                </span>
+              </label>
+              {item.text}
+            </div>
+          ))}
+        </HStack>
 
-      <Input
-        name="comment"
-        type="text"
-        placeholder="Залиште додатковий коментар"
-        variant="personal"
-        className="w-full"
-      />
+        <Input
+          name="comment"
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.currentTarget.value)}
+          placeholder="Залиште додатковий коментар"
+          variant="personal"
+          className="w-full"
+          required
+        />
 
-      <div className="flex flex-col gap-6 mt-[38px] md:flex-row">
-        <Button
-          variant="gray"
-          className="w-full bg-disabled rounded-lg h-[52px]"
-          onClick={onCloseFunc}
-        >
-          Скасувати
-        </Button>
-        <Button variant="primary" className="w-full h-[52px]">
-          Надіслати
-        </Button>
-      </div>
+        <div className="flex flex-col gap-6 mt-[38px] md:flex-row">
+          <Button
+            variant="gray"
+            className="w-full bg-disabled rounded-lg h-[52px]"
+            onClick={onCloseFunc}
+          >
+            Скасувати
+          </Button>
+          <button
+            type="submit"
+            className="w-full h-[52px] bg-main py-2 px-4 text-main-dark rounded-lg hover:bg-secondary-yellow disabled:bg-disabled duration-200"
+          >
+            Надіслати
+          </button>
+        </div>
+      </form>
     </ModalWindow>
   );
 };

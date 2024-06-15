@@ -20,10 +20,12 @@ export interface IRangeDate {
 interface Props {
   dateRange: IRangeDate;
   setDateRange: (range: IRangeDate) => void;
+  classNameDateSort?: string;
+  classNameCalendar?: string;
 }
 
 const ListingSearchCalendar: FC<Props> = (props) => {
-  const { dateRange, setDateRange } = props;
+  const { dateRange, setDateRange, classNameDateSort, classNameCalendar } = props;
 
   const [state, setState] = useState<IRangeDate[]>([
     dateRange || {
@@ -63,7 +65,7 @@ const ListingSearchCalendar: FC<Props> = (props) => {
 
   return (
     <div className="order-first lg:order-last flex items-center justify-center gap-[8px]">
-      <div className="hidden xl:block">
+      <div className={`${classNameDateSort} xl:block`}>
         <DateSortWidget
           onSelectRange={(type: RangeSortType) => {
             const endDate = new Date();
@@ -105,7 +107,7 @@ const ListingSearchCalendar: FC<Props> = (props) => {
             className="w-[24px] h-[24px] ml-2 lg:ml-5 xl:ml-1"
           />
         </Button>
-        <div className="relative top-0 right-[32px] lg:right-[-1vw]">
+        <div className={`relative top-0 lg:right-[-1vw] ${classNameCalendar}`}>
           <CustomCalendar
             calendarIsOpened={calendarIsOpened}
             dates={state}

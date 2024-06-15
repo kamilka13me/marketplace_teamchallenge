@@ -128,23 +128,54 @@ router.post('/', validateUser, userController.createUser);
 router.get('/:id', checkPermission('none'), userController.getUser);
 
 /**
- * @openapi
- * /users/:
+ * @swagger
+ * /users:
  *   get:
  *     summary: Get all users
- *     description: "Retrieve details of a user by their Id.\n\n premission: \"getAllUsers\""
  *     tags: [User]
+ *     parameters:
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: Maximum number of users to return
+ *       - in: query
+ *         name: offset
+ *         schema:
+ *           type: integer
+ *         description: Number of users to skip
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Search term to match username, email, phoneNumber, or surname
+ *       - in: query
+ *         name: isAccountActive
+ *         schema:
+ *           type: boolean
+ *         description: Filter by account active status
+ *       - in: query
+ *         name: isAccountConfirm
+ *         schema:
+ *           type: boolean
+ *         description: Filter by account confirmation status
+ *       - in: query
+ *         name: role
+ *         schema:
+ *           type: string
+ *         description: Filter by role
  *     responses:
  *       200:
- *         description: Users retrieved successfully
+ *         description: A list of users
  *         content:
  *           application/json:
- *             example:
- *               user: [ user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user", dob: "1990-01-01T00:00:00.000Z" , isAccountConfirm: false,  phoneNumber: "+1234567890","wishlist": [] }, user: { _id: "some_id", username: "some_username", surname: "some_surname", email: "user@example.com" ,role: "user", dob: "1990-01-01T00:00:00.000Z" , isAccountConfirm: false,  phoneNumber: "+1234567890" ,"wishlist": []}]
- *       '500':
- *         $ref: '#/components/responses/InternalServerError'
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Server error
  */
-//  checkPermission('getAllUsers'),
 router.get('/', userController.getAllUsers);
 
 /**
@@ -434,5 +465,64 @@ router.post('/recover-password', userController.recoverPassword);
  *                   example: "Unexpected error"
  */
 router.post('/recover-password-confirm', userController.recoverPasswordConfirm);
+
+/**
+ * @swagger
+ * /users/{userId}/status:
+ *   patch:
+ *     summary: Update the account status of a user
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the user to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               accountStatus:
+ *                 type: string
+ *                 example: active
+ *     responses:
+ *       200:
+ *         description: Account status updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Account status updated
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User not found
+ *       500:
+ *         description: Unexpected error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Unexpected error
+ */
+router.patch('/:userId/status', userController.updateAccountStatus);
 
 export default router;

@@ -93,9 +93,9 @@ supportRoute.post(
  *                 required: true
  *                 description: Content
  *               reason:
- *                 type: string
+ *                 type: integer
  *                 required: true
- *                 description: Content
+ *                 enum: [0,1,2,3,4,5]
  *
  *
  *     responses:
@@ -141,12 +141,6 @@ supportRoute.post('/complaint', supportController.createComplaint);
  *           type: string
  *           format: date-time
  *         description: End date for filtering messages (inclusive)
- *       - in: query
- *         name: status
- *         schema:
- *           type: string
- *           enum: [new, consider, work, closed]
- *         description: Status for filtering messages
  *       - in: query
  *         name: search
  *         schema:

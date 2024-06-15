@@ -2,6 +2,8 @@ import { FC, useEffect, useLayoutEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
+import Analytics from './Tabs/Analytics/Analytics';
+import Finances from './Tabs/Finances/Finances';
 import ManagingContent from './Tabs/ManagingContent/ManagingContent';
 import ManagingFeedback from './Tabs/ManagingFeedback/ManagingFeedback';
 import SupportCenter from './Tabs/SupportCenter/SupportCenter';
@@ -79,7 +81,7 @@ const components: FC[] = [
   WishlistProfileTab,
   WishlistProfileTab,
   ManagingOffersMobile,
-  ManagingContent,
+  ManagingFeedback,
   ManagingContent,
   ManagingContent,
   ManagingContent,
@@ -149,8 +151,8 @@ const AdminPage: FC = () => {
               {currentTab === 2 && <ManagingOffers />}
               {currentTab === 3 && <ManagingFeedback />}
               {currentTab === 4 && <ManagingContent />}
-              {/* {currentTab === 5 && <Analytics />} */}
-              {/* {currentTab === 6 && <Finances />} */}
+              {currentTab === 5 && <Analytics />}
+              {currentTab === 6 && <Finances />}
               {currentTab === 7 && <SupportCenter />}
             </VStack>
           </VStack>

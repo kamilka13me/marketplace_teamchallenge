@@ -43,7 +43,12 @@ const ListingByDate: FC<Props> = (props) => {
         {sortingOpen && <SpecyfyingSorting />}
       </div>
       <ListingSearchInput placeholder="Введіть ID продавця" />
-      <ListingSearchCalendar dateRange={dateRange} setDateRange={setDateRange} />
+      <ListingSearchCalendar
+        dateRange={dateRange}
+        setDateRange={setDateRange}
+        classNameDateSort="hidden"
+        classNameCalendar="right-[32px]"
+      />
     </VStack>
   );
 };

@@ -139,10 +139,74 @@ const userController = {
 
   getAllUsers: async (req, res) => {
     try {
-      const users = await User.find({}).select('-password -__v');
+      let { limit = 10, offset = 0 } = req.query;
+      const { search, isAccountActive, isAccountConfirm, role } = req.query;
 
-      res.json({ users });
+      limit = parseInt(limit, 10);
+      offset = parseInt(offset, 10);
+
+      const query = {};
+
+      if (search) {
+        // Check if search is a valid ObjectId
+        if (mongoose.Types.ObjectId.isValid(search)) {
+          query._id = search; // Search by user ID if search is a valid ObjectId
+        } else {
+          query.$or = [
+            { username: { $regex: search, $options: 'i' } },
+            { email: { $regex: search, $options: 'i' } },
+            { phoneNumber: { $regex: search, $options: 'i' } },
+            { surname: { $regex: search, $options: 'i' } },
+          ];
+        }
+      }
+
+      if (isAccountActive !== undefined) {
+        query.isAccountActive = isAccountActive === 'true';
+      }
+
+      if (isAccountConfirm !== undefined) {
+        query.isAccountConfirm = isAccountConfirm === 'true';
+      }
+
+      if (role) {
+        const userRole = await Role.findOne({ name: { $regex: role } });
+
+        if (userRole) {
+          query.role = userRole._id;
+        } else {
+          return res.status(200).json({ users: [], totalCount: 0 });
+        }
+      }
+
+      const users = await User.find(query)
+        .skip(offset)
+        .limit(limit)
+        .select('-password -__v -views -opened -wishlist')
+        .populate({ path: 'role', select: 'name' });
+
+      const totalCount = await User.countDocuments(query);
+
+      const usersWithBrowserInfo = await Promise.all(
+        users.map(async (user) => {
+          const browserInfo = await BrowserInfo.findOne({ userId: user._id }).select(
+            'date',
+          );
+
+          return {
+            ...user.toObject(),
+            activity: browserInfo || null,
+          };
+        }),
+      );
+
+      res.status(200).json({
+        totalCount,
+        users: usersWithBrowserInfo,
+      });
     } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
       res.status(500).send('Server error');
     }
   },
@@ -358,6 +422,30 @@ const userController = {
       return res.status(200).json({
         message: 'mail send successfully.',
       });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+      res.status(500).json({ message: 'Unexpected error' });
+    }
+  },
+
+  updateAccountStatus: async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const { accountStatus } = req.body;
+
+      // Update user status and return the updated user
+      const user = await User.findByIdAndUpdate(
+        userId,
+        { accountStatus },
+        { new: true, runValidators: true },
+      ).populate('role');
+
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      return res.status(200).json({ message: 'Account status updated', user });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);

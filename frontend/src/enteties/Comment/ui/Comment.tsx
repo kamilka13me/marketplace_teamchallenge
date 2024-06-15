@@ -201,7 +201,11 @@ const Comment: FC<Props> = (props) => {
             </Button>
           </div>
           {isDisputeModalOpen && (
-            <DisputeFeedbackModal onCloseFunc={setDisputeModalOpenHandler} />
+            <DisputeFeedbackModal
+              commentId={comment._id}
+              refetch={refetch as () => void}
+              onCloseFunc={setDisputeModalOpenHandler}
+            />
           )}
         </>
       )}
