@@ -6,7 +6,7 @@ import {
   getEndOfMonth,
   getStartOfMonth,
   mergeDailyData,
-} from '../SupportCenter/utils/generateStatisticData';
+} from '../Analytics/utils/generateStatisticData';
 
 import StatisticGraph from './components/StatisticGraph';
 import { StatisticData } from './interfaces/StatisticData';
