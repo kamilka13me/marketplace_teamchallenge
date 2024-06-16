@@ -17,7 +17,7 @@ export const fetchPrevUsers = createAsyncThunk<void, void, ThunkConfig<string>>(
     const isLoading = getIsUsersLoading(getState());
 
     if (!isLoading) {
-      if (offset >= 5) {
+      if (offset >= limit) {
         const newOffset = offset - limit;
 
         dispatch(usersActions.setOffset(newOffset));

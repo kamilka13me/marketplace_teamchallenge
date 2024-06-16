@@ -1,4 +1,7 @@
+import { EntityState } from '@reduxjs/toolkit';
+
 export interface Seller {
+  _id: string;
   email: string;
   password: string;
   legalName: string;
@@ -16,6 +19,13 @@ export interface Seller {
     messenger: string;
     phone: string;
   }[];
+  sellerId: {
+    _id: string;
+    username: string;
+    email: string;
+    isAccountConfirm: boolean;
+    isAccountActive: boolean;
+  };
   descriptCompany: string;
   generalName: string;
   generalCommunication: {
@@ -28,6 +38,26 @@ export interface Seller {
   conditions: boolean;
 }
 
+export type SellerStatus = 'active' | 'blocked' | 'work' | 'close';
+
+export interface UserSeller {
+  accountStatus: SellerStatus;
+  activity: {
+    _id: string;
+    date: string;
+  };
+  created_at: string;
+  email: string;
+  isAccountActive: boolean;
+  isAccountConfirm: boolean;
+  role: {
+    _id: string;
+    name: string;
+  };
+  username: string;
+  _id: string;
+}
+
 export interface SellerContact {
   messenger: string;
   phone: string;
@@ -37,4 +67,21 @@ export interface SellerSchema {
   isLoading?: boolean;
   error?: string;
   sellerData?: Seller;
+}
+
+export interface SellersSchema extends EntityState<UserSeller, string> {
+  isLoading?: boolean;
+  error?: string;
+  totalSellers: number;
+
+  // pagination
+  offset: number;
+  limit: number;
+  // filters
+  startDate: string | Date;
+  endDate: string | Date;
+  search: string;
+  sortDirection: '1' | '-1';
+
+  _inited: boolean;
 }

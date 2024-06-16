@@ -1,7 +1,9 @@
 import { FC } from 'react';
 
 import { User } from '@/enteties/User';
+import { $api } from '@/shared/api/api';
 import close from '@/shared/assets/icons/cancel.svg?react';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { ModalWindow } from '@/shared/ui/ModalWindow';
@@ -16,6 +18,20 @@ interface Props {
 
 const AdminEditUserInfoModal: FC<Props> = (props) => {
   const { onClose, sendRecoveryPassword, user } = props;
+
+  const recoveryPasswordHandler = async () => {
+    try {
+      await $api.post(`${ApiRoutes.USER}/recover-password`, {
+        email: user.email,
+      });
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(e);
+    } finally {
+      onClose();
+      sendRecoveryPassword();
+    }
+  };
 
   return (
     <ModalWindow
@@ -72,10 +88,7 @@ const AdminEditUserInfoModal: FC<Props> = (props) => {
         </div>
       </HStack>
       <Button
-        onClick={() => {
-          sendRecoveryPassword();
-          onClose();
-        }}
+        onClick={recoveryPasswordHandler}
         className="max-w-[318px] w-full h-[48px] mt-8 mb-[18px] text-lg leading-[0px]"
         variant="primary"
       >

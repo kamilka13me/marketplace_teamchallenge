@@ -1,0 +1,42 @@
+import { FC } from 'react';
+
+import close from '@/shared/assets/icons/cancel.svg?react';
+import { Icon } from '@/shared/ui/Icon';
+import { ModalWindow } from '@/shared/ui/ModalWindow';
+import { Text } from '@/shared/ui/Text';
+
+interface Props {
+  sellerName: string;
+  sellerId: string;
+  onClose: () => void;
+}
+const ActiveSellerModal: FC<Props> = (props) => {
+  const { onClose, sellerName, sellerId } = props;
+
+  return (
+    <ModalWindow
+      className="flex flex-col items-center pb-[60px] !bg-selected-dark shadow-custom-hover rounded-2xl max-w-[387px] lg:max-w-[386px] w-full"
+      onCloseFunc={onClose}
+    >
+      <Icon
+        Svg={close}
+        width={24}
+        height={24}
+        className="fill-main-white self-end cursor-pointer"
+        onClick={onClose}
+      />
+      <div className="mt-[26px] text-center max-w-[263px] flex flex-col justify-center items-center">
+        <Text Tag="h5" text="Користувача активовано!" size="xl" color="white" />
+        <Text
+          Tag="h5"
+          text={`Продавця “${sellerName}” ID ${sellerId} активовано`}
+          size="md"
+          className="mt-6 !text-center"
+          color="white"
+        />
+      </div>
+    </ModalWindow>
+  );
+};
+
+export default ActiveSellerModal;

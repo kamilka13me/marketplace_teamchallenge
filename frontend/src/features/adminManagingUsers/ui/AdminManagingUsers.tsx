@@ -40,6 +40,7 @@ const AdminManagingUsers: FC = () => {
   const handleClickPage = (pageNumber: number) => {
     setCurrentPage(pageNumber);
     dispatch(usersActions.setOffset((pageNumber - 1) * limit));
+    dispatch(fetchAllUsers({}));
   };
 
   const fetchNext = () => {
@@ -193,7 +194,7 @@ const AdminManagingUsers: FC = () => {
                   {user?.phoneNumber}
                 </th>
                 <th className="!font-normal text-start  px-[10px] py-5 w-[164px]">
-                  01.01.24
+                  {user?.activity?.date?.slice(0, 10)}
                 </th>
                 {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                 <th className="!font-normal w-[102px] rounded-r-2xl">
@@ -208,7 +209,7 @@ const AdminManagingUsers: FC = () => {
           </tbody>
         </table>
         <Pagination
-          dataLength={totalUsers || 0}
+          dataLength={totalUsers}
           itemsPerPage={limit}
           currentPage={currentPage}
           setPage={handleClickPage}

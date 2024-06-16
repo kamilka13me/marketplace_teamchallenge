@@ -11,7 +11,7 @@ import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 
 interface ApiResponse {
-  count: number;
+  totalCount: number;
   users: User[];
 }
 
@@ -32,14 +32,17 @@ export const fetchAllUsers = createAsyncThunk<
   const role = 'user';
 
   try {
-    const response = await $api.get<ApiResponse>(`${ApiRoutes.USER}`, {
-      params: {
-        limit,
-        offset,
-        search,
-        role,
+    const response = await $api.get<ApiResponse>(
+      `${ApiRoutes.USER}?sortBy=created_at&sortDirection=-1`,
+      {
+        params: {
+          limit,
+          offset,
+          search,
+          role,
+        },
       },
-    });
+    );
 
     if (!response.data) {
       throw new Error();

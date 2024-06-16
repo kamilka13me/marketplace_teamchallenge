@@ -10,13 +10,14 @@ import { VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
 interface Props {
+  title?: string;
   text: string;
   blockHandler: () => void;
   onClose: () => void;
 }
 
 const BlockModal: FC<Props> = (props) => {
-  const { onClose, text, blockHandler } = props;
+  const { onClose, text, title, blockHandler } = props;
 
   return (
     <ModalWindow
@@ -35,8 +36,18 @@ const BlockModal: FC<Props> = (props) => {
           Svg={block}
           width={30}
           height={30}
-          className="stroke-error-red mx-auto mb-8"
+          className="stroke-error-red mx-auto mb-3"
         />
+        {title && (
+          <Text
+            Tag="h5"
+            align="center"
+            text={title}
+            size="xl"
+            color="white"
+            className="mb-[32px]"
+          />
+        )}
         <Text Tag="h5" align="center" text={text} size="md" color="gray-light" />
       </div>
       <VStack

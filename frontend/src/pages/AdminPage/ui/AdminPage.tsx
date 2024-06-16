@@ -8,6 +8,7 @@ import ManagingContent from './Tabs/ManagingContent/ManagingContent';
 import ManagingFeedback from './Tabs/ManagingFeedback/ManagingFeedback';
 import SupportCenter from './Tabs/SupportCenter/SupportCenter';
 
+import { AdminManagingSellers } from '@/features/AdminManagingSellers';
 import { AdminManagingUsers } from '@/features/adminManagingUsers';
 import { ManagingOffers } from '@/features/managingOffers';
 import ManagingOffersMobile from '@/pages/AdminPage/ui/Tabs/ManagingOffers/ManagingOffersMobile';
@@ -148,7 +149,7 @@ const AdminPage: FC = () => {
                 setTab={setCurrentTabHandler}
               />
               {currentTab === 0 && <AdminManagingUsers />}
-              {/* {currentTab === 1 && <ManagingSellers />} */}
+              {currentTab === 1 && <AdminManagingSellers />}
               {currentTab === 2 && <ManagingOffers />}
               {currentTab === 3 && <ManagingFeedback />}
               {currentTab === 4 && <ManagingContent />}

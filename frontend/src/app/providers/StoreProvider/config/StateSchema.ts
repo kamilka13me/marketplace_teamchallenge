@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 
-import { SellerSchema } from '@/enteties/Seller/model/types/seller';
+import { SellerSchema, SellersSchema } from '@/enteties/Seller/model/types/seller';
 import { UserSchema } from '@/enteties/User';
 import { UsersSchema } from '@/enteties/User/model/types/users';
 import { SellerFeedbackPageSchema } from '@/features/managingFeedbacks/model/types/sellerFeedbackSchema';
@@ -16,6 +16,7 @@ export interface StateSchema {
   user: UserSchema;
   users: UsersSchema;
   sellerInfo: SellerSchema;
+  sellers: SellersSchema;
   products: ProductsPageSchema;
   sellerProducts: SellerProductsPageSchema;
   sellerFeedbacks: SellerFeedbackPageSchema;
