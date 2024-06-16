@@ -75,6 +75,10 @@ const AdminManagingSellers: FC = () => {
     dispatch(fetchAllSellers({}));
   }, [dispatch, state]);
 
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+  };
+
   if (!isSellerInfoOpen) {
     return (
       <div className="text-main-white bg-dark-grey rounded-2xl p-4 w-full">
@@ -107,16 +111,44 @@ const AdminManagingSellers: FC = () => {
               {sellers?.map((seller) => (
                 <tr
                   key={seller._id}
-                  className="!font-normal  text-start even:bg-selected-dark "
+                  className="cursor-pointer !font-normal  text-start even:bg-selected-dark "
                 >
-                  <th className="!font-normal text-start p-[10px] text-lg w-[174px]  rounded-l-2xl">
+                  <th
+                    onClick={() => {
+                      copyToClipboard(seller?.username);
+                    }}
+                    className="cursor-pointer !font-normal text-start p-[10px] text-lg w-[174px] rounded-l-2xl relative group"
+                  >
                     {seller?.username.slice(0, 12)}
+                    {seller?.username?.length > 12 && (
+                      <span className="absolute left-1/2 top-[40px] text-sm mt-1 p-2 bg-dark-grey text-main-white rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        {seller?.username}
+                      </span>
+                    )}
                   </th>
-                  <th className="!font-normal text-start p-[10px] text-lg w-[154px]">
+                  <th
+                    onClick={() => {
+                      copyToClipboard(seller?._id);
+                    }}
+                    className="cursor-pointer !font-normal text-start p-[10px] text-lg w-[154px] relative group"
+                  >
                     {seller?._id?.slice(10, 24)}
+                    <span className="absolute left-1/2 top-[40px] text-sm mt-1 p-2 bg-dark-grey text-main-white rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                      {seller?._id}
+                    </span>
                   </th>
-                  <th className="relative !font-normal text-start p-[10px] text-lg w-[174px]">
+                  <th
+                    onClick={() => {
+                      copyToClipboard(seller?.email);
+                    }}
+                    className="relative !font-normal text-start p-[10px] text-lg w-[174px] relative group"
+                  >
                     {seller?.email?.slice(0, 12)}
+                    {seller?.email?.length > 12 && (
+                      <span className="absolute left-1/2 top-[40px] text-sm mt-1 p-2 bg-dark-grey text-main-white rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        {seller?.email}
+                      </span>
+                    )}
                   </th>
                   <th className="!font-normal text-start p-[10px] text-lg w-[174px]">
                     {seller?.created_at.slice(0, 10)}
