@@ -1,4 +1,12 @@
-import { FC, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { FC, useEffect, useState } from 'react';
+
+import {
+  generateMonthlyData,
+  getEndOfMonth,
+  getStartOfMonth,
+  mergeDailyData,
+} from '../Analytics/utils/generateStatisticData';
 
 import StatisticGraph from './components/StatisticGraph';
 import { StatisticData } from './interfaces/StatisticData';
@@ -25,25 +33,6 @@ const dateMap = {
   '12': 'Грудень',
 };
 
-const getStartOfMonth = () => {
-  const startOfMonth = new Date();
-
-  startOfMonth.setDate(1);
-  startOfMonth.setHours(0, 0, 0, 0);
-
-  return startOfMonth;
-};
-
-const getEndOfMonth = () => {
-  const endOfMonth = new Date();
-
-  endOfMonth.setMonth(endOfMonth.getMonth() + 1);
-  endOfMonth.setDate(0);
-  endOfMonth.setHours(23, 59, 59, 999);
-
-  return endOfMonth;
-};
-
 const createUrlQuery = (dateRange: IRangeDate | undefined) => {
   let url = `?`;
 
@@ -60,14 +49,40 @@ const Analytics: FC = () => {
     key: 'selection',
   });
 
-  const { data: testData, isLoading } = useAxios<StatisticData>(
+  const [generateData, setGenerateData] = useState<StatisticData>({
+    newUsersPerDay: generateMonthlyData(dateRange.startDate, dateRange.endDate),
+    newSalersPerDay: generateMonthlyData(dateRange.startDate, dateRange.endDate),
+    openContactsCurrentMonth: 0,
+    openContactsPreviousMonth: 0,
+    visitsCurrentMonth: 0,
+    visitsPreviousMonth: 0,
+  });
+
+  const { data } = useAxios<StatisticData>(
     `${ApiRoutes.STATISTICS}${createUrlQuery(dateRange)}`,
   );
 
-  if (isLoading || !testData) return null;
+  useEffect(() => {
+    if (!data) return;
+
+    setGenerateData({
+      newUsersPerDay: mergeDailyData(
+        generateMonthlyData(dateRange.startDate, dateRange.endDate),
+        data.newUsersPerDay,
+      ),
+      newSalersPerDay: mergeDailyData(
+        generateMonthlyData(dateRange.startDate, dateRange.endDate),
+        data.newSalersPerDay,
+      ),
+      openContactsCurrentMonth: data.openContactsCurrentMonth,
+      openContactsPreviousMonth: data.openContactsPreviousMonth,
+      visitsCurrentMonth: data.visitsCurrentMonth,
+      visitsPreviousMonth: data.visitsPreviousMonth,
+    });
+  }, [data]);
 
   const selectedMonth =
-    dateMap[testData.newUsersPerDay[0]?.date.slice(5, 7) as keyof typeof dateMap];
+    dateMap[generateData.newUsersPerDay[0]?.date.slice(5, 7) as keyof typeof dateMap];
 
   return (
     <div className="flex flex-row gap-5 w-full text-white">
@@ -83,9 +98,7 @@ const Analytics: FC = () => {
           </div>
 
           <div className="flex flex-col gap-[5px] w-full">
-            <div className="w-full">
-              <StatisticGraph color="255, 222, 0" data={testData.newUsersPerDay} />
-            </div>
+            <StatisticGraph color="255, 222, 0" data={generateData.newUsersPerDay} />
 
             {selectedMonth && (
               <span className="flex justify-center w-full text-[14px] text-disabled">
@@ -106,9 +119,7 @@ const Analytics: FC = () => {
           </div>
 
           <div className="flex flex-col gap-[5px] w-full">
-            <div className="w-full">
-              <StatisticGraph color="15, 98, 254" data={testData.newSalersPerDay} />
-            </div>
+            <StatisticGraph color="15, 98, 254" data={generateData.newSalersPerDay} />
 
             {selectedMonth && (
               <span className="flex justify-center w-full text-[14px] text-disabled">
@@ -131,21 +142,21 @@ const Analytics: FC = () => {
 
           <div className="flex flex-col w-full">
             <div className="flex flex-row items-center gap-[8px] w-full">
-              <span className="text-[18px]">{testData.openContactsCurrentMonth}</span>
+              <span className="text-[18px]">{generateData.openContactsCurrentMonth}</span>
               <span
                 className={`text-[14px] text-[#32C42F] 
-                  ${testData.openContactsCurrentMonth >= testData.openContactsPreviousMonth ? 'text-[#32C42F]' : 'text-[#FF0000] rotate-180'}`}
+                  ${generateData.openContactsCurrentMonth >= generateData.openContactsPreviousMonth ? 'text-[#32C42F]' : 'text-[#FF0000] rotate-180'}`}
               >
                 ⯅
               </span>
               <span
-                className={`text-[14px] text-[#32C42F] ${testData.openContactsCurrentMonth >= testData.openContactsPreviousMonth ? 'text-[#32C42F]' : 'text-[#FF0000]'}`}
+                className={`text-[14px] text-[#32C42F] ${generateData.openContactsCurrentMonth >= generateData.openContactsPreviousMonth ? 'text-[#32C42F]' : 'text-[#FF0000]'}`}
               >
-                {testData.openContactsPreviousMonth !== 0
+                {generateData.openContactsPreviousMonth !== 0
                   ? (
-                      ((testData.openContactsCurrentMonth -
-                        testData.openContactsPreviousMonth) /
-                        testData.openContactsPreviousMonth) *
+                      ((generateData.openContactsCurrentMonth -
+                        generateData.openContactsPreviousMonth) /
+                        generateData.openContactsPreviousMonth) *
                       100
                     ).toFixed(1)
                   : 0}
@@ -158,7 +169,7 @@ const Analytics: FC = () => {
           <span className="flex gap-[5px] text-[12px] text-disabled">
             Попередній місяць:
             <span className="font-[600] text-white">
-              {testData.openContactsPreviousMonth}
+              {generateData.openContactsPreviousMonth}
             </span>
           </span>
         </div>
@@ -174,20 +185,21 @@ const Analytics: FC = () => {
 
           <div className="flex flex-col w-full">
             <div className="flex flex-row items-center gap-[8px] w-full">
-              <span className="text-[18px]">{testData.visitsCurrentMonth}</span>
+              <span className="text-[18px]">{generateData.visitsCurrentMonth}</span>
               <span
                 className={`text-[14px] text-[#32C42F] 
-                  ${testData.visitsCurrentMonth >= testData.visitsPreviousMonth ? 'text-[#32C42F]' : 'text-[#FF0000] rotate-180'}`}
+                  ${generateData.visitsCurrentMonth >= generateData.visitsPreviousMonth ? 'text-[#32C42F]' : 'text-[#FF0000] rotate-180'}`}
               >
                 ⯅
               </span>
               <span
-                className={`text-[14px] text-[#32C42F] ${testData.visitsCurrentMonth >= testData.visitsPreviousMonth ? 'text-[#32C42F]' : 'text-[#FF0000]'}`}
+                className={`text-[14px] text-[#32C42F] ${generateData.visitsCurrentMonth >= generateData.visitsPreviousMonth ? 'text-[#32C42F]' : 'text-[#FF0000]'}`}
               >
-                {testData.visitsPreviousMonth !== 0
+                {generateData.visitsPreviousMonth !== 0
                   ? (
-                      ((testData.visitsCurrentMonth - testData.visitsPreviousMonth) /
-                        testData.visitsPreviousMonth) *
+                      ((generateData.visitsCurrentMonth -
+                        generateData.visitsPreviousMonth) /
+                        generateData.visitsPreviousMonth) *
                       100
                     ).toFixed(1)
                   : 0}
@@ -199,7 +211,9 @@ const Analytics: FC = () => {
 
           <span className="flex gap-[5px] text-[12px] text-disabled">
             Попередній місяць:
-            <span className="font-[600] text-white">{testData.visitsPreviousMonth}</span>
+            <span className="font-[600] text-white">
+              {generateData.visitsPreviousMonth}
+            </span>
           </span>
         </div>
       </div>
