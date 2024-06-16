@@ -18,7 +18,12 @@ const MobileAdminManagingUsers: FC<Props> = (props) => {
     <HStack className="bg-selected-dark w-full px-4 py-3 rounded-2xl">
       <VStack justify="between" className="w-full">
         <Text Tag="h5" text="Дата взаємодії" size="md" color="white" />
-        <Text Tag="h5" text="25.04.2024" size="md" color="gray-light" />
+        <Text
+          Tag="h5"
+          text={user?.activity?.date.slice(0, 10)}
+          size="md"
+          color="gray-light"
+        />
       </VStack>
       <VStack justify="between" align="center" className="mt-2 w-full">
         <HStack gap="1" className="max-w-[217px] overflow-hidden">

@@ -23,7 +23,7 @@ export const usersSlice = createSlice({
     totalUsers: 0,
 
     // pagination
-    limit: 5,
+    limit: 9,
     offset: 0,
 
     search: '',
@@ -58,7 +58,7 @@ export const usersSlice = createSlice({
         state.isLoading = false;
 
         usersAdapter.setAll(state, action.payload.users);
-        state.totalUsers = action.payload.count;
+        state.totalUsers = action.payload.totalCount;
       })
       .addCase(fetchAllUsers.rejected, (state, action) => {
         state.isLoading = false;

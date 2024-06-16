@@ -1,10 +1,13 @@
 import { FC, useState } from 'react';
 
-import { User } from '@/enteties/User';
+import { fetchAllUsers, User } from '@/enteties/User';
 import AdminEditUserInfoModal from '@/features/adminManagingUsers/ui/AdminEditUserInfoModal';
+import { $api } from '@/shared/api/api';
 import block from '@/shared/assets/icons/block.svg?react';
 import action from '@/shared/assets/icons/edit.svg?react';
 import person from '@/shared/assets/icons/person.svg?react';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { BlockModal } from '@/shared/ui/BlockModal';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
@@ -23,6 +26,8 @@ const AdminManagingUsersController: FC<Props> = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [blockModalIsOpen, setBlockModalIsOpen] = useState(false);
   const [editUserModalIsOpen, setEditUserModalIsOpen] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   return (
     <VStack gap="2" className="relative w-full">
@@ -61,6 +66,7 @@ const AdminManagingUsersController: FC<Props> = (props) => {
         </Button>
         <Button
           variant="clear"
+          disabled={currentUser.accountStatus !== 'active'}
           className="group flex items-center gap-2 w-[180px] p-2.5 hover:bg-secondary-yellow rounded-lg"
           onClick={() => {
             setBlockModalIsOpen(true);
@@ -70,7 +76,7 @@ const AdminManagingUsersController: FC<Props> = (props) => {
           <Icon Svg={block} width={30} height={30} className="stroke-error-red" />
           <Text
             Tag="span"
-            text="Заблокувати"
+            text={`${currentUser.accountStatus === 'active' ? 'Заблокувати' : 'Заблокований'}`}
             size="md"
             color="red"
             className="select-none"
@@ -80,7 +86,20 @@ const AdminManagingUsersController: FC<Props> = (props) => {
       {blockModalIsOpen && (
         <BlockModal
           text={`Ви дійсно хочете заблокувати користувача ${currentUser?.username || ''} ${currentUser?.surname || ''}`}
-          blockHandler={showBanModal}
+          blockHandler={async () => {
+            try {
+              await $api.patch(`${ApiRoutes.USER}/${currentUser._id}/status`, {
+                accountStatus: 'blocked',
+              });
+            } catch (e) {
+              // eslint-disable-next-line no-console
+              console.log(e);
+            } finally {
+              dispatch(fetchAllUsers({}));
+              setBlockModalIsOpen(false);
+              showBanModal();
+            }
+          }}
           onClose={() => setBlockModalIsOpen(false)}
         />
       )}
