@@ -98,9 +98,7 @@ const Analytics: FC = () => {
           </div>
 
           <div className="flex flex-col gap-[5px] w-full">
-            <div className="w-full">
-              <StatisticGraph color="255, 222, 0" data={generateData.newUsersPerDay} />
-            </div>
+            <StatisticGraph color="255, 222, 0" data={generateData.newUsersPerDay} />
 
             {selectedMonth && (
               <span className="flex justify-center w-full text-[14px] text-disabled">
@@ -121,9 +119,7 @@ const Analytics: FC = () => {
           </div>
 
           <div className="flex flex-col gap-[5px] w-full">
-            <div className="w-full">
-              <StatisticGraph color="15, 98, 254" data={generateData.newSalersPerDay} />
-            </div>
+            <StatisticGraph color="15, 98, 254" data={generateData.newSalersPerDay} />
 
             {selectedMonth && (
               <span className="flex justify-center w-full text-[14px] text-disabled">
