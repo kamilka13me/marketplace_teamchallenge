@@ -72,7 +72,7 @@ const AdminSubscription = ({
                 <img
                   src={Wave}
                   alt="Хвиля"
-                  className="hidden md:block md:absolute md:left-[0px] md:top-[0px] md:rounded-2xl"
+                  className="hidden md:block md:absolute md:left-[0px] md:top-[0px] md:rounded-2xl "
                 />
                 <p className="text-white text-[24px] relative">{plan.price}</p>
                 <h2 className="text-white mb-[44px] text-[32px] relative md:mb-[127px]">
