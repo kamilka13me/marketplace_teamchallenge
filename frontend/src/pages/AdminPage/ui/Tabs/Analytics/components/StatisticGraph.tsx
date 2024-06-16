@@ -33,7 +33,14 @@ const StatisticGraph: FC<Props> = (props) => {
               color: '#A8A8A8',
             },
           },
-          y: { beginAtZero: true, min: 0, suggestedMax: 100 },
+          y: {
+            beginAtZero: true,
+            min: 0,
+            suggestedMax: 100,
+            ticks: {
+              stepSize: 20,
+            },
+          },
         },
       }}
       data={{
