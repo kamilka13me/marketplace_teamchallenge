@@ -26,11 +26,14 @@ const plans: Plan[] = [
 const AdminSubscription = ({
   onPlanSelect,
   seller,
+  close,
+  setClose,
 }: {
   onPlanSelect: (plan: string) => void;
   seller: Seller;
+  close: boolean;
+  setClose: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [close, setClose] = useState<boolean>(false);
   const [selectedPlan, setSelectedPlan] = useState<string>(seller.subscribe);
   const [activePlan, setActivePlan] = useState<string>(seller.subscribe);
 
