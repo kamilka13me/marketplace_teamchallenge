@@ -30,7 +30,7 @@ const ProductsSidebar: FC<Props> = (props) => {
   );
 
   const { data: sellerData, isLoading: sellerIsLoading } = useAxios<{ users: User[] }>(
-    ApiRoutes.SELLER,
+    `${ApiRoutes.USER}?role=seller`,
   );
 
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
