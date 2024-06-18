@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 import Slider from 'react-slick';
@@ -17,11 +17,9 @@ import ProductFeedbacks from '@/pages/ProductPage/ui/components/ProductFeedbacks
 import ProductSpecification from '@/pages/ProductPage/ui/components/ProductSpecification';
 import SellerContacts from '@/pages/ProductPage/ui/components/SellerContacts';
 import { useGetPromotionsProductsQuery } from '@/pages/ProductsPage';
-import { productsPageActions } from '@/pages/ProductsPage/model/slices/productsPageSlice';
 import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { Container } from '@/shared/layouts/Container';
-import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import useAxios from '@/shared/lib/hooks/useAxios';
 import { ReactHelmet } from '@/shared/SEO';
@@ -41,8 +39,6 @@ const ProductPage: FC<Props> = () => {
   const [triggerRefetchSellerInfo, setTriggerRefetchSellerInfo] = useState(false);
 
   const promotionsProduct = useGetPromotionsProductsQuery({});
-
-  const dispatch = useAppDispatch();
 
   const user = useAppSelector(getUserAuthData);
 
@@ -78,13 +74,6 @@ const ProductPage: FC<Props> = () => {
 
     return () => clearTimeout(alertTimeout);
   }, [id, user]);
-
-  const promotionsProductsSearchParamsHandler = () => {
-    dispatch(productsPageActions.clearSortParams());
-    dispatch(productsPageActions.setSortBy('views'));
-    dispatch(productsPageActions.setSortDirection('-1'));
-    dispatch(productsPageActions.setDiscount('1'));
-  };
 
   const settingsSmall = {
     dots: false,
@@ -220,7 +209,7 @@ const ProductPage: FC<Props> = () => {
           dark
           products={promotionsProduct.data?.products}
           className="mt-5"
-          setSearchParams={promotionsProductsSearchParamsHandler}
+          searchParams="?sortBy=views&sortDirection=-1&discount=1"
         />
       </Container>
     </div>

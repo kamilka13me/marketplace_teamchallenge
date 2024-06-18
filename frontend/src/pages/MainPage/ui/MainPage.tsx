@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 
 import SliderWidget from '../../../widgets/Slider/ui/SliderWidget';
 
@@ -8,10 +8,8 @@ import {
   useGetPopularProductsQuery,
   useGetPromotionsProductsQuery,
 } from '@/pages/ProductsPage';
-import { productsPageActions } from '@/pages/ProductsPage/model/slices/productsPageSlice';
 import allProducts from '@/shared/assets/icons/allProducts.svg?react';
 import { Container } from '@/shared/layouts/Container';
-import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { ReactHelmet } from '@/shared/SEO';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
@@ -27,28 +25,8 @@ const MainPage: FC = () => {
   const popularProduct = useGetPopularProductsQuery({});
   const promotionsProduct = useGetPromotionsProductsQuery({});
 
-  const dispatch = useAppDispatch();
-
   const openMobileAllCategoriesHandler = () => {
     setMobileAllCategories(false);
-  };
-
-  const newProductsSearchParamsHandler = () => {
-    dispatch(productsPageActions.clearSortParams());
-    dispatch(productsPageActions.setSortDirection('1'));
-  };
-
-  const popularProductsSearchParamsHandler = () => {
-    dispatch(productsPageActions.clearSortParams());
-    dispatch(productsPageActions.setSortDirection('-1'));
-    dispatch(productsPageActions.setSortBy('views'));
-  };
-
-  const promotionsProductsSearchParamsHandler = () => {
-    dispatch(productsPageActions.clearSortParams());
-    dispatch(productsPageActions.setSortBy('views'));
-    dispatch(productsPageActions.setSortDirection('-1'));
-    dispatch(productsPageActions.setDiscount('1'));
   };
 
   return (
@@ -87,19 +65,19 @@ const MainPage: FC = () => {
             isLoading={newProduct.isLoading}
             title="Новинки"
             products={newProduct.data?.products}
-            setSearchParams={newProductsSearchParamsHandler}
+            searchParams="?sortDirection=-1"
           />
           <ProductSectionLayout
             isLoading={promotionsProduct.isLoading}
             title="Акційні пропозиції"
             products={promotionsProduct.data?.products}
-            setSearchParams={promotionsProductsSearchParamsHandler}
+            searchParams="?sortBy=views&sortDirection=-1&discount=1"
           />
           <ProductSectionLayout
             isLoading={popularProduct.isLoading}
             title="Популярні товари"
             products={popularProduct.data?.products}
-            setSearchParams={popularProductsSearchParamsHandler}
+            searchParams="?sortBy=views&sortDirection=-1"
           />
         </HStack>
         <div className="lg:hidden">

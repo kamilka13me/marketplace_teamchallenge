@@ -16,12 +16,12 @@ interface Props {
   products: Product[];
   dark?: boolean;
   isLoading: boolean;
-  setSearchParams: () => void;
   className?: string;
+  searchParams?: string;
 }
 
 const ProductSectionLayout: FC<Props> = (props) => {
-  const { title, products, isLoading, setSearchParams, dark = false, className } = props;
+  const { title, products, isLoading, dark = false, className, searchParams } = props;
 
   function renderLoadingSkeletons() {
     return (
@@ -50,9 +50,8 @@ const ProductSectionLayout: FC<Props> = (props) => {
       </div>
       <VStack justify="end" align="center" className="w-full mt-6 lg:mt-8 relative ">
         <Link
-          to={getRouteProducts()}
+          to={getRouteProducts() + searchParams}
           className="group relative flex items-center"
-          onClick={setSearchParams}
         >
           <Text
             Tag="span"
