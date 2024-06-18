@@ -85,7 +85,7 @@ const components: FC[] = [
   ManagingOffersMobile,
   ManagingFeedback,
   ManagingContent,
-  ManagingContent,
+  Analytics,
   ManagingContent,
   SupportCenter,
 ];
@@ -135,7 +135,7 @@ const AdminPage: FC = () => {
   return (
     <div
       data-testid="ProfilePage"
-      className="bg-main-dark min-h-[100vh_-_20%] pt-[44px] pb-[72px]"
+      className="bg-main-dark min-h-[100vh_-_20%] py-[10px] lg:pt-[44px] lg:pb-[72px]"
     >
       <Container>
         {windowWidth >= 1024 ? (
