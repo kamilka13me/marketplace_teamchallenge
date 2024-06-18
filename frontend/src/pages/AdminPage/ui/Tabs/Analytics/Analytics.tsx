@@ -85,15 +85,15 @@ const Analytics: FC = () => {
     dateMap[generateData.newUsersPerDay[0]?.date.slice(5, 7) as keyof typeof dateMap];
 
   return (
-    <div className="flex flex-row gap-5 w-full text-white">
-      <div className="flex flex-col gap-5 min-w-[650px]">
+    <div className="flex flex-col gap-5 w-full text-white my-[18px] lg:my-0">
+      <div className="flex 2xl:flex-row flex-col gap-5">
         {/* ---------------Користувачі-----------------------*/}
-        <div className="flex flex-col gap-[15px] w-full bg-dark-grey rounded-2xl px-[15px] py-[20px]">
-          <div className="flex flex-row items-center justify-between w-full">
+        <div className="flex flex-col gap-[15px] 2xl:min-w-[650px] lg:bg-dark-grey bg-selected-dark rounded-2xl px-[15px] py-[20px]">
+          <div className="flex gap-[15px] sm:flex-row flex-col items-center justify-between w-full">
             <span className="text-[18px]">Кількість нових користувачів</span>
-            <div className="flex flex-row gap-[10px] justify-center items-center">
+            <div className="flex flex-row gap-[10px] justify-center items-center self-end">
               <div className="w-[12px] h-[12px] bg-secondary-yellow rounded-full" />
-              <span className="text-[14px]">Користувачі</span>
+              <span className="text-[14px] text-disabled lg:text-white">Користувачі</span>
             </div>
           </div>
 
@@ -108,113 +108,115 @@ const Analytics: FC = () => {
           </div>
         </div>
 
-        {/* ---------------Продавці-----------------------*/}
-        <div className="flex flex-col gap-[15px] w-full bg-dark-grey rounded-2xl px-[15px] py-[20px]">
-          <div className="flex flex-row items-center justify-between w-full">
-            <span className="text-[18px]">Кількість нових продавців</span>
-            <div className="flex flex-row gap-[10px] justify-center items-center">
-              <div className="w-[12px] h-[12px] bg-[#0f62fe] rounded-full" />
-              <span className="text-[14px]">Продавці</span>
+        {/* ---------------Контакти-----------------------*/}
+        <div className="flex flex-col gap-5 w-full">
+          <div className="flex flex-col gap-[15px] w-full lg:bg-dark-grey bg-selected-dark rounded-2xl p-[16px]">
+            <div className="flex flex-row gap-[15px]">
+              <div className="flex justify-center items-center h-[30px] w-[30px] bg-main rounded-[8px]">
+                <Icon Svg={people} width={16} height={16} className="stroke-black" />
+              </div>
+              <span className="text-[18px]">Відкриття контактів</span>
             </div>
+
+            <div className="flex flex-col w-full">
+              <div className="flex flex-row items-center gap-[8px] w-full">
+                <span className="text-[18px]">
+                  {generateData.openContactsCurrentMonth}
+                </span>
+                <span
+                  className={`text-[14px] text-[#32C42F] 
+                  ${generateData.openContactsCurrentMonth >= generateData.openContactsPreviousMonth ? 'text-[#32C42F]' : 'text-[#FF0000] rotate-180'}`}
+                >
+                  ⯅
+                </span>
+                <span
+                  className={`text-[14px] text-[#32C42F] ${generateData.openContactsCurrentMonth >= generateData.openContactsPreviousMonth ? 'text-[#32C42F]' : 'text-[#FF0000]'}`}
+                >
+                  {generateData.openContactsPreviousMonth !== 0
+                    ? (
+                        ((generateData.openContactsCurrentMonth -
+                          generateData.openContactsPreviousMonth) /
+                          generateData.openContactsPreviousMonth) *
+                        100
+                      ).toFixed(1)
+                    : 0}
+                  %
+                </span>
+              </div>
+              <span className="flex text-[16px] text-disabled">Поточний місяць</span>
+            </div>
+
+            <span className="flex gap-[5px] text-[12px] text-disabled">
+              Попередній місяць:
+              <span className="font-[600] text-white">
+                {generateData.openContactsPreviousMonth}
+              </span>
+            </span>
           </div>
 
-          <div className="flex flex-col gap-[5px] w-full">
-            <StatisticGraph color="15, 98, 254" data={generateData.newSalersPerDay} />
+          {/* ---------------Відвідування-----------------------*/}
+          <div className="flex flex-col gap-[15px] w-full lg:bg-dark-grey bg-selected-dark rounded-2xl p-[16px]">
+            <div className="flex flex-row gap-[15px]">
+              <div className="flex justify-center items-center h-[30px] w-[30px] bg-main rounded-[8px]">
+                <Icon Svg={userEdit} width={16} height={16} className="stroke-black" />
+              </div>
+              <span className="text-[18px]">Відвідування</span>
+            </div>
 
-            {selectedMonth && (
-              <span className="flex justify-center w-full text-[14px] text-disabled">
-                {selectedMonth}
+            <div className="flex flex-col w-full">
+              <div className="flex flex-row items-center gap-[8px] w-full">
+                <span className="text-[18px]">{generateData.visitsCurrentMonth}</span>
+                <span
+                  className={`text-[14px] text-[#32C42F] 
+                  ${generateData.visitsCurrentMonth >= generateData.visitsPreviousMonth ? 'text-[#32C42F]' : 'text-[#FF0000] rotate-180'}`}
+                >
+                  ⯅
+                </span>
+                <span
+                  className={`text-[14px] text-[#32C42F] ${generateData.visitsCurrentMonth >= generateData.visitsPreviousMonth ? 'text-[#32C42F]' : 'text-[#FF0000]'}`}
+                >
+                  {generateData.visitsPreviousMonth !== 0
+                    ? (
+                        ((generateData.visitsCurrentMonth -
+                          generateData.visitsPreviousMonth) /
+                          generateData.visitsPreviousMonth) *
+                        100
+                      ).toFixed(1)
+                    : 0}
+                  %
+                </span>
+              </div>
+              <span className="flex text-[16px] text-disabled">Поточний місяць</span>
+            </div>
+
+            <span className="flex gap-[5px] text-[12px] text-disabled">
+              Попередній місяць:
+              <span className="font-[600] text-white">
+                {generateData.visitsPreviousMonth}
               </span>
-            )}
+            </span>
           </div>
         </div>
       </div>
 
-      {/* ---------------Контакти-----------------------*/}
-      <div className="flex flex-col gap-5 w-full">
-        <div className="flex flex-col gap-[15px] w-full bg-dark-grey rounded-2xl p-[16px]">
-          <div className="flex flex-row gap-[15px]">
-            <div className="flex justify-center items-center h-[30px] w-[30px] bg-main rounded-[8px]">
-              <Icon Svg={people} width={16} height={16} className="stroke-black" />
-            </div>
-            <span className="text-[18px]">Відкриття контактів</span>
+      {/* ---------------Продавці-----------------------*/}
+      <div className="flex flex-col gap-[15px] 2xl:w-[650px] lg:bg-dark-grey bg-selected-dark rounded-2xl px-[15px] py-[20px]">
+        <div className="flex gap-[15px] sm:flex-row flex-col items-center justify-between w-full">
+          <span className="text-[18px]">Кількість нових продавців</span>
+          <div className="flex flex-row gap-[10px] justify-center items-center self-end">
+            <div className="w-[12px] h-[12px] bg-[#0f62fe] rounded-full" />
+            <span className="text-[14px] text-disabled lg:text-white">Продавці</span>
           </div>
-
-          <div className="flex flex-col w-full">
-            <div className="flex flex-row items-center gap-[8px] w-full">
-              <span className="text-[18px]">{generateData.openContactsCurrentMonth}</span>
-              <span
-                className={`text-[14px] text-[#32C42F] 
-                  ${generateData.openContactsCurrentMonth >= generateData.openContactsPreviousMonth ? 'text-[#32C42F]' : 'text-[#FF0000] rotate-180'}`}
-              >
-                ⯅
-              </span>
-              <span
-                className={`text-[14px] text-[#32C42F] ${generateData.openContactsCurrentMonth >= generateData.openContactsPreviousMonth ? 'text-[#32C42F]' : 'text-[#FF0000]'}`}
-              >
-                {generateData.openContactsPreviousMonth !== 0
-                  ? (
-                      ((generateData.openContactsCurrentMonth -
-                        generateData.openContactsPreviousMonth) /
-                        generateData.openContactsPreviousMonth) *
-                      100
-                    ).toFixed(1)
-                  : 0}
-                %
-              </span>
-            </div>
-            <span className="flex text-[16px] text-disabled">Поточний місяць</span>
-          </div>
-
-          <span className="flex gap-[5px] text-[12px] text-disabled">
-            Попередній місяць:
-            <span className="font-[600] text-white">
-              {generateData.openContactsPreviousMonth}
-            </span>
-          </span>
         </div>
 
-        {/* ---------------Відвідування-----------------------*/}
-        <div className="flex flex-col gap-[15px] w-full bg-dark-grey rounded-2xl p-[16px]">
-          <div className="flex flex-row gap-[15px]">
-            <div className="flex justify-center items-center h-[30px] w-[30px] bg-main rounded-[8px]">
-              <Icon Svg={userEdit} width={16} height={16} className="stroke-black" />
-            </div>
-            <span className="text-[18px]">Відвідування</span>
-          </div>
+        <div className="flex flex-col gap-[5px] w-full">
+          <StatisticGraph color="15, 98, 254" data={generateData.newSalersPerDay} />
 
-          <div className="flex flex-col w-full">
-            <div className="flex flex-row items-center gap-[8px] w-full">
-              <span className="text-[18px]">{generateData.visitsCurrentMonth}</span>
-              <span
-                className={`text-[14px] text-[#32C42F] 
-                  ${generateData.visitsCurrentMonth >= generateData.visitsPreviousMonth ? 'text-[#32C42F]' : 'text-[#FF0000] rotate-180'}`}
-              >
-                ⯅
-              </span>
-              <span
-                className={`text-[14px] text-[#32C42F] ${generateData.visitsCurrentMonth >= generateData.visitsPreviousMonth ? 'text-[#32C42F]' : 'text-[#FF0000]'}`}
-              >
-                {generateData.visitsPreviousMonth !== 0
-                  ? (
-                      ((generateData.visitsCurrentMonth -
-                        generateData.visitsPreviousMonth) /
-                        generateData.visitsPreviousMonth) *
-                      100
-                    ).toFixed(1)
-                  : 0}
-                %
-              </span>
-            </div>
-            <span className="flex text-[16px] text-disabled">Поточний місяць</span>
-          </div>
-
-          <span className="flex gap-[5px] text-[12px] text-disabled">
-            Попередній місяць:
-            <span className="font-[600] text-white">
-              {generateData.visitsPreviousMonth}
+          {selectedMonth && (
+            <span className="flex justify-center w-full text-[14px] text-disabled">
+              {selectedMonth}
             </span>
-          </span>
+          )}
         </div>
       </div>
     </div>
