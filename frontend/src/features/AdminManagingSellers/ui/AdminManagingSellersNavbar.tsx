@@ -76,7 +76,7 @@ const AdminManagingSellersNavbar: FC<Props> = (props) => {
 
   return (
     <div className="flex flex-col lg:flex-row justify-between items-center pb-5 gap-3">
-      <div className="gap-3 order-2 lg:order-0 flex justify-between items-center">
+      <div className="gap-3 order-1 lg:order-none flex justify-between items-center">
         <div className="flex items-center rounded-[16px] relative">
           <Text
             Tag="span"
@@ -84,7 +84,7 @@ const AdminManagingSellersNavbar: FC<Props> = (props) => {
             size="sm"
             font-normal
             color="white"
-            className="w-[99px] hidden md:block"
+            className="w-[99px]"
           />
           <Button variant="clear" onClick={() => setSortingOpen((prev) => !prev)}>
             <Icon
@@ -208,7 +208,7 @@ const AdminManagingSellersNavbar: FC<Props> = (props) => {
             className="w-[24px] h-[24px] ml-2 lg:ml-5 xl:ml-1"
           />
         </Button>
-        <div className="relative top-0 right-[32px] lg:right-[-1vw]">
+        <div className="relative top-[30px] lg:top-[0px] right-[320px] lg:right-[-1vw]">
           <CustomCalendar
             calendarIsOpened={isCalendarOpen}
             dates={dateState}
