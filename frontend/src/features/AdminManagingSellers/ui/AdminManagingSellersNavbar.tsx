@@ -75,9 +75,9 @@ const AdminManagingSellersNavbar: FC<Props> = (props) => {
   };
 
   return (
-    <VStack justify="between" className="">
-      <VStack className="gap-3 w-full">
-        <div className="flex items-center justify-center rounded-[16px] relative">
+    <div className="flex flex-col lg:flex-row justify-between items-center pb-5 gap-3">
+      <div className="gap-3 order-2 lg:order-0 flex justify-between items-center">
+        <div className="flex items-center rounded-[16px] relative">
           <Text
             Tag="span"
             text="Сортування за"
@@ -136,32 +136,31 @@ const AdminManagingSellersNavbar: FC<Props> = (props) => {
             </div>
           )}
         </div>
-        <div className="lg:max-w-[226px]">
-          <div className="flex flex-nowrap items-center w-full lg:w-auto mb-5">
-            <Input
-              name="searchInput"
-              type="text"
-              value={searchValue}
-              variant="search"
-              onChange={(e) => setSearchValue(e.currentTarget.value)}
-              className="min-h-[38px] w-full bg-selected-dark"
-              classNameBlockWrap="w-full"
-            />
-            <Button
-              variant="primary"
-              className="rounded-l-none !px-[14px] py-[9px]"
-              type="submit"
-              onClick={() => {
-                dispatch(sellersActions.setSearch(searchValue));
-                dispatch(sellersActions.setOffset(0));
-                dispatch(fetchAllSellers({}));
-              }}
-            >
-              <Icon Svg={search} width={20} height={20} />
-            </Button>
-          </div>
+
+        <div className="flex flex-nowrap items-center w-full lg:w-auto">
+          <Input
+            name="searchInput"
+            type="text"
+            value={searchValue}
+            variant="search"
+            onChange={(e) => setSearchValue(e.currentTarget.value)}
+            className="min-h-[38px] w-full bg-selected-dark"
+            classNameBlockWrap="w-full"
+          />
+          <Button
+            variant="primary"
+            className="rounded-l-none !px-[14px] py-[9px]"
+            type="submit"
+            onClick={() => {
+              dispatch(sellersActions.setSearch(searchValue));
+              dispatch(sellersActions.setOffset(0));
+              dispatch(fetchAllSellers({}));
+            }}
+          >
+            <Icon Svg={search} width={20} height={20} />
+          </Button>
         </div>
-      </VStack>
+      </div>
 
       <VStack gap="2" align="center">
         <DateSortWidget
@@ -218,7 +217,7 @@ const AdminManagingSellersNavbar: FC<Props> = (props) => {
           />
         </div>
       </VStack>
-    </VStack>
+    </div>
   );
 };
 

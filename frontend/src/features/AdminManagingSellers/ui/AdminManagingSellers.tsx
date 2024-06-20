@@ -34,7 +34,7 @@ const AdminManagingSellers: FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [state, setState] = useState<IRangeDate[]>([
     {
-      startDate: new Date(),
+      startDate: new Date(0),
       endDate: new Date(),
       key: 'selection',
     },
@@ -84,7 +84,7 @@ const AdminManagingSellers: FC = () => {
       <div className="text-main-white bg-dark-grey rounded-2xl p-4 w-full">
         <AdminManagingSellersNavbar dateState={state} setDateState={setState} />
         {!isLoading && (
-          <table className="table-auto overflow-scroll w-full hidden lg:inline">
+          <table className="table-auto overflow-scroll w-full">
             <thead>
               <tr className="bg-selected-dark rounded-2xl">
                 <th className="!font-normal text-start p-[10px] text-lg w-[174px] rounded-l-2xl">
@@ -141,7 +141,7 @@ const AdminManagingSellers: FC = () => {
                     onClick={() => {
                       copyToClipboard(seller?.email);
                     }}
-                    className="relative !font-normal text-start p-[10px] text-lg w-[174px] relative group"
+                    className="!font-normal text-start p-[10px] text-lg w-[174px] relative group"
                   >
                     {seller?.email?.slice(0, 12)}
                     {seller?.email?.length > 12 && (
