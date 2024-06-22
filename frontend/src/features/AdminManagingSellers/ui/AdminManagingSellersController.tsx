@@ -54,7 +54,7 @@ const AdminManagingSellersController: FC<Props> = (props) => {
         onClick={() => {
           setShowModal((prev) => !prev);
         }}
-        className="rotate-90 cursor-pointer"
+        className="lg:rotate-90 cursor-pointer"
       />
       <HStack
         justify="center"
