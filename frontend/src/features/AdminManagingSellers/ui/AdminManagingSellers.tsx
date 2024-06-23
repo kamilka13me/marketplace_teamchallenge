@@ -112,6 +112,7 @@ const AdminManagingSellers: FC = () => {
                     </th>
                   </tr>
                 </thead>
+
                 <tbody className="text-md">
                   {sellers?.map((seller) => (
                     <tr
@@ -175,7 +176,6 @@ const AdminManagingSellers: FC = () => {
                           openBanModal={() => {
                             setCurrentSellerId(seller._id);
                             setCurrentSellerName(seller.username);
-                            setShowBanSellerModal(true);
                             setBanModalOpen(true);
                           }}
                         />
@@ -185,7 +185,8 @@ const AdminManagingSellers: FC = () => {
                 </tbody>
               </table>
 
-              <div className="MobileTable w-full lg:hidden flex flex-col gap-[12px]">
+              {/* Mobile adaptive for table */}
+              <div className="w-full lg:hidden flex flex-col gap-[12px]">
                 {sellers?.map((seller) => (
                   <div
                     key={seller._id}
@@ -222,7 +223,6 @@ const AdminManagingSellers: FC = () => {
                           openBanModal={() => {
                             setCurrentSellerId(seller._id);
                             setCurrentSellerName(seller.username);
-                            setShowBanSellerModal(true);
                             setBanModalOpen(true);
                           }}
                         />
@@ -276,6 +276,7 @@ const AdminManagingSellers: FC = () => {
               } finally {
                 dispatch(fetchAllSellers({}));
                 setBanModalOpen(false);
+                setShowBanSellerModal(true);
               }
             }}
             onClose={() => setBanModalOpen(false)}
@@ -284,6 +285,7 @@ const AdminManagingSellers: FC = () => {
       </div>
     );
   }
+
   if (isSellerInfoOpen) {
     return (
       <SellerInfoForm
