@@ -7,7 +7,7 @@ import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import useAxios from '@/shared/lib/hooks/useAxios';
 import { Button } from '@/shared/ui/Button';
-import { HStack, VStack } from '@/shared/ui/Stack';
+import { HStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
 interface InputProps {
@@ -69,7 +69,7 @@ const SellerInfoForm: FC<Props> = (props) => {
 
   return (
     <HStack gap="5" className="w-full">
-      <div className="w-full bg-dark-grey rounded-2xl px-4 py-6">
+      <div className="w-full bg-dark-grey rounded-2xl lg:px-4 py-5">
         <Text
           Tag="h3"
           text={`Заявка на реєстрацію компанії ID ${sellerId} `}
@@ -77,27 +77,31 @@ const SellerInfoForm: FC<Props> = (props) => {
           color="gray-light"
           className="mb-5"
         />
-        <VStack justify="between" gap="4" className="w-full">
-          <HStack gap="5" className="w-full">
+        <div className="w-full flex flex-col gap-5">
+          <div className="w-full flex flex-col lg:flex-row gap-4">
             <InputImitator text={seller?.legalName} title="Юридична назва компанії" />
-            <InputImitator text={seller?.city} title="Місто, область" />
-            <InputImitator text={seller?.idStateRegister} title="ЄДРПОУ" />
-          </HStack>
-          <HStack gap="5" className="w-full">
             <InputImitator text={seller?.legalAddress} title="Юридична адреса" />
+          </div>
+          <div className="w-full flex flex-col lg:flex-row gap-4">
+            <InputImitator text={seller?.city} title="Місто, область" />
             <InputImitator text={seller?.cityIndex} title="Індекс" />
+          </div>
+          <div className="w-full flex flex-col lg:flex-row gap-4">
+            <InputImitator text={seller?.idStateRegister} title="ЄДРПОУ" />
             <InputImitator text={seller?.identificNumber} title="ІПН" />
-          </HStack>
-        </VStack>
+          </div>
+        </div>
+
         <Text Tag="h3" text="Контакти" size="xl" color="gray-light" className="my-5" />
         <HStack gap="5" className="w-full">
           {seller?.contacts.map((item, i) => (
-            <VStack key={i} gap="4" className="w-full">
+            <div key={i} className="w-full flex flex-col lg:flex-row gap-4">
               <InputImitator text={item.phone} title="Teлефон" />
               <InputImitator text={item.person} title="Контактна особа" />
-            </VStack>
+            </div>
           ))}
         </HStack>
+
         <Text
           Tag="h3"
           text="Інші методи зв’язку"
@@ -107,13 +111,14 @@ const SellerInfoForm: FC<Props> = (props) => {
         />
         <HStack gap="5" className="w-full">
           {seller?.communication.map((item, i) => (
-            <VStack key={i} gap="4" className="w-full">
+            <div key={i} className="w-full flex flex-col lg:flex-row gap-4">
               <InputImitator text={item.messenger} title="" />
               <InputImitator text={item.phone} title="" />
-            </VStack>
+            </div>
           ))}
         </HStack>
       </div>
+
       <div className="w-full bg-dark-grey rounded-2xl px-4 py-6">
         <div className="w-full">
           <Text
@@ -125,6 +130,7 @@ const SellerInfoForm: FC<Props> = (props) => {
           />
           <InputImitator text={seller?.descriptCompany} title="" className="!py-4" />
         </div>
+
         <div>
           <Text
             Tag="h3"
@@ -134,6 +140,7 @@ const SellerInfoForm: FC<Props> = (props) => {
             className="mb-5 mt-9"
           />
           <InputImitator text={seller?.generalName} title="Назва компанії" />
+
           <Text
             Tag="h3"
             text="Контакти для зв'язку з клієнтами"
@@ -143,16 +150,24 @@ const SellerInfoForm: FC<Props> = (props) => {
           />
           <HStack gap="5" className="w-full">
             {seller?.communication.map((item, i) => (
-              <VStack key={i} gap="4" className="w-full">
+              <div key={i} className="w-full flex flex-col lg:flex-row gap-4">
                 <InputImitator text={item.messenger} title="" />
                 <InputImitator text={item.phone} title="" />
-              </VStack>
+              </div>
             ))}
           </HStack>
         </div>
       </div>
 
-      <VStack gap="5" justify="end" className="w-full">
+      <div className="w-full flex gap-4 flex-col items-center justify-end sm:flex-row">
+        <Button
+          onClick={() => setStatus('active')}
+          variant="primary"
+          className="max-w-[360px] h-12 w-full sm:order-2"
+        >
+          Погодити заявку
+        </Button>
+
         <Button
           onClick={() => setStatus('close')}
           variant="light-gray"
@@ -160,14 +175,7 @@ const SellerInfoForm: FC<Props> = (props) => {
         >
           Відхилити
         </Button>
-        <Button
-          onClick={() => setStatus('active')}
-          variant="primary"
-          className="max-w-[360px] h-12 w-full"
-        >
-          Погодити заявку
-        </Button>
-      </VStack>
+      </div>
     </HStack>
   );
 };

@@ -26,7 +26,6 @@ import { VStack } from '@/shared/ui/Stack';
 import { ProfileSidebar } from '@/widgets/ProfileSidebar';
 import { ITab } from '@/widgets/ProfileSidebar/ui/ProfileSidebar';
 import ProfileSidebarMobile from '@/widgets/ProfileSidebar/ui/ProfileSidebarMobile';
-import { WishlistProfileTab } from '@/widgets/WishlistProfileTab';
 
 const tabs: ITab[] = [
   {
@@ -81,7 +80,7 @@ const tabs: ITab[] = [
 
 const components: FC[] = [
   AdminManagingUsers,
-  WishlistProfileTab,
+  AdminManagingSellers,
   ManagingOffersMobile,
   ManagingFeedback,
   ManagingContent,

@@ -15,7 +15,7 @@ const BanSellerModal: FC<Props> = (props) => {
 
   return (
     <ModalWindow
-      className="flex flex-col items-center pb-[60px] !bg-selected-dark shadow-custom-hover rounded-2xl max-w-[387px] lg:max-w-[386px] w-full"
+      className="flex flex-col items-center pb-[60px] !bg-selected-dark shadow-custom-hover rounded-2xl w-[340px] lg:w-[390px]"
       onCloseFunc={onClose}
     >
       <Icon
@@ -26,7 +26,7 @@ const BanSellerModal: FC<Props> = (props) => {
         onClick={onClose}
       />
       <div className="mt-[26px] text-center max-w-[263px] flex flex-col justify-center items-center">
-        <Text Tag="h5" text="ККористувача заблоковано" size="xl" color="white" />
+        <Text Tag="h5" text="Користувача заблоковано" size="xl" color="white" />
         <Text
           Tag="h5"
           text={`Продавця “${sellerName}” ID ${sellerId} заблоковано`}
