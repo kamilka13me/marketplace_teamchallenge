@@ -84,8 +84,8 @@ const AdminManagingSellers: FC = () => {
 
   if (!isSellerInfoOpen) {
     return (
-      <div>
-        <div className="text-main-white bg-dark-grey rounded-2xl p-4 w-full">
+      <div className="w-full">
+        <div className="text-main-white bg-dark-grey rounded-2xl lg:p-4 w-full">
           <AdminManagingSellersNavbar dateState={state} setDateState={setState} />
           {!isLoading && (
             <>
@@ -112,7 +112,7 @@ const AdminManagingSellers: FC = () => {
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="text-md">
                   {sellers?.map((seller) => (
                     <tr
                       key={seller._id}
@@ -122,7 +122,7 @@ const AdminManagingSellers: FC = () => {
                         onClick={() => {
                           copyToClipboard(seller?.username);
                         }}
-                        className="cursor-pointer !font-normal text-start p-[10px] text-lg w-[174px] rounded-l-2xl relative group"
+                        className="cursor-pointer !font-normal text-start p-[10px] w-[174px] rounded-l-2xl relative group"
                       >
                         {seller?.username.slice(0, 12)}
                         {seller?.username?.length > 12 && (
@@ -135,7 +135,7 @@ const AdminManagingSellers: FC = () => {
                         onClick={() => {
                           copyToClipboard(seller?._id);
                         }}
-                        className="cursor-pointer !font-normal text-start p-[10px] text-lg w-[154px] relative group"
+                        className="cursor-pointer !font-normal text-start p-[10px] w-[154px] relative group"
                       >
                         {seller?._id?.slice(10, 24)}
                         <span className="absolute left-1/2 top-[40px] text-sm mt-1 p-2 bg-dark-grey text-main-white rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
@@ -146,7 +146,7 @@ const AdminManagingSellers: FC = () => {
                         onClick={() => {
                           copyToClipboard(seller?.email);
                         }}
-                        className="!font-normal text-start p-[10px] text-lg w-[174px] relative group"
+                        className="!font-normal text-start p-[10px] w-[174px] relative group"
                       >
                         {seller?.email?.slice(0, 12)}
                         {seller?.email?.length > 12 && (
@@ -155,7 +155,7 @@ const AdminManagingSellers: FC = () => {
                           </span>
                         )}
                       </th>
-                      <th className="!font-normal text-start p-[10px] text-lg w-[174px]">
+                      <th className="!font-normal text-start p-[10px] w-[174px]">
                         {seller?.created_at.slice(0, 10)}
                       </th>
                       {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}

@@ -21,7 +21,7 @@ const BlockModal: FC<Props> = (props) => {
 
   return (
     <ModalWindow
-      className="flex flex-col items-center !bg-selected-dark rounded-2xl max-w-[380px] lg:max-w-[386px] w-full"
+      className="flex flex-col items-center !bg-selected-dark rounded-2xl w-[340px] lg:w-[400px]"
       onCloseFunc={onClose}
     >
       <Icon
