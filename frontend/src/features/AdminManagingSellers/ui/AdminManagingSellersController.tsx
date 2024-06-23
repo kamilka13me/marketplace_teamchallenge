@@ -20,11 +20,12 @@ interface Props {
   userId: string;
   openForm: () => void;
   openSellerActiveModal: () => void;
+  sellerIsActive: SellerStatus;
   openBanModal: () => void;
 }
 
 const AdminManagingSellersController: FC<Props> = (props) => {
-  const { openForm, userId, openSellerActiveModal, openBanModal } = props;
+  const { openForm, userId, openSellerActiveModal, openBanModal, sellerIsActive } = props;
 
   const [showModal, setShowModal] = useState(false);
   const dispatch = useAppDispatch();
@@ -79,63 +80,69 @@ const AdminManagingSellersController: FC<Props> = (props) => {
             className="group-hover:text-main-dark select-none "
           />
         </Button>
-        <Button
-          variant="clear"
-          onClick={() => setStatus('close')}
-          className="group flex items-center gap-2 w-[180px] p-2.5 hover:bg-secondary-yellow rounded-lg"
-        >
-          <Icon
-            Svg={reject}
-            width={30}
-            height={30}
-            className="stroke-disabled group-hover:stroke-main-dark"
-          />
-          <Text
-            Tag="span"
-            text="Відхилити"
-            size="md"
-            color="gray-light"
-            className="group-hover:text-main-dark select-none "
-          />
-        </Button>
-        <Button
-          variant="clear"
-          className="group flex items-center gap-2 w-[180px] p-2.5 hover:bg-secondary-yellow rounded-lg"
-          onClick={() => setStatus('work')}
-        >
-          <Icon
-            Svg={edit}
-            width={30}
-            height={30}
-            className="stroke-disabled group-hover:stroke-main-dark"
-          />
-          <Text
-            Tag="span"
-            text="На розгляді"
-            size="md"
-            color="gray-light"
-            className="group-hover:text-main-dark select-none "
-          />
-        </Button>
-        <Button
-          variant="clear"
-          className="group flex items-center gap-2 w-[180px] p-2.5 hover:bg-secondary-yellow rounded-lg"
-          onClick={() => setStatus('active')}
-        >
-          <Icon
-            Svg={checked}
-            width={30}
-            height={30}
-            className="stroke-disabled group-hover:stroke-main-dark"
-          />
-          <Text
-            Tag="span"
-            text="Активувати"
-            size="md"
-            color="gray-light"
-            className="group-hover:text-main-dark select-none "
-          />
-        </Button>
+
+        {sellerIsActive !== 'active' && (
+          <>
+            <Button
+              variant="clear"
+              onClick={() => setStatus('close')}
+              className="group flex items-center gap-2 w-[180px] p-2.5 hover:bg-secondary-yellow rounded-lg"
+            >
+              <Icon
+                Svg={reject}
+                width={30}
+                height={30}
+                className="stroke-disabled group-hover:stroke-main-dark"
+              />
+              <Text
+                Tag="span"
+                text="Відхилити"
+                size="md"
+                color="gray-light"
+                className="group-hover:text-main-dark select-none "
+              />
+            </Button>
+            <Button
+              variant="clear"
+              className="group flex items-center gap-2 w-[180px] p-2.5 hover:bg-secondary-yellow rounded-lg"
+              onClick={() => setStatus('work')}
+            >
+              <Icon
+                Svg={edit}
+                width={30}
+                height={30}
+                className="stroke-disabled group-hover:stroke-main-dark"
+              />
+              <Text
+                Tag="span"
+                text="На розгляді"
+                size="md"
+                color="gray-light"
+                className="group-hover:text-main-dark select-none "
+              />
+            </Button>
+            <Button
+              variant="clear"
+              className="group flex items-center gap-2 w-[180px] p-2.5 hover:bg-secondary-yellow rounded-lg"
+              onClick={() => setStatus('active')}
+            >
+              <Icon
+                Svg={checked}
+                width={30}
+                height={30}
+                className="stroke-disabled group-hover:stroke-main-dark"
+              />
+              <Text
+                Tag="span"
+                text="Активувати"
+                size="md"
+                color="gray-light"
+                className="group-hover:text-main-dark select-none "
+              />
+            </Button>
+          </>
+        )}
+
         <Button
           variant="clear"
           className="group flex items-center gap-2 w-[180px] p-2.5 hover:bg-secondary-yellow rounded-lg"

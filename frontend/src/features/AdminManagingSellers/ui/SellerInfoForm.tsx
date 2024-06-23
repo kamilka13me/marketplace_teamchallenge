@@ -35,10 +35,11 @@ interface Props {
   sellerId: string;
   closeForm: () => void;
   showActiveteForm: () => void;
+  currentSellerStatus: null | SellerStatus;
 }
 
 const SellerInfoForm: FC<Props> = (props) => {
-  const { sellerId, closeForm, showActiveteForm } = props;
+  const { sellerId, closeForm, showActiveteForm, currentSellerStatus } = props;
 
   const dispatch = useAppDispatch();
 
@@ -159,23 +160,25 @@ const SellerInfoForm: FC<Props> = (props) => {
         </div>
       </div>
 
-      <div className="w-full flex gap-4 flex-col items-center justify-end sm:flex-row">
-        <Button
-          onClick={() => setStatus('active')}
-          variant="primary"
-          className="max-w-[360px] h-12 w-full sm:order-2"
-        >
-          Погодити заявку
-        </Button>
+      {currentSellerStatus !== 'active' && (
+        <div className="w-full flex gap-4 flex-col items-center justify-end sm:flex-row">
+          <Button
+            onClick={() => setStatus('active')}
+            variant="primary"
+            className="max-w-[360px] h-12 w-full sm:order-2"
+          >
+            Погодити заявку
+          </Button>
 
-        <Button
-          onClick={() => setStatus('close')}
-          variant="light-gray"
-          className="max-w-[360px] h-12 w-full"
-        >
-          Відхилити
-        </Button>
-      </div>
+          <Button
+            onClick={() => setStatus('close')}
+            variant="light-gray"
+            className="max-w-[360px] h-12 w-full"
+          >
+            Відхилити
+          </Button>
+        </div>
+      )}
     </HStack>
   );
 };

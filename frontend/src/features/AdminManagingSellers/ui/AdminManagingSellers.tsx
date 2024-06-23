@@ -10,6 +10,7 @@ import { fetchNextSellers } from '@/enteties/Seller/model/services/fetchNextSell
 import { fetchPrevSellers } from '@/enteties/Seller/model/services/fetchPrevSellers';
 import { fetchAllSellers } from '@/enteties/Seller/model/services/getAllSellers';
 import { getSellers, sellersActions } from '@/enteties/Seller/model/slice/sellersSlice';
+import { SellerStatus } from '@/enteties/Seller/model/types/seller';
 import ActiveSellerModal from '@/features/AdminManagingSellers/ui/ActiveSellerModal';
 import AdminManagingSellersController from '@/features/AdminManagingSellers/ui/AdminManagingSellersController';
 import AdminManagingSellersNavbar from '@/features/AdminManagingSellers/ui/AdminManagingSellersNavbar';
@@ -30,6 +31,9 @@ import { IRangeDate } from '@/widgets/ListingSort/ui/components/ListingSearchCal
 const AdminManagingSellers: FC = () => {
   const [isSellerInfoOpen, setIsSellerInfoOpen] = useState(false);
   const [currentSellerId, setCurrentSellerId] = useState<string | null>(null);
+  const [currentSellerStatus, setCurrentSellerStatus] = useState<SellerStatus | null>(
+    null,
+  );
   const [banModalOpen, setBanModalOpen] = useState(false);
   const [currentSellerName, setCurrentSellerName] = useState<string | null>(null);
   const [showBanSellerModal, setShowBanSellerModal] = useState(false);
@@ -167,7 +171,11 @@ const AdminManagingSellers: FC = () => {
                       <th className=" !font-normal  text-lg w-[100px]  rounded-r-2xl">
                         <AdminManagingSellersController
                           userId={seller._id}
-                          openForm={() => openSellerForm(seller._id)}
+                          sellerIsActive={seller.accountStatus}
+                          openForm={() => {
+                            openSellerForm(seller._id);
+                            setCurrentSellerStatus(seller.accountStatus);
+                          }}
                           openSellerActiveModal={() => {
                             setCurrentSellerId(seller._id);
                             setCurrentSellerName(seller.username);
@@ -214,7 +222,11 @@ const AdminManagingSellers: FC = () => {
                       <div>
                         <AdminManagingSellersController
                           userId={seller._id}
-                          openForm={() => openSellerForm(seller._id)}
+                          openForm={() => {
+                            openSellerForm(seller._id);
+                            setCurrentSellerStatus(seller.accountStatus);
+                          }}
+                          sellerIsActive={seller.accountStatus}
                           openSellerActiveModal={() => {
                             setCurrentSellerId(seller._id);
                             setCurrentSellerName(seller.username);
@@ -292,6 +304,7 @@ const AdminManagingSellers: FC = () => {
         closeForm={() => {
           setIsSellerInfoOpen(false);
         }}
+        currentSellerStatus={currentSellerStatus}
         showActiveteForm={() => setShowActiveSellerModal(true)}
         sellerId={currentSellerId || ''}
       />
