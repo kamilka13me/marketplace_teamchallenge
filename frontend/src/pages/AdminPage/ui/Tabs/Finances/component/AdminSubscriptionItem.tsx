@@ -25,7 +25,7 @@ const AdminSubscriptionItem = ({
   handleConfirm,
 }: AdminSubscriptionItemProps) => {
   return (
-    <div className="max-w-[759px] p-[12px] bg-selected-dark md:p-[24px]">
+    <div className="min-w-[343px] max-w-[759px] p-[12px] bg-selected-dark md:p-[24px]">
       <div className="flex justify-end mb-1 md:mb-[18px]">
         <Icon Svg={Cancel} fill="white" onClick={() => setClose(false)} />
       </div>
