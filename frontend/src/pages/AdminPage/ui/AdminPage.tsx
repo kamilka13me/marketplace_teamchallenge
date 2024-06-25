@@ -86,7 +86,7 @@ const components: FC[] = [
   ManagingFeedback,
   ManagingContent,
   Analytics,
-  ManagingContent,
+  Finances,
   SupportCenter,
 ];
 

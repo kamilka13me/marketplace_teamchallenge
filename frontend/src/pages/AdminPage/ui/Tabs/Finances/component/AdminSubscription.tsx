@@ -55,14 +55,16 @@ const AdminSubscription = ({
   return (
     <div>
       <div className="w-full lg:bg-dark-grey lg:rounded-2xl lg:px-[40px] py-[24px] relative z-10 lg:py-5 lg:overflow-hidden">
-        <div className="hidden  w-[370px] h-[370px] bg-main opacity-40 blur-[100px] rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -z-20 lg:block" />
-        <div className="flex justify-between">
+        <div className="hidden w-[370px] h-[370px] bg-main opacity-40 blur-[100px] rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -z-20 lg:block" />
+        <div className="flex flex-col md:flex-row justify-between mb-5">
           <h1 className="text-white text-[20px] flex mb-[24px] font-semibold md:mb-[34px]">
             Змінити тарифний план
           </h1>
-          <p className="text-white text-[18px]">ID №{seller.sellerId._id}</p>
+          <p className="text-white text-[18px]">
+            ID №{seller.sellerId._id.slice(0, 10).split('-').reverse().join('.')}
+          </p>
         </div>
-        <ul className="flex flex-col flex-wrap gap-[40px] mb-[40px] md:flex-row xl:flex-nowrap">
+        <ul className="flex flex-col gap-[40px] mb-[40px] md:flex-row md:flex-wrap lg:flex-nowrap">
           {plans.map((plan) => (
             <li
               key={plan.name}

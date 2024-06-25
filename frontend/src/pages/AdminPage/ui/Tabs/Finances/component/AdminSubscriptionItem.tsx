@@ -1,10 +1,6 @@
-import { useState } from 'react';
-
 import Cancel from '@/shared/assets/icons/cancel.svg?react';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
-import { VStack } from '@/shared/ui/Stack';
-import { Text } from '@/shared/ui/Text';
 
 interface AdminSubscriptionItemProps {
   sellerId: string;
@@ -28,18 +24,18 @@ const AdminSubscriptionItem = ({
   setClose,
   handleConfirm,
 }: AdminSubscriptionItemProps) => {
-  const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
-
   return (
     <div className="max-w-[759px] p-[12px] bg-selected-dark md:p-[24px]">
-      <div className="flex justify-end mb-[18px]">
+      <div className="flex justify-end mb-1 md:mb-[18px]">
         <Icon Svg={Cancel} fill="white" onClick={() => setClose(false)} />
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-between flex-col md:flex-row mb-5">
         <h2 className="text-white text-[20px] mt-[13px] md:mt-0 mb-[12px] font-semibold ml-[25px] md:ml-0 md:mb-[20px] ">
           Змінити тарифний план
         </h2>
-        <p className="text-white text-[18px]">ID №{sellerId}</p>
+        <p className="text-white text-[18px] hidden md:block">
+          ID №{sellerId.slice(0, 10).split('-').reverse().join('.')}
+        </p>
       </div>
       <ul className="text-white bg-dark-grey mb-[20px] rounded-2xl md:rounded-none">
         <li className="px-[24px] py-[16px] border-b-[1px] border-secondary-yellow md:px-[32px]">
@@ -64,78 +60,22 @@ const AdminSubscriptionItem = ({
           .replace(/\//g, '.')}
         .
       </p>
-      <VStack gap="2" className="pl-[16px] mb-[12px] md:pl-[31px] md:mb-[35px]">
-        <label htmlFor="all selector" className="relative" aria-label="checkbox">
-          <input
-            type="checkbox"
-            className="peer relative appearance-none cursor-pointer w-[18px] h-[18px] md:h-[24px] md:w-[24px] md: border-[2px] border-light-grey rounded focus:outline-none"
-            onChange={() => setIsCheckboxChecked((prevState) => !prevState)}
-          />
-          <span className="absolute text-main-white transition-opacity opacity-0 left-[2px] top-[2px] pointer-events-none peer-checked:opacity-100">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-[18px] w-[18px] md:h-[24px] md:w-[24px] stroke-[0.1px]"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              stroke="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </span>
-        </label>
-        {window.innerWidth >= 768 ? (
-          <Text
-            Tag="span"
-            text="Ви погоджуєтесь, що ваше членство продовжуватиметься і ми стягуватимемо оновлену щомісячну плату, поки ви не скасуєте послугу. Ви можете скасувати членство в будь-який час, щоб уникнути майбутніх зборів."
-            size="md"
-            color="white"
-            className="-mt-1"
-          />
-        ) : (
-          <Text
-            Tag="span"
-            text="Ви погоджуєтесь, що ваше членство продовжуватиметься автоматично і
-              стягуватиметься щомісячна абонентська плата, до скасування."
-            size="sm"
-            color="white"
-            className="-mt-1"
-          />
-        )}
-      </VStack>
-      <div className="flex gap-[24px] px-[31px]">
+      <div className="flex flex-col-reverse md:flex-row gap-[24px]">
         <Button
           variant="gray"
           onClick={() => setClose(false)}
-          className="w-[99px] text-[16px] rounded-lg hover:underline focus:underline bg-selected-dark text-disabled md:bg-disabled md:text-[18px] md:text-wh md:focus:no-underline md:hover:no-underline md:w-[312px]"
+          className="w-full rounded-lg text-disabled bg-disabled text-[18px] md:w-[312px] px-5 py-[15px]"
         >
           Скасувати
         </Button>
-        {window.innerWidth >= 768 ? (
-          <Button
-            variant="primary"
-            onClick={handleConfirm}
-            className="w-[99px] rounded-lg text-[16px] md:text-[18px] md:w-[312px]"
-            disabled={!isCheckboxChecked}
-          >
-            Підтвердити
-          </Button>
-        ) : (
-          <button
-            type="button"
-            onClick={handleConfirm}
-            className={`${
-              isCheckboxChecked
-                ? 'text-secondary-yellow pointer-events-auto hover:underline focus:underline'
-                : 'text-disabled pointer-events-none'
-            } py-[8px] w-[99px]`}
-          >
-            Підтвердити
-          </button>
-        )}
+
+        <Button
+          variant="primary"
+          onClick={handleConfirm}
+          className="w-full rounded-lg text-[18px] md:w-[312px] px-5 py-[15px]"
+        >
+          Підтвердити
+        </Button>
       </div>
     </div>
   );
