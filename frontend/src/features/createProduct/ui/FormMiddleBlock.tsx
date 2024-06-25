@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -212,8 +212,17 @@ const FormMiddleBlock: FC<Props> = (props) => {
                   placeholder="Введіть відсоток знижки"
                   type="number"
                   autoComplete="off"
+                  error={errors?.discount && (errors?.discount.message as string)}
                   {...register('discount', {
                     required: hasDiscount,
+                    min: {
+                      value: 1,
+                      message: 'Знижка не може бути менше 1%',
+                    },
+                    max: {
+                      value: 99,
+                      message: 'Знижка не може бути більше 99%',
+                    },
                   })}
                   onChange={(e) => {
                     const { price } = getValues();
