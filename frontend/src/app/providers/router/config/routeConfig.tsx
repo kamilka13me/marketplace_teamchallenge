@@ -57,7 +57,7 @@ export const RouteConfig: Record<AppRoutes, AppRoutesProps> = {
     path: getSellerProfile(':id'),
     authOnly: true,
     element: <SellerPage />,
-    roles: [UserRoles.USER, UserRoles.SELLER, UserRoles.SUPER_ADMIN, UserRoles.ADMIN],
+    roles: [UserRoles.SELLER],
   },
   [AppRoutes.ADMIN]: {
     path: getAdminProfile(':id'),
