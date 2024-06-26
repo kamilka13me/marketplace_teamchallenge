@@ -1,4 +1,4 @@
-import React, { FC, Fragment } from 'react';
+import { FC, Fragment } from 'react';
 
 import { Listbox, Transition } from '@headlessui/react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
@@ -78,13 +78,18 @@ const ContactBlockPersonalForm: FC = () => {
                   control={control}
                   rules={{
                     required: t("Це поле є обов'язковим"),
+                    pattern: {
+                      // eslint-disable-next-line no-useless-escape
+                      value: /^((8|\+380)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/,
+                      message: t('Введіть правильний номер'),
+                    },
                   }}
                   render={({ field }) => (
                     <HStack className="w-full gap-1 lg:gap-2">
                       <Text Tag="p" text={t('Teлефон')} size="md" color="white" />
                       <PhoneInput
                         defaultCountry="ua"
-                        defaultMask=".........."
+                        defaultMask="380......."
                         placeholder={t('Номер телефону')}
                         value={field.value}
                         onChange={field.onChange}
@@ -236,12 +241,21 @@ const ContactBlockPersonalForm: FC = () => {
                   control={control}
                   rules={{
                     required: t("Це поле є обов'язковим"),
+                    minLength: {
+                      value: 13,
+                      message: t('Введіть правильний номер'),
+                    },
+                    pattern: {
+                      // eslint-disable-next-line no-useless-escape
+                      value: /^((8|\+380)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/,
+                      message: t('Введіть правильний номер'),
+                    },
                   }}
                   render={({ field }) => (
                     <VStack align="center" gap="4" justify="start" className="w-full">
                       <PhoneInput
                         defaultCountry="ua"
-                        defaultMask=".........."
+                        defaultMask="380......."
                         placeholder={t('Номер телефону')}
                         value={field.value}
                         onChange={field.onChange}
