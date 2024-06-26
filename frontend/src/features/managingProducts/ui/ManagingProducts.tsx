@@ -23,7 +23,9 @@ import {
   sellerProductsPageActions,
 } from '@/features/managingProducts/model/slice/sellerProductsSlice';
 import EditProductContainer from '@/features/managingProducts/ui/EditProductContainer';
-import SellerProductStatusBadge from '@/features/managingProducts/ui/SellerProductStatusBadge';
+import SellerProductStatusBadge, {
+  Statuses,
+} from '@/features/managingProducts/ui/SellerProductStatusBadge';
 import edit from '@/shared/assets/icons/edit-2.svg?react';
 import plus from '@/shared/assets/icons/plus.svg?react';
 import sortArrows from '@/shared/assets/icons/sort-arrows.svg?react';
@@ -451,12 +453,18 @@ const ManagingProducts: FC = () => {
 
     return (
       <>
-        <VStack gap="1" className="pb-2 mb-6 overflow-x-auto ">
+        <VStack gap="1" className="pb-2 mb-6 overflow-x-auto no-scrollbar">
           <VStack
             align="center"
             className={`h-8 gap-[6px] py-[7px] px-2.5 rounded-lg ${sortBy === 'name' && 'bg-selected-dark'} `}
           >
-            <Text Tag="p" text="Назва товару" size="sm" color="white" />
+            <Text
+              Tag="p"
+              text="Назва товару"
+              size="sm"
+              color="white"
+              className="whitespace-nowrap"
+            />
             <Icon
               Svg={sortArrows}
               width={16}
@@ -539,15 +547,15 @@ const ManagingProducts: FC = () => {
             />
           </VStack>
         </VStack>
-        <HStack gap="2">
+        <HStack gap="2" className="w-full">
           {products?.map((product) => (
             <HStack
               align="center"
-              className="py-3 px-4 rounded-2xl bg-selected-dark"
+              className="py-[30px] px-4 rounded-2xl bg-selected-dark w-full"
               key={product._id}
             >
-              <SellerProductStatusBadge status="blocked" />
-              <VStack align="center">
+              <SellerProductStatusBadge status={product.status as Statuses} />
+              <VStack justify="between" gap="2" align="center">
                 <label htmlFor="inputcheckbox" className="relative" aria-label="checkbox">
                   <input
                     checked={selectedProductsIds.includes(product._id)}
