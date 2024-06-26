@@ -304,24 +304,12 @@ const CommentReply: FC<ReplyProps> = (props) => {
             />
           </div>
           {windowWidth >= 1024 && (
-            <Text
-              Tag="p"
-              text={comment?.comment}
-              size="md"
-              color="gray-light"
-              className="whitespace-nowrap truncate"
-            />
+            <Text Tag="p" text={comment?.comment} size="md" color="gray-light" />
           )}
         </HStack>
       </VStack>
       {windowWidth < 1024 && (
-        <Text
-          Tag="p"
-          text={comment?.comment}
-          size="md"
-          color="gray-light"
-          className="whitespace-nowrap truncate"
-        />
+        <Text Tag="p" text={comment?.comment} size="md" color="gray-light" />
       )}
     </div>
   );
