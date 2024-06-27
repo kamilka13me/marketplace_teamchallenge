@@ -11,9 +11,9 @@ import { VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
 const plans = [
-  { name: 'Basic', price: '749 грн' },
-  { name: 'STANDART', price: '5 499 грн' },
-  { name: 'PREMIUM', price: '12 949 грн' },
+  { name: 'Basic', price: '749 грн', ads: '10 оголошень' },
+  { name: 'STANDART', price: '5 499 грн', ads: '100 оголошень' },
+  { name: 'PREMIUM', price: '12 949 грн', ads: 'Необмежена кількість' },
 ];
 
 const ProductSubscription = () => {
@@ -66,7 +66,7 @@ const ProductSubscription = () => {
                     className="bg-selected-dark stroke-white w-[16px] h-[16px] md:w-[20px] md:h-[20px]"
                   />
                   <p className="text-white text-sm flex items-center md:text-base">
-                    100 оголошень
+                    {plan.ads}
                   </p>
                 </div>
                 <div className="flex gap-[10px] mb-[40px] md:mb-[52px]">
