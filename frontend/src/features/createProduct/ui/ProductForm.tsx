@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { FC, useEffect, useState } from 'react';
 
 import axios from 'axios';
@@ -111,6 +112,10 @@ const ProductForm: FC<Props> = (props) => {
   const { handleSubmit } = methods;
 
   const onSubmit = async (data: FormProduct) => {
+    const hasPhoto = inputs?.some((input) => input.file);
+
+    if (!hasPhoto) return;
+
     const formData = new FormData();
 
     formData.append('name', data.name);
@@ -185,7 +190,7 @@ const ProductForm: FC<Props> = (props) => {
           <input
             type="submit"
             value="Зберегти"
-            className="bg-main max-w-[320px] h-[52px] w-full rounded-lg"
+            className="bg-main max-w-[320px] h-[52px] w-full rounded-lg cursor-pointer"
           />
         </form>
       </FormProvider>
