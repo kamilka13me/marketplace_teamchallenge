@@ -282,6 +282,12 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           {/* clear */}
           {additionalDivs}
         </VStack>
+        <Text
+          Tag="p"
+          text="Додайте щонайменше 1 фотографію товару"
+          size="xs"
+          className="!text-light-grey"
+        />
         <Button variant="clear" onClick={addInput} className="pb-1 border-b border-main ">
           <Text
             Tag="p"
