@@ -80,10 +80,7 @@ const DisputeFeedbackModal: FC<Props> = (props) => {
       <div className="border-[1px] border-main rounded-lg p-[10px] mb-6">
         <Text
           Tag="p"
-          text={
-            'Протягом 3х днів ми розглянемо ваш запит та видалимо відгук, якщо скарга є\n' +
-            '        обргунтованою'
-          }
+          text="Протягом 3х днів ми розглянемо ваш запит та видалимо відгук, якщо скарга є обгрунтованою"
           size="sm"
           color="white"
         />
