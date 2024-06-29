@@ -18,4 +18,5 @@ export interface ProductsPageSchema extends EntityState<Product, string> {
   minRating: number | null;
   minPrice: number | null;
   maxPrice: number | null;
+  status: 'published' | 'canceled' | 'under-consideration' | 'blocked';
 }

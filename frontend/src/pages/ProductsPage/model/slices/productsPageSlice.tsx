@@ -33,6 +33,7 @@ export const productsPageSlice = createSlice({
     minRating: null,
     minPrice: null,
     maxPrice: null,
+    status: 'published',
   }),
   reducers: {
     setName: (state, action: PayloadAction<string>) => {

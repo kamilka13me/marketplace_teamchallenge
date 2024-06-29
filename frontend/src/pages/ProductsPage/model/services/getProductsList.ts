@@ -15,6 +15,7 @@ import {
   getProductsPageSellerId,
   getProductsPageSortBy,
   getProductsPageSortDirection,
+  getProductsPageStatus,
 } from '@/pages/ProductsPage/model/selectors/productsPageSelectors';
 import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
@@ -47,6 +48,7 @@ export const fetchProductsList = createAsyncThunk<
   const minRating = getProductsPageMinRating(getState());
   const minPrice = getProductsPageMinPrice(getState());
   const maxPrice = getProductsPageMaxPrice(getState());
+  const status = getProductsPageStatus(getState());
 
   try {
     const response = await $api.get<ApiResponse>(ApiRoutes.PRODUCTS, {
@@ -63,6 +65,7 @@ export const fetchProductsList = createAsyncThunk<
         minRating,
         minPrice,
         maxPrice,
+        status,
       },
     });
 
