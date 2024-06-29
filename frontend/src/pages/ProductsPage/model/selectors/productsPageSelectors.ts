@@ -30,3 +30,5 @@ export const getProductsPageMinRating = (state: StateSchema) => state.products.m
 export const getProductsPageMinPrice = (state: StateSchema) => state.products.minPrice;
 
 export const getProductsPageMaxPrice = (state: StateSchema) => state.products.maxPrice;
+
+export const getProductsPageStatus = (state: StateSchema) => state.products.status;
