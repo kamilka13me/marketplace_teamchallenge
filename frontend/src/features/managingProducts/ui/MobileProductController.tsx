@@ -38,13 +38,7 @@ const MobileProductController: FC<Props> = (props) => {
         >
           <Text Tag="span" text="Редагувати" size="xs" className="text-selected-dark" />
         </Button>
-        <Button
-          variant="clear"
-          className="w-full p-2.5 "
-          onClick={() => deleteHandler([product?._id])}
-        >
-          <Text Tag="span" text="Дублювати" size="xs" color="white" className="" />
-        </Button>
+
         <Button
           variant="clear"
           className="w-full p-2.5  rounded-b-2xl"
