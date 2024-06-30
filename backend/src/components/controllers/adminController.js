@@ -5,6 +5,7 @@ import Complaint from '../../models/Complaint.js';
 import Product from '../../models/Product.js';
 import Rating from '../../models/Rate.js';
 import Role from '../../models/Role.js';
+import Seller from '../../models/SellerInfo.js';
 import User from '../../models/User.js';
 
 const adminController = {
@@ -298,6 +299,25 @@ const adminController = {
       // eslint-disable-next-line no-console
       console.error('Error fetching statistics:', error);
       res.status(500).json({ message: 'Server error' });
+    }
+  },
+
+  deleteProductsWithNoSeller: async (req, res) => {
+    try {
+      // Знайти всі sellerId в колекції sellers
+      const sellers = await Seller.find({}, { sellerId: 1 }).exec();
+      const sellerIds = sellers.map((seller) => seller.sellerId);
+
+      // Знайти продукти, створені користувачами без відповідного запису в колекції sellers
+      const productsWithoutSellers = await Product.find({
+        sellerId: { $nin: sellerIds },
+      }).exec();
+
+      res.json(productsWithoutSellers);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+      res.status(500).send('Server Error');
     }
   },
 };

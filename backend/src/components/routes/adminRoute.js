@@ -254,4 +254,74 @@ AdminRoute.delete('/complaints/:id/with-comment-rating', adminController.deleteC
  */
 
 AdminRoute.get('/statistics', adminController.getStatistics);
+/**
+ * @swagger
+ * /admin/product-no-seller:
+ *   delete:
+ *     summary: Get statistical data
+ *     description: Retrieve statistical data including new users and sellers per day, open contacts, and visits.
+ *     tags: [Admin]
+ *     parameters:
+ *       - in: query
+ *         name: startDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *         required: false
+ *         description: Start date for filtering data (YYYY-MM-DD).
+ *       - in: query
+ *         name: endDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *         required: false
+ *         description: End date for filtering data (YYYY-MM-DD).
+ *     responses:
+ *       200:
+ *         description: Successful response with statistical data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 newUsersPerDay:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       count:
+ *                         type: integer
+ *                       date:
+ *                         type: string
+ *                         format: date
+ *                 newSalersPerDay:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       count:
+ *                         type: integer
+ *                       date:
+ *                         type: string
+ *                         format: date
+ *                 openContactsCurrentMonth:
+ *                   type: integer
+ *                 openContactsPreviousMonth:
+ *                   type: integer
+ *                 visitsCurrentMonth:
+ *                   type: integer
+ *                 visitsPreviousMonth:
+ *                   type: integer
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ */
+
+AdminRoute.delete('/product-no-seller', adminController.deleteProductsWithNoSeller);
 export default AdminRoute;
