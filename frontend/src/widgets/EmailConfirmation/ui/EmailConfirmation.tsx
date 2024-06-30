@@ -70,7 +70,7 @@ const EmailConfirmation = () => {
           <div>
             <ModalWindow
               onCloseFunc={() => setIsModalVisible(false)}
-              className="bg-selected-dark rounded-[16px] px-[24px] py-[33px]"
+              className="bg-selected-dark rounded-[16px] px-[24px] py-[33px] min-w-[299px]"
             >
               <div className="flex justify-center mb-[22px]">
                 <Icon
@@ -102,7 +102,9 @@ const EmailConfirmation = () => {
                 <button
                   type="button"
                   onClick={handlerEmail}
-                  className="text-secondary-yellow hover:underline focus:underline"
+                  className={`hover:underline focus:underline ${
+                    buttonDisabled ? 'text-disabled' : 'text-secondary-yellow'
+                  }`}
                   disabled={buttonDisabled}
                 >
                   Відправити
