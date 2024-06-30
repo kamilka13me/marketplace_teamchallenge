@@ -35,6 +35,8 @@ import { IRangeDate } from '@/widgets/ListingSort/ui/components/ListingSearchCal
 const ManagingOffers: FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState('');
+  const [inputData, setInputData] = useState('');
   const [dateRange, setDateRange] = useState<IRangeDate>({
     startDate: new Date(0),
     endDate: new Date(),
@@ -76,6 +78,16 @@ const ManagingOffers: FC = () => {
     dispatch(adminOffersActions.setEndDate(dateRange.endDate.toISOString()));
   }, [dispatch, dateRange]);
 
+  useEffect(() => {
+    dispatch(adminOffersActions.setOffset(0));
+    setCurrentPage(1);
+  }, [dispatch, selectedFilter, inputData, dateRange]);
+
+  const onSearchInput = (id: string) => {
+    setInputData(id);
+    dispatch(adminOffersActions.setSellerId(id));
+  };
+
   const fetchNext = () => {
     setCurrentPage((prev) => prev + 1);
 
@@ -110,9 +122,16 @@ const ManagingOffers: FC = () => {
     />
   ) : (
     <section className="lg:flex flex-col w-full lg:gap-4 bg-dark-grey lg:bg-transparent rounded-2xl hidden">
-      <ListingSort />
+      <ListingSort
+        selectedFilter={selectedFilter}
+        setSelectedFilter={setSelectedFilter}
+      />
       <HStack gap="4" className="p-4 bg-dark-grey rounded-2xl ">
-        <ListingByDate dateRange={dateRange} setDateRange={setDateRange} />
+        <ListingByDate
+          setInputData={onSearchInput}
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+        />
         <table className="w-full border-separate border-spacing-0">
           <thead className="mb-1 bg-selected-dark rounded-2xl">
             <tr>

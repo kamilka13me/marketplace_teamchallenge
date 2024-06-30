@@ -11,12 +11,13 @@ import { VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
 interface Props {
+  setInputData: (e: string) => void;
   dateRange: IRangeDate;
   setDateRange: (range: IRangeDate) => void;
 }
 
 const ListingByDate: FC<Props> = (props) => {
-  const { dateRange, setDateRange } = props;
+  const { setInputData, dateRange, setDateRange } = props;
 
   const [sortingOpen, setSortingOpen] = useState(false);
 
@@ -42,7 +43,7 @@ const ListingByDate: FC<Props> = (props) => {
         </Button>
         {sortingOpen && <SpecyfyingSorting />}
       </div>
-      <ListingSearchInput placeholder="Введіть ID продавця" />
+      <ListingSearchInput setInputData={setInputData} placeholder="Введіть ID продавця" />
       <ListingSearchCalendar
         dateRange={dateRange}
         setDateRange={setDateRange}
