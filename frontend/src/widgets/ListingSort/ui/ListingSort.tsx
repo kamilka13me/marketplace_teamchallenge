@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { adminOffersActions } from '@/features/managingOffers';
 import { getAdminOffersStatus } from '@/features/managingOffers/model/selectors';
@@ -12,16 +12,19 @@ import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
 
-const ListingSort = () => {
-  const [selectedFilter, setSelectedFilter] = useState('');
+interface Props {
+  selectedFilter: string;
+  setSelectedFilter: (str: string) => void;
+}
 
+const ListingSort = ({ selectedFilter, setSelectedFilter }: Props) => {
   const dispatch = useAppDispatch();
 
   const status = useAppSelector(getAdminOffersStatus);
 
   useEffect(() => {
     setSelectedFilter(status);
-  }, [status]);
+  }, [status, setSelectedFilter]);
 
   const btnArr = [
     { id: 0, value: '', text: 'Всі', svg: allListing },

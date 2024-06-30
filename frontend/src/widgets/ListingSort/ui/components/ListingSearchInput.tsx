@@ -8,7 +8,7 @@ import { Icon } from '@/shared/ui/Icon';
 import { Input } from '@/shared/ui/Input';
 
 interface Props {
-  setInputData?: (e: string) => void;
+  setInputData: (e: string) => void;
   placeholder?: string;
   className?: string;
 }
@@ -22,9 +22,9 @@ const ListingSearchInput: FC<Props> = (props) => {
 
   const handleSubmit = () => {
     if (setInputData) {
-      setInputData(value);
+      setInputData(value.trim());
     } else {
-      dispatch(adminOffersActions.setSellerId(value));
+      dispatch(adminOffersActions.setSellerId(value.trim()));
     }
   };
 
