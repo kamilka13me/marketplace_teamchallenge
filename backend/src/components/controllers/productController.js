@@ -52,7 +52,7 @@ const productController = {
 
       const result = await productService.createProduct(productData);
 
-      res.status(201).json(result);
+      res.status(201).json({ product: result });
     } catch (error) {
       if (error.message === 'Invalid request body in specifications') {
         res.status(400).json({ message: error.message });
@@ -78,57 +78,41 @@ const productController = {
         category,
         quantity,
         discount,
-        userId,
         discountStart,
         discountEnd,
+        images,
+        specifications,
       } = req.body;
 
-      let { images, specifications } = req.body;
-
-      images = images.map((name) => `/static/products/${name}`);
-
-      let parsedSpecifications;
-
-      try {
-        if (
-          !specifications.trim().startsWith('[') ||
-          !specifications.trim().endsWith(']')
-        ) {
-          specifications = `[${specifications}]`;
-        }
-
-        parsedSpecifications = JSON.parse(specifications);
-      } catch (error) {
-        return res.status(400).json({ error: 'Invalid request body in specifications' });
-      }
-
-      const product = {
+      const productData = {
+        id,
         name,
         description,
-        price,
         brand,
         condition,
         status,
+        price,
         category,
         quantity,
         discount,
+        discountStart,
+        discountEnd,
         images,
-        specifications: parsedSpecifications,
-        discount_start: discountStart ? new Date(discountStart) : undefined,
-        discount_end: discountEnd ? new Date(discountEnd) : undefined,
+        specifications,
       };
+      const updatedProduct = await productService.updateProduct(productData);
 
-      const updatedProduct = await Product.findByIdAndUpdate(id, product, { new: true });
-
-      if (!updatedProduct) {
-        return res.status(404).json({ message: 'Product not found.' });
-      }
-
-      res.status(200).json({ product: updatedProduct });
+      res.status(200).json(updatedProduct);
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-      res.status(500).json({ error });
+      if (error.message === 'Invalid request body in specifications') {
+        res.status(400).json({ message: error.message });
+      } else if (error.message === 'Product not found') {
+        res.status(404).json({ message: 'Product not found' });
+      } else {
+        // eslint-disable-next-line no-console
+        console.log(error);
+        res.status(500).json({ message: 'An unexpected error occurred' });
+      }
     }
   },
 

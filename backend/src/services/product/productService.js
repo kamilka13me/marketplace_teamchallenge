@@ -17,7 +17,6 @@ const productService = {
         userId,
         discountStart,
         discountEnd,
-
         specifications,
       } = productData;
       let { images } = productData;
@@ -47,6 +46,62 @@ const productService = {
       const saveProduct = await newProduct.save();
 
       return { product: saveProduct };
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+      throw new Error({ message: 'An unexpected error occurred' });
+    }
+  },
+
+  updateProduct: async (productData) => {
+    try {
+      const {
+        id,
+        name,
+        description,
+        brand,
+        condition,
+        status,
+        price,
+        category,
+        quantity,
+        discount,
+        discountStart,
+        discountEnd,
+        specifications,
+      } = productData;
+      let { images } = productData;
+
+      images = images.map((name) => `/static/products/${name}`);
+
+      const parsedSpecifications = parseSpecifications(specifications);
+
+      const product = {
+        id,
+        name,
+        description,
+        price,
+        brand,
+        condition,
+        status,
+        category,
+        quantity,
+        discount,
+        images,
+        specifications: parsedSpecifications,
+        discount_start: discountStart ? new Date(discountStart) : undefined,
+        discount_end: discountEnd ? new Date(discountEnd) : undefined,
+      };
+
+      const updatedProduct = await Product.findByIdAndUpdate(id, product, {
+        new: true,
+      });
+
+      if (!updatedProduct) {
+        throw new Error({ message: 'Product not found' });
+      }
+
+      return { product: updatedProduct };
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
