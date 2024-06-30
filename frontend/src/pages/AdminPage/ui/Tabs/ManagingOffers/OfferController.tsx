@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 
 import publish from '@/shared/assets/icons/approve.svg?react';
 import block from '@/shared/assets/icons/block.svg?react';
@@ -20,9 +20,23 @@ interface Props {
 const OfferController: FC<Props> = (props) => {
   const [showModal, setShowModal] = useState(false);
 
+  const actionBoxRef = useRef<HTMLDivElement | null>(null);
+  const actionBtnRef = useRef<HTMLButtonElement | null>(null);
+
   const { editHandler, publishHandler, rejectHandler, blockHandler } = props;
 
   useEffect(() => {
+    const onClickOutside = (event: MouseEvent | TouchEvent) => {
+      const targetNode = event.target as Node;
+
+      if (
+        !actionBoxRef.current?.contains(targetNode) &&
+        !actionBtnRef.current?.contains(targetNode)
+      ) {
+        setShowModal(false);
+      }
+    };
+
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setShowModal(false);
@@ -30,24 +44,31 @@ const OfferController: FC<Props> = (props) => {
     };
 
     if (showModal) {
+      document.addEventListener('mousedown', onClickOutside);
+      document.addEventListener('touchstart', onClickOutside);
       document.addEventListener('keydown', onKeyDown);
     }
 
     return () => {
+      document.removeEventListener('touchstart', onClickOutside);
+      document.removeEventListener('mousedown', onClickOutside);
       document.removeEventListener('keydown', onKeyDown);
     };
   }, [showModal]);
 
   return (
     <VStack gap="2" className="relative">
-      <Icon
-        Svg={action}
-        width={40}
-        height={59}
-        onClick={() => setShowModal(!showModal)}
-        className="lg:rotate-90 cursor-pointer"
-      />
+      <Button variant="clear" ref={actionBtnRef} onClick={() => setShowModal(!showModal)}>
+        <Icon
+          Svg={action}
+          width={40}
+          height={59}
+          className="lg:rotate-90 cursor-pointer"
+        />
+      </Button>
+
       <HStack
+        ref={actionBoxRef}
         justify="center"
         className={`${showModal ? '' : 'hidden'} py-3 px-2 bg-shadow-footer absolute top-[42px] right-0 z-10 rounded-lg`}
       >
