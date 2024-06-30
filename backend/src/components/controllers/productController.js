@@ -3,13 +3,37 @@ import mongoose, { isValidObjectId } from 'mongoose';
 import Category from '../../models/Category.js';
 import Product from '../../models/Product.js';
 import User from '../../models/User.js';
+import productService from '../../services/product/productService.js';
 import findChildCategories from '../../utils/findChildCategories.js';
 
 const productController = {
   // create new product
   createProduct: async (req, res) => {
+    const {
+      name,
+      description,
+      brand,
+      condition,
+      status,
+      price,
+      category,
+      quantity,
+      discount,
+      userId,
+      discountStart,
+      discountEnd,
+      images,
+      specifications,
+    } = req.body;
+
+    if (!name || !price || !userId || !images || !specifications) {
+      return res.status(400).json({
+        message: 'Name, price, userId, images, and specifications are required',
+      });
+    }
+
     try {
-      const {
+      const productData = {
         name,
         description,
         brand,
@@ -22,52 +46,21 @@ const productController = {
         userId,
         discountStart,
         discountEnd,
-      } = req.body;
-
-      let { images, specifications } = req.body;
-
-      images = images.map((name) => `/static/products/${name}`);
-
-      let parsedSpecifications;
-
-      try {
-        if (
-          !specifications.trim().startsWith('[') ||
-          !specifications.trim().endsWith(']')
-        ) {
-          specifications = `[${specifications}]`;
-        }
-
-        parsedSpecifications = JSON.parse(specifications);
-      } catch (error) {
-        return res.status(400).json({ error: 'Invalid request body in specifications' });
-      }
-
-      const product = {
-        name,
-        description,
-        price,
-        brand,
-        condition,
-        status,
-        category,
-        quantity,
-        discount,
         images,
-        specifications: parsedSpecifications,
-        sellerId: userId,
-        discount_start: discountStart ? new Date(discountStart) : undefined,
-        discount_end: discountEnd ? new Date(discountEnd) : undefined,
+        specifications,
       };
 
-      const newProduct = new Product(product);
-      const saveProduct = await newProduct.save();
+      const result = await productService.createProduct(productData);
 
-      res.status(201).json({ product: saveProduct });
+      res.status(201).json(result);
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-      res.status(500).json({ error });
+      if (error.message === 'Invalid request body in specifications') {
+        res.status(400).json({ message: error.message });
+      } else {
+        // eslint-disable-next-line no-console
+        console.log(error);
+        res.status(500).json({ message: 'An unexpected error occurred' });
+      }
     }
   },
 
@@ -121,7 +114,6 @@ const productController = {
         discount,
         images,
         specifications: parsedSpecifications,
-        sellerId: userId,
         discount_start: discountStart ? new Date(discountStart) : undefined,
         discount_end: discountEnd ? new Date(discountEnd) : undefined,
       };
