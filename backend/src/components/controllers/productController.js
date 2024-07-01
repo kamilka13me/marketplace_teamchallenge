@@ -4,6 +4,7 @@ import Category from '../../models/Category.js';
 import Product from '../../models/Product.js';
 import User from '../../models/User.js';
 import productService from '../../services/product/productService.js';
+import { CustomError } from '../../utils/customError.js';
 import findChildCategories from '../../utils/findChildCategories.js';
 
 const productController = {
@@ -54,9 +55,12 @@ const productController = {
 
       res.status(201).json({ product: result });
     } catch (error) {
-      if (error.message === 'Invalid request body in specifications') {
-        res.status(400).json({ message: error.message });
-      } else {
+      // error 400
+      if (error instanceof CustomError && error.message === 'Parse Specification error') {
+        res.status(400).json({ message: 'Parse Specification error' });
+      }
+      // error 500
+      else {
         // eslint-disable-next-line no-console
         console.log(error);
         res.status(500).json({ message: 'An unexpected error occurred' });
@@ -68,6 +72,10 @@ const productController = {
   updateProduct: async (req, res) => {
     try {
       const { id } = req.params;
+
+      if (!id) {
+        throw new CustomError('Product not found');
+      }
       const {
         name,
         description,
@@ -104,17 +112,18 @@ const productController = {
 
       res.status(200).json(updatedProduct);
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-      const parsedError = JSON.parse(error.message);
-
-      if (parsedError === 'Invalid request body in specifications') {
-        res.status(400).json({ message: error.message });
-      } else if (parsedError === 'Product not found') {
+      // error 400
+      if (error instanceof CustomError && error.message === 'Parse Specification error') {
+        res.status(400).json({ message: 'Parse Specification error' });
+      }
+      // error 404
+      else if (error instanceof CustomError && error.message === 'Product not found') {
         res.status(404).json({ message: 'Product not found' });
-      } else {
+      }
+      // error 500
+      else {
         // eslint-disable-next-line no-console
-        // console.log(error);
+        console.log(error);
         res.status(500).json({ message: 'An unexpected error occurred' });
       }
     }
@@ -125,22 +134,24 @@ const productController = {
     try {
       const { id } = req.params;
 
-      if (!isValidObjectId(id)) {
-        return res.status(400).json({ message: 'Invalid ObjectId format' });
-      }
-
-      const product = await Product.findById(id);
-
-      if (!product) {
-        // If the product is not found, we return a 404 status
-        return res.status(404).json({ message: 'Product not found' });
-      }
+      const product = await productService.getProductById(id);
 
       res.status(200).json({ product });
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-      res.status(500).json({ message: 'Server error', error });
+      // error 400
+      if (error instanceof CustomError && error.message === 'Invalid ObjectId format') {
+        res.status(400).json({ message: 'Invalid ObjectId format' });
+      }
+      // error 404
+      else if (error instanceof CustomError && error.message === 'Product not found') {
+        res.status(404).json({ message: 'Product not found' });
+      }
+      // error 500
+      else {
+        // eslint-disable-next-line no-console
+        console.log(error);
+        res.status(500).json({ message: 'An unexpected error occurred' });
+      }
     }
   },
 
@@ -158,152 +169,60 @@ const productController = {
         sellerId,
         sortBy,
         status,
+        sortDirection,
+        limit,
+        offset,
       } = req.query;
-      let { sortDirection = 1, limit = 10, offset = 0 } = req.query;
 
-      limit = parseInt(limit, 10);
-      offset = parseInt(offset, 10);
-      sortDirection = parseInt(sortDirection, 10) || 1;
+      const filters = {
+        name,
+        category,
+        discount,
+        quantity,
+        minPrice,
+        maxPrice,
+        minRating,
+        sellerId,
+        sortBy,
+        status,
+        sortDirection,
+        limit,
+        offset,
+      };
 
-      const query = {};
+      const products = await productService.getAllProducts(filters);
 
-      if (name) {
-        query.name = { $regex: name, $options: 'i' };
-      }
-      if (category) {
-        if (mongoose.Types.ObjectId.isValid(category)) {
-          const categoryObjectId = new mongoose.Types.ObjectId(category);
-          const categoryIds = [categoryObjectId];
-
-          await findChildCategories(categoryObjectId, categoryIds);
-          query.category = { $in: categoryIds.map((id) => id.toString()) };
-        } else {
-          query.category = category;
-        }
-      }
-      if (discount !== 0) {
-        query.discount = { $gt: discount - 1 };
-      }
-      if (quantity !== 0) {
-        query.quantity = { $gt: quantity - 1 };
-      }
-      if (sellerId) {
-        if (mongoose.Types.ObjectId.isValid(sellerId)) {
-          query.sellerId = new mongoose.Types.ObjectId(sellerId);
-        } else {
-          return res.status(400).json({ message: 'Invalid sellerId' });
-        }
-      }
-
-      if (status) {
-        query.status = status;
-      }
-
-      const aggregationPipeline = [
-        { $match: query },
-        {
-          $addFields: {
-            TotalPrice: {
-              $cond: {
-                if: { $and: [{ $gt: ['$discount', 0] }, { $lte: ['$discount', 100] }] },
-                then: {
-                  $multiply: [
-                    '$price',
-                    { $subtract: [1, { $divide: ['$discount', 100] }] },
-                  ],
-                },
-                else: '$price',
-              },
-            },
-          },
-        },
-        {
-          $lookup: {
-            from: 'ratings',
-            localField: '_id',
-            foreignField: 'productId',
-            as: 'ratings',
-          },
-        },
-        {
-          $addFields: {
-            averageRating: { $avg: '$ratings.rating' },
-          },
-        },
-        {
-          $project: {
-            ratings: 0, // Remove the ratings field from the final results
-          },
-        },
-      ];
-
-      if (minPrice !== undefined || maxPrice !== undefined) {
-        const priceFilter = {};
-
-        if (minPrice !== undefined) priceFilter.$gte = parseFloat(minPrice);
-        if (maxPrice !== undefined) priceFilter.$lte = parseFloat(maxPrice);
-        aggregationPipeline.push({ $match: { TotalPrice: priceFilter } });
-      }
-
-      if (minRating !== undefined) {
-        aggregationPipeline.push({
-          $match: { averageRating: { $gte: parseFloat(minRating) } },
-        });
-      }
-
-      const sortObject = {};
-
-      sortObject[sortBy || '_id'] = sortDirection;
-
-      if (sortBy === 'TotalPrice' || sortBy === 'rating') {
-        aggregationPipeline.push({
-          $sort: {
-            [sortBy === 'rating' ? 'averageRating' : 'TotalPrice']: sortDirection,
-          },
-        });
-      } else {
-        aggregationPipeline.push({ $sort: sortObject });
-      }
-
-      aggregationPipeline.push({ $skip: offset });
-      aggregationPipeline.push({ $limit: limit });
-
-      const products = await Product.aggregate(aggregationPipeline);
-
-      // Copy the pipeline to count the number of documents
-      const countPipeline = [...aggregationPipeline];
-
-      countPipeline.pop(); // Remove the limit stage
-      countPipeline.pop(); // Remove the skip stage
-      countPipeline.push({ $count: 'count' });
-
-      const countResult = await Product.aggregate(countPipeline);
-      const count = countResult.length > 0 ? countResult[0].count : 0;
-
-      return res.status(200).json({ count, products });
+      res.status(200).json(products);
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-      res.status(500).send(error.message);
+      if (error instanceof CustomError && error.message === 'Invalid sellerId') {
+        res.status(400).json({ message: 'Invalid sellerId' });
+      } else {
+        // eslint-disable-next-line no-console
+        console.log(error);
+        res.status(500).json({ message: 'An unexpected error occurred' });
+      }
     }
   },
 
   deleteProducts: async (req, res) => {
-    const { ids } = req.body;
-
     try {
-      const idsToDelete = Array.isArray(ids) ? ids : [ids];
-      const result = await Product.deleteMany({
-        _id: { $in: idsToDelete },
-      });
+      const { ids } = req.body;
 
-      if (result.deletedCount === 0) {
-        return res.status(404).send('No items found with the given IDs.');
-      }
+      const result = await productService.deleteProducts(ids);
 
-      res.send(`Successfully deleted ${result.deletedCount} items.`);
+      res.status(200).json(result);
     } catch (error) {
-      res.status(500).send(`Server error: ${error.message}`);
+      // 404
+      if (
+        error instanceof CustomError &&
+        error.message === 'No items found with the given IDs'
+      ) {
+        res.status(404).json({ message: 'No items found with the given IDs' });
+      } else {
+        // eslint-disable-next-line no-console
+        console.log(error);
+        res.status(500).json({ message: 'An unexpected error occurred' });
+      }
     }
   },
 
@@ -316,21 +235,22 @@ const productController = {
       if (!['published', 'canceled', 'under-consideration', 'blocked'].includes(status)) {
         return res.status(400).json({ message: 'Invalid status' });
       }
+      const productData = { id, status };
 
-      const product = await Product.findById(id);
-
-      if (!product) {
-        return res.status(404).json({ message: 'Support not found' });
-      }
-
-      product.status = status;
-      await product.save();
+      await productService.updateProduct(productData);
 
       res.status(200).json({ message: 'product status updated successfully' });
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log('Error updating product status:', error);
-      res.status(500).json({ message: 'Server error' });
+      // error 404
+      if (error instanceof CustomError && error.message === 'Product not found') {
+        res.status(404).json({ message: 'Product not found' });
+      }
+      // error 500
+      else {
+        // eslint-disable-next-line no-console
+        console.log(error);
+        res.status(500).json({ message: 'An unexpected error occurred' });
+      }
     }
   },
 
