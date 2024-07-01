@@ -176,7 +176,7 @@ const Comment: FC<Props> = (props) => {
                 placeholder="Відповісти на відгук"
                 onChange={(e) => setAnswerMessage(e.currentTarget.value)}
                 autoComplete="off"
-                className=" bg-selected-dark rounded-lg p-4 w-full placeholder:text-disabled focus:outline-none text-white"
+                className=" bg-selected-dark rounded-lg p-4 pr-[55px] w-full placeholder:text-disabled focus:outline-none text-white"
               />
               <HStack
                 align="center"
