@@ -73,8 +73,9 @@ const productService = {
       let { images } = productData;
 
       images = images.map((name) => `/static/products/${name}`);
-
-      const parsedSpecifications = parseSpecifications(specifications);
+      if (specifications) {
+        const parsedSpecifications = parseSpecifications(specifications);
+      }
 
       const product = {
         id,
@@ -88,23 +89,27 @@ const productService = {
         quantity,
         discount,
         images,
-        specifications: parsedSpecifications,
+        specifications: specifications ? parseSpecifications : undefined,
         discount_start: discountStart ? new Date(discountStart) : undefined,
         discount_end: discountEnd ? new Date(discountEnd) : undefined,
       };
-
-      const updatedProduct = await Product.findByIdAndUpdate(id, product, {
-        new: true,
-      });
+      let updatedProduct;
+      // const updatedProduct = await Product.findByIdAndUpdate(id, product, {
+      //   new: true,
+      // });
 
       if (!updatedProduct) {
-        throw new Error({ message: 'Product not found' });
+        throw new Error(JSON.stringify({ message: 'Product not found' }));
       }
 
       return { product: updatedProduct };
     } catch (error) {
+      const parsedError = JSON.parse(error.message);
+
+      // Виведення повідомлення та додаткових даних
       // eslint-disable-next-line no-console
-      console.error(error);
+      console.log(parsedError.message); // Output: Product not found
+      // eslint-disable-next-line no-console
       throw new Error({ message: 'An unexpected error occurred' });
     }
   },

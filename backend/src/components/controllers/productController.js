@@ -104,13 +104,17 @@ const productController = {
 
       res.status(200).json(updatedProduct);
     } catch (error) {
-      if (error.message === 'Invalid request body in specifications') {
+      // eslint-disable-next-line no-console
+      console.log(error);
+      const parsedError = JSON.parse(error.message);
+
+      if (parsedError === 'Invalid request body in specifications') {
         res.status(400).json({ message: error.message });
-      } else if (error.message === 'Product not found') {
+      } else if (parsedError === 'Product not found') {
         res.status(404).json({ message: 'Product not found' });
       } else {
         // eslint-disable-next-line no-console
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: 'An unexpected error occurred' });
       }
     }
