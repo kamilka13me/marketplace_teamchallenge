@@ -1,6 +1,7 @@
 import mongoose, { isValidObjectId } from 'mongoose';
 
 import Product from '../../models/Product.js';
+import User from '../../models/User.js';
 import { CustomError } from '../../utils/customError.js';
 import findChildCategories from '../../utils/findChildCategories.js';
 import parseSpecifications from '../../utils/parseSpecification.js';
@@ -265,6 +266,30 @@ const productService = {
     }
 
     return `Successfully deleted ${result.deletedCount} items.`;
+  },
+
+  updateView: async (productId, userId) => {
+    // find user
+    const user = await User.findById(userId);
+
+    if (!user) {
+      throw new CustomError('Acces denied. User not found.');
+    }
+
+    // find product
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      throw new CustomError('Product not found');
+    }
+
+    if (!user.views.includes(productId)) {
+      await Product.findByIdAndUpdate(productId, { $inc: { views: 1 } });
+      user.views.push(productId);
+      await user.save();
+    }
+
+    return true;
   },
 };
 

@@ -259,32 +259,31 @@ const productController = {
     const { userId } = req.body;
 
     try {
-      const user = await User.findById(userId).populate('role');
+      const result = await productService.updateView(id, userId);
 
-      if (!user) {
-        return res.status(401).json({ message: 'Access denied. User not found.' });
-      }
-
-      const product = await Product.findById(id);
-
-      if (!product) {
-        return res.status(404).json({ message: 'Support not found' });
-      }
-
-      // Check if the user has already viewed the product
-      if (!user.views.includes(id)) {
-        await Product.findByIdAndUpdate(id, { $inc: { views: 1 } }); // Increase views only if the user has not viewed the product before
-        user.views.push(id);
-        await user.save();
-
+      if (result) {
         return res.status(200).json({ message: 'views added' });
       }
 
       return res.status(200).json({ message: 'allready views' });
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log('Error updating product status:', error);
-      res.status(500).json({ message: 'Server error' });
+      // error 404
+      if (error instanceof CustomError && error.message === 'Product not found') {
+        res.status(404).json({ message: 'Product not found' });
+      }
+      // 401
+      else if (
+        error instanceof CustomError &&
+        error.message === 'Acces denied. User not found.'
+      ) {
+        res.status(401).json({ message: 'Acces denied. User not found.' });
+      }
+      // error 500
+      else {
+        // eslint-disable-next-line no-console
+        console.log(error);
+        res.status(500).json({ message: 'An unexpected error occurred' });
+      }
     }
   },
 };
