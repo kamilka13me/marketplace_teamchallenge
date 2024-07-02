@@ -174,9 +174,17 @@ const Finances = () => {
                         <p className="text-white flex flex-1 items-center w-[90px]">
                           {seller.generalName}
                         </p>
-                        <p className="text-white flex items-center flex-1 mr-4">
+                        <th
+                          className="flex items-center cursor-pointer !font-normal text-start text-white p-[10px] w-[171px] rounded-l-2xl relative group"
+                          onClick={() => {
+                            navigator.clipboard.writeText(seller?._id || '');
+                          }}
+                        >
                           №{seller._id.slice(0, 10).split('-').reverse().join('.')}
-                        </p>
+                          <span className="absolute left-1/2 top-[40px] text-sm mt-1 p-2 bg-dark-grey text-main-white rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                            {seller?._id}
+                          </span>
+                        </th>
                       </div>
                     </div>
                     <div className="flex gap-5 md:gap-[100px] lg:gap-[120px] xl:gap-[150px]">
@@ -210,7 +218,7 @@ const Finances = () => {
                             {activeIndex === index && (
                               <HStack
                                 justify="center"
-                                className="py-3 px-2 bg-shadow-footer absolute left-[350px] md:left-[580px] lg:left-[580px] z-10 rounded-lg w-[196px] h-[68px]"
+                                className="py-3 px-2 bg-shadow-footer absolute left-[300px] md:left-[580px] lg:left-[580px] z-10 rounded-lg w-[196px] h-[68px]"
                               >
                                 <button
                                   type="button"
