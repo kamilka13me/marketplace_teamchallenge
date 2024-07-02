@@ -57,7 +57,9 @@ const EmailConfirmation = () => {
               <button
                 type="button"
                 onClick={handlerEmail}
-                className="text-secondary-yellow"
+                className={`${
+                  buttonDisabled ? 'text-disabled' : 'text-secondary-yellow'
+                }`}
                 disabled={buttonDisabled}
               >
                 Відправити
