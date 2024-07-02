@@ -255,6 +255,7 @@ const productService = {
 
     return result;
   },
+
   deleteProducts: async (ids) => {
     const idsToDelete = Array.isArray(ids) ? ids : [ids];
     const result = await Product.deleteMany({
