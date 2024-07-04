@@ -3,6 +3,8 @@ import { FC, useEffect, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import SelectDateCalendar from './blocks/first/SelectSateCalendar';
+
 import { Button } from '@/shared/ui/Button';
 import { Input } from '@/shared/ui/Input';
 import { HStack, VStack } from '@/shared/ui/Stack';
@@ -22,6 +24,8 @@ const FormMiddleBlock: FC<Props> = (props) => {
   const [productHasDiscount, setProductHasDiscount] = useState(hasDiscount);
   const [priceWithDiscount, setPriceWithDiscount] = useState(0);
   const [specificationLengths, setSpecificationLengths] = useState<number[]>([]);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   const {
     getValues,
@@ -340,6 +344,22 @@ const FormMiddleBlock: FC<Props> = (props) => {
               />
             </div>
           </VStack>
+
+          <VStack
+            gap="4"
+            justify="between"
+            className="max-w-[467px] w-full mt-5 relative"
+          >
+            <div className="w-full">
+              <Text Tag="p" text="Дата початку" size="md" color="white" />
+              <SelectDateCalendar date={startDate} setDate={setStartDate} />
+            </div>
+            <div className="w-full">
+              <Text Tag="p" text="Дата завершення" size="md" color="white" />
+              <SelectDateCalendar date={endDate} setDate={setEndDate} />
+            </div>
+          </VStack>
+          <div>Dfkblfwbz</div>
         </HStack>
       )}
 
