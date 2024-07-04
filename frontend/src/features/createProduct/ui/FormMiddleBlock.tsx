@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -13,10 +13,22 @@ import { Textarea } from '@/shared/ui/Textarea';
 
 interface Props {
   hasDiscount: boolean;
+  startDate: Date;
+  setStartDate: Dispatch<SetStateAction<Date>>;
+  endDate: Date;
+  setEndDate: Dispatch<SetStateAction<Date>>;
+  discountValidationMessage: string;
 }
 
 const FormMiddleBlock: FC<Props> = (props) => {
-  const { hasDiscount } = props;
+  const {
+    hasDiscount,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    discountValidationMessage,
+  } = props;
 
   const { t } = useTranslation();
 
@@ -24,8 +36,6 @@ const FormMiddleBlock: FC<Props> = (props) => {
   const [productHasDiscount, setProductHasDiscount] = useState(hasDiscount);
   const [priceWithDiscount, setPriceWithDiscount] = useState(0);
   const [specificationLengths, setSpecificationLengths] = useState<number[]>([]);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
 
   const {
     getValues,
@@ -60,34 +70,6 @@ const FormMiddleBlock: FC<Props> = (props) => {
   const appendSpec = () => {
     appendSpecification({ specification: '', specificationDescription: '' });
   };
-
-  useEffect(() => {
-    register('discountStart', {
-      validate: {
-        startDateValidation: (value) => {
-          const startDate = new Date(value);
-          const today = new Date();
-
-          today.setHours(0, 0, 0, 0); // Set today's date to midnight
-          if (startDate < today) {
-            return 'Start date must be today or later';
-          }
-
-          return true;
-        },
-        endDateValidation: (value, allValues) => {
-          const startDate = new Date(allValues.discountStart);
-          const endDate = new Date(value);
-
-          if (endDate < startDate) {
-            return 'End date cannot be before start date';
-          }
-
-          return true;
-        },
-      },
-    });
-  }, [register]);
 
   const updateSpecificationLength = (index: number, length: number) => {
     const updatedLengths = [...specificationLengths];
@@ -271,80 +253,6 @@ const FormMiddleBlock: FC<Props> = (props) => {
             </div>
           </HStack>
 
-          <VStack gap="4" justify="between" className="max-w-[467px] w-full mt-5">
-            <div className="w-full">
-              <Text Tag="p" text="Дата початку" size="md" color="white" />
-              <Input
-                variant="fill"
-                placeholder="ДД/ММ/РРРР"
-                type="text"
-                autoComplete="off"
-                error={errors?.discountStart && (errors?.discountStart.message as string)}
-                {...register('discountStart', {
-                  required: hasDiscount,
-                  pattern: {
-                    value: /^(0[1-9]|[12][0-9]|30|31)\.(0[1-9]|1[0-2])\.\d{4}$/,
-                    message: t(
-                      'Дата повинна містити цифри та бути по формату ХХ.ХХ.ХХХХ',
-                    ),
-                  },
-                  validate: {
-                    startDateValidation: (value) => {
-                      const startDate = new Date(value);
-                      const today = new Date();
-
-                      today.setHours(0, 0, 0, 0);
-                      if (startDate < today) {
-                        return 'Start date must be today or later';
-                      }
-
-                      const endDate = new Date(getValues('discountEnd'));
-
-                      if (endDate < startDate) {
-                        return 'Кінцева дата не можу бути менша початкової';
-                      }
-
-                      return true;
-                    },
-                  },
-                })}
-                className="min-h-[48px] w-full mt-1"
-              />
-            </div>
-            <div className="w-full">
-              <Text Tag="p" text="Дата завершення" size="md" color="white" />
-              <Input
-                variant="fill"
-                placeholder="ДД/ММ/РРРР"
-                type="text"
-                autoComplete="off"
-                error={errors?.discountEnd && (errors?.discountEnd.message as string)}
-                {...register('discountEnd', {
-                  required: hasDiscount,
-                  pattern: {
-                    value: /^(0[1-9]|[12][0-9]|30|31)\.(0[1-9]|1[0-2])\.\d{4}$/,
-                    message: t(
-                      'Дата повинна містити цифри та бути по формату ХХ.ХХ.ХХХХ',
-                    ),
-                  },
-                  validate: {
-                    endDateValidation: (value) => {
-                      const endDate = new Date(value);
-                      const startDate = new Date(getValues('discountStart'));
-
-                      if (endDate < startDate) {
-                        return 'Кінцева дата не можу бути менша початкової';
-                      }
-
-                      return true;
-                    },
-                  },
-                })}
-                className="min-h-[48px] w-full mt-1"
-              />
-            </div>
-          </VStack>
-
           <VStack
             gap="4"
             justify="between"
@@ -359,7 +267,9 @@ const FormMiddleBlock: FC<Props> = (props) => {
               <SelectDateCalendar date={endDate} setDate={setEndDate} />
             </div>
           </VStack>
-          <div>Dfkblfwbz</div>
+          <div className="w-full text-[12px] text-error-red">
+            {discountValidationMessage}
+          </div>
         </HStack>
       )}
 

@@ -19,6 +19,12 @@ const SelectDateCalendar: FC<Props> = (props) => {
 
   const dateString = formatDate(String(date));
 
+  const handleClick = (date: Date) => {
+    date.setHours(3, 0, 0, 0);
+    setDate(date);
+    setIsOpen(false);
+  };
+
   return (
     <div className="sm:relative">
       <button
@@ -41,10 +47,7 @@ const SelectDateCalendar: FC<Props> = (props) => {
               showMonthArrow={false}
               showPreview={false}
               showDateDisplay={false}
-              onChange={(date) => {
-                setDate(date);
-                setIsOpen(false);
-              }}
+              onChange={handleClick}
               rangeColors={['#D9C01B']}
             />
 

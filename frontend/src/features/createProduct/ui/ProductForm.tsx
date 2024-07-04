@@ -23,30 +23,12 @@ interface Props {
   onCloseForm: () => void;
 }
 
-function convertIsoToDate(isoDate: string): string {
-  if (isoDate === '') {
-    return '';
-  }
-
-  const date = new Date(isoDate);
-
-  // Extract day, month, and year
-  const day = date.getUTCDate();
-  const month = date.getUTCMonth() + 1; // Months are zero-indexed in JavaScript
-  const year = date.getUTCFullYear();
-
-  // Format the day and month to ensure two digits
-  const formattedDay = day < 10 ? `0${day}` : day.toString();
-  const formattedMonth = month < 10 ? `0${month}` : month.toString();
-
-  // Construct the final formatted date string
-  const formattedDate = `${formattedDay}.${formattedMonth}.${year}`;
-
-  return formattedDate;
-}
-
 const ProductForm: FC<Props> = (props) => {
   const { product, onCloseForm } = props;
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [discountValidationMessage, setDiscountValidationMessage] = useState('');
 
   const methods = useForm<FormProduct>({
     defaultValues: {
@@ -62,8 +44,6 @@ const ProductForm: FC<Props> = (props) => {
       specifications: product?.specifications || [
         { specification: '', specificationDescription: '' },
       ],
-      discountEnd: convertIsoToDate(product?.discount_end || ''),
-      discountStart: convertIsoToDate(product?.discount_start || ''),
     },
   });
 
@@ -114,6 +94,20 @@ const ProductForm: FC<Props> = (props) => {
   const onSubmit = async (data: FormProduct) => {
     const hasPhoto = inputs?.some((input) => input.file);
 
+    if (startDate > endDate) {
+      setDiscountValidationMessage('Кінцева дата не можу бути менша початкової');
+
+      return;
+    }
+    if (Math.abs(endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24) > 30) {
+      setDiscountValidationMessage(
+        'Кінцева дата не може бути більш ніж на 30 днів від початкової дати',
+      );
+
+      return;
+    }
+    setDiscountValidationMessage('');
+
     if (!hasPhoto) return;
 
     const formData = new FormData();
@@ -126,21 +120,8 @@ const ProductForm: FC<Props> = (props) => {
     formData.append('price', String(data.price));
     formData.append('discount', String(data.discount));
     formData.append('specifications', JSON.stringify(data.specifications));
-
-    const convertDate = (dateString: string): string => {
-      if (dateString === '') {
-        return '';
-      }
-      const parts = dateString.split('.');
-      const day = parts[0];
-      const month = parts[1];
-      const year = parts[2];
-
-      return `${year}-${month}-${day}`;
-    };
-
-    formData.append('discountStart', convertDate(data.discountStart));
-    formData.append('discountEnd', convertDate(data.discountEnd));
+    formData.append('discountStart', startDate.toISOString());
+    formData.append('discountEnd', endDate.toISOString());
     formData.append('category', category);
     formData.append('quantity', String(data.quantity));
 
@@ -181,7 +162,14 @@ const ProductForm: FC<Props> = (props) => {
             initialCategoryId={product?.category || ''}
             setCategory={setCategoryHandler}
           />
-          <FormMiddleBlock hasDiscount={(product?.discount || 0) > 0 || false} />
+          <FormMiddleBlock
+            hasDiscount={(product?.discount || 0) > 0 || false}
+            startDate={startDate}
+            endDate={endDate}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
+            discountValidationMessage={discountValidationMessage}
+          />
           <ImageUpload
             onInputsChange={handleInputsChange}
             productImages={inputs}
