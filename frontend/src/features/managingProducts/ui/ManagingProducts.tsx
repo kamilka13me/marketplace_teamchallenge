@@ -107,6 +107,11 @@ const ManagingProducts: FC = () => {
     dispatch(fetchSellerProductsList({}));
   }, [dispatch, offset, sortBy, sortDirection]);
 
+  const closeForm = () => {
+    setIsFormOpen(false);
+    dispatch(fetchSellerProductsList({}));
+  };
+
   const fetchNext = () => {
     setCurrentPage((prev) => prev + 1);
     setSelectedProductsIds([]);
@@ -694,7 +699,7 @@ const ManagingProducts: FC = () => {
   return isFormOpen ? (
     <EditProductContainer
       productId={curruentProductIdForEditing || ''}
-      closeForm={() => setIsFormOpen(false)}
+      closeForm={closeForm}
     />
   ) : (
     <HStack className="w-full">
