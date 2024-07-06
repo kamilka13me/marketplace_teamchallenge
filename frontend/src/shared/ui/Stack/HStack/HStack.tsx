@@ -1,17 +1,17 @@
-import { FC } from 'react';
+import { forwardRef } from 'react';
 
 import Flex, { FlexProps } from '../Flex/Flex';
 
 type Props = Omit<FlexProps, 'direction'>;
 
-const HStack: FC<Props> = (props) => {
+const HStack = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const { children } = props;
 
   return (
-    <Flex direction="col" {...props}>
+    <Flex ref={ref} direction="col" {...props}>
       {children}
     </Flex>
   );
-};
+});
 
 export default HStack;
