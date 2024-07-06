@@ -1,3 +1,5 @@
+import { CustomError } from './customError.js';
+
 const parseSpecifications = (specifications) => {
   try {
     let newSpecifications;
@@ -8,7 +10,7 @@ const parseSpecifications = (specifications) => {
 
     return JSON.parse(newSpecifications);
   } catch (error) {
-    throw new Error('Invalid request body in specifications');
+    throw new CustomError('Parse Specification error');
   }
 };
 
