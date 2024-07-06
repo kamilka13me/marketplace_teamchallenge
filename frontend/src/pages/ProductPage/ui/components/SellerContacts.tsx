@@ -134,6 +134,7 @@ const SellerContacts: FC<Props> = ({ sellerId, triggerRefetchSellerInfo }) => {
                 text={`${contact?.messenger}: ${contact?.phone}`}
                 size="md"
                 color="white"
+                className="whitespace-nowrap"
               />
             </div>
           ))}

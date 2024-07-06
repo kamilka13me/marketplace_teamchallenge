@@ -43,15 +43,15 @@ export const userSlice = createSlice({
     },
     initAuthData: (state) => {
       const user = Cookies.get(COOKIE_KEY_USER);
-      const token = Cookies.get(COOKIE_KEY_TOKEN);
+
       const inspDate = Cookies.get(COOKIE_KEY_EXPIRATION_DATE_OF_USER);
 
-      if (user && token) {
+      if (user) {
         state.authData = JSON.parse(user);
         if (inspDate) {
           const storedExpirationDate = new Date(inspDate);
           const timeDifference = storedExpirationDate.getTime() - new Date().getTime();
-          const hoursDifference = timeDifference / (1000 * 60 * 60); // max 7 days access token live
+          const hoursDifference = timeDifference / (1000 * 60 * 60);
 
           if (hoursDifference < 5) {
             state.authData = undefined;

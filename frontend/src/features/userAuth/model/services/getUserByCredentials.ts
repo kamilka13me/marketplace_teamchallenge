@@ -11,7 +11,7 @@ import {
   COOKIE_KEY_USER,
 } from '@/shared/const/cookies';
 
-const EXPIRES_TIME = 7;
+const EXPIRES_TIME = 14;
 
 interface ApiResponse {
   accessToken: string;
