@@ -14,7 +14,7 @@ if (environment === 'development') {
     confirmSecretKey:
       process.env.CONFIRM_SECRET_KEY ||
       '5e30285e0802c738c23dbba71efd27ab48393da8cafaf77833e1bd3f33a10c01',
-    refreshTokenTime: process.env.REFRESH_TOKEN_TIME || '24h',
+    refreshTokenTime: process.env.REFRESH_TOKEN_TIME || '240h',
     accessTokenTime: process.env.ACCESS_TOKEN_TIME || '1h',
     confirmTokenTime: process.env.CONFIRM_TOKEN_TIME || '1h',
 
@@ -37,7 +37,7 @@ if (environment === 'development') {
     confirmSecretKey:
       process.env.CONFIRM_SECRET_KEY ||
       '5e30285e0802c738c23dbba71efd27ab48393da8cafaf77833e1bd3f33a10c01',
-    refreshTokenTime: process.env.REFRESH_TOKEN_TIME || '10h',
+    refreshTokenTime: process.env.REFRESH_TOKEN_TIME || '240h',
     accessTokenTime: process.env.ACCESS_TOKEN_TIME || '5m',
     confirmTokenTime: process.env.CONFIRM_TOKEN_TIME || '1h',
 
@@ -60,8 +60,8 @@ if (environment === 'development') {
     confirmSecretKey:
       process.env.CONFIRM_SECRET_KEY ||
       '5e30285e0802c738c23dbba71efd27ab48393da8cafaf77833e1bd3f33a10c01',
-    refreshTokenTime: process.env.REFRESH_TOKEN_TIME || '10h',
-    accessTokenTime: process.env.ACCESS_TOKEN_TIME || '10h',
+    refreshTokenTime: process.env.REFRESH_TOKEN_TIME || '240h',
+    accessTokenTime: process.env.ACCESS_TOKEN_TIME || '1h',
     confirmTokenTime: process.env.CONFIRM_TOKEN_TIME || '1h',
 
     mongoURL: process.env.MONGO_URL || 'mongodb://localhost:27017/',
