@@ -14,7 +14,7 @@ import {
 import { Page500 } from '@/pages/Page500';
 import { $api } from '@/shared/api/api';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
-import { COOKIE_KEY_USER } from '@/shared/const/cookies';
+import { COOKIE_KEY_TOKEN, COOKIE_KEY_USER } from '@/shared/const/cookies';
 import { MainLayout } from '@/shared/layouts/MainLayout';
 import MainLoaderLayout from '@/shared/layouts/MainLoaderLayout/MainLoaderLayout';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
@@ -47,11 +47,21 @@ const App: FC = () => {
           Cookies.set(COOKIE_KEY_USER, JSON.stringify(res.data.user));
           dispatch(userActions.setAuthData(res.data.user));
         });
+
+        $api.get(`auth/refresh-token`).then((res) => {
+          const accessToken = decodeURIComponent(res.data.accessToken);
+
+          Cookies.set(COOKIE_KEY_TOKEN, accessToken, {
+            secure: true,
+            sameSite: 'Strict',
+          });
+        });
       } catch (e) {
         // eslint-disable-next-line no-console
         console.log(e);
       }
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inited]);
 

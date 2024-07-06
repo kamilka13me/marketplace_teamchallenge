@@ -8,6 +8,7 @@ export default {
     extend: {
       screens: {
         custom: { min: '1024px', max: '1297px' },
+        laptop: '1024px',
       },
       fontFamily: {
         'ibm-plex-sans': ['IBM Plex Sans', 'system-ui', 'sans-serif'],
