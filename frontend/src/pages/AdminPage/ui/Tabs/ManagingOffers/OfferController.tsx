@@ -13,7 +13,7 @@ import { Text } from '@/shared/ui/Text';
 interface Props {
   editHandler: () => void;
   publishHandler: () => void;
-  rejectHandler: () => void;
+  rejectHandler?: () => void;
   blockHandler: () => void;
 }
 
@@ -116,28 +116,30 @@ const OfferController: FC<Props> = (props) => {
             className="group-hover:text-main-dark select-none"
           />
         </Button>
-        <Button
-          variant="clear"
-          className="group flex items-center gap-2 w-[180px] p-2.5 hover:bg-secondary-yellow rounded-lg"
-          onClick={() => {
-            rejectHandler();
-            setShowModal(false);
-          }}
-        >
-          <Icon
-            Svg={reject}
-            width={30}
-            height={30}
-            className="stroke-disabled group-hover:stroke-main-dark"
-          />
-          <Text
-            Tag="span"
-            text="Відхилити"
-            size="md"
-            color="gray-light"
-            className="group-hover:text-main-dark select-none"
-          />
-        </Button>
+        {rejectHandler && (
+          <Button
+            variant="clear"
+            className="group flex items-center gap-2 w-[180px] p-2.5 hover:bg-secondary-yellow rounded-lg"
+            onClick={() => {
+              rejectHandler();
+              setShowModal(false);
+            }}
+          >
+            <Icon
+              Svg={reject}
+              width={30}
+              height={30}
+              className="stroke-disabled group-hover:stroke-main-dark"
+            />
+            <Text
+              Tag="span"
+              text="Відхилити"
+              size="md"
+              color="gray-light"
+              className="group-hover:text-main-dark select-none"
+            />
+          </Button>
+        )}
         <Button
           variant="clear"
           className="group flex items-center gap-2 w-[180px] p-2.5 hover:bg-secondary-yellow rounded-lg"
