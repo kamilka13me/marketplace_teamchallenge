@@ -212,9 +212,13 @@ const ManagingOffers: FC = () => {
                       publishHandler={() => {
                         updateOfferStatus(elem._id, 'published');
                       }}
-                      rejectHandler={() => {
-                        updateOfferStatus(elem._id, 'canceled');
-                      }}
+                      rejectHandler={
+                        elem.status === 'under-consideration'
+                          ? () => {
+                              updateOfferStatus(elem._id, 'canceled');
+                            }
+                          : undefined
+                      }
                       blockHandler={() => {
                         updateOfferStatus(elem._id, 'blocked');
                       }}
