@@ -1,14 +1,19 @@
+import { CustomError } from './customError.js';
+
 const parseSpecifications = (specifications) => {
   try {
-    let newSpecifications;
+    let newSpecifications = specifications;
 
-    if (!specifications.trim().startsWith('[') || !specifications.trim().endsWith(']')) {
-      newSpecifications = `[${specifications}]`;
+    if (typeof specifications === 'string') {
+      newSpecifications = specifications.trim();
+      if (!newSpecifications.startsWith('[') || !newSpecifications.endsWith(']')) {
+        newSpecifications = `[${newSpecifications}]`;
+      }
     }
 
     return JSON.parse(newSpecifications);
   } catch (error) {
-    throw new Error('Invalid request body in specifications');
+    throw new CustomError('Parse Specification error');
   }
 };
 

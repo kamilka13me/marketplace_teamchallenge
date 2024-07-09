@@ -366,6 +366,33 @@ const sellerController = {
       res.status(500).json({ message: 'Server error' });
     }
   },
+
+  updateSubscribeReq: async (req, res) => {
+    try {
+      const { sellerId } = req.params;
+      const { subscribe } = req.body;
+
+      const seller = await User.findById(sellerId);
+
+      if (!seller) {
+        return res.status(404).json({ message: 'seller not found' });
+      }
+
+      const data = {
+        _id: seller._id,
+        subscribe,
+        email: seller.email,
+        username: seller.username,
+      };
+
+      sendMail('13032004clash@gmail.com', 'subscribe', '', data);
+      res.status(200).json({ message: 'seller status update req send successfully' });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log('Error updating seller status:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  },
 };
 
 export default sellerController;

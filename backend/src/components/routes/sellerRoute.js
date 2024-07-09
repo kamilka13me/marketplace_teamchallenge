@@ -573,5 +573,40 @@ sellerRoute.post('/updateSellerInfo', idToReq(), sellerController.updateSellerIn
  */
 
 sellerRoute.put('/:sellerId', sellerController.updateSubscribe);
+/**
+ * @swagger
+ * /seller/{sellerId}:
+ *   patch:
+ *     summary: Update subscribe status by req
+ *     tags: [Seller]
+ *     parameters:
+ *       - in: path
+ *         name: sellerId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the seller to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *                   subscribe:
+ *                     type: string
+ *                     description: subscribe of the seller
+ *     responses:
+ *       200:
+ *         description: Support status updated successfully
+ *       400:
+ *         description: Invalid status provided
+ *       404:
+ *         description: Support not found
+ *       500:
+ *         description: Server error
+ */
+
+sellerRoute.patch('/:sellerId', sellerController.updateSubscribeReq);
 
 export default sellerRoute;
