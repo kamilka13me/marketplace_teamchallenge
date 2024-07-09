@@ -358,6 +358,20 @@ productRoute.get('/:id', openedCounter(), productController.getOneProduct);
  *         schema:
  *           type: string
  *         description: Filter by seller ID.
+ *       - in: query
+ *         name: startDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *         required: false
+ *         description: Start date for filtering data (YYYY-MM-DD).
+ *       - in: query
+ *         name: endDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *         required: false
+ *         description: End date for filtering data (YYYY-MM-DD).
  *     responses:
  *       200:
  *         description: A list of products.

@@ -128,6 +128,8 @@ const productService = {
       sellerId,
       sortBy,
       status,
+      startDate,
+      endDate,
     } = filters;
     let { sortDirection = 1, limit = 10, offset = 0 } = filters;
 
@@ -167,6 +169,16 @@ const productService = {
 
     if (status) {
       query.status = status;
+    }
+
+    if (startDate || endDate) {
+      query.created_at = {};
+      if (startDate) {
+        query.created_at.$gte = new Date(startDate);
+      }
+      if (endDate) {
+        query.created_at.$lte = new Date(endDate);
+      }
     }
 
     const aggregationPipeline = [

@@ -172,7 +172,11 @@ const productController = {
         sortDirection,
         limit,
         offset,
+        startDate,
+        endDate,
       } = req.query;
+      console.log('start-' + startDate);
+      console.log('end-' + endDate);
 
       const filters = {
         name,
@@ -188,6 +192,8 @@ const productController = {
         sortDirection,
         limit,
         offset,
+        startDate,
+        endDate,
       };
 
       const products = await productService.getAllProducts(filters);
