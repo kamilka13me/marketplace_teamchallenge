@@ -13,7 +13,6 @@ const parseSpecifications = (specifications) => {
 
     return JSON.parse(newSpecifications);
   } catch (error) {
-    console.log(error);
     throw new CustomError('Parse Specification error');
   }
 };

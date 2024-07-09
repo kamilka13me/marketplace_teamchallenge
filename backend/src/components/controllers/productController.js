@@ -175,8 +175,6 @@ const productController = {
         startDate,
         endDate,
       } = req.query;
-      console.log('start-' + startDate);
-      console.log('end-' + endDate);
 
       const filters = {
         name,
