@@ -42,6 +42,7 @@ const ManagingOffers: FC = () => {
     endDate: new Date(),
     key: 'selection',
   });
+
   const [currentOfferIdForEditing, setCurrentOfferIdForEditing] = useState<null | string>(
     null,
   );
@@ -71,17 +72,18 @@ const ManagingOffers: FC = () => {
 
   useEffect(() => {
     dispatch(fetchAdminOffersList({}));
-  }, [dispatch, offset, sellerId, status, sortBy, sortDirection, dateRange]);
+  }, [dispatch, offset, sellerId, status, sortBy, sortDirection]);
 
   useEffect(() => {
     dispatch(adminOffersActions.setStartDate(dateRange.startDate.toISOString()));
     dispatch(adminOffersActions.setEndDate(dateRange.endDate.toISOString()));
+    dispatch(fetchAdminOffersList({}));
   }, [dispatch, dateRange]);
 
   useEffect(() => {
     dispatch(adminOffersActions.setOffset(0));
     setCurrentPage(1);
-  }, [dispatch, selectedFilter, inputData, dateRange]);
+  }, [dispatch, selectedFilter, inputData]);
 
   const onSearchInput = (id: string) => {
     setInputData(id);
