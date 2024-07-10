@@ -1,4 +1,4 @@
-import React, { FC, Fragment } from 'react';
+import React, { FC, Fragment, useState } from 'react';
 
 import { Listbox, Switch, Transition } from '@headlessui/react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
@@ -17,6 +17,8 @@ import { Text } from '@/shared/ui/Text';
 
 const GeneralBlockSellerForm: FC = () => {
   const { t } = useTranslation();
+
+  const [quantity, setQuantity] = useState<number>(0);
 
   const {
     register,
@@ -124,10 +126,15 @@ const GeneralBlockSellerForm: FC = () => {
                   control={control}
                   rules={{
                     required: t("Це поле є обов'язковим"),
+                    minLength: {
+                      value: 13,
+                      message: t('Введіть правильний номер'),
+                    },
                   }}
                   render={({ field }) => (
                     <PhoneInput
                       defaultCountry="ua"
+                      disableDialCodePrefill
                       defaultMask=".........."
                       placeholder={t('Номер телефону')}
                       value={field.value}
@@ -329,22 +336,42 @@ const GeneralBlockSellerForm: FC = () => {
           size="xl"
           className="leading-[26px] text-selected-dark"
         />
-        <Input
-          variant="basic"
-          placeholder={t('Введіть назву компанії')}
-          type="text"
-          autoComplete="off"
-          className="min-h-[48px] w-full"
-          classNameBlockWrap="w-full"
-          {...register('generalName', {
-            required: t("Це поле є обов'язковим"),
-            pattern: {
-              value: /^[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ\s".'-]*$/,
-              message: t('Введіть назву українською мовою'),
-            },
-          })}
-          error={errors?.generalName && errors?.generalName.message}
-        />
+        <div className="w-full">
+          <Input
+            variant="basic"
+            placeholder={t('Введіть назву компанії')}
+            type="text"
+            autoComplete="off"
+            className="min-h-[48px] w-full"
+            classNameBlockWrap="w-full mb-2"
+            {...register('generalName', {
+              required: t("Це поле є обов'язковим"),
+              pattern: {
+                value: /^[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ\s".'-]*$/,
+                message: t('Введіть назву українською мовою'),
+              },
+              onChange: (e) => {
+                setQuantity(e.target.value.length);
+              },
+            })}
+            maxLength={100}
+            error={errors?.generalName && errors?.generalName.message}
+          />
+          <VStack align="center" justify="between" className="w-full">
+            <Text
+              Tag="p"
+              text={t('Введіть не більше 100 символів')}
+              size="xs"
+              className="!text-selected-dark"
+            />
+            <Text
+              Tag="p"
+              text={`${quantity}/100`}
+              size="xs"
+              className="!text-selected-dark"
+            />
+          </VStack>
+        </div>
       </HStack>
 
       {renderCommunicationMethods()}

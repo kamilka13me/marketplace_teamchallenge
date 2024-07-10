@@ -30,7 +30,11 @@ const PrivateBlockSellerForm: FC = () => {
     register,
     control,
     formState: { errors },
+    watch,
   } = useFormContext<Seller>();
+
+  const idStateRegisterValue = watch('idStateRegister');
+  const identificNumberValue = watch('identificNumber');
 
   const {
     fields: contactFields,
@@ -229,7 +233,7 @@ const PrivateBlockSellerForm: FC = () => {
             className="min-h-[48px] w-full"
             classNameBlockWrap="w-full mb-2"
             {...register('idStateRegister', {
-              required: t("Це поле є обов'язковим"),
+              required: !identificNumberValue && t('Заповніть ЄДРПОУ або ІПН'),
               minLength: {
                 value: 10,
                 message: t('Введіть актуальний ЄДРПОУ з 10 цифр'),
@@ -270,7 +274,7 @@ const PrivateBlockSellerForm: FC = () => {
             className="min-h-[48px] w-full"
             classNameBlockWrap="w-full mb-2"
             {...register('identificNumber', {
-              required: t("Це поле є обов'язковим"),
+              required: !idStateRegisterValue && t('Заповніть ЄДРПОУ або ІПН'),
               minLength: {
                 value: 12,
                 message: t('Введіть актуальний ІПН з 12 цифр'),
@@ -336,10 +340,15 @@ const PrivateBlockSellerForm: FC = () => {
                   control={control}
                   rules={{
                     required: t("Це поле є обов'язковим"),
+                    minLength: {
+                      value: 13,
+                      message: t('Введіть правильний номер'),
+                    },
                   }}
                   render={({ field }) => (
                     <PhoneInput
                       defaultCountry="ua"
+                      disableDialCodePrefill
                       defaultMask=".........."
                       placeholder={t('Номер телефону')}
                       value={field.value}
@@ -488,10 +497,15 @@ const PrivateBlockSellerForm: FC = () => {
                   control={control}
                   rules={{
                     required: t("Це поле є обов'язковим"),
+                    minLength: {
+                      value: 13,
+                      message: t('Введіть правильний номер'),
+                    },
                   }}
                   render={({ field }) => (
                     <PhoneInput
                       defaultCountry="ua"
+                      disableDialCodePrefill
                       defaultMask=".........."
                       placeholder={t('Номер телефону')}
                       value={field.value}
@@ -567,8 +581,11 @@ const PrivateBlockSellerForm: FC = () => {
           className="min-h-[48px] w-full"
           classNameBlockWrap="w-full mb-2"
           {...register('descriptCompany', {
-            required: true,
-            minLength: 70,
+            required: t("Це поле є обов'язковим"),
+            minLength: {
+              value: 70,
+              message: t('Потрібно ввести не меньше 70 символів'),
+            },
             onChange: (e) => {
               setQuantity(e.target.value.length);
             },
