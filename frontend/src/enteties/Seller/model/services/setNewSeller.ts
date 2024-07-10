@@ -54,6 +54,10 @@ export const setNewSeller = createAsyncThunk<ApiResponse, newSellerDataProps>(
           return rejectWithValue(`:: ${response.statusText} `);
         }
 
+        if (response.status === 409) {
+          return rejectWithValue(`:: ${response.statusText} `);
+        }
+
         return rejectWithValue(`:: ${response.statusText} `);
       }
 
