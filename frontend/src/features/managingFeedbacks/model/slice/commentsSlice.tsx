@@ -21,19 +21,16 @@ export const sellerFeedbackSlice = createSlice({
     isLoading: false,
     error: undefined,
     totalComments: 0,
-
-    // pagination
     limit: 5,
     offset: 0,
-
     startDate: '',
     endDate: '',
   }),
   reducers: {
-    setStartDate: (state, action: PayloadAction<Date>) => {
+    setStartDate: (state, action: PayloadAction<string>) => {
       state.startDate = action.payload;
     },
-    setEndDate: (state, action: PayloadAction<Date>) => {
+    setEndDate: (state, action: PayloadAction<string>) => {
       state.endDate = action.payload;
     },
     setOffset: (state, action: PayloadAction<number>) => {

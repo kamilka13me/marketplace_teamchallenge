@@ -41,7 +41,7 @@ export const buttonData: { type: RangeSortType; label: string; clb: () => Date }
     clb: () => {
       const date = new Date();
 
-      return new Date(date.getFullYear() - 1, 0, 1);
+      return new Date(date.getFullYear() - 1, date.getMonth(), date.getDate());
     },
   },
 ];

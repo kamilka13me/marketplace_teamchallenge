@@ -47,7 +47,7 @@ const ListingSearchCalendar: FC<Props> = (props) => {
 
       const endDayDate = new Date(state[0]?.endDate);
 
-      endDayDate.setHours(23, 59, 59, 999);
+      endDayDate.setHours(26, 59, 59, 999);
 
       setDateRange({
         startDate: startDayDate,

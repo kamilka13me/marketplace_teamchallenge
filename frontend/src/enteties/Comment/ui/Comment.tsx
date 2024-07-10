@@ -16,6 +16,7 @@ import { Image } from '@/shared/ui/Image';
 import { Input } from '@/shared/ui/Input';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
+import { formatDate } from '@/shared/utils/formatDate';
 
 interface ApiResponse {
   user: User;
@@ -111,7 +112,7 @@ const Comment: FC<Props> = (props) => {
           </div>
         </VStack>
         <div>
-          <Text Tag="p" text={comment?.created_at?.slice(0, 10)} size="sm" color="gray" />
+          <Text Tag="p" text={formatDate(comment?.created_at)} size="sm" color="gray" />
           <Text
             Tag="p"
             text={comment?.comment}

@@ -1,6 +1,5 @@
-import React, { FC, useEffect, useState } from 'react';
-
-import { RangeKeyDict } from 'react-date-range';
+/* eslint-disable import/order */
+import { FC, useEffect, useState } from 'react';
 
 import Comment from '../../../enteties/Comment/ui/Comment';
 
@@ -19,18 +18,14 @@ import {
 } from '@/features/managingFeedbacks/model/slice/commentsSlice';
 import SellerRatings from '@/features/managingFeedbacks/ui/SellerRatings';
 import { $api } from '@/shared/api/api';
-import calendar from '@/shared/assets/icons/calendar.svg?react';
 import { ApiRoutes } from '@/shared/const/apiEndpoints';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
-import { Button } from '@/shared/ui/Button';
-import CustomCalendar from '@/shared/ui/CustomCalendar/ui/CustomCalendar';
-import { Icon } from '@/shared/ui/Icon';
 import Pagination from '@/shared/ui/Pagination/Pagination';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
-import DateSortWidget, { buttonData } from '@/widgets/DateSortWidget/ui/DateSortWidget';
 
+import ListingSearchCalendar from '@/widgets/ListingSort/ui/components/ListingSearchCalendar';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 
@@ -51,25 +46,16 @@ interface IRangeDate {
   key: string;
 }
 
-const adjustDate = (date: Date, days: number) => {
-  date.setDate(date.getDate() + days);
-
-  return date;
-};
-
 const ManagingFeedbacks: FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [ratingsData, setRatingsData] = useState<SellerRatingResponse | null>(null);
   const [ratingDataIsLoading, setRatingDataIsLoading] = useState(true);
-  const [calendarIsOpened, setCalendarIsOpened] = useState(false);
 
-  const [state, setState] = useState<IRangeDate[]>([
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: 'selection',
-    },
-  ]);
+  const [dateRange, setDateRange] = useState<IRangeDate>({
+    startDate: new Date(0),
+    endDate: new Date(),
+    key: 'selection',
+  });
 
   const feedbacks = useAppSelector(getSellerFeedbacks.selectAll);
   const totalFeedbacks = useAppSelector(getTotalSellerFeedbacks);
@@ -81,35 +67,16 @@ const ManagingFeedbacks: FC = () => {
   const isMobile = window.innerWidth < 768;
 
   useEffect(() => {
-    const endDate = adjustDate(new Date(state[0]?.endDate as unknown as Date), 2);
-
-    dispatch(
-      sellerFeedbackPageActions.setEndDate(
-        endDate.toISOString()?.slice(0, 10) as unknown as Date,
-      ),
-    );
-  }, [dispatch, state]);
-
-  useEffect(() => {
-    const startDate = adjustDate(new Date(state[0]?.startDate as unknown as Date), 1);
-
-    dispatch(
-      sellerFeedbackPageActions.setStartDate(
-        startDate.toISOString()?.slice(0, 10) as unknown as Date,
-      ),
-    );
-  }, [dispatch, state]);
+    dispatch(sellerFeedbackPageActions.setEndDate(dateRange.endDate.toISOString()));
+    dispatch(sellerFeedbackPageActions.setStartDate(dateRange.startDate.toISOString()));
+  }, [dispatch, dateRange]);
 
   useEffect(() => {
     const fetchRatings = async () => {
       setRatingDataIsLoading(true);
       try {
-        const startDate = adjustDate(new Date(state[0]?.startDate as unknown as Date), 1);
-
-        const endDate = adjustDate(new Date(state[0]?.endDate as unknown as Date), 2);
-
         const response = await $api.get<SellerRatingResponse>(
-          `${ApiRoutes.RATINGS}?sellerId=${user?._id}&startDate=${startDate.toISOString()?.slice(0, 10)}&endDate=${endDate.toISOString().slice(0, 10)}`,
+          `${ApiRoutes.RATINGS}?sellerId=${user?._id}&startDate=${dateRange.startDate.toISOString()}&endDate=${dateRange.endDate.toISOString()}`,
         );
 
         setRatingsData(response.data);
@@ -122,7 +89,7 @@ const ManagingFeedbacks: FC = () => {
     };
 
     fetchRatings();
-  }, [user, state, dispatch]);
+  }, [user, dateRange, dispatch]);
 
   const refetchSellerFeedbacksHandler = () => {
     dispatch(fetchSellerFeedbacksList({}));
@@ -131,13 +98,7 @@ const ManagingFeedbacks: FC = () => {
   useEffect(() => {
     refetchSellerFeedbacksHandler();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, offset, state]);
-
-  const handleOnChange = (ranges: RangeKeyDict) => {
-    const { selection } = ranges;
-
-    setState([selection as IRangeDate]);
-  };
+  }, [dispatch, offset, dateRange]);
 
   const fetchNext = () => {
     setCurrentPage((prev) => prev + 1);
@@ -178,63 +139,7 @@ const ManagingFeedbacks: FC = () => {
         )}
 
         <VStack gap="2" className="items-center md:items-start">
-          <DateSortWidget
-            onSelectRange={(type: RangeSortType) => {
-              const endDate = new Date();
-
-              endDate.setDate(endDate.getDate() + 1);
-              setState((prevState) => {
-                const updatedState = prevState.map((rangeDate, index) => {
-                  if (index === 0) {
-                    return {
-                      ...rangeDate,
-                      startDate:
-                        buttonData.find((btn) => btn.type === type)?.clb() || new Date(),
-                      endDate: new Date(),
-                    };
-                  }
-
-                  return rangeDate;
-                });
-
-                return updatedState;
-              });
-              dispatch(
-                sellerFeedbackPageActions.setStartDate(
-                  buttonData.find((btn) => btn.type === type)?.clb() || new Date(),
-                ),
-              );
-              dispatch(sellerFeedbackPageActions.setEndDate(endDate));
-            }}
-          />
-          <div className="relative h-full">
-            <VStack align="center" gap="4" className="h-full">
-              {!isMobile && (
-                <div className="py-[7px]">
-                  <Text
-                    Tag="span"
-                    text={`${state[0]?.startDate.toISOString()?.slice(0, 10) || ''} - ${state[0]?.endDate.toISOString().slice(0, 10) || ''}`}
-                    size="sm"
-                    color="white"
-                  />
-                </div>
-              )}
-              <Button
-                variant="clear"
-                className=" py-1 px-2 md:p-0"
-                onClick={() => setCalendarIsOpened((prev) => !prev)}
-              >
-                <Icon width={24} height={24} Svg={calendar} className="fill-main-white" />
-              </Button>
-            </VStack>
-
-            <CustomCalendar
-              calendarIsOpened={calendarIsOpened}
-              dates={state}
-              setDates={setState}
-              handleOnChange={handleOnChange}
-            />
-          </div>
+          <ListingSearchCalendar dateRange={dateRange} setDateRange={setDateRange} />
         </VStack>
       </VStack>
       {isMobile && (
