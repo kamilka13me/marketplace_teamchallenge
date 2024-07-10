@@ -18,13 +18,23 @@ import { Text } from '@/shared/ui/Text';
 const PrivateBlockSellerForm: FC = () => {
   const { t } = useTranslation();
 
+  const [quantityName, setQuantityName] = useState<number>(0);
+  const [quantityAdresse, setQuantityAdresse] = useState<number>(0);
+  const [quantityCity, setQuantityCity] = useState<number>(0);
+  const [quantityIndex, setQuantityIndex] = useState<number>(0);
+  const [quantityIdentic, setQuantityIdentic] = useState<number>(0);
+  const [quantityRegester, setQuantityRegester] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(0);
 
   const {
     register,
     control,
     formState: { errors },
+    watch,
   } = useFormContext<Seller>();
+
+  const idStateRegisterValue = watch('idStateRegister');
+  const identificNumberValue = watch('identificNumber');
 
   const {
     fields: contactFields,
@@ -70,93 +80,231 @@ const PrivateBlockSellerForm: FC = () => {
         size="xl"
         className="leading-[26px] text-selected-dark"
       />
-      <Input
-        variant="basic"
-        placeholder={t('Юридична назва компанії')}
-        type="text"
-        autoComplete="off"
-        className="min-h-[48px] w-full"
-        classNameBlockWrap="w-full"
-        {...register('legalName', {
-          required: t("Це поле є обов'язковим"),
-        })}
-        error={errors?.legalName && errors?.legalName.message}
-      />
-      <Input
-        variant="basic"
-        placeholder={t('Юридична адреса')}
-        type="text"
-        autoComplete="off"
-        className="min-h-[48px] w-full"
-        classNameBlockWrap="w-full"
-        {...register('legalAddress', {
-          required: t("Це поле є обов'язковим"),
-        })}
-        error={errors?.legalAddress && errors?.legalAddress.message}
-      />
-      <HStack align="start" gap="5" className="w-full sm:flex-row">
+      <div className="w-full">
         <Input
           variant="basic"
-          placeholder={t('Місто, область')}
+          placeholder={t('Юридична назва компанії')}
           type="text"
           autoComplete="off"
           className="min-h-[48px] w-full"
-          classNameBlockWrap="w-full"
-          {...register('city', {
+          classNameBlockWrap="w-full mb-2"
+          {...register('legalName', {
             required: t("Це поле є обов'язковим"),
-          })}
-          error={errors?.city && errors?.city.message}
-        />
-        <Input
-          variant="basic"
-          placeholder={t('Індекс')}
-          type="text"
-          autoComplete="off"
-          className="min-h-[48px] w-full"
-          classNameBlockWrap="w-full"
-          {...register('cityIndex', {
-            required: t("Це поле є обов'язковим"),
-            pattern: {
-              value: /^\d+$/,
-              message: t('Дозволені тільки числа'),
+            onChange: (e) => {
+              setQuantityName(e.target.value.length);
             },
           })}
-          error={errors?.cityIndex && errors?.cityIndex.message}
+          maxLength={100}
+          error={errors?.legalName && errors?.legalName.message}
         />
+        <VStack align="center" justify="between" className="w-full">
+          <Text
+            Tag="p"
+            text={t('Введіть не більше 100 символів')}
+            size="xs"
+            className="!text-selected-dark"
+          />
+          <Text
+            Tag="p"
+            text={`${quantityName}/100`}
+            size="xs"
+            className="!text-selected-dark"
+          />
+        </VStack>
+      </div>
+      <div className="w-full">
+        <Input
+          variant="basic"
+          placeholder={t('Юридична адреса')}
+          type="text"
+          autoComplete="off"
+          className="min-h-[48px] w-full"
+          classNameBlockWrap="w-full mb-2"
+          {...register('legalAddress', {
+            required: t("Це поле є обов'язковим"),
+            onChange: (e) => {
+              setQuantityAdresse(e.target.value.length);
+            },
+          })}
+          maxLength={100}
+          error={errors?.legalAddress && errors?.legalAddress.message}
+        />
+        <VStack align="center" justify="between" className="w-full">
+          <Text
+            Tag="p"
+            text={t('Введіть не більше 100 символів')}
+            size="xs"
+            className="!text-selected-dark"
+          />
+          <Text
+            Tag="p"
+            text={`${quantityAdresse}/100`}
+            size="xs"
+            className="!text-selected-dark"
+          />
+        </VStack>
+      </div>
+      <HStack align="start" gap="5" className="w-full sm:flex-row">
+        <div className="w-full">
+          <Input
+            variant="basic"
+            placeholder={t('Місто, область')}
+            type="text"
+            autoComplete="off"
+            className="min-h-[48px] w-full"
+            classNameBlockWrap="w-full mb-2"
+            {...register('city', {
+              required: t("Це поле є обов'язковим"),
+              pattern: {
+                value: /^[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ\s']*$/,
+                message: t('Введіть місто, область українською мовою'),
+              },
+              onChange: (e) => {
+                setQuantityCity(e.target.value.length);
+              },
+            })}
+            maxLength={70}
+            error={errors?.city && errors?.city.message}
+          />
+          <VStack align="center" justify="between" className="w-full">
+            <Text
+              Tag="p"
+              text={t('Введіть не більше 70 символів')}
+              size="xs"
+              className="!text-selected-dark"
+            />
+            <Text
+              Tag="p"
+              text={`${quantityCity}/70`}
+              size="xs"
+              className="!text-selected-dark"
+            />
+          </VStack>
+        </div>
+
+        <div className="w-full">
+          <Input
+            variant="basic"
+            placeholder={t('Індекс')}
+            type="text"
+            autoComplete="off"
+            className="min-h-[48px] w-full"
+            classNameBlockWrap="w-full mb-2"
+            {...register('cityIndex', {
+              required: t("Це поле є обов'язковим"),
+              minLength: {
+                value: 5,
+                message: t('Введіть актуальний індекс з 5 цифр'),
+              },
+              pattern: {
+                value: /^\d+$/,
+                message: t('Дозволені тільки числа'),
+              },
+              onChange: (e) => {
+                setQuantityIndex(e.target.value.length);
+              },
+            })}
+            maxLength={5}
+            error={errors?.cityIndex && errors?.cityIndex.message}
+          />
+          <VStack align="center" justify="between" className="w-full">
+            <Text
+              Tag="p"
+              text={t('Введіть 5 цифр')}
+              size="xs"
+              className="!text-selected-dark"
+            />
+            <Text
+              Tag="p"
+              text={`${quantityIndex}/5`}
+              size="xs"
+              className="!text-selected-dark"
+            />
+          </VStack>
+        </div>
       </HStack>
       <HStack align="start" gap="5" className="w-full sm:flex-row">
-        <Input
-          variant="basic"
-          placeholder={t('ЄДРПОУ')}
-          type="text"
-          autoComplete="off"
-          className="min-h-[48px] w-full"
-          classNameBlockWrap="w-full"
-          {...register('idStateRegister', {
-            required: t("Це поле є обов'язковим"),
-            pattern: {
-              value: /^\d+$/,
-              message: t('Дозволені тільки числа'),
-            },
-          })}
-          error={errors?.idStateRegister && errors?.idStateRegister.message}
-        />
-        <Input
-          variant="basic"
-          placeholder={t('ІПН')}
-          type="text"
-          autoComplete="off"
-          className="min-h-[48px] w-full"
-          classNameBlockWrap="w-full"
-          {...register('identificNumber', {
-            required: t("Це поле є обов'язковим"),
-            pattern: {
-              value: /^\d+$/,
-              message: t('Дозволені тільки числа'),
-            },
-          })}
-          error={errors?.identificNumber && errors?.identificNumber.message}
-        />
+        <div className="w-full">
+          <Input
+            variant="basic"
+            placeholder={t('ЄДРПОУ')}
+            type="text"
+            autoComplete="off"
+            className="min-h-[48px] w-full"
+            classNameBlockWrap="w-full mb-2"
+            {...register('idStateRegister', {
+              required: !identificNumberValue && t('Заповніть ЄДРПОУ або ІПН'),
+              minLength: {
+                value: 10,
+                message: t('Введіть актуальний ЄДРПОУ з 10 цифр'),
+              },
+              pattern: {
+                value: /^\d+$/,
+                message: t('Дозволені тільки числа'),
+              },
+              onChange: (e) => {
+                setQuantityRegester(e.target.value.length);
+              },
+            })}
+            maxLength={10}
+            error={errors?.idStateRegister && errors?.idStateRegister.message}
+          />
+          <VStack align="center" justify="between" className="w-full">
+            <Text
+              Tag="p"
+              text={t('Введіть 10 цифр')}
+              size="xs"
+              className="!text-selected-dark"
+            />
+            <Text
+              Tag="p"
+              text={`${quantityRegester}/10`}
+              size="xs"
+              className="!text-selected-dark"
+            />
+          </VStack>
+        </div>
+
+        <div className="w-full">
+          <Input
+            variant="basic"
+            placeholder={t('ІПН')}
+            type="text"
+            autoComplete="off"
+            className="min-h-[48px] w-full"
+            classNameBlockWrap="w-full mb-2"
+            {...register('identificNumber', {
+              required: !idStateRegisterValue && t('Заповніть ЄДРПОУ або ІПН'),
+              minLength: {
+                value: 12,
+                message: t('Введіть актуальний ІПН з 12 цифр'),
+              },
+              pattern: {
+                value: /^\d+$/,
+                message: t('Дозволені тільки числа'),
+              },
+              onChange: (e) => {
+                setQuantityIdentic(e.target.value.length);
+              },
+            })}
+            maxLength={12}
+            error={errors?.identificNumber && errors?.identificNumber.message}
+          />
+          <VStack align="center" justify="between" className="w-full">
+            <Text
+              Tag="p"
+              text={t('Введіть 12 цифр')}
+              size="xs"
+              className="!text-selected-dark"
+            />
+            <Text
+              Tag="p"
+              text={`${quantityIdentic}/12`}
+              size="xs"
+              className="!text-selected-dark"
+            />
+          </VStack>
+        </div>
       </HStack>
       <Checkbox
         type="checkbox"
@@ -192,10 +340,15 @@ const PrivateBlockSellerForm: FC = () => {
                   control={control}
                   rules={{
                     required: t("Це поле є обов'язковим"),
+                    minLength: {
+                      value: 13,
+                      message: t('Введіть правильний номер'),
+                    },
                   }}
                   render={({ field }) => (
                     <PhoneInput
                       defaultCountry="ua"
+                      disableDialCodePrefill
                       defaultMask=".........."
                       placeholder={t('Номер телефону')}
                       value={field.value}
@@ -344,10 +497,15 @@ const PrivateBlockSellerForm: FC = () => {
                   control={control}
                   rules={{
                     required: t("Це поле є обов'язковим"),
+                    minLength: {
+                      value: 13,
+                      message: t('Введіть правильний номер'),
+                    },
                   }}
                   render={({ field }) => (
                     <PhoneInput
                       defaultCountry="ua"
+                      disableDialCodePrefill
                       defaultMask=".........."
                       placeholder={t('Номер телефону')}
                       value={field.value}
@@ -423,8 +581,11 @@ const PrivateBlockSellerForm: FC = () => {
           className="min-h-[48px] w-full"
           classNameBlockWrap="w-full mb-2"
           {...register('descriptCompany', {
-            required: true,
-            minLength: 70,
+            required: t("Це поле є обов'язковим"),
+            minLength: {
+              value: 70,
+              message: t('Потрібно ввести не меньше 70 символів'),
+            },
             onChange: (e) => {
               setQuantity(e.target.value.length);
             },

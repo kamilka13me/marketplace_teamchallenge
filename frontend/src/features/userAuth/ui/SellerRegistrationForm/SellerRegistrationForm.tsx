@@ -1,9 +1,10 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
+import { sellerInfoHasError } from '@/enteties/Seller/model/selectors/sellerInfoSelectors';
 import { setNewSeller } from '@/enteties/Seller/model/services/setNewSeller';
 import { Seller } from '@/enteties/Seller/model/types/seller';
 import GeneralBlockSellerForm from '@/features/userAuth/ui/SellerRegistrationForm/blocks/GeneralBlockSellerForm';
@@ -13,6 +14,7 @@ import privateEye from '@/shared/assets/icons/private-eye.svg?react';
 import unPrivateEye from '@/shared/assets/icons/unprivate-eye.svg?react';
 import { getRouteMain } from '@/shared/const/routes';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
+import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Input } from '@/shared/ui/Input';
@@ -21,6 +23,8 @@ import { HStack, VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
 const SellerRegistrationForm: FC = () => {
+  const errorServer = useAppSelector(sellerInfoHasError);
+
   const { t } = useTranslation();
 
   const [showModal, setShowModal] = useState(false);
@@ -58,6 +62,7 @@ const SellerRegistrationForm: FC = () => {
     register,
     formState: { errors, isValid },
     reset,
+    setError,
   } = methods;
 
   const onSubmit: SubmitHandler<Seller> = async (data) => {
@@ -92,6 +97,14 @@ const SellerRegistrationForm: FC = () => {
     });
   };
 
+  useEffect(() => {
+    setError('email', {
+      message: errorServer?.includes('409')
+        ? t('За даним e-mail вже зареестрований користувач. Введіть інший e-mail')
+        : '',
+    });
+  }, [setError, handleSubmit, errorServer, t]);
+
   const onTogglePassVisibility = () => {
     setPassShown(!passShown);
   };
@@ -117,6 +130,10 @@ const SellerRegistrationForm: FC = () => {
             minLength: {
               value: 6,
               message: t('Ваш логін має бути не менше 6 символів'),
+            },
+            maxLength: {
+              value: 50,
+              message: t('Ваш логін має бути не більше 50 символів'),
             },
             pattern: {
               value:
