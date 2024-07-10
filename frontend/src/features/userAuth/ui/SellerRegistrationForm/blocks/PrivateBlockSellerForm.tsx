@@ -22,6 +22,8 @@ const PrivateBlockSellerForm: FC = () => {
   const [quantityAdresse, setQuantityAdresse] = useState<number>(0);
   const [quantityCity, setQuantityCity] = useState<number>(0);
   const [quantityIndex, setQuantityIndex] = useState<number>(0);
+  const [quantityIdentic, setQuantityIdentic] = useState<number>(0);
+  const [quantityRegester, setQuantityRegester] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(0);
 
   const {
@@ -218,38 +220,87 @@ const PrivateBlockSellerForm: FC = () => {
         </div>
       </HStack>
       <HStack align="start" gap="5" className="w-full sm:flex-row">
-        <Input
-          variant="basic"
-          placeholder={t('ЄДРПОУ')}
-          type="text"
-          autoComplete="off"
-          className="min-h-[48px] w-full"
-          classNameBlockWrap="w-full"
-          {...register('idStateRegister', {
-            required: t("Це поле є обов'язковим"),
-            pattern: {
-              value: /^\d+$/,
-              message: t('Дозволені тільки числа'),
-            },
-          })}
-          error={errors?.idStateRegister && errors?.idStateRegister.message}
-        />
-        <Input
-          variant="basic"
-          placeholder={t('ІПН')}
-          type="text"
-          autoComplete="off"
-          className="min-h-[48px] w-full"
-          classNameBlockWrap="w-full"
-          {...register('identificNumber', {
-            required: t("Це поле є обов'язковим"),
-            pattern: {
-              value: /^\d+$/,
-              message: t('Дозволені тільки числа'),
-            },
-          })}
-          error={errors?.identificNumber && errors?.identificNumber.message}
-        />
+        <div className="w-full">
+          <Input
+            variant="basic"
+            placeholder={t('ЄДРПОУ')}
+            type="text"
+            autoComplete="off"
+            className="min-h-[48px] w-full"
+            classNameBlockWrap="w-full mb-2"
+            {...register('idStateRegister', {
+              required: t("Це поле є обов'язковим"),
+              minLength: {
+                value: 10,
+                message: t('Введіть актуальний ЄДРПОУ з 10 цифр'),
+              },
+              pattern: {
+                value: /^\d+$/,
+                message: t('Дозволені тільки числа'),
+              },
+              onChange: (e) => {
+                setQuantityRegester(e.target.value.length);
+              },
+            })}
+            maxLength={10}
+            error={errors?.idStateRegister && errors?.idStateRegister.message}
+          />
+          <VStack align="center" justify="between" className="w-full">
+            <Text
+              Tag="p"
+              text={t('Введіть 10 цифр')}
+              size="xs"
+              className="!text-selected-dark"
+            />
+            <Text
+              Tag="p"
+              text={`${quantityRegester}/10`}
+              size="xs"
+              className="!text-selected-dark"
+            />
+          </VStack>
+        </div>
+
+        <div className="w-full">
+          <Input
+            variant="basic"
+            placeholder={t('ІПН')}
+            type="text"
+            autoComplete="off"
+            className="min-h-[48px] w-full"
+            classNameBlockWrap="w-full mb-2"
+            {...register('identificNumber', {
+              required: t("Це поле є обов'язковим"),
+              minLength: {
+                value: 12,
+                message: t('Введіть актуальний ІПН з 12 цифр'),
+              },
+              pattern: {
+                value: /^\d+$/,
+                message: t('Дозволені тільки числа'),
+              },
+              onChange: (e) => {
+                setQuantityIdentic(e.target.value.length);
+              },
+            })}
+            maxLength={12}
+            error={errors?.identificNumber && errors?.identificNumber.message}
+          />
+          <VStack align="center" justify="between" className="w-full">
+            <Text
+              Tag="p"
+              text={t('Введіть 12 цифр')}
+              size="xs"
+              className="!text-selected-dark"
+            />
+            <Text
+              Tag="p"
+              text={`${quantityIdentic}/12`}
+              size="xs"
+              className="!text-selected-dark"
+            />
+          </VStack>
+        </div>
       </HStack>
       <Checkbox
         type="checkbox"
