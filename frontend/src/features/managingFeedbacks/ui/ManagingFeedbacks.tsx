@@ -139,7 +139,11 @@ const ManagingFeedbacks: FC = () => {
         )}
 
         <VStack gap="2" className="items-center md:items-start">
-          <ListingSearchCalendar dateRange={dateRange} setDateRange={setDateRange} />
+          <ListingSearchCalendar
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            classNameCalendar="right-[305px]"
+          />
         </VStack>
       </VStack>
       {isMobile && (
