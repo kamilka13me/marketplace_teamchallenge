@@ -223,8 +223,8 @@ const PersonalDataForms: FC = () => {
         {...register('inputName', {
           required: t("Це поле є обов'язковим"),
           minLength: {
-            value: 3,
-            message: t("Ваше ім'я має бути не менше 3 символів"),
+            value: 2,
+            message: t("Ваше ім'я має бути не менше 2 символів"),
           },
           maxLength: {
             value: 15,
