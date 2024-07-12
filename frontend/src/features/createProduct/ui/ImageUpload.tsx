@@ -44,8 +44,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   const handleFileChange =
     (id: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
+      const maxFileSize = 10 * 1024 * 1024; // 10 MB in bytes
 
-      if (file) {
+      if (file && file.size < maxFileSize) {
         const fileUrl = URL.createObjectURL(file);
 
         setInputs((prevInputs) =>
