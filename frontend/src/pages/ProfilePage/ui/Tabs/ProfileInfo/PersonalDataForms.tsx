@@ -58,6 +58,7 @@ const PersonalDataForms: FC = () => {
     reset,
     setError,
     control,
+    watch,
   } = useForm<InputsInformationValues & InputsPasswordValues>({
     mode: 'all',
     defaultValues: {
@@ -417,6 +418,11 @@ const PersonalDataForms: FC = () => {
               message: t(
                 'Пароль має містити мінімум 9 символів, включаючи велику латинську літеру',
               ),
+            },
+            validate: (val: string) => {
+              if (watch('inputNewPassword') !== val) {
+                return t('Паролі не збігаються. Будь ласка, спробуйте ще раз.');
+              }
             },
           })}
           error={
