@@ -93,7 +93,11 @@ const PersonalDataForms: FC = () => {
   };
 
   const onSubmitPassword: SubmitHandler<InputsPasswordValues> = async (data) => {
-    if (data.inputNewPassword !== data.inputConfirmationPassword) {
+    if (data.inputNewPassword === data.inputOldPassword) {
+      setError('inputNewPassword', {
+        message: t('Новий пароль не може бути таким самим, як старий пароль'),
+      });
+    } else if (data.inputNewPassword !== data.inputConfirmationPassword) {
       setError('inputConfirmationPassword', {
         message: t('Пароль введено не вірно'),
       });
