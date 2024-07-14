@@ -102,7 +102,9 @@ const FirstBlockProductForm: FC<Props> = (props) => {
     }
   }, [isSubmitted]);
 
-  const isEmptyList =
+  const isEmptySub = data && data[currentSub!]?.subcategories.length;
+
+  const isEmptySubSub =
     data && data[currentSub!]?.subcategories[currentSubSub!]?.subcategories.length;
 
   const renderSelectCategory = () => (
@@ -233,7 +235,12 @@ const FirstBlockProductForm: FC<Props> = (props) => {
                       className="absolute max-h-[528px] w-full overflow-auto rounded-b-lg bg-selected-dark z-40"
                       static
                     >
-                      {data &&
+                      {isEmptySub === 0 ? (
+                        <li className="relative flex px-4 py-3 outfit text-[14px] text-disabled font-normal leading-[24px] rounded-lg cursor-pointer">
+                          Тут поки нічого немає.
+                        </li>
+                      ) : (
+                        data &&
                         data[currentSub!]?.subcategories.map((item, index) => (
                           <Listbox.Option
                             key={item._id}
@@ -245,7 +252,8 @@ const FirstBlockProductForm: FC<Props> = (props) => {
                           >
                             {item.name}
                           </Listbox.Option>
-                        ))}
+                        ))
+                      )}
                     </Listbox.Options>
                   </Transition>
                 </>
@@ -273,7 +281,7 @@ const FirstBlockProductForm: FC<Props> = (props) => {
                 field.onChange(value.name);
                 setCategory(value._id);
               }}
-              disabled={currentSubSub === null || isEmptyList === 0}
+              disabled={currentSubSub === null}
             >
               {({ open }) => (
                 <>
@@ -306,7 +314,12 @@ const FirstBlockProductForm: FC<Props> = (props) => {
                       className="absolute max-h-[528px] w-full overflow-auto rounded-b-lg bg-selected-dark z-40"
                       static
                     >
-                      {data &&
+                      {isEmptySubSub === 0 ? (
+                        <li className="relative flex px-4 py-3 outfit text-[14px] text-disabled font-normal leading-[24px] rounded-lg cursor-pointer">
+                          Тут поки нічого немає.
+                        </li>
+                      ) : (
+                        data &&
                         data[currentSub!]?.subcategories[
                           currentSubSub!
                         ]?.subcategories.map((item) => (
@@ -317,7 +330,8 @@ const FirstBlockProductForm: FC<Props> = (props) => {
                           >
                             {item.name}
                           </Listbox.Option>
-                        ))}
+                        ))
+                      )}
                     </Listbox.Options>
                   </Transition>
                 </>
