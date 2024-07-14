@@ -20,6 +20,29 @@ interface Props {
   discountValidationMessage: string;
 }
 
+interface FormMiddleValues {
+  _id: string;
+  name: string;
+  description: string;
+  brand: string;
+  condition: string;
+  status: string;
+  price: number;
+  discount: number | null;
+  specifications: {
+    specification: string;
+    specificationDescription: string;
+  }[];
+  discountStart: string;
+  sellerId: string;
+  discountEnd: string;
+  category: string;
+  quantity: number;
+  views: number;
+  images: string[];
+  created_at: string;
+}
+
 const FormMiddleBlock: FC<Props> = (props) => {
   const {
     hasDiscount,
@@ -36,6 +59,7 @@ const FormMiddleBlock: FC<Props> = (props) => {
   const [productHasDiscount, setProductHasDiscount] = useState(hasDiscount);
   const [priceWithDiscount, setPriceWithDiscount] = useState(0);
   const [specificationLengths, setSpecificationLengths] = useState<number[]>([]);
+  const [specifDiscripLengths, setSpecifDiscripLengths] = useState<number[]>([]);
 
   const {
     getValues,
@@ -43,7 +67,7 @@ const FormMiddleBlock: FC<Props> = (props) => {
     register,
     control,
     formState: { errors },
-  } = useFormContext();
+  } = useFormContext<FormMiddleValues>();
 
   const {
     fields,
@@ -78,6 +102,13 @@ const FormMiddleBlock: FC<Props> = (props) => {
     setSpecificationLengths(updatedLengths);
   };
 
+  const updateSpecifDiscripLength = (index: number, length: number) => {
+    const updatedLengths = [...specifDiscripLengths];
+
+    updatedLengths[index] = length;
+    setSpecifDiscripLengths(updatedLengths);
+  };
+
   const removeSpec = (indexToRemove: number) => {
     remove(indexToRemove);
     setSpecificationLengths((prevLengths) =>
@@ -98,7 +129,11 @@ const FormMiddleBlock: FC<Props> = (props) => {
               type="number"
               autoComplete="off"
               {...register('price', {
-                required: true,
+                required: t("Це поле є обов'язковим"),
+                maxLength: {
+                  value: 9,
+                  message: t('Ціна товару не може бути вище за 999999999'),
+                },
                 pattern: {
                   value: /^\d+(\.\d{1,2})?$/,
                   message: t('Ціна може бути в форматі 100.00 або 100'),
@@ -122,7 +157,7 @@ const FormMiddleBlock: FC<Props> = (props) => {
                 type="checkbox"
                 className="peer relative appearance-none cursor-pointer w-6 h-6 border-[2px] border-light-grey rounded focus:outline-none"
                 onChange={(event) => {
-                  setValue('discount', '0');
+                  setValue('discount', 0);
                   setValue('discountStart', '');
                   setValue('discountEnd', '');
                   setPriceWithDiscount(0);
@@ -163,12 +198,17 @@ const FormMiddleBlock: FC<Props> = (props) => {
               type="number"
               autoComplete="off"
               {...register('quantity', {
-                required: true,
+                required: t("Це поле є обов'язковим"),
+                maxLength: {
+                  value: 9,
+                  message: t('Кількість товару не може бути вище за 999999999'),
+                },
                 pattern: {
                   value: /^\d+$/,
                   message: t('Може містити тільки цифри'),
                 },
               })}
+              error={errors?.quantity && (errors?.quantity.message as string)}
               className="min-h-[48px] w-full pr-12 mt-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             />
             <Text
@@ -191,6 +231,7 @@ const FormMiddleBlock: FC<Props> = (props) => {
             className="lg:flex lg:flex-row w-full mt-4 lg:mt-5"
           >
             <div className="w-full">
+              <div className="text-main font-bold">{hasDiscount}</div>
               <Text Tag="p" text="Відсоток знижки" size="md" color="white" />
               <div className="w-full mt-2 relative">
                 <Input
@@ -198,16 +239,11 @@ const FormMiddleBlock: FC<Props> = (props) => {
                   placeholder="Введіть відсоток знижки"
                   type="number"
                   autoComplete="off"
-                  error={errors?.discount && (errors?.discount.message as string)}
                   {...register('discount', {
-                    required: hasDiscount,
-                    min: {
-                      value: 1,
-                      message: 'Знижка не може бути менше 1%',
-                    },
-                    max: {
-                      value: 99,
-                      message: 'Знижка не може бути більше 99%',
+                    required: t("Це поле є обов'язковим"),
+                    pattern: {
+                      value: /^([1-9]|[1-9][0-9])$/,
+                      message: t('Знижка може бути в діапазоні від 1% до 99%'),
                     },
                   })}
                   onChange={(e) => {
@@ -219,6 +255,7 @@ const FormMiddleBlock: FC<Props> = (props) => {
 
                     setPriceWithDiscount(price - percentageAmount);
                   }}
+                  error={errors?.discount && (errors?.discount.message as string)}
                   className="min-h-[48px] w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
 
@@ -281,11 +318,15 @@ const FormMiddleBlock: FC<Props> = (props) => {
           maxLength={200}
           placeholder="Опишіть товар"
           {...register('description', {
-            minLength: 16,
+            minLength: {
+              value: 16,
+              message: t('Ваш опис товару має бути не менше 16 символів'),
+            },
             onChange: (e) => {
               setDescriptionLetters(e.target.value.length);
             },
           })}
+          error={errors?.description && (errors?.description?.message as string)}
           className="mt-2 pl-4 pt-2 rounded-lg text-main-white focus:outline-none"
         />
         <VStack align="center" justify="between" className="w-full mt-2">
@@ -325,18 +366,31 @@ const FormMiddleBlock: FC<Props> = (props) => {
                   Видалити поле
                 </Button>
               </VStack>
-              <Input
-                variant="fill"
-                placeholder="Введіть назву поля"
-                type="text"
-                maxLength={30}
-                {...register(`specifications.${index}.specification`, {
-                  required: true,
-                  minLength: 16,
-                })}
-                className="min-h-[48px] w-full"
-                onChange={(e) => updateSpecificationLength(index, e.target.value.length)}
-              />
+              <HStack gap="1" className="w-full">
+                <Input
+                  variant="fill"
+                  placeholder="Введіть назву поля"
+                  type="text"
+                  maxLength={30}
+                  {...register(`specifications.${index}.specification`, {
+                    required: t("Це поле є обов'язковим"),
+                    minLength: {
+                      value: 16,
+                      message: t('Назва поля має бути не менше 16 символів'),
+                    },
+                  })}
+                  className="min-h-[48px] w-full"
+                  classNameBlockWrap="w-full"
+                  onChange={(e) =>
+                    updateSpecificationLength(index, e.target.value.length)
+                  }
+                />
+                {errors?.specifications?.[index]?.specification && (
+                  <p className="outfit font-normal text-[12px] text-error-red">
+                    {errors?.specifications?.[index]?.specification?.message as string}
+                  </p>
+                )}
+              </HStack>
               <VStack align="center" justify="between" className="w-full mt-2">
                 <Text
                   Tag="p"
@@ -354,12 +408,47 @@ const FormMiddleBlock: FC<Props> = (props) => {
             </label>
             <div className="mt-3">
               <Text Tag="p" text="Опис характеристики товару" size="md" color="white" />
-              <Textarea
-                variant="fill"
-                placeholder="Опишіть товар"
-                {...register(`specifications.${index}.specificationDescription`)}
-                className="mt-2 pl-4 pt-2 rounded-lg text-main-white focus:outline-none"
-              />
+              <HStack gap="1" className="w-full">
+                <Textarea
+                  variant="fill"
+                  placeholder="Опишіть товар"
+                  maxLength={200}
+                  {...register(`specifications.${index}.specificationDescription`, {
+                    required: t("Це поле є обов'язковим"),
+                    minLength: {
+                      value: 16,
+                      message: t('Опис товару має бути не менше 16 символів'),
+                    },
+                  })}
+                  className="mt-2 pl-4 pt-2 rounded-lg text-main-white focus:outline-none"
+                  classNameBlockWrap="w-full"
+                  onChange={(e) =>
+                    updateSpecifDiscripLength(index, e.target.value.length)
+                  }
+                />
+                {errors?.specifications?.[index]?.specificationDescription && (
+                  <p className="outfit font-normal text-[12px] text-error-red">
+                    {
+                      errors?.specifications?.[index]?.specificationDescription
+                        ?.message as string
+                    }
+                  </p>
+                )}
+              </HStack>
+              <VStack align="center" justify="between" className="w-full mt-2">
+                <Text
+                  Tag="p"
+                  text={t('Введіть щонайменше 16 символів')}
+                  size="xs"
+                  className="!text-light-grey"
+                />
+                <Text
+                  Tag="p"
+                  text={`${specifDiscripLengths[index] || 0}/200`}
+                  size="xs"
+                  className="!text-light-grey"
+                />
+              </VStack>
             </div>
           </div>
         ))}

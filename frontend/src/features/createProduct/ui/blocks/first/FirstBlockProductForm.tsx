@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, Fragment, useEffect, useState } from 'react';
+import React, { FC, Fragment, useEffect, useState } from 'react';
 
 import { Listbox, Transition } from '@headlessui/react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -30,7 +30,7 @@ const FirstBlockProductForm: FC<Props> = (props) => {
     register,
     control,
     setValue,
-    formState: { isSubmitted },
+    formState: { errors, isSubmitted },
   } = useFormContext();
   const { t } = useTranslation();
   const { data } = useAxios<Category[]>(ApiRoutes.CATEGORY);
@@ -102,9 +102,8 @@ const FirstBlockProductForm: FC<Props> = (props) => {
     }
   }, [isSubmitted]);
 
-  const onInputNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setQuantity(e.target.value.length);
-  };
+  const isEmptyList =
+    data && data[currentSub!]?.subcategories[currentSubSub!]?.subcategories.length;
 
   const renderSelectCategory = () => (
     <HStack gap="2" className="w-full">
@@ -274,7 +273,7 @@ const FirstBlockProductForm: FC<Props> = (props) => {
                 field.onChange(value.name);
                 setCategory(value._id);
               }}
-              disabled={currentSubSub === null}
+              disabled={currentSubSub === null || isEmptyList === 0}
             >
               {({ open }) => (
                 <>
@@ -399,7 +398,7 @@ const FirstBlockProductForm: FC<Props> = (props) => {
   );
 
   return (
-    <div className="w-full bg-dark-grey rounded-2xl lg:px-4 lg:py-6 lg:mb-5">
+    <div className="w-full bg-dark-grey rounded-2xl lg:px-4 lg:py-6 ">
       <HStack gap="2" className="mb-4 lg:mb-5">
         <Text Tag="p" text={t('Назва товару')} size="md" color="white" />
         <Input
@@ -410,11 +409,17 @@ const FirstBlockProductForm: FC<Props> = (props) => {
           placeholder={t('Введіть назву товару')}
           type="text"
           {...register('name', {
-            required: true,
-            minLength: 16,
-            onChange: onInputNameChange,
+            required: t("Це поле є обов'язковим"),
+            minLength: {
+              value: 16,
+              message: t('Ваша назва товару має бути не менше 16 символів'),
+            },
+            onChange: (e) => {
+              setQuantity(e.target.value.length);
+            },
           })}
           maxLength={70}
+          error={errors?.name && (errors?.name?.message as string)}
         />
         <VStack align="center" justify="between" className="w-full">
           <Text
@@ -433,7 +438,7 @@ const FirstBlockProductForm: FC<Props> = (props) => {
         {renderSelectSubSubCategory()}
       </HStack>
 
-      <HStack align="center" gap="4" className="lg:flex lg:flex-row w-full">
+      <HStack align="start" gap="4" className="lg:flex lg:flex-row w-full">
         {renderSelectConditions()}
         <HStack gap="2" className="w-full">
           <Text Tag="p" text={t('Бренд')} size="md" color="white" />
@@ -444,7 +449,14 @@ const FirstBlockProductForm: FC<Props> = (props) => {
             autoComplete="off"
             placeholder={t('Введіть назву')}
             type="text"
-            {...register('brand')}
+            {...register('brand', {
+              required: false,
+              maxLength: {
+                value: 30,
+                message: t('Ваша назва бренду не повинна перевищувати 30 символів'),
+              },
+            })}
+            error={errors?.brand && (errors?.brand?.message as string)}
           />
         </HStack>
       </HStack>
