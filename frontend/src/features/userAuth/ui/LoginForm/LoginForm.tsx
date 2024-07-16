@@ -1,8 +1,10 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+
+import TestLogin from './TestLogin';
 
 import { loginHasError } from '@/features/userAuth';
 import { getUserByCredentials } from '@/features/userAuth/model/services/getUserByCredentials';
@@ -178,6 +180,9 @@ const LoginForm: FC<LoginFormProps> = (props) => {
         disabled={!isValid}
         className="cursor-pointer outfit bg-main min-w-full py-[4px] rounded-lg font-normal text-[18px] leading-[40px] text-main-dark duration-300 hover:bg-secondary-yellow active:bg-main disabled:text-main-white disabled:bg-disabled"
       />
+
+      <TestLogin onCloseModal={onCloseModal} />
+
       <VStack align="center" className="mt-6" justify="between">
         <span className="outfit text-right text-main-dark text-[14px] font-normal leading-[18px]">
           {t('Немає облікового запису?')}
