@@ -63,7 +63,7 @@ const ProductSubscription = () => {
                 <div className="flex gap-[10px] mb-[10px]">
                   <Icon
                     Svg={Subs}
-                    className="bg-selected-dark stroke-white w-[16px] h-[16px] md:w-[20px] md:h-[20px]"
+                    className="bg-selected-dark stroke-secondary-yellow w-[16px] h-[16px] md:w-[20px] md:h-[20px]"
                   />
                   <p className="text-white text-sm flex items-center md:text-base">
                     {plan.ads}
