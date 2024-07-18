@@ -128,21 +128,23 @@ const Finances = () => {
             <ListingSearchInput setInputData={(value) => setInputData(value)} />
           </div>
           <div className="bg-dark-grey rounded-2xl mb-5 max-w-[1024px]">
-            <ul className="text-white text-[18px] flex gap-10 md:gap-[120px] xl:gap-[160px] lg:gap-[140px] bg-selected-dark py-2 rounded-lg px-4">
+            <ul className="text-white text-[18px] flex justify-between md:justify-start gap-10 xl:gap-[160px] lg:gap-[140px] bg-selected-dark py-2 rounded-lg px-4">
               <li className="flex gap-0 md:gap-[170px] lg:gap-[120px] xl:gap-[220px] mr-0 md:mr-10">
                 <div className="hidden md:block text-center whitespace-nowrap">
                   Назва компанії
                 </div>
                 <div className="hidden md:flex justify-center lg:mr-text-center">ID</div>
+                <div className="flex whitespace-nowrap md:hidden mr-1">ID та ім’я</div>
               </li>
-              <li className="flex whitespace-nowrap md:hidden mr-1">
-                Назва компанії та ID
-              </li>
-              <li className="flex gap-6 md:gap-[120px] lg:gap-[120px] xl:gap-[200px]">
-                <div className=" text-center whitespace-nowrap">Тарифний план</div>
-                <div className="text-center ">Дія</div>
+              <li className="flex gap-6 md:gap-[120px] lg:gap-[120px] xl:gap-[160px]">
+                <div className="text-center whitespace-nowrap hidden md:block">
+                  Тарифний план
+                </div>
+                <div className="text-center whitespace-nowrap md:hidden">Тарифний</div>
+                <div className="text-center">Дія</div>
               </li>
             </ul>
+
             <ul>
               {isLoading && (
                 <li className="px-4 py-2 text-white text-center">Loading...</li>
@@ -156,9 +158,9 @@ const Finances = () => {
                     key={seller._id}
                     className={`px-4 py-2 flex ${index % 2 === 0 ? 'bg-dark-grey' : 'bg-selected-dark'}`}
                   >
-                    <div className="flex gap-2 flex-1">
+                    <div className="flex gap-2 flex-1 border-[1px]">
                       <div
-                        className={`w-[64px] mr-5 text-white flex justify-center rounded-lg px-[15px] py-3 ${
+                        className={`hidden lg:flex w-[64px] mr-5 text-white justify-center rounded-lg px-[15px] py-3 ${
                           index % 2 === 0 ? 'bg-selected-dark' : 'bg-dark-grey'
                         }`}
                       >
@@ -175,7 +177,7 @@ const Finances = () => {
                           {seller.generalName}
                         </p>
                         <th
-                          className="flex items-center cursor-pointer !font-normal text-start text-white p-[10px] w-[171px] rounded-l-2xl relative group"
+                          className="flex items-center cursor-pointer !font-normal text-start text-white rounded-l-2xl relative group"
                           onClick={() => {
                             navigator.clipboard.writeText(seller?._id || '');
                           }}
@@ -246,6 +248,7 @@ const Finances = () => {
           </div>
         </div>
       )}
+
       {isTarifOpen &&
         selectedSeller &&
         (window.innerWidth >= 1024 ? (
