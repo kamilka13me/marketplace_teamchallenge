@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useEffect, useState } from 'react';
 
 import AdminSubscription from './component/AdminSubscription';
@@ -117,134 +119,149 @@ const Finances = () => {
     setShowModal((prevShowModal) => !prevShowModal);
   };
 
+  const sellerIdRow = (sellerId: string | undefined) => {
+    return (
+      <div
+        className="flex items-center cursor-pointer !font-normal text-start text-white rounded-l-2xl relative group"
+        onClick={() => {
+          navigator.clipboard.writeText(sellerId || '');
+        }}
+      >
+        №{sellerId?.slice(0, 10).split('-').reverse().join('.')}
+        <span className="absolute left-1/2 top-[40px] text-sm mt-1 p-2 bg-dark-grey text-main-white rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+          {sellerId}
+        </span>
+      </div>
+    );
+  };
+
   return (
     <div className="w-full">
       {showList && (
         <div>
           <div className="bg-dark-grey px-4 py-[9px] rounded-2xl mb-5 flex flex-col gap-5 justify-between lg:flex-row lg:gap-0">
-            <h1 className="text-white text-[18px] flex items-center">
+            <h1 className="text-white text-[20px] lg:text-[18px] flex items-center">
               Керування підписками
             </h1>
             <ListingSearchInput setInputData={(value) => setInputData(value)} />
           </div>
-          <div className="bg-dark-grey rounded-2xl mb-5 max-w-[1024px]">
-            <ul className="text-white text-[18px] flex justify-between md:justify-start gap-10 xl:gap-[160px] lg:gap-[140px] bg-selected-dark py-2 rounded-lg px-4">
-              <li className="flex gap-0 md:gap-[170px] lg:gap-[120px] xl:gap-[220px] mr-0 md:mr-10">
-                <div className="hidden md:block text-center whitespace-nowrap">
-                  Назва компанії
-                </div>
-                <div className="hidden md:flex justify-center lg:mr-text-center">ID</div>
-                <div className="flex whitespace-nowrap md:hidden mr-1">ID та ім’я</div>
-              </li>
-              <li className="flex gap-6 md:gap-[120px] lg:gap-[120px] xl:gap-[160px]">
-                <div className="text-center whitespace-nowrap hidden md:block">
-                  Тарифний план
-                </div>
-                <div className="text-center whitespace-nowrap md:hidden">Тарифний</div>
-                <div className="text-center">Дія</div>
-              </li>
-            </ul>
 
-            <ul>
+          <div className="bg-dark-grey rounded-2xl mb-5 max-w-[1024px]">
+            <div className="text-white text-[14px] lg:text-[18px] flex justify-between bg-selected-dark py-2 rounded-lg px-4">
+              <span className="w-1/4 hidden lg:block whitespace-nowrap">
+                Назва компанії
+              </span>
+
+              <div className="w-1/3 lg:w-1/4">
+                <span className="hidden lg:flex justify-center">ID</span>
+                <span className="flex lg:hidden whitespace-nowrap">ID та ім’я</span>
+              </div>
+
+              <div className="w-1/3 lg:w-1/4 text-center">
+                <span className="pl-[60px] hidden lg:block whitespace-nowrap">
+                  Тарифний план
+                </span>
+                <span className="lg:hidden">Тариф</span>
+              </div>
+
+              <span className="w-1/3 lg:w-1/4 text-end lg:text-center mr-[10px]">
+                Дія
+              </span>
+            </div>
+
+            <div>
               {isLoading && (
-                <li className="px-4 py-2 text-white text-center">Loading...</li>
+                <span className="px-4 py-2 text-white text-center">Loading...</span>
               )}
               {!isLoading &&
                 data &&
                 data.sellers &&
                 data.sellers.length > 0 &&
                 data.sellers.map((seller, index) => (
-                  <li
+                  <div
                     key={seller._id}
-                    className={`px-4 py-2 flex ${index % 2 === 0 ? 'bg-dark-grey' : 'bg-selected-dark'}`}
+                    className={`text-[12px] lg:text-[16px] px-4 py-2 flex justify-between ${index % 2 === 0 ? 'bg-dark-grey' : 'bg-selected-dark'}`}
                   >
-                    <div className="flex gap-2 flex-1 border-[1px]">
+                    <div className="flex gap-2">
                       <div
-                        className={`hidden lg:flex w-[64px] mr-5 text-white justify-center rounded-lg px-[15px] py-3 ${
+                        className={`hidden lg:flex w-[64px] text-white justify-center rounded-lg px-[15px] py-3 ${
                           index % 2 === 0 ? 'bg-selected-dark' : 'bg-dark-grey'
                         }`}
                       >
                         <Text
                           Tag="p"
-                          text={seller.generalName.charAt(0)}
+                          text={seller.generalName.charAt(0).toUpperCase()}
                           size="4xl"
                           align="center"
                           color="white"
                         />
                       </div>
-                      <div className="flex flex-col md:flex-row gap-2 md:gap-10 lg:gap-[85px] xl:gap-[150px]">
-                        <p className="text-white flex flex-1 items-center w-[90px]">
+
+                      <div className="flex flex-col justify-center">
+                        <div className="lg:hidden">{sellerIdRow(seller?._id)}</div>
+                        <span className="text-disabled lg:text-white w-[110px] lg:w-[150px] whitespace-nowrap overflow-hidden overflow-ellipsis">
                           {seller.generalName}
-                        </p>
-                        <th
-                          className="flex items-center cursor-pointer !font-normal text-start text-white rounded-l-2xl relative group"
-                          onClick={() => {
-                            navigator.clipboard.writeText(seller?._id || '');
-                          }}
-                        >
-                          №{seller._id.slice(0, 10).split('-').reverse().join('.')}
-                          <span className="absolute left-1/2 top-[40px] text-sm mt-1 p-2 bg-dark-grey text-main-white rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                            {seller?._id}
-                          </span>
-                        </th>
+                        </span>
                       </div>
                     </div>
-                    <div className="flex gap-5 md:gap-[100px] lg:gap-[120px] xl:gap-[150px]">
-                      <div className="flex items-center">
-                        <div
-                          className={`w-[136px] h-[30px] flex justify-center items-center rounded-lg ${getTariffClass(
-                            seller.subscribe,
-                          )}`}
-                        >
-                          {seller.subscribe}
-                        </div>
+
+                    <div className="hidden lg:flex">{sellerIdRow(seller?._id)}</div>
+
+                    <div className="flex items-center">
+                      <div
+                        className={`w-[112px] lg:w-[136px] h-[24px] lg:h-[30px] text-[12px] lg:text-[16px] flex justify-center items-center rounded-lg ${getTariffClass(
+                          seller.subscribe,
+                        )}`}
+                      >
+                        {seller.subscribe}
                       </div>
-                      <div className="flex items-center">
-                        {window.innerWidth >= 1024 ? (
-                          <button
-                            type="button"
-                            className="text-main hover:text-secondary-yellow focus:text-secondary-yellow text-sm border border-main hover:border-secondary-yellow focus:border-secondary-yellow px-4 py-1.5 w-[136px] h-[30px] rounded-lg"
-                            onClick={() => openTarifModal(seller)}
-                          >
-                            Змінити тариф
-                          </button>
-                        ) : (
-                          <>
-                            <Icon
-                              Svg={action}
-                              width={40}
-                              height={59}
-                              onClick={() => toggleModal(index)}
-                              className="lg:rotate-90 cursor-pointer"
-                            />
-                            {activeIndex === index && (
-                              <HStack
-                                justify="center"
-                                className="py-3 px-2 bg-shadow-footer absolute left-[300px] md:left-[580px] lg:left-[580px] z-10 rounded-lg w-[196px] h-[68px]"
+                    </div>
+
+                    <div className="flex items-center">
+                      {window.innerWidth >= 1024 ? (
+                        <button
+                          type="button"
+                          className="text-main hover:text-secondary-yellow focus:text-secondary-yellow text-sm border border-main hover:border-secondary-yellow focus:border-secondary-yellow px-4 py-1.5 w-[136px] h-[30px] rounded-lg"
+                          onClick={() => openTarifModal(seller)}
+                        >
+                          Змінити тариф
+                        </button>
+                      ) : (
+                        <div className="relative">
+                          <Icon
+                            Svg={action}
+                            width={40}
+                            height={59}
+                            onClick={() => toggleModal(index)}
+                            className="rotate-90 cursor-pointer"
+                          />
+                          {activeIndex === index && (
+                            <HStack
+                              justify="center"
+                              className="py-3 px-2 bg-shadow-footer absolute right-[-17px] top-[-4px] z-10 rounded-lg w-[196px] h-[68px]"
+                            >
+                              <button
+                                type="button"
+                                className="text-main-dark text-sm border border-main hover:border-secondary-yellow focus:border-secondary-yellow px-4 py-1.5 w-[180px] h-[44px] rounded-lg bg-secondary-yellow flex items-center gap-2.5"
+                                onClick={() => {
+                                  openTarifModal(seller);
+                                  setShowList(false);
+                                }}
                               >
-                                <button
-                                  type="button"
-                                  className="text-main-dark text-sm border border-main hover:border-secondary-yellow focus:border-secondary-yellow px-4 py-1.5 w-[180px] h-[44px] rounded-lg bg-secondary-yellow flex items-center gap-2.5"
-                                  onClick={() => {
-                                    openTarifModal(seller);
-                                    setShowList(false);
-                                  }}
-                                >
-                                  <Icon
-                                    Svg={Subs}
-                                    className="fill-main-dark w-[25px] h-[25px] "
-                                  />
-                                  Змінити тариф
-                                </button>
-                              </HStack>
-                            )}
-                          </>
-                        )}
-                      </div>
+                                <Icon
+                                  Svg={Subs}
+                                  className="stroke-main-dark w-[25px] h-[25px]"
+                                />
+                                Змінити тариф
+                              </button>
+                            </HStack>
+                          )}
+                        </div>
+                      )}
                     </div>
-                  </li>
+                  </div>
                 ))}
-            </ul>
+            </div>
           </div>
         </div>
       )}
