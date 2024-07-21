@@ -143,62 +143,77 @@ const sellerController = {
   },
   getSellers: async (req, res) => {
     let { sortDirection = 1, limit = 10, offset = 0 } = req.query;
-    const { startDate, endDate, search } = req.query;
+    const { startDate, endDate, search, sortBy = '_id', status } = req.query;
 
     limit = parseInt(limit, 10);
     offset = parseInt(offset, 10);
     sortDirection = parseInt(sortDirection, 10) || 1;
+
     const query = {};
+    const usersQuery = {};
 
     try {
       if (startDate) {
-        query.createdAt = { $gte: new Date(startDate) };
+        usersQuery.created_at = { $gte: new Date(startDate) };
       }
 
       if (endDate) {
-        if (!query.createdAt) {
-          query.createdAt = {};
+        if (!usersQuery.created_at) {
+          usersQuery.created_at = {};
         }
-        query.createdAt.$lte = new Date(endDate);
+        usersQuery.created_at.$lte = new Date(endDate);
+      }
+
+      if (status) {
+        usersQuery.accountStatus = status;
       }
 
       if (search) {
-        // Check if search is a valid ObjectId
         if (mongoose.Types.ObjectId.isValid(search)) {
-          query._id = search; // Search by support ID if search is a valid ObjectId
+          query._id = search;
         } else {
-          // Searching the user collection for a partial match in the username and email fields
+          const regex = { $regex: search, $options: 'i' };
           const users = await User.find({
-            $or: [
-              { username: { $regex: search, $options: 'i' } },
-              { email: { $regex: search, $options: 'i' } },
-            ],
+            $or: [{ username: regex }, { email: regex }, usersQuery],
           });
 
-          // Create an array of userIds from the IDs of the found users
           const userIds = users.map((user) => user._id);
 
           if (userIds.length > 0) {
             query.sellerId = { $in: userIds };
           } else {
-            return res.status(200).json([]);
+            return res.status(200).json({ totalCount: 0, sellers: [] });
           }
+        }
+      } else if (Object.keys(usersQuery).length > 0) {
+        const users = await User.find(usersQuery);
+
+        const userIds = users.map((user) => user._id);
+
+        if (userIds.length > 0) {
+          query.sellerId = { $in: userIds };
+        } else {
+          return res.status(200).json({ totalCount: 0, sellers: [] });
         }
       }
 
-      const sellers = await Seller.find(query).populate({
-        path: 'sellerId',
-        select: 'username email isAccountConfirm isAccountActive',
-      });
+      const totalCount = await Seller.countDocuments(query);
+      const sellers = await Seller.find(query)
+        .skip(offset)
+        .limit(limit)
+        .sort({ [sortBy]: sortDirection })
+        .populate({
+          path: 'sellerId',
+          select: 'username email isAccountConfirm isAccountActive created_at',
+        });
 
-      res.status(200).json({ sellers });
+      res.status(200).json({ totalCount, sellers });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
       res.status(500).send(error.message);
     }
   },
-
   // get all products
   getAllProducts: async (req, res) => {
     try {
