@@ -56,6 +56,7 @@ const AdminManagingSellers: FC = () => {
   const handleClickPage = (pageNumber: number) => {
     setCurrentPage(pageNumber);
     dispatch(sellersActions.setOffset((pageNumber - 1) * limit));
+    dispatch(fetchAllSellers({}));
   };
 
   const fetchNext = () => {
