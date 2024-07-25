@@ -261,9 +261,8 @@ const ManagingProducts: FC = () => {
               </th>
             </tr>
           </thead>
-          {isLoading ? (
-            <>...</>
-          ) : (
+
+          {!isLoading && (
             <tbody>
               {products?.map((product) => {
                 return (

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 
 import { HStack, VStack } from '@/shared/ui/Stack';
@@ -53,9 +53,9 @@ const CallsClickChart: FC = () => {
       <HStack gap="6" align="center" className="w-full lg:items-start">
         {Array(4)
           .fill(null)
-          .map((item) => {
+          .map((item, index) => {
             return (
-              <VStack align="center" className="gap-[6px]" key={item}>
+              <VStack align="center" className="gap-[6px]" key={index}>
                 <div className="bg-[#8A3FFC] w-2 h-2 rounded-full" />
                 <Text
                   Tag="span"
