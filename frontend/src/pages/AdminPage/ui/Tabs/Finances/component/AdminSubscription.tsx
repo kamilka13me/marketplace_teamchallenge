@@ -18,9 +18,9 @@ interface Plan {
 }
 
 const plans: Plan[] = [
-  { name: 'Basic', price: '749 грн', reviews: '10 оголошень' },
-  { name: 'Standart', price: '5 499 грн', reviews: '100 оголошень' },
-  { name: 'Premium', price: '12 949 грн', reviews: 'Необмежена кількість' },
+  { name: 'basic', price: '749 грн', reviews: '10 оголошень' },
+  { name: 'standart', price: '5 499 грн', reviews: '100 оголошень' },
+  { name: 'premium', price: '12 949 грн', reviews: 'Необмежена кількість' },
 ];
 
 const AdminSubscription = ({
@@ -78,7 +78,7 @@ const AdminSubscription = ({
                 />
                 <p className="text-white text-[24px] relative">{plan.price}</p>
                 <h2 className="text-white mb-[44px] text-[32px] relative md:mb-[127px]">
-                  {plan.name}
+                  {plan.name.toUpperCase()}
                 </h2>
                 <div className="flex gap-[10px] mb-[10px]">
                   <Icon

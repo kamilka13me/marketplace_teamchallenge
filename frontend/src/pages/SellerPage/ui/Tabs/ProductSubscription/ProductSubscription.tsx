@@ -11,15 +11,15 @@ import { VStack } from '@/shared/ui/Stack';
 import { Text } from '@/shared/ui/Text';
 
 const plans = [
-  { name: 'Basic', price: '749 грн', ads: '10 оголошень' },
-  { name: 'STANDART', price: '5 499 грн', ads: '100 оголошень' },
-  { name: 'PREMIUM', price: '12 949 грн', ads: 'Необмежена кількість' },
+  { name: 'basic', price: '749 грн', ads: '10 оголошень' },
+  { name: 'standart', price: '5 499 грн', ads: '100 оголошень' },
+  { name: 'premium', price: '12 949 грн', ads: 'Необмежена кількість' },
 ];
 
 const ProductSubscription = () => {
   const [close, setClose] = useState<boolean>(false);
-  const [selectedPlan, setSelectedPlan] = useState<string>('Basic');
-  const [activePlan, setActivePlan] = useState<string>('Basic');
+  const [selectedPlan, setSelectedPlan] = useState<string>('basic');
+  const [activePlan, setActivePlan] = useState<string>('basic');
   const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
   const currentDate = new Date()
     .toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })
@@ -58,7 +58,7 @@ const ProductSubscription = () => {
                 />
                 <p className="text-white text-[24px] relative">{plan.price}</p>
                 <h2 className="text-white mb-[44px] text-[32px] relative md:mb-[127px]">
-                  {plan.name}
+                  {plan.name.toUpperCase()}
                 </h2>
                 <div className="flex gap-[10px] mb-[10px]">
                   <Icon
@@ -111,7 +111,7 @@ const ProductSubscription = () => {
               <li className="px-[24px] py-[16px] border-b-[1px] border-secondary-yellow md:px-[32px]">
                 <p className="text-[18px] mb-[4px]">Поточний план:</p>
                 <h3 className="text-[32px] mb-[4px]">{activePlan}</h3>
-                <p>{`${plans.find((plan) => plan.name === selectedPlan)?.price}/місяць`}</p>
+                <p>{`${plans.find((plan) => plan.name === activePlan)?.price}/місяць`}</p>
               </li>
               <li className="px-[24px] py-[16px] md:px-[32px] ">
                 <p className="text-[18px] mb-[4px]">Новий план:</p>

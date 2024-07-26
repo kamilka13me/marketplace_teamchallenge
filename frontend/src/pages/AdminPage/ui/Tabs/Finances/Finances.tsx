@@ -38,8 +38,6 @@ const Finances = () => {
   const [selectedSeller, setSelectedSeller] = useState<Seller | null>(null);
   const [close, setClose] = useState<boolean>(false);
   const [isSuccessful, setIsSuccessful] = useState<boolean>(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [showModal, setShowModal] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [showList, setShowList] = useState<boolean>(true);
 
@@ -52,7 +50,7 @@ const Finances = () => {
 
     if (limit) url += `limit=${limit}&`;
     if (offset) url += `offset=${offset}&`;
-    if (inputData) url += `search=${inputData}&`;
+    if (inputData) url += `search=${inputData}`;
 
     return url;
   };
@@ -69,7 +67,11 @@ const Finances = () => {
   useEffect(() => {
     refetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputData, offset]);
+  }, [offset]);
+
+  useEffect(() => {
+    setOffset(0);
+  }, [inputData]);
 
   const openTarifModal = (seller: Seller) => {
     setSelectedSeller(seller);
@@ -89,7 +91,6 @@ const Finances = () => {
       setIsTarifOpen(false);
       setSelectedSeller(null);
       setIsSuccessful(true);
-      setShowModal(false);
       setShowList(true);
       setActiveIndex(null);
       refetch();
@@ -116,7 +117,6 @@ const Finances = () => {
 
   const toggleModal = (index: number) => {
     setActiveIndex(index);
-    setShowModal((prevShowModal) => !prevShowModal);
   };
 
   const sellerIdRow = (sellerId: string | undefined) => {

@@ -53,19 +53,13 @@ const AdminManagingSellersNavbar: FC<Props> = (props) => {
   useEffect(() => {
     const endDate = adjustDate(new Date(dateState[0]?.endDate as unknown as Date), 2);
 
-    dispatch(
-      sellersActions.setEndDate(endDate.toISOString()?.slice(0, 10) as unknown as Date),
-    );
+    dispatch(sellersActions.setEndDate(endDate.toISOString()?.slice(0, 10)));
   }, [dispatch, dateState]);
 
   useEffect(() => {
     const startDate = adjustDate(new Date(dateState[0]?.startDate as unknown as Date), 1);
 
-    dispatch(
-      sellersActions.setStartDate(
-        startDate.toISOString()?.slice(0, 10) as unknown as Date,
-      ),
-    );
+    dispatch(sellersActions.setStartDate(startDate.toISOString()?.slice(0, 10)));
   }, [dispatch, dateState]);
 
   const handleOnChange = (ranges: RangeKeyDict) => {
@@ -186,10 +180,12 @@ const AdminManagingSellersNavbar: FC<Props> = (props) => {
             });
             dispatch(
               sellersActions.setStartDate(
-                buttonData.find((btn) => btn.type === type)?.clb() || new Date(),
+                (
+                  buttonData.find((btn) => btn.type === type)?.clb() || new Date()
+                ).toISOString(),
               ),
             );
-            dispatch(sellersActions.setEndDate(endDate));
+            dispatch(sellersActions.setEndDate(endDate.toISOString()));
           }}
         />
         <div className="h-[24px] hidden md:block text-nowrap">

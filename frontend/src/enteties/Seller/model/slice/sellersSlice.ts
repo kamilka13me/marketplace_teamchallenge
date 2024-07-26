@@ -32,10 +32,10 @@ export const usersSlice = createSlice({
     _inited: false,
   }),
   reducers: {
-    setStartDate: (state, action: PayloadAction<Date>) => {
+    setStartDate: (state, action: PayloadAction<string>) => {
       state.startDate = action.payload;
     },
-    setEndDate: (state, action: PayloadAction<Date>) => {
+    setEndDate: (state, action: PayloadAction<string>) => {
       state.endDate = action.payload;
     },
     setSearch: (state, action: PayloadAction<string>) => {
