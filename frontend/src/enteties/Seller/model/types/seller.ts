@@ -19,13 +19,7 @@ export interface Seller {
     messenger: string;
     phone: string;
   }[];
-  sellerId: {
-    _id: string;
-    username: string;
-    email: string;
-    isAccountConfirm: boolean;
-    isAccountActive: boolean;
-  };
+  sellerId: string;
   descriptCompany: string;
   generalName: string;
   generalCommunication: {
@@ -36,6 +30,7 @@ export interface Seller {
   emailAdvertisement: boolean;
   emailMessage: boolean;
   conditions: boolean;
+  subscribe: string;
 }
 
 export type SellerStatus = 'active' | 'blocked' | 'work' | 'close';

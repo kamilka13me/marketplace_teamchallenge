@@ -1,9 +1,16 @@
 import { useState } from 'react';
 
+import {
+  getSellerId,
+  getSellerSubscribe,
+} from '@/enteties/Seller/model/selectors/sellerInfoSelectors';
+import { $api } from '@/shared/api/api';
 import Cancel from '@/shared/assets/icons/cancel.svg?react';
 import Exclamation from '@/shared/assets/icons/exclamation.svg?react';
 import Subs from '@/shared/assets/icons/subs.svg?react';
 import Wave from '@/shared/assets/img/wave.png';
+import { ApiRoutes } from '@/shared/const/apiEndpoints';
+import { useAppSelector } from '@/shared/lib/hooks/useAppSelector';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { ModalWindow } from '@/shared/ui/ModalWindow';
@@ -16,15 +23,26 @@ const plans = [
   { name: 'premium', price: '12 949 грн', ads: 'Необмежена кількість' },
 ];
 
+const requestUpdateTariff = async (sellerId: string, newTariff: string) => {
+  const API_URL = `${ApiRoutes.SELLER}/${sellerId}`;
+
+  try {
+    return await $api.patch(API_URL, { subscribe: newTariff });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Помилка під час запиту на оновлення тарифного плану:', error);
+  }
+};
+
 const ProductSubscription = () => {
   const [close, setClose] = useState<boolean>(false);
   const [selectedPlan, setSelectedPlan] = useState<string>('basic');
-  const [activePlan, setActivePlan] = useState<string>('basic');
   const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
-  const currentDate = new Date()
-    .toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })
-    .replace(/\//g, '.');
+  const [isSuccessful, setIsSuccessful] = useState<boolean>(false);
   const [windowWidth] = useState<number>(window.innerWidth);
+
+  const sellerId = useAppSelector(getSellerId);
+  const activePlan = useAppSelector(getSellerSubscribe);
 
   const handlePlanSelection = (plan: string) => {
     setSelectedPlan(plan);
@@ -32,8 +50,13 @@ const ProductSubscription = () => {
     setClose(true);
   };
 
-  const handleConfirm = () => {
-    setActivePlan(selectedPlan);
+  const handleConfirm = async () => {
+    if (sellerId) {
+      const response = await requestUpdateTariff(sellerId, selectedPlan);
+
+      if (response?.status === 200) setIsSuccessful(true);
+    }
+
     setClose(false);
   };
 
@@ -95,6 +118,7 @@ const ProductSubscription = () => {
           <p className="text-white text-sm">Ви можете обрати тільки один тарифний план</p>
         </div>
       </div>
+
       {close && (
         <ModalWindow
           onCloseFunc={() => setClose(false)}
@@ -120,7 +144,8 @@ const ProductSubscription = () => {
               </li>
             </ul>
             <p className=" text-white text-sm mb-[27px] pl-[16px] md:pl-[31px] md:text-base">
-              Почніть свій новий план {currentDate}.
+              Запит на зміну тарифного плану адміністрація розглядае протягом трьох
+              робочих днів. При необхідності ми звяжемося з вами для підтвердження запиту.
             </p>
             <VStack gap="2" className="pl-[16px] mb-[12px] md:pl-[31px] md:mb-[35px]">
               <label htmlFor="all selector" className="relative" aria-label="checkbox">
@@ -196,6 +221,28 @@ const ProductSubscription = () => {
               )}
             </div>
           </div>
+        </ModalWindow>
+      )}
+
+      {isSuccessful && (
+        <ModalWindow
+          onCloseFunc={() => setIsSuccessful(false)}
+          className="bg-selected-dark rounded-2xl animate-open-forms-modal px-[24px] py-5"
+        >
+          <div className="flex justify-end mb-[18px]">
+            <Icon Svg={Cancel} fill="white" onClick={() => setIsSuccessful(false)} />
+          </div>
+          <div className="flex justify-center mb-3">
+            <Icon
+              Svg={Exclamation}
+              width={32}
+              height={32}
+              className="fill-secondary-yellow"
+            />
+          </div>
+          <p className="text-disabled mb-7">
+            Запит на зміну тарифного плану відправлено!
+          </p>
         </ModalWindow>
       )}
     </div>
